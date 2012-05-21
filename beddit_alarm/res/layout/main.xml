@@ -5,20 +5,13 @@
     android:layout_height="fill_parent"
     >
     <TimePicker
+            android:id="@+id/alarmTimePicker"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             />
-    <TimePicker
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            />
+
     <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Nappi"
-            android:background="@drawable/simplebutton"
-            />
-    <Button
+            android:id="@+id/setAlarmButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Nappi"
