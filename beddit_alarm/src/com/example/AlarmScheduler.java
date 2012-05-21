@@ -29,6 +29,14 @@ public class AlarmScheduler {
     }
 
     public void deleteAlarm(Context context){
+        Intent intent = new Intent(context, Alarm.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        // Schedule the alarm!
+        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        am.cancel(sender);
+
+        Toast.makeText(context, "Hälytys poistettu", Toast.LENGTH_LONG).show();
 
     }
 
