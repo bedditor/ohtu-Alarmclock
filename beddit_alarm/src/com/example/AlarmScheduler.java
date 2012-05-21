@@ -14,13 +14,10 @@ public class AlarmScheduler {
 
     public void addAlarm(Context context, int hours, int minutes, int interval){
         Intent intent = new Intent(context, Alarm.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context,
-                0, intent, 0);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        // We want the alarm to go off 30 seconds from now.
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 5);
+        // Calculate alarm to go off
+        Calendar calendar = calculateAlarm(hours, minutes, 0);
 
         // Schedule the alarm!
         AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
@@ -32,6 +29,28 @@ public class AlarmScheduler {
     }
 
     public void deleteAlarm(Context context){
+
+    }
+
+
+    private Calendar calculateAlarm(int hour, int minute, int interval) {
+        Calendar c = Calendar.getInstance();
+
+        c.setTimeInMillis(System.currentTimeMillis());
+        int nowHour = c.get(Calendar.HOUR_OF_DAY);
+        int nowMinute = c.get(Calendar.MINUTE);
+
+        // if alarm is behind current time, advance one day
+        if (hour < nowHour  || hour == nowHour && minute <= nowMinute) {
+            c.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return c;
+
 
     }
 

@@ -16,6 +16,7 @@ public class MyActivity extends Activity
 
 
     private AlarmScheduler alarmScheduler;
+    TimePicker mTimePicker;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -30,7 +31,7 @@ public class MyActivity extends Activity
         LinearLayout ll= (LinearLayout)findViewById(R.id.mainLayout);
         ll.setBackgroundColor(Color.WHITE);
 
-        TimePicker mTimePicker = (TimePicker)this.findViewById(R.id.alarmTimePicker);
+        mTimePicker = (TimePicker)this.findViewById(R.id.alarmTimePicker);
         try {
             if (((ViewGroup) mTimePicker.getChildAt(0)).getChildCount() > 2)
                 ((ViewGroup) mTimePicker.getChildAt(0)).getChildAt(2).setBackgroundResource(R.drawable.simplebutton);   // AM/PM button
@@ -50,7 +51,7 @@ public class MyActivity extends Activity
 
         @Override
         public void onClick(View view) {
-            alarmScheduler.addAlarm(MyActivity.this, 0, 0, 0);
+            alarmScheduler.addAlarm(MyActivity.this, mTimePicker.getCurrentHour(), mTimePicker.getCurrentMinute(), 0);
             Toast.makeText(getApplicationContext(), "!!!!!", Toast.LENGTH_SHORT).show();
         }
     }
