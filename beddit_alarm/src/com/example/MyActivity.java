@@ -1,8 +1,10 @@
 package com.example;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Button;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
@@ -21,15 +23,18 @@ public class MyActivity extends Activity
         AlarmSetButtonClickListener l = new AlarmSetButtonClickListener();
         ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(l);
 
+        LinearLayout ll= (LinearLayout)findViewById(R.id.mainLayout);
+        ll.setBackgroundColor(Color.WHITE);
+
         TimePicker mTimePicker = (TimePicker)this.findViewById(R.id.alarmTimePicker);
         try {
             if (((ViewGroup) mTimePicker.getChildAt(0)).getChildCount() > 2)
                 ((ViewGroup) mTimePicker.getChildAt(0)).getChildAt(2).setBackgroundResource(R.drawable.simplebutton);   // AM/PM button
             for (int j=0; j < mTimePicker.getChildCount(); j++)  {
                 for (int i=0; i<2; i++) {
-                    ((ViewGroup) ((ViewGroup) mTimePicker.getChildAt(0)).getChildAt(i)).getChildAt(0).setBackgroundResource(R.drawable.simplebutton);  // incr time
+                    ((ViewGroup) ((ViewGroup) mTimePicker.getChildAt(0)).getChildAt(i)).getChildAt(0).setBackgroundResource(R.drawable.uparrow);  // incr time
                     ((ViewGroup) ((ViewGroup) mTimePicker.getChildAt(0)).getChildAt(i)).getChildAt(1).setBackgroundResource(R.drawable.simplebutton);  // time button
-                    ((ViewGroup) ((ViewGroup) mTimePicker.getChildAt(0)).getChildAt(i)).getChildAt(2).setBackgroundResource(R.drawable.simplebutton);  // decr time
+                    ((ViewGroup) ((ViewGroup) mTimePicker.getChildAt(0)).getChildAt(i)).getChildAt(2).setBackgroundResource(R.drawable.downarrow);  // decr time
                 }
             }
         } catch (Throwable t) {
