@@ -13,12 +13,16 @@ import android.view.View.OnClickListener;
 
 public class MyActivity extends Activity
 {
+
+
+    private AlarmScheduler alarmScheduler;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        alarmScheduler = new AlarmScheduler();
 
         AlarmSetButtonClickListener l = new AlarmSetButtonClickListener();
         ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(l);
@@ -46,6 +50,7 @@ public class MyActivity extends Activity
 
         @Override
         public void onClick(View view) {
+            alarmScheduler.addAlarm(MyActivity.this, 0, 0, 0);
             Toast.makeText(getApplicationContext(), "!!!!!", Toast.LENGTH_SHORT).show();
         }
     }
