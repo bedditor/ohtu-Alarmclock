@@ -16,12 +16,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Nappi"
-
+            android:background="@drawable/simplebutton"
             />
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Nappi"
+            android:background="@drawable/simplebutton"
             />
 
 </LinearLayout>
