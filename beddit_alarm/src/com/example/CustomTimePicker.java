@@ -27,6 +27,9 @@ public class CustomTimePicker extends View {
     final float grabPointOffset = 0.85f;
     final float grabPointSize = 0.1f;
 
+    final double minuteAngle = Math.PI / 30.0;
+    final double hourAngle = Math.PI / 6.0;
+
     float minHand = 0f;
     float hourHand = 0f;
 
@@ -78,10 +81,10 @@ public class CustomTimePicker extends View {
         c.drawCircle(midX,midY,radius,clockMinBackground);
         c.drawCircle(midX,midY,radius*0.75f,clockHourBackground);
 
-        float hx = (float)Math.cos(hourHand) * radius * 0.75f;
-        float hy = (float)Math.sin(hourHand) * radius * 0.75f;
-        float mx = (float)Math.cos(minHand) * radius;
-        float my = (float)Math.sin(minHand) * radius;
+        float hx = (float)Math.cos(hourHand-Math.PI/2) * radius * 0.75f;
+        float hy = (float)Math.sin(hourHand-Math.PI/2) * radius * 0.75f;
+        float mx = (float)Math.cos(minHand-Math.PI/2) * radius;
+        float my = (float)Math.sin(minHand-Math.PI/2) * radius;
 
         minGrabX = midX+mx*grabPointOffset;
         minGrabY = midY+my*grabPointOffset;
@@ -92,10 +95,28 @@ public class CustomTimePicker extends View {
         c.drawLine(midX,midY,midX+mx,midY+my,clockHand);
         c.drawCircle(minGrabX, minGrabY, radius*grabPointSize, clockHand);
         c.drawCircle(hourGrabX, hourGrabY, radius*grabPointSize, clockHand);
+
+        Paint textPaint = new Paint();
+        textPaint.setTextSize(20);
+        textPaint.setAntiAlias(true);
+
+        String time =  getHours()+":"+getMinutes();
+        float textLength = textPaint.measureText(time);
+
+        c.drawText(time,midX-textLength/2,midY,textPaint);
     }
 
     boolean hourGrabbed = false;
     boolean minGrabbed = false;
+
+    public int getHours() {
+        int hours = (int)Math.round(hourHand / hourAngle);
+        return hours == 0 ? 12 : hours;
+    }
+
+    public int getMinutes() {
+        return (int)Math.round(minHand / minuteAngle);
+    }
 
     public boolean onTouchEvent(MotionEvent me) {
         switch (me.getAction()) {
@@ -106,33 +127,38 @@ public class CustomTimePicker extends View {
             case (MotionEvent.ACTION_DOWN):
                 if (Math.abs(me.getX() - minGrabX) < radius*grabPointSize &&
                     Math.abs(me.getY() - minGrabY) < radius*grabPointSize) {
-                    Log.v("clock","min grab");
                     minGrabbed = true;
                 } else if (Math.abs(me.getX() - hourGrabX) < radius*grabPointSize &&
                         Math.abs(me.getY() - hourGrabY) < radius*grabPointSize) {
-                    Log.v("clock","hour grab");
                     hourGrabbed = true;
                 }
                 break;
             case (MotionEvent.ACTION_MOVE):
                 float newY = me.getHistoricalY(0);
                 float newX = me.getHistoricalX(0);
-                if (minGrabbed) {
-                    if (newX-midX < 0)
-                        minHand = (float)Math.atan((newY-midY)/(newX-midX)) + (float)Math.PI;
-                    else
-                        minHand = (float)Math.atan((newY-midY)/(newX-midX));
-                } else if (hourGrabbed) {
-                    if (newX-midX < 0)
-                        hourHand = (float)Math.atan((newY-midY)/(newX-midX)) + (float)Math.PI;
-                    else
-                        hourHand = (float)Math.atan((newY-midY)/(newX-midX));
-                }
+                double newAngle = Math.atan((newY-midY)/(newX-midX));
+                if (newX-midX < 0)
+                    newAngle += Math.PI;
+                if (minGrabbed) updateMinuteHand(newAngle);
+                else if (hourGrabbed) updateHourHand(newAngle);
+
                 break;
         }
 
         invalidate();
         return true;
+    }
+
+    private void updateMinuteHand(double newAngle) {
+        double minutes = (newAngle / minuteAngle);
+        minutes = Math.floor(minutes);
+        minHand = (float)(minutes * minuteAngle+Math.PI/2);
+    }
+
+    private void updateHourHand(double newAngle) {
+        double hours = (newAngle / hourAngle);
+        hours = Math.floor(hours);
+        hourHand = (float)(hours * hourAngle+Math.PI/2);
     }
 
     @Override

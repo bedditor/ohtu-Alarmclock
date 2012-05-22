@@ -99,7 +99,7 @@
       <file leaf-file-name="CustomTimePicker.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/CustomTimePicker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="125" column="87" selection-start="4038" selection-end="4038" vertical-scroll-proportion="3.3010564">
+            <state line="118" column="75" selection-start="3379" selection-end="3379" vertical-scroll-proportion="0.36619717">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#measureWidth#0;class#CustomTimePicker#0" expanded="false" />
@@ -142,8 +142,8 @@
         <option value="$PROJECT_DIR$/src/com/example/MyActivity.java" />
         <option value="$PROJECT_DIR$/res/values/attrs.xml" />
         <option value="$PROJECT_DIR$/src/com/example/CustomView.java" />
-        <option value="$PROJECT_DIR$/src/com/example/CustomTimePicker.java" />
         <option value="$PROJECT_DIR$/res/layout/main.xml" />
+        <option value="$PROJECT_DIR$/src/com/example/CustomTimePicker.java" />
       </list>
     </option>
   </component>
@@ -655,7 +655,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/CustomTimePicker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="87" selection-start="4038" selection-end="4038" vertical-scroll-proportion="3.3010564">
+        <state line="118" column="75" selection-start="3379" selection-end="3379" vertical-scroll-proportion="0.36619717">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#measureWidth#0;class#CustomTimePicker#0" expanded="false" />
