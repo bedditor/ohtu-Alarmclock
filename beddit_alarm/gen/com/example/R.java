@@ -40,13 +40,16 @@ containing a value of this type.
         public static final int uparrow=0x7f020002;
     }
     public static final class id {
-        public static final int alarmTimePicker=0x7f050001;
-        public static final int deleteAlarmButton=0x7f050003;
-        public static final int mainLayout=0x7f050000;
-        public static final int setAlarmButton=0x7f050002;
+        public static final int alarmLayout=0x7f050000;
+        public static final int alarmTimePicker=0x7f050003;
+        public static final int deleteAlarmButton=0x7f050005;
+        public static final int deleteButton=0x7f050001;
+        public static final int mainLayout=0x7f050002;
+        public static final int setAlarmButton=0x7f050004;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int alarm=0x7f030000;
+        public static final int main=0x7f030001;
     }
     public static final class string {
         public static final int alarm_set=0x7f040001;
