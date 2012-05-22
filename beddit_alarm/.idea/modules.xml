@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/beddit_alarm.iml" filepath="$PROJECT_DIR$/beddit_alarm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/beddit_alarmTest/beddit_alarmTest.iml" filepath="$PROJECT_DIR$/beddit_alarmTest/beddit_alarmTest.iml" />
     </modules>
   </component>
 </project>

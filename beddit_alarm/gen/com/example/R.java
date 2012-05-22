@@ -16,17 +16,32 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
+        public static final int hours=0x7f010002;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int minutes=0x7f010001;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
         public static final int size=0x7f010000;
     }
     public static final class drawable {
         public static final int downarrow=0x7f020000;
-        public static final int downbutton=0x7f020001;
-        public static final int simplebutton=0x7f020002;
-        public static final int uparrow=0x7f020003;
-        public static final int upbutton=0x7f020004;
+        public static final int simplebutton=0x7f020001;
+        public static final int uparrow=0x7f020002;
     }
     public static final class id {
         public static final int alarmTimePicker=0x7f050001;
+        public static final int deleteAlarmButton=0x7f050003;
         public static final int mainLayout=0x7f050000;
         public static final int setAlarmButton=0x7f050002;
     }
@@ -45,13 +60,45 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #MyTextView_hours com.example:hours}</code></td><td></td></tr>
+           <tr><td><code>{@link #MyTextView_minutes com.example:minutes}</code></td><td></td></tr>
            <tr><td><code>{@link #MyTextView_size com.example:size}</code></td><td></td></tr>
            </table>
+           @see #MyTextView_hours
+           @see #MyTextView_minutes
            @see #MyTextView_size
          */
         public static final int[] MyTextView = {
-            0x7f010000
+            0x7f010000, 0x7f010001, 0x7f010002
         };
+        /**
+          <p>This symbol is the offset where the {@link com.example.R.attr#hours}
+          attribute's value can be found in the {@link #MyTextView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:hours
+        */
+        public static final int MyTextView_hours = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.R.attr#minutes}
+          attribute's value can be found in the {@link #MyTextView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:minutes
+        */
+        public static final int MyTextView_minutes = 1;
         /**
           <p>This symbol is the offset where the {@link com.example.R.attr#size}
           attribute's value can be found in the {@link #MyTextView} array.
