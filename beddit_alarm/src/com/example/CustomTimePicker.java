@@ -30,6 +30,13 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     final double minuteIncrement = Math.PI / 30.0;
     final double hourIncrement = Math.PI / 6.0;
 
+    final float hourHandLength = 0.75f;
+    final int intervalBarHeight = 50;
+
+    final int maxInterval = 30;
+    final int minInterval = 0;
+    float currentInterval = 0.0f;
+
     float radius = 0;
 
     float hourGrabX;
@@ -47,7 +54,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         super(context, attrs);
 
         this.context = context;
-        for(int i=0; i < attrs.getAttributeCount(); i++)
+        for (int i = 0; i < attrs.getAttributeCount(); i++)
             Log.i("attribute", attrs.getAttributeName(i));
 
         this.size = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/com.example", "size"));
@@ -58,51 +65,83 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
 
     protected void onDraw(Canvas c) {
+        drawClockface(c);
+        drawClockHands(c);
+        drawClockTime(c);
+        drawIntervalBar(c);
+    }
 
-        Paint clockHand = new Paint();
-        Paint clockHourBackground = new Paint();
-        Paint clockMinBackground = new Paint();
+    private void drawIntervalBar(Canvas c) {
+        Paint intervalBarPaint = new Paint();
+        intervalBarPaint.setColor(Color.GRAY);
+        Paint intervalPickerPaint = new Paint();
+        intervalPickerPaint.setColor(Color.RED);
 
-        clockHourBackground.setColor(Color.GRAY);
-        clockMinBackground.setColor(Color.LTGRAY);
-        clockHand.setColor(Color.BLACK);
+        c.drawRect(new RectF(midX - radius, midY + radius, midX + radius, midY + radius + intervalBarHeight), intervalBarPaint);
+        c.drawCircle(midX - radius + currentInterval * radius * 2,
+                midY + radius + intervalBarHeight / 2,
+                intervalBarHeight / 2,
+                intervalPickerPaint);
 
-        c.drawCircle(midX,midY,radius,clockMinBackground);
-        c.drawCircle(midX,midY,radius*0.75f,clockHourBackground);
+        intervalPickerPaint.setStrokeWidth(50f);
 
-        float hx = (float)Math.cos(getHourHandAngle() - Math.PI/2) * radius * 0.75f;
-        float hy = (float)Math.sin(getHourHandAngle() - Math.PI/2) * radius * 0.75f;
-        float mx = (float)Math.cos(getMinuteHandAngle() - Math.PI/2) * radius;
-        float my = (float)Math.sin(getMinuteHandAngle() - Math.PI/2) * radius;
+        c.drawArc(new RectF(midX - radius, midY - radius, midX + radius, midY + radius),
+                (float)Math.toDegrees(getMinuteHandAngle()-Math.PI/2),
+                (float)Math.toDegrees(-minuteIncrement*(maxInterval*currentInterval)),
+                false,
+                intervalPickerPaint);
+    }
 
-        minGrabX = midX+mx*grabPointOffset;
-        minGrabY = midY+my*grabPointOffset;
-        hourGrabX = midX+hx*grabPointOffset;
-        hourGrabY = midY+hy*grabPointOffset;
-
-        c.drawLine(midX,midY,midX+hx,midY+hy,clockHand);
-        c.drawLine(midX,midY,midX+mx,midY+my,clockHand);
-        c.drawCircle(minGrabX, minGrabY, radius*grabPointSize, clockHand);
-        c.drawCircle(hourGrabX, hourGrabY, radius*grabPointSize, clockHand);
-
+    private void drawClockTime(Canvas c) {
         Paint textPaint = new Paint();
         textPaint.setTextSize(40);
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.CYAN);
 
-        String time = timeToString(hours,minutes);
+        String time = timeToString(hours, minutes);
         float textLength = textPaint.measureText(time);
 
-        c.drawText(time,midX-textLength/2,midY,textPaint);
+        c.drawText(time, midX - textLength / 2, midY, textPaint);
+    }
+
+    private void drawClockHands(Canvas c) {
+        Paint clockHand = new Paint();
+        clockHand.setColor(Color.BLACK);
+
+        float hx = (float) Math.cos(getHourHandAngle() - Math.PI / 2) * radius * hourHandLength;
+        float hy = (float) Math.sin(getHourHandAngle() - Math.PI / 2) * radius * hourHandLength;
+        float mx = (float) Math.cos(getMinuteHandAngle() - Math.PI / 2) * radius;
+        float my = (float) Math.sin(getMinuteHandAngle() - Math.PI / 2) * radius;
+
+        minGrabX = midX + mx * grabPointOffset;
+        minGrabY = midY + my * grabPointOffset;
+        hourGrabX = midX + hx * grabPointOffset;
+        hourGrabY = midY + hy * grabPointOffset;
+
+        c.drawLine(midX, midY, midX + hx, midY + hy, clockHand);
+        c.drawLine(midX, midY, midX + mx, midY + my, clockHand);
+        c.drawCircle(minGrabX, minGrabY, radius * grabPointSize, clockHand);
+        c.drawCircle(hourGrabX, hourGrabY, radius * grabPointSize, clockHand);
+    }
+
+    private void drawClockface(Canvas c) {
+        Paint clockHourBackground = new Paint();
+        Paint clockMinBackground = new Paint();
+
+        clockHourBackground.setColor(Color.GRAY);
+        clockMinBackground.setColor(Color.LTGRAY);
+
+        c.drawCircle(midX, midY, radius, clockMinBackground);
+        c.drawCircle(midX, midY, radius * 0.75f, clockHourBackground);
     }
 
     boolean hourGrabbed = false;
     boolean minGrabbed = false;
 
     public String timeToString(int h, int m) {
-        String hours = h < 10 ? "0"+h : Integer.toString(h);
-        String minutes = m < 10 ? "0"+m : Integer.toString(m);
-        return hours+":"+minutes;
+        String hours = h < 10 ? "0" + h : Integer.toString(h);
+        String minutes = m < 10 ? "0" + m : Integer.toString(m);
+        return hours + ":" + minutes;
     }
 
 
@@ -144,13 +183,14 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
                 minGrabbed = false;
                 break;
             case (MotionEvent.ACTION_DOWN):
-                if (Math.abs(me.getX() - minGrabX) < radius*grabPointSize &&
-                    Math.abs(me.getY() - minGrabY) < radius*grabPointSize) {
+                if (Math.abs(me.getX() - minGrabX) < radius * grabPointSize &&
+                        Math.abs(me.getY() - minGrabY) < radius * grabPointSize) {
                     minGrabbed = true;
-                } else if (Math.abs(me.getX() - hourGrabX) < radius*grabPointSize &&
-                        Math.abs(me.getY() - hourGrabY) < radius*grabPointSize) {
+                } else if (Math.abs(me.getX() - hourGrabX) < radius * grabPointSize &&
+                        Math.abs(me.getY() - hourGrabY) < radius * grabPointSize) {
                     hourGrabbed = true;
                 }
+                currentInterval = (float)Math.random();
                 break;
             case (MotionEvent.ACTION_MOVE):
                 float newY, newX;
@@ -160,8 +200,8 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
                 } else {
                     return false;
                 }
-                double newAngle = Math.atan((newY-midY)/(newX-midX)) + Math.PI/2;
-                if (newX-midX < 0)
+                double newAngle = Math.atan((newY - midY) / (newX - midX)) + Math.PI / 2;
+                if (newX - midX < 0)
                     newAngle += Math.PI;
                 if (minGrabbed) updateMinuteHand(newAngle);
                 else if (hourGrabbed) updateHourHand(newAngle);
@@ -176,26 +216,26 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     private void updateMinuteHand(double newAngle) {
         double minuteHandAngle = getMinuteHandAngle();
         if (newAngle - minuteHandAngle > Math.PI) {
-            newAngle = (newAngle + Math.PI) % (2*Math.PI);
-            minuteHandAngle = (minuteHandAngle + Math.PI) % (2*Math.PI);
+            newAngle = (newAngle + Math.PI) % (2 * Math.PI);
+            minuteHandAngle = (minuteHandAngle + Math.PI) % (2 * Math.PI);
         }
 
-        double increments = ((newAngle-minuteHandAngle) / minuteIncrement);
+        double increments = ((newAngle - minuteHandAngle) / minuteIncrement);
         increments = Math.round(increments);
-        minutes = (minutes + (int)increments) % 60;
+        minutes = (minutes + (int) increments) % 60;
         if (minutes < 0) minutes += 60;
     }
 
     private void updateHourHand(double newAngle) {
         double hourHandAngle = getHourHandAngle();
         if (newAngle - hourHandAngle > Math.PI) {
-            newAngle = (newAngle + Math.PI) % (2*Math.PI);
-            hourHandAngle = (hourHandAngle + Math.PI) % (2*Math.PI);
+            newAngle = (newAngle + Math.PI) % (2 * Math.PI);
+            hourHandAngle = (hourHandAngle + Math.PI) % (2 * Math.PI);
         }
 
-        double increments = ((newAngle-hourHandAngle) / hourIncrement);
+        double increments = ((newAngle - hourHandAngle) / hourIncrement);
         increments = Math.round(increments);
-        hours = (hours + (int)increments) % 24;
+        hours = (hours + (int) increments) % 24;
         if (hours < 0) hours += 24;
     }
 
@@ -206,9 +246,10 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     }
 
     private void updateSize() {
+        radius = Math.min(getWidth(), getHeight()) / 2f - intervalBarHeight / 2;
         midX = getWidth() / 2f;
-        midY = getHeight() / 2f;
-        radius = Math.min(getWidth(), getHeight()) / 2f;
+        midY = getHeight() / 2f - intervalBarHeight / 2;
+
     }
 
     @Override
