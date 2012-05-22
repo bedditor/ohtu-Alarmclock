@@ -153,8 +153,13 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
                 }
                 break;
             case (MotionEvent.ACTION_MOVE):
-                float newY = me.getHistoricalY(0);
-                float newX = me.getHistoricalX(0);
+                float newY, newX;
+                if (me.getHistorySize() > 0) {
+                    newY = me.getHistoricalY(0);
+                    newX = me.getHistoricalX(0);
+                } else {
+                    return false;
+                }
                 double newAngle = Math.atan((newY-midY)/(newX-midX)) + Math.PI/2;
                 if (newX-midX < 0)
                     newAngle += Math.PI;
@@ -178,6 +183,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         double increments = ((newAngle-minuteHandAngle) / minuteIncrement);
         increments = Math.round(increments);
         minutes = (minutes + (int)increments) % 60;
+        if (minutes < 0) minutes += 60;
     }
 
     private void updateHourHand(double newAngle) {
@@ -190,6 +196,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         double increments = ((newAngle-hourHandAngle) / hourIncrement);
         increments = Math.round(increments);
         hours = (hours + (int)increments) % 24;
+        if (hours < 0) hours += 24;
     }
 
     @Override
