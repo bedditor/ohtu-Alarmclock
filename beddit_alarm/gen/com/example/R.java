@@ -9,6 +9,14 @@ package com.example;
 
 public final class R {
     public static final class attr {
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int size=0x7f010000;
     }
     public static final class drawable {
         public static final int downarrow=0x7f020000;
@@ -30,4 +38,33 @@ public final class R {
         public static final int alarm_unset=0x7f040002;
         public static final int app_name=0x7f040000;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a MyTextView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #MyTextView_size com.example:size}</code></td><td></td></tr>
+           </table>
+           @see #MyTextView_size
+         */
+        public static final int[] MyTextView = {
+            0x7f010000
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.R.attr#size}
+          attribute's value can be found in the {@link #MyTextView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:size
+        */
+        public static final int MyTextView_size = 0;
+    };
 }
