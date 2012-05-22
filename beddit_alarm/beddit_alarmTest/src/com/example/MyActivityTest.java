@@ -39,10 +39,28 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         int hoursBefore = mTimePicker.getCurrentHour();
         incrementHours();
         int hoursAfter = mTimePicker.getCurrentHour();
-        assertEquals(hoursBefore+1, hoursAfter);
+        assertEquals((hoursBefore)%24+1, hoursAfter);
     }
 
     private void incrementHours(){
         TouchUtils.clickView(this, ((ViewGroup)((ViewGroup)mTimePicker.getChildAt(0)).getChildAt(0)).getChildAt(0));
+    }
+
+    public void testSetAlarm(){
+        AlarmScheduler alarmScheduler = new AlarmSchedulerMock();
+        mActivity.setAlarmScheduler(alarmScheduler);
+        incrementHours();
+        TouchUtils.clickView(this, mActivity.findViewById(R.id.setAlarmButton));
+        assertEquals("Did not add alarm", 1, ((AlarmSchedulerMock)alarmScheduler).getAdds());
+        assertEquals("Wrong hours", (int)mTimePicker.getCurrentHour(), ((AlarmSchedulerMock)alarmScheduler).getHours());
+        assertEquals("Wrong minutes", (int)mTimePicker.getCurrentMinute(), ((AlarmSchedulerMock)alarmScheduler).getMinutes());
+        assertEquals("Wrong interval (hard coded to 0)", 0, ((AlarmSchedulerMock)alarmScheduler).getInterval());
+    }
+
+    public void testDeleteAlarm(){
+        AlarmScheduler alarmScheduler = new AlarmSchedulerMock();
+        mActivity.setAlarmScheduler(alarmScheduler);
+        TouchUtils.clickView(this, mActivity.findViewById(R.id.deleteAlarmButton));
+        assertEquals("Did not delete alarm", 1, ((AlarmSchedulerMock)alarmScheduler).getDeletes());
     }
 }
