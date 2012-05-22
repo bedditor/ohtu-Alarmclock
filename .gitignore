@@ -1,2 +1,6 @@
-beddit_alarm/out
-beddit_alarm/.idea/
+*/*/.idea
+*/*/*.iml
+*/.idea
+*/*.iml
+*/out
+*/*/out
