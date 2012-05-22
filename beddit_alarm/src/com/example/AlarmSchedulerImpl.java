@@ -11,6 +11,15 @@ import java.util.Calendar;
 
 public class AlarmSchedulerImpl implements AlarmScheduler {
 
+    AlarmManagerInterface alarmManager;
+
+    public AlarmSchedulerImpl(Context context) {
+        this.alarmManager = new AlarmManagerAndroid(context);
+    }
+
+    public void setAlarmManager(AlarmManagerInterface alarmManager){
+        this.alarmManager = alarmManager;
+    }
 
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval){
@@ -21,8 +30,7 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
         Calendar calendar = calculateAlarm(hours, minutes, 0);
 
         // Schedule the alarm!
-        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
 
         // Tell the user about what we did.
         Toast.makeText(context, "Hälytys asetettu", Toast.LENGTH_LONG).show();

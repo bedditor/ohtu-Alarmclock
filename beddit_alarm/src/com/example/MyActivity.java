@@ -22,7 +22,7 @@ public class MyActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        setAlarmScheduler(new AlarmSchedulerImpl());
+        setAlarmScheduler(new AlarmSchedulerImpl(this));
 
         AlarmSetButtonClickListener setListener = new AlarmSetButtonClickListener();
         AlarmDeleteButtonClickListener deleteListener = new AlarmDeleteButtonClickListener();
