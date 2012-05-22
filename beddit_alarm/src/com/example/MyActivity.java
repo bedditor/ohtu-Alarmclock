@@ -40,6 +40,10 @@ public class MyActivity extends Activity
         this.alarmScheduler = alarmScheduler;
     }
 
+    public AlarmScheduler getAlarmScheduler() {
+        return alarmScheduler;
+    }
+
     public class AlarmSetButtonClickListener implements OnClickListener {
 
         @Override

@@ -13,4 +13,7 @@ public interface AlarmScheduler {
     void addAlarm(Context context, int hours, int minutes, int interval);
 
     void deleteAlarm(Context context);
-}
+
+    public void setAlarmManager(AlarmManagerInterface alarmManager);
+
+    }

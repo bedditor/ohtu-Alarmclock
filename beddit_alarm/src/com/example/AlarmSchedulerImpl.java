@@ -17,6 +17,7 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
         this.alarmManager = new AlarmManagerAndroid(context);
     }
 
+    @Override
     public void setAlarmManager(AlarmManagerInterface alarmManager){
         this.alarmManager = alarmManager;
     }
@@ -42,9 +43,8 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
         Intent intent = new Intent(context, Alarm.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        // Schedule the alarm!
-        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        am.cancel(sender);
+        // Cancel the alarm!
+        alarmManager.cancel(sender);
 
         Toast.makeText(context, "Hälytys poistettu", Toast.LENGTH_LONG).show();
 

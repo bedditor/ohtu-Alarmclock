@@ -29,6 +29,11 @@ public class AlarmSchedulerMock implements AlarmScheduler {
         deletes++;
     }
 
+    @Override
+    public void setAlarmManager(AlarmManagerInterface alarmManager) {
+        //do nothing
+    }
+
     public int getHours() {
         return hours;
     }

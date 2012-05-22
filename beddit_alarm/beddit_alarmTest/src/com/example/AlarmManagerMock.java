@@ -5,9 +5,18 @@ import android.app.PendingIntent;
 
 public class AlarmManagerMock implements AlarmManagerInterface {
 
+    int sets = 0;
+    int cancels = 0;
+    long triggerTime = -1;
+    PendingIntent operationSet;
+    PendingIntent operationCancel;
+
+
     @Override
     public void set(int type, long triggerAtTime, PendingIntent operation) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        sets++;
+        triggerTime = triggerAtTime;
+        operationSet = operation;
     }
 
     @Override
@@ -22,7 +31,8 @@ public class AlarmManagerMock implements AlarmManagerInterface {
 
     @Override
     public void cancel(PendingIntent operation) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        cancels++;
+        operationCancel = operation;
     }
 
     @Override
@@ -33,5 +43,25 @@ public class AlarmManagerMock implements AlarmManagerInterface {
     @Override
     public void setTimeZone(String timeZone) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public int getSets() {
+        return sets;
+    }
+
+    public int getCancels() {
+        return cancels;
+    }
+
+    public long getTriggerTime() {
+        return triggerTime;
+    }
+
+    public PendingIntent getOperationSet() {
+        return operationSet;
+    }
+
+    public PendingIntent getOperationCancel() {
+        return operationCancel;
     }
 }
