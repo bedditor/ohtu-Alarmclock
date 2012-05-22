@@ -16,7 +16,7 @@ import java.util.Random;
  * Time: 13:49
  * To change this template use File | Settings | File Templates.
  */
-public class CustomTimePicker extends View {
+public class CustomTimePicker extends View implements AlarmTimePicker {
     Context context;
     int size;
     int color = Color.MAGENTA;
@@ -105,12 +105,20 @@ public class CustomTimePicker extends View {
         return hours+":"+minutes;
     }
 
+
+    @Override
     public int getHours() {
         return hours;
     }
 
+    @Override
     public int getMinutes() {
         return minutes;
+    }
+
+    @Override
+    public int getInterval() {
+        return 0;
     }
 
     public void setHours(int hours) {
