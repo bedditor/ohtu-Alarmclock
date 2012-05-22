@@ -2,5 +2,7 @@
 <resources>
     <declare-styleable name="MyTextView">
         <attr name="size" format="integer"></attr>
+        <attr name="minutes" format="integer"></attr>
+        <attr name="hours" format="integer"></attr>
     </declare-styleable>
 </resources>

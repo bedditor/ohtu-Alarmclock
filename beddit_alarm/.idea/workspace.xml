@@ -81,7 +81,7 @@
       <file leaf-file-name="main.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="33" selection-start="534" selection-end="534" vertical-scroll-proportion="0.0">
+            <state line="18" column="45" selection-start="711" selection-end="711" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -90,7 +90,7 @@
       <file leaf-file-name="attrs.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="43" selection-start="136" selection-end="136" vertical-scroll-proportion="0.0">
+            <state line="5" column="25" selection-start="223" selection-end="223" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -99,9 +99,12 @@
       <file leaf-file-name="CustomTimePicker.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/CustomTimePicker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="75" selection-start="3379" selection-end="3379" vertical-scroll-proportion="0.36619717">
+            <state line="92" column="50" selection-start="2986" selection-end="2986" vertical-scroll-proportion="0.39260563">
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#onSizeChanged#0;class#CustomTimePicker#0" expanded="false" />
+                <element signature="method#updateSize#0;class#CustomTimePicker#0" expanded="false" />
+                <element signature="method#onMeasure#0;class#CustomTimePicker#0" expanded="false" />
                 <element signature="method#measureWidth#0;class#CustomTimePicker#0" expanded="false" />
                 <element signature="method#measureHeight#0;class#CustomTimePicker#0" expanded="false" />
               </folding>
@@ -140,8 +143,8 @@
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/gen/com/example/R.java" />
         <option value="$PROJECT_DIR$/src/com/example/MyActivity.java" />
-        <option value="$PROJECT_DIR$/res/values/attrs.xml" />
         <option value="$PROJECT_DIR$/src/com/example/CustomView.java" />
+        <option value="$PROJECT_DIR$/res/values/attrs.xml" />
         <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/src/com/example/CustomTimePicker.java" />
       </list>
@@ -543,9 +546,10 @@
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283767" sideWeight="0.7528517" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953104" sideWeight="0.49008673" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24714829" sideWeight="0.5030979" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24714829" sideWeight="0.5055762" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953104" sideWeight="0.49752474" order="7" side_tool="false" content_ui="tabs" />
@@ -555,10 +559,9 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21375465" sideWeight="0.7528517" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24714829" sideWeight="0.49256507" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24714829" sideWeight="0.49008673" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -636,12 +639,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="43" selection-start="136" selection-end="136" vertical-scroll-proportion="0.0" />
+        <state line="5" column="25" selection-start="223" selection-end="223" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="33" selection-start="534" selection-end="534" vertical-scroll-proportion="0.0">
+        <state line="18" column="45" selection-start="711" selection-end="711" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -655,9 +660,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/CustomTimePicker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="75" selection-start="3379" selection-end="3379" vertical-scroll-proportion="0.36619717">
+        <state line="92" column="50" selection-start="2986" selection-end="2986" vertical-scroll-proportion="0.39260563">
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#onSizeChanged#0;class#CustomTimePicker#0" expanded="false" />
+            <element signature="method#updateSize#0;class#CustomTimePicker#0" expanded="false" />
+            <element signature="method#onMeasure#0;class#CustomTimePicker#0" expanded="false" />
             <element signature="method#measureWidth#0;class#CustomTimePicker#0" expanded="false" />
             <element signature="method#measureHeight#0;class#CustomTimePicker#0" expanded="false" />
           </folding>
