@@ -23,6 +23,7 @@ public class MyActivity extends Activity
         setContentView(R.layout.main);
         setAlarmScheduler(new AlarmSchedulerImpl(this));
 
+
         AlarmSetButtonClickListener setListener = new AlarmSetButtonClickListener();
         AlarmDeleteButtonClickListener deleteListener = new AlarmDeleteButtonClickListener();
         ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
@@ -37,6 +38,7 @@ public class MyActivity extends Activity
 
     public void setAlarmScheduler(AlarmScheduler alarmScheduler) {
         this.alarmScheduler = alarmScheduler;
+
     }
 
     public AlarmScheduler getAlarmScheduler() {
