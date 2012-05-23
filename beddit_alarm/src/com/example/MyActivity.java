@@ -32,8 +32,7 @@ public class MyActivity extends Activity
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
-        alarmTimePicker = new AlarmTimePickerSimpleImpl((TimePicker)this.findViewById(R.id.alarmTimePicker));
-
+        alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
     }
 
     public void setAlarmScheduler(AlarmScheduler alarmScheduler) {
