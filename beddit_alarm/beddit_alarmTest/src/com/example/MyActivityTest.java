@@ -41,7 +41,6 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         assertEquals("Did not add alarm", 1, ((AlarmSchedulerMock) alarmScheduler).getAdds());
         assertEquals("Wrong hours", timePicker.getHours(), ((AlarmSchedulerMock)alarmScheduler).getHours());
         assertEquals("Wrong minutes", timePicker.getMinutes(), ((AlarmSchedulerMock)alarmScheduler).getMinutes());
-        assertEquals("Wrong interval (hard coded to 0)", 0, ((AlarmSchedulerMock)alarmScheduler).getInterval());
     }
 
     public void testDeleteAlarm(){
