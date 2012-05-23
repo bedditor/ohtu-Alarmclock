@@ -1,15 +1,9 @@
 package com.example;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Message;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -19,7 +13,7 @@ public class Alarm extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        AlarmHandler alarm = new AlarmHandler(context);
+        MusicHandler alarm = new MusicHandler(context);
         alarm.setMusic();
         Log.v("Alarm", "Recieved alarm at " + Calendar.getInstance().getTime());
         Toast.makeText(context, "Herätys yksinkertainen", Toast.LENGTH_SHORT).show();
