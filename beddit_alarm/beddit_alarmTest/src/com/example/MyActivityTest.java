@@ -1,27 +1,13 @@
 package com.example;
 
-import android.os.Bundle;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
-import android.view.KeyEvent;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TimePicker;
 
-/**
- * This is a simple framework for a test of an Application.  See
- * {@link android.test.ApplicationTestCase ApplicationTestCase} for more information on
- * how to write and extend Application tests.
- * <p/>
- * To run this test, you can type:
- * adb shell am instrument -w \
- * -e class com.example.MyActivityTest \
- * com.example.tests/android.test.InstrumentationTestRunner
- */
+
 public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity> {
 
     private MyActivity mActivity;
-    private TimePicker mTimePicker;
+    private CustomTimePicker timePicker;
 
     public MyActivityTest() {
         super("com.example", MyActivity.class);
@@ -31,19 +17,20 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
     protected void setUp() throws Exception {
         super.setUp();
         mActivity = this.getActivity();
-
-        mTimePicker = (TimePicker)mActivity.findViewById(R.id.alarmTimePicker);
+        timePicker = (CustomTimePicker)mActivity.findViewById(R.id.alarmTimePicker);
     }
 
     public void testTimePickerHoursAdd(){
-        int hoursBefore = mTimePicker.getCurrentHour();
+        timePicker.setHours(21);
+        timePicker.setMinutes(30);
+        int hoursBefore = timePicker.getHours();
         incrementHours();
-        int hoursAfter = mTimePicker.getCurrentHour();
+        int hoursAfter = timePicker.getHours();
         assertEquals((hoursBefore)%24+1, hoursAfter);
     }
 
     private void incrementHours(){
-        TouchUtils.clickView(this, ((ViewGroup)((ViewGroup)mTimePicker.getChildAt(0)).getChildAt(0)).getChildAt(0));
+        timePicker.setHours(timePicker.getHours()+1);
     }
 
     public void testSetAlarm(){
@@ -52,9 +39,8 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         incrementHours();
         TouchUtils.clickView(this, mActivity.findViewById(R.id.setAlarmButton));
         assertEquals("Did not add alarm", 1, ((AlarmSchedulerMock) alarmScheduler).getAdds());
-        assertEquals("Wrong hours", (int)mTimePicker.getCurrentHour(), ((AlarmSchedulerMock)alarmScheduler).getHours());
-        assertEquals("Wrong minutes", (int)mTimePicker.getCurrentMinute(), ((AlarmSchedulerMock)alarmScheduler).getMinutes());
-        assertEquals("Wrong interval (hard coded to 0)", 0, ((AlarmSchedulerMock)alarmScheduler).getInterval());
+        assertEquals("Wrong hours", timePicker.getHours(), ((AlarmSchedulerMock)alarmScheduler).getHours());
+        assertEquals("Wrong minutes", timePicker.getMinutes(), ((AlarmSchedulerMock)alarmScheduler).getMinutes());
     }
 
     public void testDeleteAlarm(){

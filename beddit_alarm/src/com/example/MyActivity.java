@@ -24,11 +24,11 @@ public class MyActivity extends Activity
         setAlarmScheduler(new AlarmSchedulerImpl(this));
 
 
+
         AlarmSetButtonClickListener setListener = new AlarmSetButtonClickListener();
         AlarmDeleteButtonClickListener deleteListener = new AlarmDeleteButtonClickListener();
         ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
         ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(deleteListener);
-
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
@@ -49,6 +49,7 @@ public class MyActivity extends Activity
         @Override
         public void onClick(View view) {
             alarmScheduler.addAlarm(MyActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
+            FileHandler.saveAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), MyActivity.this.getApplicationContext());
         }
     }
 
@@ -58,4 +59,6 @@ public class MyActivity extends Activity
             alarmScheduler.deleteAlarm(MyActivity.this);
         }
     }
+
+
 }
