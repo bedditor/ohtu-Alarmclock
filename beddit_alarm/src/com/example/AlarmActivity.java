@@ -50,14 +50,12 @@ public class AlarmActivity extends Activity {
 
 
 
-        AlarmHandler alarm = new AlarmHandler(usedcontext);
+        MusicHandler alarm = new MusicHandler(usedcontext);
         alarm.setMusic();
         Log.v("Alarm", "Recieved alarm at " + Calendar.getInstance().getTime());
         //Toast.makeText(usedcontext, "Herätys yksinkertainen", Toast.LENGTH_SHORT).show();
         if (alarm.insanityCheck()) {
-            if(!alarm.play()){
-                Log.v("Soitto", "Musiikki soi jo");
-            }
+            alarm.play();
             Utils.sleep(10);
             alarm.stop();
         }else{

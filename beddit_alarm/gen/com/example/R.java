@@ -24,7 +24,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int minutes=0x7f010001;
+        public static final int minsize=0x7f010000;
         /** <p>Must be an integer value, such as "<code>100</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -32,7 +32,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int size=0x7f010000;
+        public static final int minutes=0x7f010001;
     }
     public static final class drawable {
         public static final int downarrow=0x7f020000;
@@ -40,21 +40,28 @@ containing a value of this type.
         public static final int uparrow=0x7f020002;
     }
     public static final class id {
-        public static final int alarmLayout=0x7f050000;
-        public static final int alarmTimePicker=0x7f050003;
-        public static final int deleteAlarmButton=0x7f050005;
-        public static final int deleteButton=0x7f050001;
-        public static final int mainLayout=0x7f050002;
-        public static final int setAlarmButton=0x7f050004;
+        public static final int alarmLayout=0x7f060000;
+        public static final int alarmTimePicker=0x7f060007;
+        public static final int deleteAlarmButton=0x7f060009;
+        public static final int deleteButton=0x7f060001;
+        public static final int mainLayout=0x7f060006;
+        public static final int readButton=0x7f060004;
+        public static final int setAlarmButton=0x7f060008;
+        public static final int snoozeButton=0x7f060002;
+        public static final int testText=0x7f060005;
+        public static final int writeButton=0x7f060003;
     }
     public static final class layout {
         public static final int alarm=0x7f030000;
         public static final int main=0x7f030001;
     }
+    public static final class raw {
+        public static final int alarm=0x7f040000;
+    }
     public static final class string {
-        public static final int alarm_set=0x7f040001;
-        public static final int alarm_unset=0x7f040002;
-        public static final int app_name=0x7f040000;
+        public static final int alarm_set=0x7f050001;
+        public static final int alarm_unset=0x7f050002;
+        public static final int app_name=0x7f050000;
     }
     public static final class styleable {
         /** Attributes that can be used with a MyTextView.
@@ -64,12 +71,12 @@ containing a value of this type.
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #MyTextView_hours com.example:hours}</code></td><td></td></tr>
+           <tr><td><code>{@link #MyTextView_minsize com.example:minsize}</code></td><td></td></tr>
            <tr><td><code>{@link #MyTextView_minutes com.example:minutes}</code></td><td></td></tr>
-           <tr><td><code>{@link #MyTextView_size com.example:size}</code></td><td></td></tr>
            </table>
            @see #MyTextView_hours
+           @see #MyTextView_minsize
            @see #MyTextView_minutes
-           @see #MyTextView_size
          */
         public static final int[] MyTextView = {
             0x7f010000, 0x7f010001, 0x7f010002
@@ -89,6 +96,20 @@ containing a value of this type.
         */
         public static final int MyTextView_hours = 2;
         /**
+          <p>This symbol is the offset where the {@link com.example.R.attr#minsize}
+          attribute's value can be found in the {@link #MyTextView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:minsize
+        */
+        public static final int MyTextView_minsize = 0;
+        /**
           <p>This symbol is the offset where the {@link com.example.R.attr#minutes}
           attribute's value can be found in the {@link #MyTextView} array.
 
@@ -102,19 +123,5 @@ containing a value of this type.
           @attr name android:minutes
         */
         public static final int MyTextView_minutes = 1;
-        /**
-          <p>This symbol is the offset where the {@link com.example.R.attr#size}
-          attribute's value can be found in the {@link #MyTextView} array.
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:size
-        */
-        public static final int MyTextView_size = 0;
     };
 }

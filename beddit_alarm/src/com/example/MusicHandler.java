@@ -14,19 +14,21 @@ import android.util.Log;
  * Time: 10:44
  * To change this template use File | Settings | File Templates.
  */
-public class AlarmHandler {
+public class MusicHandler {
 
     Ringtone music;
     Context context;
+    MediaPlayer player;
 
-    public AlarmHandler(Context context) {
+    public MusicHandler(Context context) {
         this.context = context;
     }
 
 
     public void setMusic() {
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         music = RingtoneManager.getRingtone(context, notification);
+        player = MediaPlayer.create(context,R.raw.alarm);
 
     }
 
@@ -36,23 +38,30 @@ public class AlarmHandler {
     public boolean insanityCheck() {
         boolean insane = music == null;
         if (insane)
-            Log.w("AlarmHandler", "Ringtone is not set for device.");
+            Log.w("MusicHandler", "Ringtone is not set for device.");
         return !insane;
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
-    public boolean play() {
-        if (!insanityCheck() && !music.isPlaying()){
-            music.play();
-            return true;
-        }else{
-            return false;
+    public void play() {
+        if (!insanityCheck()) {
+            if (!music.isPlaying())
+                music.play();
+        } else {
+            if (!player.isPlaying())
+                player.start();
         }
+
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
     public void stop() {
-        if (!insanityCheck() && !music.isPlaying())
-            music.stop();
+        if (!insanityCheck()) {
+            if (!music.isPlaying())
+                music.stop();
+        } else {
+            if (!player.isPlaying())
+                player.stop();
+        }
     }
 }
