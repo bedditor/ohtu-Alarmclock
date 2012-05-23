@@ -15,19 +15,29 @@
             app:minutes="0"
             app:hours="0"
             />
-    <Button
-            android:id="@+id/setAlarmButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Alarm"
-            android:background="@drawable/simplebutton"
-            />
-    <Button
-            android:id="@+id/deleteAlarmButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Alarm"
-            android:background="@drawable/simplebutton"
-            />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res/com.example"
+                  android:orientation="horizontal"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+            >
+        <Button
+                android:id="@+id/setAlarmButton"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Add Alarm"
+                android:background="@drawable/simplebutton"
+                />
+        <Button
+                android:id="@+id/deleteAlarmButton"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Delete Alarm"
+                android:background="@drawable/simplebutton"
+                />
+    </LinearLayout>
 </LinearLayout>
 
