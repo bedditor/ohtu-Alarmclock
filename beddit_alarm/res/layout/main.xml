@@ -5,16 +5,18 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+
     >
     <TimePicker
             android:id="@+id/alarmTimePicker"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dip"
             />
     <com.example.CustomTimePicker
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            app:size="400"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            app:minsize="200"
             app:minutes="0"
             app:hours="0"
             />
@@ -32,6 +34,5 @@
             android:text="Delete Alarm"
             android:background="@drawable/simplebutton"
             />
-
 </LinearLayout>
 

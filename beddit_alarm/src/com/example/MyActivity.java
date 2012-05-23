@@ -12,7 +12,6 @@ import android.view.View.OnClickListener;
 public class MyActivity extends Activity
 {
 
-
     private AlarmScheduler alarmScheduler;
     AlarmTimePicker alarmTimePicker;
 
