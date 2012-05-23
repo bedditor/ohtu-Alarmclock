@@ -41,9 +41,13 @@ public class AlarmHandler {
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
-    public void play() {
-        if (!insanityCheck() && !music.isPlaying())
+    public boolean play() {
+        if (!insanityCheck() && !music.isPlaying()){
             music.play();
+            return true;
+        }else{
+            return false;
+        }
     }
 
     //Can be called regardless we have valid music, It just won't do anything.

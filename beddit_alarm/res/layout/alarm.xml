@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:id="@+id/alarmLayout">
@@ -12,4 +12,39 @@
             android:text="Stop alarm"
             android:background="@drawable/simplebutton"
         />
-</LinearLayout>
+
+        <Button
+            android:id="@+id/snoozeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Snooze"
+            android:background="@drawable/simplebutton"
+        />
+
+        <Button
+            android:id="@+id/writeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiedoston tallennus"
+            android:layout_below="@id/snoozeButton"
+            android:background="@drawable/simplebutton"
+        />
+
+        <Button
+            android:id="@+id/readButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/writeButton"
+            android:text="Tiedoston luku"
+            android:background="@drawable/simplebutton"
+        />
+
+        <TextView
+            android:id="@+id/testText"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/readButton"
+        />
+
+></RelativeLayout>
