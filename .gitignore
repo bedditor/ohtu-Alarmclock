@@ -1,7 +1,11 @@
-beddit_alarm/gen
+*/*/gen
 */*/.idea
 */*/*.iml
+*/*.iml
+*/*/out
+*/gen
 */.idea
 */*.iml
+*.iml
 */out
-*/*/out
+*.properties
