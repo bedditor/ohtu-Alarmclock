@@ -372,6 +372,9 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     }
 
     public void setInterval(int interval){
-
+        if (interval > maxInterval)
+            currentInterval = 1f;
+        else
+            currentInterval = ((float)maxInterval) / ((float)interval);
     }
 }
