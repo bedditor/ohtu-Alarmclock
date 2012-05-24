@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/settings_menu_button"
+        android:title="@string/settings_button_title" />
+    <item
+        android:id="@+id/help_menu_button"
+        android:title="@string/help_button_title" />
+</menu>

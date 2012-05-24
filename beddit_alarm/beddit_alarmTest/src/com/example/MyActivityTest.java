@@ -18,6 +18,8 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         super.setUp();
         mActivity = this.getActivity();
         timePicker = (CustomTimePicker)mActivity.findViewById(R.id.alarmTimePicker);
+        TouchUtils.clickView(this, mActivity.findViewById(R.id.deleteAlarmButton));
+
     }
 
     public void testTimePickerHoursAdd(){
@@ -46,6 +48,7 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
     public void testDeleteAlarm(){
         AlarmScheduler alarmScheduler = new AlarmSchedulerMock();
         mActivity.setAlarmScheduler(alarmScheduler);
+        TouchUtils.clickView(this, mActivity.findViewById(R.id.setAlarmButton));
         TouchUtils.clickView(this, mActivity.findViewById(R.id.deleteAlarmButton));
         assertEquals("Did not delete alarm", 1, ((AlarmSchedulerMock) alarmScheduler).getDeletes());
     }

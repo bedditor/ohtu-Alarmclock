@@ -16,5 +16,6 @@
                   android:label="@string/app_name">
         </activity>
         <receiver android:name="com.example.Alarm" android:process=":remote" />
+        <activity android:name="SettingsActivity"/>
     </application>
 </manifest> 

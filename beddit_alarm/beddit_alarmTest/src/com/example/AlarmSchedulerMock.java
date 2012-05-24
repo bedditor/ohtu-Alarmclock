@@ -15,6 +15,16 @@ public class AlarmSchedulerMock implements AlarmScheduler {
     int interval = -1;
     int adds = 0;
     int deletes = 0;
+    boolean alarmSet = false;
+
+    public AlarmSchedulerMock(){
+        this.hours = -1;
+        this.minutes = -1;
+        this.interval = -1;
+        this.adds = 0;
+        this.deletes = 0;
+        this.alarmSet = false;
+    }
 
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval) {
@@ -22,16 +32,28 @@ public class AlarmSchedulerMock implements AlarmScheduler {
         this.hours = hours;
         this.minutes = minutes;
         this.interval = interval;
+        this.alarmSet = true;
     }
 
     @Override
     public void deleteAlarm(Context context) {
+        this.alarmSet = false;
         deletes++;
     }
 
     @Override
     public void setAlarmManager(AlarmManagerInterface alarmManager) {
         //do nothing
+    }
+
+    @Override
+    public int[] getAlarm(Context context) {
+        return new int[0];  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean isAlarmSet(Context context) {
+        return alarmSet;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public int getHours() {

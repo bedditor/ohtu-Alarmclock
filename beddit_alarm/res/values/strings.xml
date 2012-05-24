@@ -3,4 +3,22 @@
     <string name="app_name">Beddit Alarm</string>
     <string name="alarm_set">Set Alarm</string>
     <string name="alarm_unset">Cancel Alarm</string>
+
+    <string name="pref_title_beddit_settings">Beddit login settings</string>
+    <string name="pref_summary_beddit_settings">Connect to your beddit account</string>
+
+    <string name="pref_title_username">Username</string>
+    <string name="pref_key_username">username</string>
+
+    <string name="pref_title_password">Password</string>
+    <string name="pref_key_password">password</string>
+
+    <string name="pref_title_other_settings">Other settings</string>
+
+    <string name="pref_title_awesome">Make this app awesome</string>
+    <string name="pref_summary_awesome">This setting is completely useless.</string>
+    <string name="pref_key_awesome">awesome</string>
+    <string name="settings_button_title">Settings</string>
+    <string name="help_button_title">Help</string>
+
 </resources>
