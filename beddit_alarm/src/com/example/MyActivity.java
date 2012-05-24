@@ -81,6 +81,7 @@ public class MyActivity extends Activity
         public void onClick(View view) {
             alarmScheduler.deleteAlarm(MyActivity.this);
             MyActivity.this.setButtons();
+
         }
     }
 
