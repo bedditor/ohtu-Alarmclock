@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -46,6 +47,7 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
 
         // Cancel the alarm!
         alarmManager.cancel(sender);
+        FileHandler.saveAlarm(0,0,0,context, false);
 
         Toast.makeText(context, "Hälytys poistettu", Toast.LENGTH_LONG).show();
 
@@ -79,7 +81,8 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
 
     public boolean isAlarmSet(Context context){
         int [] alarms = FileHandler.getAlarms(context);
-        if (alarms[0] == -1){
+        Log.v("Alarmi setattu:", "" + alarms[0]);
+        if (alarms[0] < 1){
             return false;
         }
         return true;

@@ -1,6 +1,7 @@
 package com.example;
 
 import android.content.*;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -91,10 +92,10 @@ public class FileHandler {
         String alarmsString = readStringFromFile("alarms", context);
         if(alarmsString == ""){
             int[] returnable = new int[4];
-            returnable[0] = -1;
-            returnable[1] = -1;
-            returnable[2] = -1;
-            returnable[3] = -1;
+            returnable[0] = -2;
+            returnable[1] = -2;
+            returnable[2] = -2;
+            returnable[3] = -2;
             return returnable;
         }
         char letter = 'a';
@@ -109,7 +110,7 @@ public class FileHandler {
                 isAlarm = copyStr(aux);
                 aux = "";
             }
-            if(letter =='&'){
+            else if(letter =='&'){
                 hour = copyStr(aux);
                 aux = "";
             }else if(letter == '?'){

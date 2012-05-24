@@ -48,7 +48,7 @@ public class AlarmActivity extends Activity {
         ((Button)findViewById(R.id.writeButton)).setOnClickListener(writeListener);
         ((Button)findViewById(R.id.readButton)).setOnClickListener(readListener);
 
-
+        new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).deleteAlarm(AlarmActivity.this.getApplicationContext());
 
         AlarmHandler alarm = new AlarmHandler(usedcontext);
         alarm.setMusic();
@@ -66,6 +66,8 @@ public class AlarmActivity extends Activity {
         Log.v("Alarm", "Alarm ended at " + Calendar.getInstance().getTime());
     }
 
+
+    // lol tee juttuja!!
     @Override
     public void finish(){
         super.finish();
@@ -86,8 +88,7 @@ public class AlarmActivity extends Activity {
     public class SnoozeButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view){
-            AlarmScheduler scheduler = new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext());
-            scheduler.addAlarm(AlarmActivity.this, 0, 5, 0);
+            new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).addAlarm(AlarmActivity.this, 0, 5, 0);
             AlarmActivity.this.finish();
         }
 
