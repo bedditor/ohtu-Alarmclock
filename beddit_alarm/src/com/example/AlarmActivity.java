@@ -21,10 +21,7 @@ import java.util.Calendar;
  */
 public class AlarmActivity extends Activity {
 
-    public static Context usedcontext = null;
-
     public MusicHandler music = null;
-    public TextView teksti = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -43,12 +40,6 @@ public class AlarmActivity extends Activity {
         layout.setBackgroundColor(Color.BLACK);
         layout.setBackgroundColor(Color.WHITE);
 
-        //I/O -tests:
-        teksti = ((TextView)findViewById(R.id.testText));
-        WriteButtonClickListener writeListener = new WriteButtonClickListener();
-        ReadButtonClickListener readListener = new ReadButtonClickListener();
-        ((Button)findViewById(R.id.writeButton)).setOnClickListener(writeListener);
-        ((Button)findViewById(R.id.readButton)).setOnClickListener(readListener);
 
         new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).deleteAlarm(AlarmActivity.this.getApplicationContext());
 
@@ -61,7 +52,6 @@ public class AlarmActivity extends Activity {
     }
 
 
-    // lol tee juttuja!!
     @Override
     public void finish(){
         music.release();
@@ -98,19 +88,4 @@ public class AlarmActivity extends Activity {
         }
     }
 
-    private class WriteButtonClickListener implements View.OnClickListener {
-        public void onClick(View view) {
-            if(FileHandler.writeToFile("tiedosto","testing", AlarmActivity.this.getApplicationContext())){
-                teksti.setText("tallennettu");
-            }else{
-                teksti.setText("ei tallennettu D:");
-            }
-        }
-    }
-
-    private class ReadButtonClickListener implements View.OnClickListener {
-        public void onClick(View view) {
-            //teksti.setText(FileHandler.getAlarms(AlarmActivity.this.getApplicationContext()));
-        }
-    }
 }
