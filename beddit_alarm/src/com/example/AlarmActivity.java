@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ public class AlarmActivity extends Activity {
 
     public static Context usedcontext = null;
 
+    public MusicHandler music = null;
     public TextView teksti = null;
 
     /** Called when the activity is first created. */
@@ -50,19 +52,11 @@ public class AlarmActivity extends Activity {
 
         new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).deleteAlarm(AlarmActivity.this.getApplicationContext());
 
-        AlarmHandler alarm = new AlarmHandler(usedcontext);
-        alarm.setMusic();
         Log.v("Alarm", "Recieved alarm at " + Calendar.getInstance().getTime());
-        //Toast.makeText(usedcontext, "Herätys yksinkertainen", Toast.LENGTH_SHORT).show();
-        if (alarm.insanityCheck()) {
-            if(!alarm.play()){
-                Log.v("Soitto", "Musiikki soi jo");
-            }
-            Utils.sleep(10);
-            alarm.stop();
-        }else{
-            Log.v("Soitto", "Imaginääri musiikki soi ");
-        }
+        music = new MusicHandler();
+        music.setMusic(this);
+        music.setLooping(true);
+        music.play(true);
         Log.v("Alarm", "Alarm ended at " + Calendar.getInstance().getTime());
     }
 
@@ -70,18 +64,21 @@ public class AlarmActivity extends Activity {
     // lol tee juttuja!!
     @Override
     public void finish(){
+        music.release();
         super.finish();
     }
 
     @Override
     public void onPause(){
         super.onPause();
+        music.pause();
         super.finish();
     }
 
     @Override
     public void onStop(){
         super.onStop();
+        music.stop();
         super.finish();
     }
 
@@ -116,9 +113,4 @@ public class AlarmActivity extends Activity {
             //teksti.setText(FileHandler.getAlarms(AlarmActivity.this.getApplicationContext()));
         }
     }
-
-
-
-
-
 }
