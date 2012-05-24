@@ -48,6 +48,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
     int minutes = 0;
     int hours = 0;
+    int interval = 0;
 
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -191,6 +192,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         String minutes = m < 10 ? "0" + m : Integer.toString(m);
         return hours + ":" + minutes;
     }
+
 
     private double getHourHandAngle() {
         return ((hours % 12) * hourIncrement) + (minutes / 60.0 * hourIncrement);
@@ -367,5 +369,9 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
     public void setMinutes(int minutes) {
         this.minutes = minutes;
+    }
+
+    public void setInterval(int interval){
+
     }
 }
