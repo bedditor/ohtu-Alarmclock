@@ -112,7 +112,7 @@ public class AlarmActivity extends Activity {
 
     private class ReadButtonClickListener implements View.OnClickListener {
         public void onClick(View view) {
-            teksti.setText(FileHandler.getAlarms(AlarmActivity.this.getApplicationContext()));
+            //teksti.setText(FileHandler.getAlarms(AlarmActivity.this.getApplicationContext()));
         }
     }
 
