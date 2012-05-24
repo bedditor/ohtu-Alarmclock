@@ -39,7 +39,7 @@ public class AlarmTimePickerSimpleImpl implements AlarmTimePicker {
 
     @Override
     public int getInterval() {
-        return 0;
+        return 10;
     }
 
     @Override

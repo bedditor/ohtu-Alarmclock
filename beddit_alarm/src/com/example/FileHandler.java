@@ -57,7 +57,7 @@ public class FileHandler {
             fis.close();
         }catch (IOException f){
             System.err.println("Unable to read the file: "+filename);
-            return "could not read from file";
+            return "";
         }
 
         return palautettava;
@@ -76,8 +76,8 @@ public class FileHandler {
         return copy;
     }
 
-    public static boolean saveAlarm(int hour, int minute, Context context){
-        String towrite = ""+hour+'&'+minute+'\n';
+    public static boolean saveAlarm(int hour, int minute, int interval, Context context){
+        String towrite = ""+hour+'&'+minute+'?'+interval+'\n';
         return writeToFile("alarms", towrite, context);
     }
 
@@ -86,26 +86,50 @@ public class FileHandler {
         In the form of: min&hour\n
                         min&hour ...
      */
-    public static String getAlarms(Context context){
+    public static int[] getAlarms(Context context){
         //pahasti kesken
         String alarmsString = readStringFromFile("alarms", context);
+        if(alarmsString == ""){
+            int[] returnable = new int[3];
+            returnable[0] = -1;
+            returnable[1] = -1;
+            returnable[2] = -1;
+            return returnable;
+        }
         char letter = 'a';
         String aux = "";
         String hour = "";
         String minute = "";
+        String interval = "";
         for(int i = 0; i< alarmsString.length(); i++){
             letter = alarmsString.charAt(i);
             if(letter =='&'){
                 hour = copyStr(aux);
                 aux = "";
-            }else if(letter == '\n'){
+            }else if(letter == '?'){
                 minute = copyStr(aux);
+                aux = "";
+            }else if(letter == '\n'){
+                interval = copyStr(aux);
                 aux = "";
             }else{
                 aux += letter;
             }
         }
-        return "Hours: "+hour+" and minutes: "+minute;
+        int[] clockValues = new int[3];
+        try{
+            clockValues[0] = Integer.parseInt(hour);
+            clockValues[1] = Integer.parseInt(minute);
+            clockValues[2] = Integer.parseInt(interval);
+        }catch (Exception e){
+            int[] returnable = new int[3];
+            returnable[0] = -1;
+            returnable[1] = -1;
+            returnable[2] = -1;
+            return returnable;
+        }
+        return clockValues;
+        //return "Hours: "+hour+" and minutes: "+minute+" and interval: "+interval;
     }
 
 }
