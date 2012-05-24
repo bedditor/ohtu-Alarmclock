@@ -206,29 +206,109 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     boolean minGrabbed = false;
     boolean sliderGrabbed = false;
 
+    boolean hourClicking = false;
+    boolean minClicking = false;
+    boolean sliderClicking = false;
+
+    int minTarget = 0;
+    int hourTarget = 0;
+    int sliderTarget = 0;
+    boolean animating = false;
+
+    Thread minAnimator = new Thread();
+    Thread hourAnimator = new Thread();
+    Thread sliderAnimator = new Thread();
+
     public boolean onTouchEvent(MotionEvent me) {
         switch (me.getAction()) {
             case (MotionEvent.ACTION_UP):
-                hourGrabbed = false;
-                minGrabbed = false;
-                sliderGrabbed = false;
+                if (minClicking) {
+                    minTarget = (int)(getAngleToMidpoint(me.getX(), me.getY()) / minuteIncrement);
+                    if (!minAnimator.isAlive()) {
+                        minAnimator= new Thread(new Runnable() {
+                            public void run() {
+                                while (minutes != minTarget) {
+                                    if (minutes < minTarget)
+                                        incrementMinutes(1);
+                                    else
+                                        incrementMinutes(-1);
+
+                                    final View v = findViewById(R.id.alarmTimePicker);
+                                    v.post(new Runnable(){ public void run(){ v.invalidate(); } });
+
+                                    try { Thread.sleep(2); } catch (Throwable t) {}
+                                }
+                            }
+                        });
+                        minAnimator.start();
+                    }
+                } else if (hourClicking) {
+                    hourTarget = (int)(getAngleToMidpoint(me.getX(), me.getY()) / hourIncrement);
+                    if (!hourAnimator.isAlive()) {
+                        hourAnimator= new Thread(new Runnable() {
+                            public void run() {
+                                while (hours != hourTarget) {
+                                    if (hours < hourTarget)
+                                        incrementHours(1);
+                                    else
+                                        incrementHours(-1);
+
+                                    final View v = findViewById(R.id.alarmTimePicker);
+                                    v.post(new Runnable(){ public void run(){ v.invalidate(); } });
+
+                                    try { Thread.sleep(20); } catch (Throwable t) {}
+                                }
+                            }
+                        });
+                        hourAnimator.start();
+                    }
+                } else if (sliderClicking) {
+                    sliderTarget  = (int)((Math.min(intervalBarRect.right,
+                                                    Math.max(intervalBarRect.left, me.getX())) /
+                                        intervalBarRect.width()) * (float)maxInterval);
+                    if (!sliderAnimator.isAlive()) {
+                        sliderAnimator= new Thread(new Runnable() {
+                            public void run() {
+                                while (currentInterval != sliderTarget) {
+                                    if (currentInterval < sliderTarget)
+                                        currentInterval++;
+                                    else
+                                        currentInterval--;
+
+                                    final View v = findViewById(R.id.alarmTimePicker);
+                                    v.post(new Runnable(){ public void run(){ v.invalidate(); } });
+
+                                    try { Thread.sleep(5); } catch (Throwable t) {}
+                                }
+                            }
+                        });
+                        sliderAnimator.start();
+                    }
+                }
+
+                hourGrabbed = minGrabbed = sliderGrabbed = false;
+                minClicking = hourClicking = sliderClicking = false;
                 break;
             case (MotionEvent.ACTION_DOWN):
-                if (Math.abs(me.getX() - minGrabX) < radius * grabPointSize &&
-                        Math.abs(me.getY() - minGrabY) < radius * grabPointSize) {
+                if (dist(me.getX(),me.getY(),minGrabX,minGrabY) < grabPointSize*radius*2) {
                     minGrabbed = true;
-                } else if (Math.abs(me.getX() - hourGrabX) < radius * grabPointSize &&
-                        Math.abs(me.getY() - hourGrabY) < radius * grabPointSize) {
+                } else if (dist(me.getX(),me.getY(),hourGrabX,hourGrabY) < grabPointSize*radius*2) {
                     hourGrabbed = true;
-                } else if (Math.abs(me.getX() - sliderGrabX) < intervalBarRect.height() / 2 &&
-                        Math.abs(me.getY() - sliderGrabY) < intervalBarRect.height() / 2) {
+                } else if (dist(me.getX(),me.getY(),sliderGrabX,sliderGrabY) < grabPointSize*radius*2) {
                     sliderGrabbed = true;
+                } else if (intervalBarRect.contains(me.getX(),me.getY())) {
+                    Log.v("clicking", "interval");
+                    sliderClicking = true;
+                } else if (dist(me.getX(),me.getY(),midX,midY) < radius*hourHandLength) {
+                    Log.v("clicking", "hours");
+                    hourClicking = true;
+                } else if (dist(me.getX(),me.getY(),midX,midY) < radius) {
+                    Log.v("clicking", "minutes");
+                    minClicking = true;
                 }
                 break;
             case (MotionEvent.ACTION_MOVE):
-                double newAngle = Math.atan((me.getY() - midY) / (me.getX() - midX)) + Math.PI / 2;
-                if (me.getX() - midX < 0)
-                    newAngle += Math.PI;
+                double newAngle = getAngleToMidpoint(me.getX(), me.getY());
                 if (minGrabbed) updateMinuteHand(newAngle);
                 else if (hourGrabbed) updateHourHand(newAngle);
                 else if (sliderGrabbed) updateSlider(me.getX());
@@ -237,6 +317,17 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
         invalidate();
         return true;
+    }
+
+    private double getAngleToMidpoint(float x, float y) {
+        double angle = Math.atan((y - midY) / (x - midX)) + Math.PI / 2;
+        if (x - midX < 0)
+            angle += Math.PI;
+        return angle;
+    }
+
+    private double dist(float x1, float y1, float x2, float y2) {
+        return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
     private void updateSlider(float x) {

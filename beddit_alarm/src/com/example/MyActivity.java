@@ -40,6 +40,7 @@ public class MyActivity extends Activity
             clock.setMinutes(results[2]);
             clock.setInterval(results[3]);
         }
+
     }
 
     public void setAlarmScheduler(AlarmScheduler alarmScheduler) {

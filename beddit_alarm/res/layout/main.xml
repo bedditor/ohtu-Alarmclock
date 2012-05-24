@@ -28,7 +28,6 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Add Alarm"
-                android:background="@drawable/simplebutton"
                 />
         <Button
                 android:id="@+id/deleteAlarmButton"
@@ -36,7 +35,6 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Delete Alarm"
-                android:background="@drawable/simplebutton"
                 />
     </LinearLayout>
 </LinearLayout>
