@@ -36,23 +36,23 @@ public class FileHandler {
     }
 
     public static String readStringFromFile(String filename, Context context){
-        String palautettava = "";
+        String returnedString = "";
         FileInputStream fis = null;
         try{
             fis = context.openFileInput(filename);
         }catch(FileNotFoundException e){
             System.err.println("file not found");
-            return "file not found";
+            return "";
         }
         try{
-            int merkki = fis.read();
-            if(merkki > -1){
-                palautettava += (char)merkki;
+            int readCharacter = fis.read();
+            if(readCharacter > -1){
+                returnedString += (char)readCharacter;
             }
-            while(merkki != -1){
-                merkki=fis.read();
-                if(merkki != -1){
-                    palautettava += (char)merkki;
+            while(readCharacter != -1){
+                readCharacter=fis.read();
+                if(readCharacter != -1){
+                    returnedString += (char)readCharacter;
                 }
             }
             fis.close();
@@ -61,7 +61,7 @@ public class FileHandler {
             return "";
         }
 
-        return palautettava;
+        return returnedString;
     }
 
     public static String copyStr(String tocopy){
@@ -142,9 +142,12 @@ public class FileHandler {
     }
 
 
-    public static boolean setAOuth2code(){
+    public static boolean saveOAuth2code(String code, Context context){
+        return writeToFile("OAuth2", code, context);
+    }
 
-        return true;
+    public static String loadOAuth2code(Context context){
+        return readStringFromFile("OAuth2",context);
     }
 
 
