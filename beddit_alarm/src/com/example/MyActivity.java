@@ -31,7 +31,7 @@ public class MyActivity extends Activity
 
         alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
 
-        int[] results = FileHandler.getAlarms(this.getApplicationContext());
+        int[] results = alarmScheduler.getAlarm(MyActivity.this);
         CustomTimePicker clock = (CustomTimePicker)alarmTimePicker;
         if(results[0] == -1){
             //muokkaa näppäimiä
@@ -56,7 +56,7 @@ public class MyActivity extends Activity
         @Override
         public void onClick(View view) {
             alarmScheduler.addAlarm(MyActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
-            FileHandler.saveAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(),alarmTimePicker.getInterval(),MyActivity.this.getApplicationContext());
+
         }
     }
 

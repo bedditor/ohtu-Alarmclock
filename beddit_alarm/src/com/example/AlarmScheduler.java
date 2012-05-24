@@ -16,4 +16,8 @@ public interface AlarmScheduler {
 
     public void setAlarmManager(AlarmManagerInterface alarmManager);
 
-    }
+    public int[] getAlarm(Context context);
+
+    public boolean isAlarmSet(Context context);
+
+}
