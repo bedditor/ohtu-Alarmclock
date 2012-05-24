@@ -28,7 +28,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     final float hourHandLength = 0.55f;
 
     final int maxInterval = 30;
-    float currentInterval = 0.0f;
+    int currentInterval = 0;
     final float clockNumberSize = 50f;
 
     float radius = 0;
@@ -240,10 +240,10 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     }
 
     private void updateSlider(float x) {
-        if (x < intervalBarRect.left) currentInterval = 0f;
-        else if (x > intervalBarRect.right) currentInterval = 1f;
+        if (x < intervalBarRect.left) currentInterval = 0;
+        else if (x > intervalBarRect.right) currentInterval = maxInterval;
         else {
-            currentInterval = (x - intervalBarRect.left) / intervalBarRect.width();
+            currentInterval = (int)(((x - intervalBarRect.left)/intervalBarRect.width())*(float)maxInterval);
         }
 
     }
@@ -359,22 +359,11 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     public int getMinutes() { return minutes; }
 
     @Override
-    public int getInterval() {
-        return (int) (((float) maxInterval) * currentInterval);
-    }
+    public int getInterval() { return currentInterval; }
 
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
+    public void setHours(int hours) { this.hours = hours; }
 
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
+    public void setMinutes(int minutes) { this.minutes = minutes; }
 
-    public void setInterval(int interval){
-        if (interval > maxInterval)
-            currentInterval = 1f;
-        else
-            currentInterval = ((float)maxInterval) / ((float)interval);
-    }
+    public void setInterval(int interval){ currentInterval = interval; }
 }
