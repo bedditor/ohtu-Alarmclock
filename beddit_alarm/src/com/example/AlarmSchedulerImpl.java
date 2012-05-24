@@ -24,7 +24,7 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
 
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval){
-        FileHandler.saveAlarm(hours, minutes, interval,context);
+        FileHandler.saveAlarm(hours, minutes, interval,context, true);
         Intent intent = new Intent(context, Alarm.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 

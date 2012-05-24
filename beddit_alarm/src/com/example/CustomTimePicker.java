@@ -84,7 +84,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
                    intervalBarRect.centerY(),
                    intervalBarPaint);
 
-        sliderGrabX = intervalBarRect.left + currentInterval * intervalBarRect.width();
+        sliderGrabX = intervalBarRect.left + ((float)currentInterval)/((float)maxInterval) * intervalBarRect.width();
         sliderGrabY = intervalBarRect.centerY();
 
         c.drawCircle(sliderGrabX, sliderGrabY, radius*grabPointSize, intervalBarPaint);
@@ -150,7 +150,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
         c.drawArc(clockRect,
                 (float) Math.toDegrees(getMinuteHandAngle() - Math.PI / 2),
-                (float) Math.toDegrees(-minuteIncrement * (maxInterval * currentInterval)),
+                (float) Math.toDegrees(-minuteIncrement * currentInterval),
                 true,
                 intervalArcPaint);
         c.drawCircle(midX, midY, radius * 0.95f, clockMinBackground);
