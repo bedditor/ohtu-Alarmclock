@@ -1,5 +1,6 @@
 package com.example;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
@@ -16,52 +17,75 @@ import android.util.Log;
  */
 public class MusicHandler {
 
-    Ringtone music;
-    Context context;
-    MediaPlayer player;
-
-    public MusicHandler(Context context) {
-        this.context = context;
-    }
+    private final String TAG = "MusicHandler";
+    private MediaPlayer player;
+    private boolean released;
 
 
-    public void setMusic() {
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        music = RingtoneManager.getRingtone(context, notification);
-        player = MediaPlayer.create(context,R.raw.alarm);
-
+    public MusicHandler() {
+        player = null;
+        released = true;
     }
 
     /*
-    Returns true if everythings ok.
+    Needs the Context of the Activity to create mediaplayer for the spesific Activity.
      */
+    public void setMusic(Context context) {
+        //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        player = MediaPlayer.create(context, R.raw.alarm);
+        released = false;
+    }
+
+    public void setLooping(boolean loop) {
+        player.setLooping(loop);
+    }
+    /*
+   Returns true if everythings ok.
+    */
+    //TODO: Make this more sane (do actual check if the music we are playing can be found (memorycard) and basic null check)
     public boolean insanityCheck() {
-        boolean insane = music == null;
-        if (insane)
-            Log.w("MusicHandler", "Ringtone is not set for device.");
-        return !insane;
+        if (released)
+            return false;
+        return true;
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
-    public void play() {
-        if (!insanityCheck()) {
-            if (!music.isPlaying())
-                music.play();
-        } else {
-            if (!player.isPlaying())
+    public void play(boolean force) {
+        if (insanityCheck())
+            if (force) {
+                if (player.isPlaying())
+                    player.stop();
                 player.start();
-        }
-
+            } else if (!player.isPlaying())
+                player.start();
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
     public void stop() {
-        if (!insanityCheck()) {
-            if (!music.isPlaying())
-                music.stop();
-        } else {
-            if (!player.isPlaying())
+        if (insanityCheck())
+            if (player.isPlaying())
                 player.stop();
+    }
+
+    public void pause() {
+        if (insanityCheck())
+            if (player.isPlaying())
+                player.pause();
+    }
+
+    public void release() {
+        if (released)
+            return;
+        try {
+            if (player != null) {
+                if (player.isPlaying()) {
+                    player.stop();
+                }
+                player.release();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
         }
+        released = true;
     }
 }
