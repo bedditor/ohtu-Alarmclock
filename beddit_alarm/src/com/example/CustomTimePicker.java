@@ -48,7 +48,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
     int minutes = 0;
     int hours = 0;
-    int interval = 0;
 
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -139,7 +138,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         Paint clockMinBackground = new Paint();
         Paint intervalArcPaint = new Paint();
 
-        intervalArcPaint.setColor(Color.RED);
+        intervalArcPaint.setColor(Color.CYAN);
         clockHourBackground.setColor(Color.LTGRAY);
         clockHourBackground.setStyle(Paint.Style.STROKE);
         clockMinBackground.setColor(Color.WHITE);
@@ -219,71 +218,71 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     Thread hourAnimator = new Thread();
     Thread sliderAnimator = new Thread();
 
+    final View v = findViewById(R.id.alarmTimePicker);
+    Runnable invalidator = new Runnable(){ public void run(){ v.invalidate(); } };
+    Runnable minRunnable = new Runnable() {
+            public void run() {
+                while (minutes != minTarget) {
+                    if (minutes < minTarget)  {
+                        if (Math.abs(minutes - minTarget) > 30)
+                            incrementMinutes(-1);
+                        else
+                            incrementMinutes(1);
+                    } else {
+                        if (Math.abs(minutes - minTarget) > 30)
+                            incrementMinutes(1);
+                        else
+                            incrementMinutes(-1);
+                    }
+                    v.post(invalidator);
+                    try { Thread.sleep(5); } catch (Throwable t) {}
+                }
+            }};
+    Runnable hourRunnable = new Runnable() {
+        public void run() {
+            while ((hours%12) != hourTarget) {
+                if ((hours%12) < hourTarget)  {
+                    if (Math.abs((hours%12) - hourTarget) > 6)
+                        incrementHours(-1);
+                    else
+                        incrementHours(1);
+                } else {
+                    if (Math.abs((hours%12) - hourTarget) > 6)
+                        incrementHours(1);
+                    else
+                        incrementHours(-1);
+                }
+                v.post(invalidator);
+                try { Thread.sleep(20); } catch (Throwable t) {}
+            }
+        }};
+    Runnable sliderRunnable = new Runnable() {
+        public void run() {
+            while (currentInterval != sliderTarget) {
+                if (currentInterval < sliderTarget) currentInterval++; else currentInterval--;
+                v.post(invalidator);
+                try { Thread.sleep(5); } catch (Throwable t) {}
+            }
+        }};
+
     public boolean onTouchEvent(MotionEvent me) {
         switch (me.getAction()) {
             case (MotionEvent.ACTION_UP):
                 if (minClicking) {
+                    Log.v("threadstart", "min");
                     minTarget = (int)(getAngleToMidpoint(me.getX(), me.getY()) / minuteIncrement);
-                    if (!minAnimator.isAlive()) {
-                        minAnimator= new Thread(new Runnable() {
-                            public void run() {
-                                while (minutes != minTarget) {
-                                    if (minutes < minTarget)
-                                        incrementMinutes(1);
-                                    else
-                                        incrementMinutes(-1);
+                    if (!minAnimator.isAlive()) (minAnimator = new Thread(minRunnable)).start();
 
-                                    final View v = findViewById(R.id.alarmTimePicker);
-                                    v.post(new Runnable(){ public void run(){ v.invalidate(); } });
-
-                                    try { Thread.sleep(2); } catch (Throwable t) {}
-                                }
-                            }
-                        });
-                        minAnimator.start();
-                    }
                 } else if (hourClicking) {
+                    Log.v("threadstart", "hour");
                     hourTarget = (int)(getAngleToMidpoint(me.getX(), me.getY()) / hourIncrement);
-                    if (!hourAnimator.isAlive()) {
-                        hourAnimator= new Thread(new Runnable() {
-                            public void run() {
-                                while (hours != hourTarget) {
-                                    if (hours < hourTarget)
-                                        incrementHours(1);
-                                    else
-                                        incrementHours(-1);
-
-                                    final View v = findViewById(R.id.alarmTimePicker);
-                                    v.post(new Runnable(){ public void run(){ v.invalidate(); } });
-
-                                    try { Thread.sleep(20); } catch (Throwable t) {}
-                                }
-                            }
-                        });
-                        hourAnimator.start();
-                    }
+                    if (!hourAnimator.isAlive()) (hourAnimator = new Thread(hourRunnable)).start();
                 } else if (sliderClicking) {
+                    Log.v("threadstart", "interval");
                     sliderTarget  = (int)((Math.min(intervalBarRect.right,
                                                     Math.max(intervalBarRect.left, me.getX())) /
                                         intervalBarRect.width()) * (float)maxInterval);
-                    if (!sliderAnimator.isAlive()) {
-                        sliderAnimator= new Thread(new Runnable() {
-                            public void run() {
-                                while (currentInterval != sliderTarget) {
-                                    if (currentInterval < sliderTarget)
-                                        currentInterval++;
-                                    else
-                                        currentInterval--;
-
-                                    final View v = findViewById(R.id.alarmTimePicker);
-                                    v.post(new Runnable(){ public void run(){ v.invalidate(); } });
-
-                                    try { Thread.sleep(5); } catch (Throwable t) {}
-                                }
-                            }
-                        });
-                        sliderAnimator.start();
-                    }
+                    if (!sliderAnimator.isAlive()) (sliderAnimator = new Thread(sliderRunnable)).start();
                 }
 
                 hourGrabbed = minGrabbed = sliderGrabbed = false;
