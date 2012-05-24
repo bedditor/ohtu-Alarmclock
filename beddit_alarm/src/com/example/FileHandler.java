@@ -63,11 +63,6 @@ public class FileHandler {
         return palautettava;
     }
 
-    public static String getOAuth2Code(Context context){
-        //not yet implemented
-        return "";
-    }
-
     public static String copyStr(String tocopy){
         String copy = "";
         for(int i = 0; i< tocopy.length(); i++){
@@ -76,33 +71,44 @@ public class FileHandler {
         return copy;
     }
 
-    public static boolean saveAlarm(int hour, int minute, int interval, Context context){
-        String towrite = ""+hour+'&'+minute+'?'+interval+'\n';
+    public static boolean saveAlarm(int hour, int minute, int interval, Context context, boolean isAlarm){
+        int realAlarm = 0;
+        if(isAlarm){
+            realAlarm = 1;
+        }
+        String towrite = ""+realAlarm+'#'+hour+'&'+minute+'?'+interval+'\n';
         return writeToFile("alarms", towrite, context);
     }
 
-
     /*
-        In the form of: min&hour\n
-                        min&hour ...
+        returns int[4] in the form of   1: if alarm exists
+                                        2: hours
+                                        3: minutes
+                                        4: interval
      */
     public static int[] getAlarms(Context context){
         //pahasti kesken
         String alarmsString = readStringFromFile("alarms", context);
         if(alarmsString == ""){
-            int[] returnable = new int[3];
+            int[] returnable = new int[4];
             returnable[0] = -1;
             returnable[1] = -1;
             returnable[2] = -1;
+            returnable[3] = -1;
             return returnable;
         }
         char letter = 'a';
         String aux = "";
+        String isAlarm = "";
         String hour = "";
         String minute = "";
         String interval = "";
         for(int i = 0; i< alarmsString.length(); i++){
             letter = alarmsString.charAt(i);
+            if(letter == '#'){
+                isAlarm = copyStr(aux);
+                aux = "";
+            }
             if(letter =='&'){
                 hour = copyStr(aux);
                 aux = "";
@@ -116,20 +122,30 @@ public class FileHandler {
                 aux += letter;
             }
         }
-        int[] clockValues = new int[3];
+        int[] clockValues = new int[4];
         try{
-            clockValues[0] = Integer.parseInt(hour);
-            clockValues[1] = Integer.parseInt(minute);
-            clockValues[2] = Integer.parseInt(interval);
+            clockValues[0] = Integer.parseInt(isAlarm);
+            clockValues[1] = Integer.parseInt(hour);
+            clockValues[2] = Integer.parseInt(minute);
+            clockValues[3] = Integer.parseInt(interval);
         }catch (Exception e){
-            int[] returnable = new int[3];
+            int[] returnable = new int[4];
             returnable[0] = -1;
             returnable[1] = -1;
             returnable[2] = -1;
+            returnable[3] = -1;
             return returnable;
         }
         return clockValues;
         //return "Hours: "+hour+" and minutes: "+minute+" and interval: "+interval;
     }
+
+
+    public static boolean setAOuth2code(){
+
+        return true;
+    }
+
+
 
 }

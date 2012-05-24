@@ -33,12 +33,12 @@ public class MyActivity extends Activity
 
         int[] results = alarmScheduler.getAlarm(MyActivity.this);
         CustomTimePicker clock = (CustomTimePicker)alarmTimePicker;
-        if(results[0] == -1){
+        if(results[0] < 1){
             //muokkaa näppäimiä
         }else{
-            clock.setHours(results[0]);
-            clock.setMinutes(results[1]);
-            clock.setInterval(results[2]);
+            clock.setHours(results[1]);
+            clock.setMinutes(results[2]);
+            clock.setInterval(results[3]);
         }
     }
 
@@ -64,6 +64,7 @@ public class MyActivity extends Activity
         @Override
         public void onClick(View view) {
             alarmScheduler.deleteAlarm(MyActivity.this);
+            FileHandler.saveAlarm(0,0,0,MyActivity.this.getApplicationContext(), false);
         }
     }
 
