@@ -61,8 +61,8 @@ public class AlarmActivity extends Activity {
     @Override
     public void onPause(){
         super.onPause();
-        music.pause();
-        super.finish();
+        //music.pause();
+        //super.finish();
     }
 
     @Override
