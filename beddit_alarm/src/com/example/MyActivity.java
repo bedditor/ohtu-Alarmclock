@@ -1,12 +1,15 @@
 package com.example;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Button;
-import android.widget.TimePicker;
 import android.view.View.OnClickListener;
 
 public class MyActivity extends Activity
@@ -60,5 +63,28 @@ public class MyActivity extends Activity
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+        Intent settingsIntent = new Intent(this.getApplicationContext(),
+                SettingsActivity.class);
+
+        MenuItem settings = menu.findItem(R.id.settings_menu_button);
+        settings.setIntent(settingsIntent);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings_menu_button:
+                startActivity(item.getIntent());
+                break;
+        }
+        return true;
+    }
 
 }
