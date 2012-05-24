@@ -27,15 +27,22 @@ public class MyActivity extends Activity
         setAlarmScheduler(new AlarmSchedulerImpl(this));
 
 
-
-        AlarmSetButtonClickListener setListener = new AlarmSetButtonClickListener();
-        AlarmDeleteButtonClickListener deleteListener = new AlarmDeleteButtonClickListener();
-        ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
-        ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(deleteListener);
+        ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(new AlarmSetButtonClickListener());
+        ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(new AlarmDeleteButtonClickListener());
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
         alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
+
+        int[] results = alarmScheduler.getAlarm(MyActivity.this);
+        CustomTimePicker clock = (CustomTimePicker)alarmTimePicker;
+        if(results[0] < 1){
+            //muokkaa näppäimiä
+        }else{
+            clock.setHours(results[1]);
+            clock.setMinutes(results[2]);
+            clock.setInterval(results[3]);
+        }
     }
 
     public void setAlarmScheduler(AlarmScheduler alarmScheduler) {
@@ -52,7 +59,7 @@ public class MyActivity extends Activity
         @Override
         public void onClick(View view) {
             alarmScheduler.addAlarm(MyActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
-            FileHandler.saveAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), MyActivity.this.getApplicationContext());
+
         }
     }
 
@@ -60,6 +67,7 @@ public class MyActivity extends Activity
         @Override
         public void onClick(View view) {
             alarmScheduler.deleteAlarm(MyActivity.this);
+            FileHandler.saveAlarm(0,0,0,MyActivity.this.getApplicationContext(), false);
         }
     }
 

@@ -24,6 +24,7 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
 
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval){
+        FileHandler.saveAlarm(hours, minutes, interval,context, true);
         Intent intent = new Intent(context, Alarm.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
@@ -70,6 +71,18 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
         return c;
 
 
+    }
+
+    public int[] getAlarm(Context context){
+         return FileHandler.getAlarms(context);
+    }
+
+    public boolean isAlarmSet(Context context){
+        int [] alarms = FileHandler.getAlarms(context);
+        if (alarms[0] == -1){
+            return false;
+        }
+        return true;
     }
 
 
