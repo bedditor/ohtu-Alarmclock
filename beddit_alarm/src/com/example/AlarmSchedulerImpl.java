@@ -31,10 +31,14 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
 
         // Calculate alarm to go off
         Calendar calendar = calculateAlarm(hours, minutes, 0);
+        String time = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
+        Log.v("Herätys ", time);
 
-        // Schedule the alarm!
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, sender);   //----------------------------
+        // Schedule the alarm! Muuta kommentoinnit toisinpäin testatessa!!!
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        //alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, sender);
+
+
         // Tell the user about what we did.
         Toast.makeText(context, "Hälytys asetettu", Toast.LENGTH_LONG).show();
 

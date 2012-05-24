@@ -75,7 +75,9 @@ public class AlarmActivity extends Activity {
     public class SnoozeButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view){
-            new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).addAlarm(AlarmActivity.this, 0, 5, 0);
+            Calendar d = Calendar.getInstance();
+            d.add(Calendar.MINUTE, 5);
+            new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).addAlarm(AlarmActivity.this, d.get(Calendar.HOUR_OF_DAY) , d.get(Calendar.MINUTE), 0);
             AlarmActivity.this.finish();
         }
 
