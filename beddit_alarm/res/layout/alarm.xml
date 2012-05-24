@@ -12,7 +12,7 @@
             android:layout_height="0dip"
             android:layout_weight="1"
             android:text="Stop alarm"
-            android:textSize="32"
+            android:textSize="32dip"
 
         />
 
@@ -22,7 +22,7 @@
             android:layout_height="0dip"
             android:layout_weight="2"
             android:text="Snooze"
-            android:textSize="55"
+            android:textSize="55dip"
 
         />
 

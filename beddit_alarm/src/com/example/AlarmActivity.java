@@ -36,7 +36,7 @@ public class AlarmActivity extends Activity {
         SnoozeButtonClickListener snoozeListener = new SnoozeButtonClickListener();
         ((Button)findViewById(R.id.deleteButton)).setOnClickListener(deleteListener);
         ((Button)findViewById(R.id.snoozeButton)).setOnClickListener(snoozeListener);
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.alarmLayout);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.alarmLayout);
         layout.setBackgroundColor(Color.BLACK);
         layout.setBackgroundColor(Color.WHITE);
 
