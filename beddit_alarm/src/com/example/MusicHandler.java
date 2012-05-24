@@ -51,26 +51,41 @@ public class MusicHandler {
 
     //Can be called regardless we have valid music, It just won't do anything.
     public void play(boolean force) {
+        boolean success = false;
         if (insanityCheck())
             if (force) {
-                if (player.isPlaying())
+                if (player.isPlaying()) {
                     player.stop();
+                }
                 player.start();
-            } else if (!player.isPlaying())
+                success = true;
+            } else if (!player.isPlaying()) {
                 player.start();
+                success = true;
+            }
+        if (success)
+            Log.v(TAG, "Started playing alarm music!");
+        else
+            Log.v(TAG, "Did not start playing music.");
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
     public void stop() {
         if (insanityCheck())
-            if (player.isPlaying())
+            if (player.isPlaying()) {
                 player.stop();
+                Log.v(TAG, "Stopped playing music.");
+                return;
+            }
+        Log.v(TAG, "Something failed when tried to do stop music from playing.");
     }
 
     public void pause() {
         if (insanityCheck())
-            if (player.isPlaying())
+            if (player.isPlaying()) {
                 player.pause();
+                Log.v(TAG, "Paused the music.");
+            }
     }
 
     public void release() {
@@ -86,6 +101,7 @@ public class MusicHandler {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
+        Log.v(TAG, "Released the music.");
         released = true;
     }
 }
