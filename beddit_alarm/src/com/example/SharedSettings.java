@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedSettings {
-    public final static String PREFS = "prefs";
+    public final static String PREFS = "beddit_alarm_prefs";
 
     public static boolean getSettingBoolean(Context context, int settingId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS, 0);
