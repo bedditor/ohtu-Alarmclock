@@ -24,11 +24,8 @@ public class MyActivity extends Activity
         setAlarmScheduler(new AlarmSchedulerImpl(this));
 
 
-
-        AlarmSetButtonClickListener setListener = new AlarmSetButtonClickListener();
-        AlarmDeleteButtonClickListener deleteListener = new AlarmDeleteButtonClickListener();
-        ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
-        ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(deleteListener);
+        ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(new AlarmSetButtonClickListener());
+        ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(new AlarmDeleteButtonClickListener());
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
