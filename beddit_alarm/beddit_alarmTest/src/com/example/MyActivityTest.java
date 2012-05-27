@@ -3,7 +3,6 @@ package com.example;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 
-
 public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity> {
 
     private MyActivity mActivity;

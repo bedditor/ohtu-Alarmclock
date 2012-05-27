@@ -19,4 +19,13 @@
                 android:title="@string/pref_title_awesome"
                 android:key="@string/pref_key_awesome"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_title_alarm_settings">
+        <ListPreference
+                android:title="@string/pref_title_snooze_length"
+                android:key="@string/pref_key_snooze"
+                android:defaultValue="5"
+                android:entries="@array/snoozeArrayTitles"
+                android:entryValues="@array/snoozeArrayValues" />
+    </PreferenceCategory>
 </PreferenceScreen>

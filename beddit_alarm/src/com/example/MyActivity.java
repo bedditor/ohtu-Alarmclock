@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +30,8 @@ public class MyActivity extends Activity
         setContentView(R.layout.main);
         setAlarmScheduler(new AlarmSchedulerImpl(this));
 
+        //initialize default values for settings if called for the first time
+        PreferenceManager.setDefaultValues(this, R.xml.prefs, false);
 
         addAlarm = (Button) findViewById(R.id.setAlarmButton);
         addAlarm.setOnClickListener(new AlarmSetButtonClickListener());

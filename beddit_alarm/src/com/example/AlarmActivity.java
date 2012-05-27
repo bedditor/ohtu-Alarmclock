@@ -37,11 +37,11 @@ public class AlarmActivity extends Activity {
         ((Button)findViewById(R.id.deleteButton)).setOnClickListener(deleteListener);
         ((Button)findViewById(R.id.snoozeButton)).setOnClickListener(snoozeListener);
         LinearLayout layout = (LinearLayout)findViewById(R.id.alarmLayout);
-        layout.setBackgroundColor(Color.BLACK);
         layout.setBackgroundColor(Color.WHITE);
 
-
-        new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).deleteAlarm(AlarmActivity.this.getApplicationContext());
+        Context context = AlarmActivity.this.getApplicationContext();
+        AlarmScheduler alarmScheduler = new AlarmSchedulerImpl(context);
+        alarmScheduler.deleteAlarm(context);
 
         Log.v("Alarm", "Recieved alarm at " + Calendar.getInstance().getTime());
         music = new MusicHandler();
@@ -75,9 +75,16 @@ public class AlarmActivity extends Activity {
     public class SnoozeButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view){
-            Calendar d = Calendar.getInstance();
-            d.add(Calendar.MINUTE, 5);
-            new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext()).addAlarm(AlarmActivity.this, d.get(Calendar.HOUR_OF_DAY) , d.get(Calendar.MINUTE), 0);
+            //get snooze length from preferences
+            int snoozeLength = Integer.parseInt(SharedSettings.getSettingString(AlarmActivity.this, R.string.pref_key_snooze));
+
+            Calendar snoozeTime = Calendar.getInstance();
+            snoozeTime.add(Calendar.MINUTE, snoozeLength);
+
+            //set alarm
+            AlarmScheduler alarmScheduler = new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext());
+            alarmScheduler.addAlarm(AlarmActivity.this, snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
+
             AlarmActivity.this.finish();
         }
 
