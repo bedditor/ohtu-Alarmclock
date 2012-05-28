@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
+import ohtu.beddit.alarm.WakeUpLock;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.music.MusicHandler;
 
@@ -24,7 +27,8 @@ import java.util.Calendar;
  */
 public class AlarmActivity extends Activity {
 
-    public MusicHandler music = null;
+    private MusicHandler music = null;
+    private Vibrator vibrator;
 
     /** Called when the alarm is first created. */
     @Override
@@ -33,7 +37,12 @@ public class AlarmActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm);
 
-       /* ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
+        WakeUpLock.acquire(this);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = { 0, 200, 500 };
+        vibrator.vibrate(pattern, 0);
+
+        /* ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
         ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(deleteListener);*/
         ActivityDeleteButtonClickListener deleteListener = new ActivityDeleteButtonClickListener();
         SnoozeButtonClickListener snoozeListener = new SnoozeButtonClickListener();
@@ -58,20 +67,25 @@ public class AlarmActivity extends Activity {
     @Override
     public void finish(){
         music.release();
+        vibrator.cancel();
+        WakeUpLock.release();
         super.finish();
     }
 
     @Override
     public void onPause(){
         super.onPause();
-        //music.pause();
+        WakeUpLock.release();
+        vibrator.cancel();
+        music.pause();
         //super.finish();
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        music.stop();
+        WakeUpLock.release();
+        vibrator.cancel();
         super.finish();
     }
 
