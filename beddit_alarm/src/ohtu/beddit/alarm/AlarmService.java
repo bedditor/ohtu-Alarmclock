@@ -2,6 +2,8 @@ package ohtu.beddit.alarm;
 
 import android.content.Context;
 
+import java.util.Calendar;
+
 /**
  * Created with IntelliJ IDEA.
  * User: joosakur
@@ -11,6 +13,8 @@ import android.content.Context;
  */
 public interface AlarmService {
     void addAlarm(Context context, int hours, int minutes, int interval);
+
+    void addAlarmTry(Context context, Calendar time);
 
     void deleteAlarm(Context context);
 

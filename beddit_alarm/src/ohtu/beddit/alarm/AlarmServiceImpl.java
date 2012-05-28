@@ -13,6 +13,7 @@ import java.util.Calendar;
 
 public class AlarmServiceImpl implements AlarmService {
 
+    private final String TAG = "Alarm Service";
     AlarmManagerInterface alarmManager;
 
     public AlarmServiceImpl(Context context) {
@@ -24,25 +25,32 @@ public class AlarmServiceImpl implements AlarmService {
         this.alarmManager = alarmManager;
     }
 
+    //this method saves a new alarm with an interval
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval){
         FileHandler.saveAlarm(hours, minutes, interval, true, context);
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        // Calculate alarm to go off
-        Calendar calendar = calculateAlarm(hours, minutes, 0);
+        Log.v(TAG, "alarm set to "+hours+":"+minutes);
+
+        // Calculate first wake up try
+        Calendar calendar = calculateAlarm(hours, minutes, interval);
         String time = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
-        Log.v("Herätys ", time);
 
-        // Schedule the alarm! Muuta kommentoinnit toisinpäin testatessa!!!
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, sender);
 
+        addAlarmTry(context, calendar);
 
         // Tell the user about what we did.
         Toast.makeText(context, "Hälytys asetettu", Toast.LENGTH_LONG).show();
+    }
 
+    //this method sets alarm manager to try wake up on given time
+    public void addAlarmTry(Context context, Calendar time){
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+        String timeString = time.get(Calendar.HOUR_OF_DAY) + ":" + time.get(Calendar.MINUTE) + ":" + time.get(Calendar.SECOND);
+        Log.v(TAG, "next wake up try set to "+timeString);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), sender);
     }
 
     @Override
@@ -58,26 +66,24 @@ public class AlarmServiceImpl implements AlarmService {
 
     }
 
-
+    //this method calculates time for the first try to wake up
     private Calendar calculateAlarm(int hour, int minute, int interval) {
-        Calendar c = Calendar.getInstance();
-
-        c.setTimeInMillis(System.currentTimeMillis());
-        int nowHour = c.get(Calendar.HOUR_OF_DAY);
-        int nowMinute = c.get(Calendar.MINUTE);
-
-        // if alarm is behind current time, advance one day
-        if (hour < nowHour  || hour == nowHour && minute <= nowMinute) {
-            c.add(Calendar.DAY_OF_YEAR, 1);
+        Calendar alarmTime = Calendar.getInstance();
+        alarmTime.set(Calendar.HOUR_OF_DAY, hour);
+        alarmTime.set(Calendar.MINUTE, minute);
+        alarmTime.set(Calendar.SECOND, 0);
+        alarmTime.set(Calendar.MILLISECOND, 0);
+        if(alarmTime.before(Calendar.getInstance())){
+            alarmTime.add(Calendar.DAY_OF_YEAR, 1);
         }
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        c.set(Calendar.MINUTE, minute);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
 
-        return c;
+        alarmTime.add(Calendar.MINUTE, -interval);
 
-
+        Calendar currentTime = Calendar.getInstance();
+        if(alarmTime.after(currentTime)){
+            return alarmTime;
+        }
+        else return currentTime;
     }
 
     public int[] getAlarm(Context context){

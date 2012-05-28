@@ -4,6 +4,8 @@ import android.content.Context;
 import ohtu.beddit.alarm.AlarmManagerInterface;
 import ohtu.beddit.alarm.AlarmService;
 
+import java.util.Calendar;
+
 /**
  * Created with IntelliJ IDEA.
  * User: joosakur
@@ -35,6 +37,11 @@ public class AlarmServiceMock implements AlarmService {
         this.minutes = minutes;
         this.interval = interval;
         this.alarmSet = true;
+    }
+
+    @Override
+    public void addAlarmTry(Context context, Calendar time) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
