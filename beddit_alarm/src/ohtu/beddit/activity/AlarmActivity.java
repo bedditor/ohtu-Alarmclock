@@ -27,6 +27,7 @@ import java.util.Calendar;
  */
 public class AlarmActivity extends Activity {
 
+    private final String TAG = "AlarmActivity";
     private MusicHandler music = null;
     private Vibrator vibrator;
 
@@ -36,11 +37,10 @@ public class AlarmActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm);
+        Log.v(TAG, "Recieved alarm at " + Calendar.getInstance().getTime());
 
+        Log.v(TAG, "I want WakeUpLock");
         WakeUpLock.acquire(this);
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = { 0, 200, 500 };
-        vibrator.vibrate(pattern, 0);
 
         /* ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
         ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(deleteListener);*/
@@ -55,17 +55,22 @@ public class AlarmActivity extends Activity {
         AlarmService alarmService = new AlarmServiceImpl(context);
         alarmService.deleteAlarm(context);
 
-        Log.v("AlarmReceiver", "Recieved alarm at " + Calendar.getInstance().getTime());
+        Log.v(TAG, "I want to Vibrate 8==D");
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = { 0, 200, 500 };
+        vibrator.vibrate(pattern, 0);
+        Log.v(TAG, "Vibrator says:" + vibrator.toString());
+
         music = new MusicHandler();
         music.setMusic(this);
         music.setLooping(true);
         music.play(true);
-        Log.v("AlarmReceiver", "AlarmReceiver ended at " + Calendar.getInstance().getTime());
     }
 
 
     @Override
     public void finish(){
+        Log.v(TAG, "Trying to Finish AlarmActivity");
         music.release();
         vibrator.cancel();
         WakeUpLock.release();
@@ -74,6 +79,7 @@ public class AlarmActivity extends Activity {
 
     @Override
     public void onPause(){
+        Log.v(TAG, "Trying to put AlarmActivity on pause");
         super.onPause();
         WakeUpLock.release();
         vibrator.cancel();
@@ -83,6 +89,7 @@ public class AlarmActivity extends Activity {
 
     @Override
     public void onStop(){
+        Log.v(TAG, "Trying to put AlarmActivity on stop");
         super.onStop();
         WakeUpLock.release();
         vibrator.cancel();

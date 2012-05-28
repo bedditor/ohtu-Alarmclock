@@ -31,6 +31,8 @@ public class MusicHandler {
         //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         player = MediaPlayer.create(context, R.raw.alarm);
         released = false;
+        player.setVolume(100.f, 100.f);
+        Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
     }
 
     public void setLooping(boolean loop) {
@@ -63,7 +65,7 @@ public class MusicHandler {
         if (success)
             Log.v(TAG, "Started playing alarm music!");
         else
-            Log.v(TAG, "Did not start playing music.");
+            Log.v(TAG, "Did not start playing music. Maybe you haven't initialized player.");
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
@@ -74,7 +76,7 @@ public class MusicHandler {
                 Log.v(TAG, "Stopped playing music.");
                 return;
             }
-        Log.v(TAG, "Something failed when tried to do stop music from playing.");
+        Log.v(TAG, "Something failed when tried to do stop music from playing. Maybe player was released already?");
     }
 
     public void pause() {
@@ -86,9 +88,10 @@ public class MusicHandler {
     }
 
     public void release() {
-        if (released)
+        if (released) {
+            Log.v(TAG, "Tried to release player when it was already released");
             return;
-        try {
+        }try {
             if (player != null) {
                 if (player.isPlaying()) {
                     player.stop();
