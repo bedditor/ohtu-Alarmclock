@@ -2,11 +2,15 @@ package ohtu.beddit.alarm;
 
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+import ohtu.beddit.R;
+import ohtu.beddit.activity.MainActivity;
 import ohtu.beddit.io.FileHandler;
 
 import java.util.Calendar;
@@ -39,7 +43,7 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, sender);
 
-
+        setNotification(calendar.getTimeInMillis(),context);
         // Tell the user about what we did.
         Toast.makeText(context, "Hälytys asetettu", Toast.LENGTH_LONG).show();
 
@@ -54,6 +58,7 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.cancel(sender);
         FileHandler.saveAlarm(0,0,0,context, false);
 
+        resetNotification(1,context);
         Toast.makeText(context, "Hälytys poistettu", Toast.LENGTH_LONG).show();
 
     }
@@ -91,6 +96,23 @@ public class AlarmServiceImpl implements AlarmService {
             return false;
         }
         return true;
+    }
+
+    public int setNotification(long time, Context context){
+        NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        int icon = R.drawable.uparrow;
+        Notification notification = new Notification(icon,"",time);
+        Intent intention = new Intent(context, MainActivity.class);
+        PendingIntent pendIntent = PendingIntent.getActivity(context, 0,intention,0);
+        notification.setLatestEventInfo(context, "Hälyytys asetettu: ","",pendIntent);
+        int ID = 1;
+        notificationman.notify(ID,notification);
+        return ID;
+    }
+
+    public void resetNotification(int ID, Context context){
+        NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationman.cancel(ID);
     }
 
     @Override
