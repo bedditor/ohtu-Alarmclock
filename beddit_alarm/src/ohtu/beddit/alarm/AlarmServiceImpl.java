@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.util.Log;
 import android.widget.Toast;
 import ohtu.beddit.R;
@@ -36,14 +37,14 @@ public class AlarmServiceImpl implements AlarmService {
 
         // Calculate alarm to go off
         Calendar calendar = calculateAlarm(hours, minutes, 0);
-        String time = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
+        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
         Log.v("Herätys ", time);
 
         // Schedule the alarm! Muuta kommentoinnit toisinpäin testatessa!!!
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, sender);
 
-        setNotification(calendar.getTimeInMillis(),context);
+        setNotification(1,interval,calendar.getTimeInMillis(), time,context);
         // Tell the user about what we did.
         Toast.makeText(context, "Hälytys asetettu", Toast.LENGTH_LONG).show();
 
@@ -98,15 +99,21 @@ public class AlarmServiceImpl implements AlarmService {
         return true;
     }
 
-    public int setNotification(long time, Context context){
+    public int setNotification(int ID, long interval, long time, String endTime,Context context){
         NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        int icon = R.drawable.uparrow;
+        int icon = R.drawable.kello48;
         Notification notification = new Notification(icon,"",time);
         Intent intention = new Intent(context, MainActivity.class);
         PendingIntent pendIntent = PendingIntent.getActivity(context, 0,intention,0);
-        notification.setLatestEventInfo(context, "Hälyytys asetettu: ","",pendIntent);
-        int ID = 1;
-        notificationman.notify(ID,notification);
+
+        interval = interval * 60 * 1000;
+        String intervalBegin = "";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis()-interval);
+
+        intervalBegin += calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+        notification.setLatestEventInfo(context, "Hälytys asetettu: ",intervalBegin + " - "+endTime,pendIntent);
+        notificationman.notify(ID, notification);
         return ID;
     }
 
