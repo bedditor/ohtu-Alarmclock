@@ -59,6 +59,21 @@ public class AlarmServiceMock implements AlarmService {
         return alarmSet;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
+    public int getAlarmHours(Context context) {
+        return hours;
+    }
+
+    @Override
+    public int getAlarmMinutes(Context context) {
+        return minutes;
+    }
+
+    @Override
+    public int getAlarmInterval(Context context) {
+        return interval;
+    }
+
     public int getHours() {
         return hours;
     }
