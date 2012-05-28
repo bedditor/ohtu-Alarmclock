@@ -81,9 +81,9 @@ public class AlarmActivity extends Activity {
     public void onPause(){
         Log.v(TAG, "Trying to put AlarmActivity on pause");
         super.onPause();
-        WakeUpLock.release();
-        vibrator.cancel();
-        music.pause();
+        //WakeUpLock.release();
+        //vibrator.cancel();
+        //music.pause();
         //super.finish();
     }
 
