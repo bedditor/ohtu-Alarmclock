@@ -20,16 +20,16 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
     final float grabPointOffset = 0.2f;
     final float grabPointSize = 0.1f;
-    final float handWidth = 5f;
+    final float handWidth = 0.02f;
 
     final double minuteIncrement = Math.PI / 30.0;
     final double hourIncrement = Math.PI / 6.0;
 
     final float hourHandLength = 0.55f;
 
-    final int maxInterval = 30;
+    final int maxInterval = 45;
     int currentInterval = 0;
-    final float clockNumberSize = 50f;
+    final float clockNumberSize = 0.2f;
 
     float radius = 0;
 
@@ -74,7 +74,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         intervalBarPaint.setColor(Color.BLACK);
 
         intervalBarPaint.setStyle(Paint.Style.STROKE);
-        intervalBarPaint.setStrokeWidth(handWidth);
+        intervalBarPaint.setStrokeWidth(handWidth*radius);
         intervalBarPaint.setAntiAlias(true);
 
         c.drawLine(intervalBarRect.left,
@@ -105,7 +105,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         Paint clockHand = new Paint();
         clockHand.setColor(Color.BLACK);
         clockHand.setAntiAlias(true);
-        clockHand.setStrokeWidth(handWidth);
+        clockHand.setStrokeWidth(handWidth*radius);
         clockHand.setStyle(Paint.Style.STROKE);
 
         double hxDir = Math.cos(getHourHandAngle() - Math.PI / 2);
@@ -130,7 +130,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         c.drawCircle(minGrabX, minGrabY, radius * grabPointSize, clockHand);
         c.drawCircle(hourGrabX, hourGrabY, radius * grabPointSize, clockHand);
         clockHand.setStyle(Paint.Style.FILL);
-        c.drawCircle(midX,midY,handWidth/2,clockHand);
+        c.drawCircle(midX,midY,handWidth*radius/2,clockHand);
     }
 
     private void drawClockface(Canvas c) {
@@ -170,7 +170,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
                     midY + yDir * radius * 0.95f, linePaint);
         }
 
-        linePaint.setTextSize(clockNumberSize);
+        linePaint.setTextSize(clockNumberSize*radius);
         for (double h = 1; h < 13; h++) {
             double angle = Math.PI * 2 * h / 12 - Math.PI / 2;
             float xDir = (float) Math.cos(angle);
