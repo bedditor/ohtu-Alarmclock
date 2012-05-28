@@ -37,66 +37,71 @@ public class MainActivity extends Activity
 
         //initialize default values for settings if called for the first time
         PreferenceManager.setDefaultValues(this, R.xml.prefs, false);
+        setUI();
+
+        // Update buttons and clock handles
+        updateButtons();
+        setClockHandles();
+
+    }
+
+    private void setUI() {
+        //Set clock, buttons and listeners
+        alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
 
         addAlarm = (Button) findViewById(R.id.setAlarmButton);
         addAlarm.setOnClickListener(new AlarmSetButtonClickListener());
         deleteAlarm = (Button)findViewById(R.id.deleteAlarmButton);
         deleteAlarm.setOnClickListener(new AlarmDeleteButtonClickListener());
+
+        //Set layout
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
-        alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
 
-        MainActivity.this.setButtons();
+    }
+
+    private void setClockHandles() {
         int[] results = alarmService.getAlarm(MainActivity.this);
         CustomTimePicker clock = (CustomTimePicker)alarmTimePicker;
-        if(results[0] < 1){
-            //muokkaa näppäimiä
-        }else{
+        if(results[0] > 0){
             clock.setHours(results[1]);
             clock.setMinutes(results[2]);
             clock.setInterval(results[3]);
         }
-
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        setButtons();
+        updateButtons();
     }
 
-    public void setAlarmService(AlarmService alarmService) {
-        this.alarmService = alarmService;
 
-    }
-
-    public AlarmService getAlarmService() {
-        return alarmService;
-    }
 
     public class AlarmSetButtonClickListener implements OnClickListener {
 
         @Override
         public void onClick(View view) {
             alarmService.addAlarm(MainActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
-            MainActivity.this.setButtons();
+            MainActivity.this.updateButtons();
 
         }
     }
+
 
     public class AlarmDeleteButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
             alarmService.deleteAlarm(MainActivity.this);
-            MainActivity.this.setButtons();
+            MainActivity.this.updateButtons();
 
         }
     }
 
 
-    public void setButtons(){
-        Log.v("Buttons", "Set");
+    // Set buttons to on/off
+    public void updateButtons(){
         if (alarmService.isAlarmSet(this.getApplicationContext())){
             addAlarm.setEnabled(false);
             deleteAlarm.setEnabled(true);
@@ -104,6 +109,7 @@ public class MainActivity extends Activity
             addAlarm.setEnabled(true);
             deleteAlarm.setEnabled(false);
         }
+        Log.v("User Interface", "Buttons updated");
 
     }
 
@@ -129,6 +135,17 @@ public class MainActivity extends Activity
                 break;
         }
         return true;
+    }
+
+    // These methods are for tests
+
+    public void setAlarmService(AlarmService alarmService) {
+        this.alarmService = alarmService;
+
+    }
+
+    public AlarmService getAlarmService() {
+        return alarmService;
     }
 
 }
