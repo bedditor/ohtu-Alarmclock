@@ -20,4 +20,10 @@ public interface AlarmService {
 
     public boolean isAlarmSet(Context context);
 
+    public int getAlarmHours(Context context);
+
+    public int getAlarmMinutes(Context context);
+
+    public int getAlarmInterval(Context context);
+
 }

@@ -85,12 +85,27 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public boolean isAlarmSet(Context context){
-        int [] alarms = FileHandler.getAlarms(context);
+        int [] alarms = getAlarm(context);
         Log.v("Alarmi setattu:", "" + alarms[0]);
         if (alarms[0] < 1){
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int getAlarmHours(Context context) {
+        return getAlarm(context)[1];
+    }
+
+    @Override
+    public int getAlarmMinutes(Context context) {
+        return getAlarm(context)[2];
+    }
+
+    @Override
+    public int getAlarmInterval(Context context) {
+        return getAlarm(context)[3];
     }
 
 
