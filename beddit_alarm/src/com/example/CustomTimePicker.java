@@ -279,9 +279,13 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
                     if (!hourAnimator.isAlive()) (hourAnimator = new Thread(hourRunnable)).start();
                 } else if (sliderClicking) {
                     Log.v("threadstart", "interval");
-                    sliderTarget  = (int)((Math.min(intervalBarRect.right,
-                                                    Math.max(intervalBarRect.left, me.getX())) /
+                    sliderTarget  = (int)(((Math.min(intervalBarRect.right,
+                                                    Math.max(intervalBarRect.left, me.getX())) - intervalBarRect.left) /
                                         intervalBarRect.width()) * (float)maxInterval);
+                    Log.v("slider x", Float.toString(me.getX()));
+                    Log.v("sliderbar left", Float.toString(intervalBarRect.left));
+                    Log.v("sliderbar right", Float.toString(intervalBarRect.right));
+                    Log.v("slider target", Float.toString(sliderTarget));
                     if (!sliderAnimator.isAlive()) (sliderAnimator = new Thread(sliderRunnable)).start();
                 }
 

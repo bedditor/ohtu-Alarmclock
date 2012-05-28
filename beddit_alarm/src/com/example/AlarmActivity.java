@@ -87,7 +87,6 @@ public class AlarmActivity extends Activity {
 
             AlarmActivity.this.finish();
         }
-
     }
 
     public class ActivityDeleteButtonClickListener implements View.OnClickListener {
