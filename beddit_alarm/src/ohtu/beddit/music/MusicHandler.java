@@ -1,12 +1,9 @@
-package com.example;
+package ohtu.beddit.music;
 
-import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.util.Log;
+import ohtu.beddit.R;
 
 /**
  * Created with IntelliJ IDEA.

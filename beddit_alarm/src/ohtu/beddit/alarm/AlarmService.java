@@ -1,4 +1,4 @@
-package com.example;
+package ohtu.beddit.alarm;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import android.content.Context;
  * Time: 10:16
  * To change this template use File | Settings | File Templates.
  */
-public interface AlarmScheduler {
+public interface AlarmService {
     void addAlarm(Context context, int hours, int minutes, int interval);
 
     void deleteAlarm(Context context);

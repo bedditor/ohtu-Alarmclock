@@ -1,7 +1,8 @@
-package com.example;
+package ohtu.beddit.activity;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import ohtu.beddit.R;
 
 
 public class SettingsActivity extends PreferenceActivity {
@@ -10,6 +11,5 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.prefs);
-
     }
 }

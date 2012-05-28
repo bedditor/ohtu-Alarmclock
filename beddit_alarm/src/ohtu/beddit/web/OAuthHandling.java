@@ -1,6 +1,7 @@
-package com.example;
+package ohtu.beddit.web;
 
 import android.content.Context;
+import ohtu.beddit.io.FileHandler;
 
 /**
  * Created with IntelliJ IDEA.

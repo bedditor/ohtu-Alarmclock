@@ -1,4 +1,4 @@
-package com.example;
+package ohtu.beddit.alarm;
 
 
 import android.app.AlarmManager;
@@ -7,14 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+import ohtu.beddit.io.FileHandler;
 
 import java.util.Calendar;
 
-public class AlarmSchedulerImpl implements AlarmScheduler {
+public class AlarmServiceImpl implements AlarmService {
 
     AlarmManagerInterface alarmManager;
 
-    public AlarmSchedulerImpl(Context context) {
+    public AlarmServiceImpl(Context context) {
         this.alarmManager = new AlarmManagerAndroid(context);
     }
 
@@ -25,8 +26,8 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
 
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval){
-        FileHandler.saveAlarm(hours, minutes, interval,context, true);
-        Intent intent = new Intent(context, Alarm.class);
+        FileHandler.saveAlarm(hours, minutes, interval, context, true);
+        Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         // Calculate alarm to go off
@@ -46,7 +47,7 @@ public class AlarmSchedulerImpl implements AlarmScheduler {
 
     @Override
     public void deleteAlarm(Context context){
-        Intent intent = new Intent(context, Alarm.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         // Cancel the alarm!

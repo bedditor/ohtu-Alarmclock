@@ -1,4 +1,4 @@
-package com.example;
+package ohtu.beddit.alarm;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

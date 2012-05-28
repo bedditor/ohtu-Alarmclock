@@ -1,10 +1,10 @@
-package com.example;
+package ohtu.beddit.io;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class SharedSettings {
+public class PreferenceService {
     //public final static String PREFS = "beddit_alarm_prefs";
 
 

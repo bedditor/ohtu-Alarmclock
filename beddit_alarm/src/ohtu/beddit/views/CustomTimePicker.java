@@ -1,4 +1,4 @@
-package com.example;
+package ohtu.beddit.views;
 
 import android.content.Context;
 import android.graphics.*;
@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import ohtu.beddit.alarm.AlarmTimePicker;
+import ohtu.beddit.R;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,9 +58,9 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         for (int i = 0; i < attrs.getAttributeCount(); i++)
             Log.i("attribute", attrs.getAttributeName(i));
 
-        this.minsize = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/com.example", "minsize"));
-        this.minutes = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/com.example", "minutes"));
-        this.hours = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/com.example", "hours"));
+        this.minsize = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minsize"));
+        this.minutes = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minutes"));
+        this.hours = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "hours"));
         updateSize();
     }
 

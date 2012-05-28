@@ -1,4 +1,4 @@
-package com.example;
+package ohtu.beddit.io;
 
 import android.content.*;
 import android.util.Log;

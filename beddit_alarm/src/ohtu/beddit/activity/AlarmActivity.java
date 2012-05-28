@@ -1,14 +1,17 @@
-package com.example;
+package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import ohtu.beddit.R;
+import ohtu.beddit.alarm.AlarmService;
+import ohtu.beddit.alarm.AlarmServiceImpl;
+import ohtu.beddit.io.PreferenceService;
+import ohtu.beddit.music.MusicHandler;
 
 import java.util.Calendar;
 
@@ -23,7 +26,7 @@ public class AlarmActivity extends Activity {
 
     public MusicHandler music = null;
 
-    /** Called when the activity is first created. */
+    /** Called when the alarm is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -40,15 +43,15 @@ public class AlarmActivity extends Activity {
         layout.setBackgroundColor(Color.WHITE);
 
         Context context = AlarmActivity.this.getApplicationContext();
-        AlarmScheduler alarmScheduler = new AlarmSchedulerImpl(context);
-        alarmScheduler.deleteAlarm(context);
+        AlarmService alarmService = new AlarmServiceImpl(context);
+        alarmService.deleteAlarm(context);
 
-        Log.v("Alarm", "Recieved alarm at " + Calendar.getInstance().getTime());
+        Log.v("AlarmReceiver", "Recieved alarm at " + Calendar.getInstance().getTime());
         music = new MusicHandler();
         music.setMusic(this);
         music.setLooping(true);
         music.play(true);
-        Log.v("Alarm", "Alarm ended at " + Calendar.getInstance().getTime());
+        Log.v("AlarmReceiver", "AlarmReceiver ended at " + Calendar.getInstance().getTime());
     }
 
 
@@ -76,14 +79,14 @@ public class AlarmActivity extends Activity {
         @Override
         public void onClick(View view){
             //get snooze length from preferences
-            int snoozeLength = Integer.parseInt(SharedSettings.getSettingString(AlarmActivity.this, R.string.pref_key_snooze));
+            int snoozeLength = Integer.parseInt(PreferenceService.getSettingString(AlarmActivity.this, R.string.pref_key_snooze));
 
             Calendar snoozeTime = Calendar.getInstance();
             snoozeTime.add(Calendar.MINUTE, snoozeLength);
 
             //set alarm
-            AlarmScheduler alarmScheduler = new AlarmSchedulerImpl(AlarmActivity.this.getApplicationContext());
-            alarmScheduler.addAlarm(AlarmActivity.this, snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
+            AlarmService alarmService = new AlarmServiceImpl(AlarmActivity.this.getApplicationContext());
+            alarmService.addAlarm(AlarmActivity.this, snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
 
             AlarmActivity.this.finish();
         }

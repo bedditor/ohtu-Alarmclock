@@ -1,4 +1,4 @@
-package com.example;
+package ohtu.beddit.alarm;
 
 /**
  * Created with IntelliJ IDEA.
