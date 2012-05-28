@@ -21,15 +21,10 @@ public class FileHandler {
         FileOutputStream fos = null;
         try{
             fos = context.openFileOutput(filename,Context.MODE_PRIVATE);
-        }catch(Exception e){
-            System.err.println("Could not create fileoutputstream");
-            return false;
-        }
-        try{
             fos.write(writable.getBytes());
             fos.close();
-        }catch(IOException f){
-            System.err.println("Could not write to file");
+        }catch(Exception e){
+            Log.v("Filehandler", "Writing crashed");
             return false;
         }
         return true;
@@ -41,14 +36,11 @@ public class FileHandler {
         try{
             fis = context.openFileInput(filename);
         }catch(FileNotFoundException e){
-            System.err.println("file not found");
+            Log.v("Filehandler", "File not found");
             return "";
         }
         try{
-            int readCharacter = fis.read();
-            if(readCharacter > -1){
-                returnedString += (char)readCharacter;
-            }
+            int readCharacter = 0;
             while(readCharacter != -1){
                 readCharacter=fis.read();
                 if(readCharacter != -1){
@@ -57,7 +49,7 @@ public class FileHandler {
             }
             fis.close();
         }catch (IOException f){
-            System.err.println("Unable to read the file: "+filename);
+            Log.v("Filehandler", "Can't read file: "+filename);
             return "";
         }
 
@@ -65,19 +57,16 @@ public class FileHandler {
     }
 
     public static String copyStr(String tocopy){
-        String copy = "";
-        for(int i = 0; i< tocopy.length(); i++){
-            copy += tocopy.charAt(i);
-        }
-        return copy;
+        return new String(tocopy);
     }
+
 
     public static boolean saveAlarm(int hour, int minute, int interval, Context context, boolean isAlarm){
         int realAlarm = 0;
         if(isAlarm){
             realAlarm = 1;
         }
-        String towrite = ""+realAlarm+'#'+hour+'&'+minute+'?'+interval+'\n';
+        String towrite = ""+realAlarm+'#'+hour+'#'+minute+'#'+interval;
         return writeToFile("alarms", towrite, context);
     }
 
@@ -88,57 +77,22 @@ public class FileHandler {
                                         4: interval
      */
     public static int[] getAlarms(Context context){
-        //pahasti kesken
-        String alarmsString = readStringFromFile("alarms", context);
-        if(alarmsString == ""){
-            int[] returnable = new int[4];
-            returnable[0] = -2;
-            returnable[1] = -2;
-            returnable[2] = -2;
-            returnable[3] = -2;
-            return returnable;
-        }
-        char letter = 'a';
-        String aux = "";
-        String isAlarm = "";
-        String hour = "";
-        String minute = "";
-        String interval = "";
-        for(int i = 0; i< alarmsString.length(); i++){
-            letter = alarmsString.charAt(i);
-            if(letter == '#'){
-                isAlarm = copyStr(aux);
-                aux = "";
-            }
-            else if(letter =='&'){
-                hour = copyStr(aux);
-                aux = "";
-            }else if(letter == '?'){
-                minute = copyStr(aux);
-                aux = "";
-            }else if(letter == '\n'){
-                interval = copyStr(aux);
-                aux = "";
-            }else{
-                aux += letter;
-            }
-        }
-        int[] clockValues = new int[4];
+        String[] alarmData = readStringFromFile("alarms", context).split("#");
+
+        int[] alarmValues = new int[4];
         try{
-            clockValues[0] = Integer.parseInt(isAlarm);
-            clockValues[1] = Integer.parseInt(hour);
-            clockValues[2] = Integer.parseInt(minute);
-            clockValues[3] = Integer.parseInt(interval);
+            alarmValues[0] = Integer.parseInt(alarmData[0]);
+            alarmValues[1] = Integer.parseInt(alarmData[1]);
+            alarmValues[2] = Integer.parseInt(alarmData[2]);
+            alarmValues[3] = Integer.parseInt(alarmData[3]);
         }catch (Exception e){
-            int[] returnable = new int[4];
-            returnable[0] = -1;
-            returnable[1] = -1;
-            returnable[2] = -1;
-            returnable[3] = -1;
-            return returnable;
+            Log.v("Exception", e.getMessage());
+            //  Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
+            for (int i = 0; i < alarmValues.length; i++){
+                alarmValues[i] = -1;
+            }
         }
-        return clockValues;
-        //return "Hours: "+hour+" and minutes: "+minute+" and interval: "+interval;
+        return alarmValues;
     }
 
 
@@ -149,7 +103,5 @@ public class FileHandler {
     public static String loadOAuth2code(Context context){
         return readStringFromFile("OAuth2",context);
     }
-
-
 
 }
