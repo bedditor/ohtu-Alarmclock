@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- package name must be unique so suffix with "tests" so package loader doesn't ignore us -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.tests"
+          package="ohtu.beddit.tests"
           android:versionCode="1"
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="8"/>
@@ -17,6 +17,6 @@
     "adb shell am instrument -w com.example.tests/android.test.InstrumentationTestRunner"
     -->
     <instrumentation android:name="android.test.InstrumentationTestRunner"
-                     android:targetPackage="com.example"
-                     android:label="Tests for com.example"/>
+                     android:targetPackage="ohtu.beddit"
+                     android:label="Tests for ohtu.beddit"/>
 </manifest>

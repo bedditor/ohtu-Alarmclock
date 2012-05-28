@@ -1,15 +1,18 @@
-package com.example;
+package ohtu.beddit;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
+import ohtu.beddit.activity.MainActivity;
+import ohtu.beddit.alarm.AlarmService;
+import ohtu.beddit.views.CustomTimePicker;
 
-public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity> {
+public class MyActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    private MyActivity mActivity;
+    private MainActivity mActivity;
     private CustomTimePicker timePicker;
 
     public MyActivityTest() {
-        super("com.example", MyActivity.class);
+        super("com.example", MainActivity.class);
     }
 
     @Override
@@ -35,26 +38,26 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
     }
 
     public void testSetAlarm(){
-        AlarmScheduler alarmScheduler = new AlarmSchedulerMock();
-        mActivity.setAlarmScheduler(alarmScheduler);
+        AlarmService AlarmService = new AlarmServiceMock();
+        mActivity.setAlarmService(AlarmService);
         incrementHours();
         TouchUtils.clickView(this, mActivity.findViewById(R.id.setAlarmButton));
-        assertEquals("Did not add alarm", 1, ((AlarmSchedulerMock) alarmScheduler).getAdds());
-        assertEquals("Wrong hours", timePicker.getHours(), ((AlarmSchedulerMock)alarmScheduler).getHours());
-        assertEquals("Wrong minutes", timePicker.getMinutes(), ((AlarmSchedulerMock)alarmScheduler).getMinutes());
+        assertEquals("Did not add alarm", 1, ((AlarmServiceMock) AlarmService).getAdds());
+        assertEquals("Wrong hours", timePicker.getHours(), ((AlarmServiceMock)AlarmService).getHours());
+        assertEquals("Wrong minutes", timePicker.getMinutes(), ((AlarmServiceMock)AlarmService).getMinutes());
     }
 
     public void testDeleteAlarm(){
-        AlarmScheduler alarmScheduler = new AlarmSchedulerMock();
-        mActivity.setAlarmScheduler(alarmScheduler);
+        AlarmService AlarmService = new AlarmServiceMock();
+        mActivity.setAlarmService(AlarmService);
         TouchUtils.clickView(this, mActivity.findViewById(R.id.setAlarmButton));
         TouchUtils.clickView(this, mActivity.findViewById(R.id.deleteAlarmButton));
-        assertEquals("Did not delete alarm", 1, ((AlarmSchedulerMock) alarmScheduler).getDeletes());
+        assertEquals("Did not delete alarm", 1, ((AlarmServiceMock) AlarmService).getDeletes());
     }
 
     public void testAlarmManagerSet(){
         AlarmManagerMock alarmManager = new AlarmManagerMock();
-        mActivity.getAlarmScheduler().setAlarmManager(alarmManager);
+        mActivity.getAlarmService().setAlarmManager(alarmManager);
 
         TouchUtils.clickView(this, mActivity.findViewById(R.id.setAlarmButton));
         assertEquals("Did not add alarm to manager", 1, alarmManager.getSets());
@@ -62,7 +65,7 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
 
     public void testAlarmManagerCancel(){
         AlarmManagerMock alarmManager = new AlarmManagerMock();
-        mActivity.getAlarmScheduler().setAlarmManager(alarmManager);
+        mActivity.getAlarmService().setAlarmManager(alarmManager);
 
         incrementHours();
         TouchUtils.clickView(this, mActivity.findViewById(R.id.setAlarmButton));

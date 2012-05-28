@@ -1,6 +1,8 @@
-package com.example;
+package ohtu.beddit;
 
 import android.content.Context;
+import ohtu.beddit.alarm.AlarmManagerInterface;
+import ohtu.beddit.alarm.AlarmService;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,7 +11,7 @@ import android.content.Context;
  * Time: 11:04
  * To change this template use File | Settings | File Templates.
  */
-public class AlarmSchedulerMock implements AlarmScheduler {
+public class AlarmServiceMock implements AlarmService {
     int hours = -1;
     int minutes = -1;
     int interval = -1;
@@ -17,7 +19,7 @@ public class AlarmSchedulerMock implements AlarmScheduler {
     int deletes = 0;
     boolean alarmSet = false;
 
-    public AlarmSchedulerMock(){
+    public AlarmServiceMock(){
         this.hours = -1;
         this.minutes = -1;
         this.interval = -1;
@@ -45,6 +47,7 @@ public class AlarmSchedulerMock implements AlarmScheduler {
     public void setAlarmManager(AlarmManagerInterface alarmManager) {
         //do nothing
     }
+
 
     @Override
     public int[] getAlarm(Context context) {
