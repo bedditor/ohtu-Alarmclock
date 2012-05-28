@@ -1,6 +1,7 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,9 +24,9 @@ public class MainActivity extends Activity
 {
 
     private AlarmService alarmService;
-    AlarmTimePicker alarmTimePicker;
-    Button addAlarm;
-    Button deleteAlarm;
+    private AlarmTimePicker alarmTimePicker;
+    private Button addAlarmButton;
+    private Button deleteAlarmButton;
 
     /** Called when the alarm is first created. */
     @Override
@@ -49,26 +50,23 @@ public class MainActivity extends Activity
         //Set clock, buttons and listeners
         alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
 
-        addAlarm = (Button) findViewById(R.id.setAlarmButton);
-        addAlarm.setOnClickListener(new AlarmSetButtonClickListener());
-        deleteAlarm = (Button)findViewById(R.id.deleteAlarmButton);
-        deleteAlarm.setOnClickListener(new AlarmDeleteButtonClickListener());
+        addAlarmButton = (Button) findViewById(R.id.setAlarmButton);
+        addAlarmButton.setOnClickListener(new AlarmSetButtonClickListener());
+        deleteAlarmButton = (Button)findViewById(R.id.deleteAlarmButton);
+        deleteAlarmButton.setOnClickListener(new AlarmDeleteButtonClickListener());
 
         //Set layout
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
-
     }
 
     private void setClockHandles() {
-        int[] results = alarmService.getAlarm(MainActivity.this);
+        Context context = MainActivity.this;
         CustomTimePicker clock = (CustomTimePicker)alarmTimePicker;
-        if(results[0] > 0){
-            clock.setHours(results[1]);
-            clock.setMinutes(results[2]);
-            clock.setInterval(results[3]);
-        }
+        clock.setHours(alarmService.getAlarmHours(context));
+        clock.setMinutes(alarmService.getAlarmMinutes(context));
+        clock.setInterval(alarmService.getAlarmInterval(context));
     }
 
     @Override
@@ -95,7 +93,6 @@ public class MainActivity extends Activity
         public void onClick(View view) {
             alarmService.deleteAlarm(MainActivity.this);
             MainActivity.this.updateButtons();
-
         }
     }
 
@@ -103,11 +100,11 @@ public class MainActivity extends Activity
     // Set buttons to on/off
     public void updateButtons(){
         if (alarmService.isAlarmSet(this.getApplicationContext())){
-            addAlarm.setEnabled(false);
-            deleteAlarm.setEnabled(true);
+            addAlarmButton.setEnabled(false);
+            deleteAlarmButton.setEnabled(true);
         } else {
-            addAlarm.setEnabled(true);
-            deleteAlarm.setEnabled(false);
+            addAlarmButton.setEnabled(true);
+            deleteAlarmButton.setEnabled(false);
         }
         Log.v("User Interface", "Buttons updated");
 

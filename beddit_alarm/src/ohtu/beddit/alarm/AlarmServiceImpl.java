@@ -26,7 +26,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval){
-        FileHandler.saveAlarm(hours, minutes, interval, context, true);
+        FileHandler.saveAlarm(hours, minutes, interval, true, context);
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
@@ -52,7 +52,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         // Cancel the alarm!
         alarmManager.cancel(sender);
-        FileHandler.saveAlarm(0,0,0,context, false);
+        FileHandler.disableAlarm(context);
 
         Toast.makeText(context, "Hälytys poistettu", Toast.LENGTH_LONG).show();
 
@@ -81,7 +81,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public int[] getAlarm(Context context){
-         return FileHandler.getAlarms(context);
+         return FileHandler.getAlarm(context);
     }
 
     public boolean isAlarmSet(Context context){

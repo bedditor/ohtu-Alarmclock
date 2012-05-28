@@ -8,14 +8,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: lagvare
- * Date: 21.5.2012
- * Time: 15:41
- * To change this template use File | Settings | File Templates.
- */
+
 public class FileHandler {
+
+    public static final String ALARMS_FILENAME = "beddit_alarms";
+    public static final String OAUTH_FILENAME = "beddit_oauth";
+
 
     public static boolean writeToFile(String filename, String writable, Context context){
         FileOutputStream fos = null;
@@ -39,13 +37,11 @@ public class FileHandler {
             Log.v("Filehandler", "File not found");
             return "";
         }
+
         try{
-            int readCharacter = 0;
-            while(readCharacter != -1){
-                readCharacter=fis.read();
-                if(readCharacter != -1){
-                    returnedString += (char)readCharacter;
-                }
+            int readCharacter;
+            while((readCharacter = fis.read()) != -1){
+                returnedString += (char)readCharacter;
             }
             fis.close();
         }catch (IOException f){
@@ -56,28 +52,26 @@ public class FileHandler {
         return returnedString;
     }
 
-    public static String copyStr(String tocopy){
-        return new String(tocopy);
+    public static boolean saveAlarm(int hour, int minute, int interval, boolean enabled, Context context){
+        int alarmSet = -1;
+        if(enabled) alarmSet = 1;
+        String towrite = ""+alarmSet+'#'+hour+'#'+minute+'#'+interval;
+        return writeToFile(ALARMS_FILENAME, towrite, context);
     }
 
-
-    public static boolean saveAlarm(int hour, int minute, int interval, Context context, boolean isAlarm){
-        int realAlarm = 0;
-        if(isAlarm){
-            realAlarm = 1;
-        }
-        String towrite = ""+realAlarm+'#'+hour+'#'+minute+'#'+interval;
-        return writeToFile("alarms", towrite, context);
+    public static boolean disableAlarm(Context context){
+        int[] oldData = getAlarm(context);
+        return saveAlarm(oldData[1], oldData[2], oldData[3], false, context);
     }
 
     /*
-        returns int[4] in the form of   1: if alarm exists
-                                        2: hours
-                                        3: minutes
-                                        4: interval
+        returns int[4] in the form of   0: if alarm exists
+                                        1: hours
+                                        2: minutes
+                                        3: interval
      */
-    public static int[] getAlarms(Context context){
-        String[] alarmData = readStringFromFile("alarms", context).split("#");
+    public static int[] getAlarm(Context context){
+        String[] alarmData = readStringFromFile(ALARMS_FILENAME, context).split("#");
 
         int[] alarmValues = new int[4];
         try{
@@ -88,20 +82,22 @@ public class FileHandler {
         }catch (Exception e){
             Log.v("Exception", e.getMessage());
             //  Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
-            for (int i = 0; i < alarmValues.length; i++){
-                alarmValues[i] = -1;
+            alarmValues[0] = -1;
+            for (int i = 1; i < alarmValues.length; i++){
+                alarmValues[i] = 0;
             }
+            saveAlarm(0, 0, 0, false, context);
         }
         return alarmValues;
     }
 
 
     public static boolean saveOAuth2code(String code, Context context){
-        return writeToFile("OAuth2", code, context);
+        return writeToFile(OAUTH_FILENAME, code, context);
     }
 
     public static String loadOAuth2code(Context context){
-        return readStringFromFile("OAuth2",context);
+        return readStringFromFile(OAUTH_FILENAME,context);
     }
 
 }
