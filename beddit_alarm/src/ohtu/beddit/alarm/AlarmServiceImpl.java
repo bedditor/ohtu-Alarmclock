@@ -37,7 +37,8 @@ public class AlarmServiceImpl implements AlarmService {
 
         // Calculate first wake up try
         Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
-        setNotification(1,interval,calendar.getTimeInMillis(),context);
+        Notifications.setNotification(1, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
+                                     hours, minutes,context);
         addWakeUpAttempt(context, calendar);
     }
 
@@ -80,7 +81,7 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.cancel(sender);
         FileHandler.disableAlarm(context);
 
-        resetNotification(1,context);
+        Notifications.resetNotification(1,context);
 
     }
 
@@ -94,54 +95,6 @@ public class AlarmServiceImpl implements AlarmService {
 
     private int[] getAlarm(Context context){
         return FileHandler.getAlarm(context);
-    }
-
-    public int setNotification(int ID, long interval, long time ,Context context){
-        Log.v("Notification","added");
-        NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        int icon = R.drawable.kello48;
-        Notification notification = new Notification(icon,"",System.currentTimeMillis());
-        Intent intention = new Intent(context, MainActivity.class);
-        PendingIntent pendIntent = PendingIntent.getActivity(context, 0,intention,0);
-
-        interval = interval * 60 * 1000;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(time);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        String intervalBegin = timeAsString(hour, minute);
-
-        calendar.setTimeInMillis(time+interval);
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
-
-        String intervalEnd = timeAsString(hour,minute);
-
-        String timeprint = intervalBegin + " - " + intervalEnd;
-        if(intervalBegin.equals(intervalEnd))
-            timeprint = intervalBegin;
-        notification.setLatestEventInfo(context, "Hälytys asetettu: ",timeprint,pendIntent);
-        notificationman.notify(ID, notification);
-        return ID;
-    }
-
-    //staattinen funktio jonka voi tunkea muualle
-    public static String timeAsString(int hour, int minute){
-        String hourString = "";
-        String minuteString = "";
-        if (hour < 10)
-            hourString += "0";
-        if (minute < 10)
-            minuteString += "0";
-        hourString += hour;
-        minuteString += minute;
-        return hourString+":"+minuteString;
-    }
-
-    public void resetNotification(int ID, Context context){
-        NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationman.cancel(ID);
     }
 
     @Override

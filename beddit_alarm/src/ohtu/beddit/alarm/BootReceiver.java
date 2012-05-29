@@ -14,7 +14,6 @@ public class BootReceiver extends BroadcastReceiver {
 
         if (alarmService.isAlarmSet(context)){
             addAlarm(context);
-            addNotification(context);
         }
 
     }
@@ -27,7 +26,4 @@ public class BootReceiver extends BroadcastReceiver {
         alarmService.addAlarm(context, hours, minutes, interval);
     }
 
-    private void addNotification(Context context){
-        //not implemented
-    }
 }
