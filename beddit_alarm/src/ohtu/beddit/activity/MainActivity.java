@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
@@ -83,6 +84,8 @@ public class MainActivity extends Activity
         public void onClick(View view) {
             alarmService.addAlarm(MainActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
             MainActivity.this.updateButtons();
+            // Tell the user about what we did.
+            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmset), Toast.LENGTH_LONG).show();
 
         }
     }
@@ -93,6 +96,7 @@ public class MainActivity extends Activity
         public void onClick(View view) {
             alarmService.deleteAlarm(MainActivity.this);
             MainActivity.this.updateButtons();
+            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmremoved), Toast.LENGTH_LONG).show();
         }
     }
 

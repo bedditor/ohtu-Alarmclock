@@ -32,7 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         else if(getSecondsUntilLastWakeUpTime(context) <= checkTime){ //no time to do any more checking, schedule final wake up
             Log.v(TAG, "No time to check anymore, schedule wake up");
-            alarmService.addAlarmTry(context, getLastWakeUpTime(context));
+            alarmService.addWakeUpAttempt(context, getLastWakeUpTime(context));
         }
         else if(alarmChecker.wakeUpNow()){ //check if we should wake up now
             Log.v(TAG, "Alarm checker gave permission to wake up, starting alarm");
@@ -86,11 +86,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if(timeForNextTry.before(lastWakeUpTime)){ //still time for another interval
             Log.v(TAG, "next try scheduled to "+timeForNextTry.get(Calendar.HOUR_OF_DAY)+":"+timeForNextTry.get(Calendar.MINUTE)+":"+timeForNextTry.get(Calendar.SECOND));
-            alarmService.addAlarmTry(context, timeForNextTry);
+            alarmService.addWakeUpAttempt(context, timeForNextTry);
         }
         else{ //no more time, schedule final wake up
             Log.v(TAG, "next try scheduled to last wake up time "+lastWakeUpTime.get(Calendar.HOUR_OF_DAY)+":"+lastWakeUpTime.get(Calendar.MINUTE)+":"+lastWakeUpTime.get(Calendar.SECOND));
-            alarmService.addAlarmTry(context, lastWakeUpTime);
+            alarmService.addWakeUpAttempt(context, lastWakeUpTime);
         }
     }
 

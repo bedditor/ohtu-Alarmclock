@@ -14,13 +14,11 @@ import java.util.Calendar;
 public interface AlarmService {
     void addAlarm(Context context, int hours, int minutes, int interval);
 
-    void addAlarmTry(Context context, Calendar time);
+    void addWakeUpAttempt(Context context, Calendar time);
 
     void deleteAlarm(Context context);
 
     public void setAlarmManager(AlarmManagerInterface alarmManager);
-
-    public int[] getAlarm(Context context);
 
     public boolean isAlarmSet(Context context);
 
