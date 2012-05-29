@@ -27,10 +27,12 @@ public class MainActivity extends Activity
     Button addAlarm;
     Button deleteAlarm;
 
+
     /** Called when the alarm is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         setAlarmService(new AlarmServiceImpl(this));

@@ -44,7 +44,7 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, sender);
 
-        setNotification(1,interval,calendar.getTimeInMillis(), time,context);
+        setNotification(1,interval, calendar.getTimeInMillis(), time,context);
         // Tell the user about what we did.
         Toast.makeText(context, "Hälytys asetettu", Toast.LENGTH_LONG).show();
 
@@ -102,14 +102,14 @@ public class AlarmServiceImpl implements AlarmService {
     public int setNotification(int ID, long interval, long time, String endTime,Context context){
         NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         int icon = R.drawable.kello48;
-        Notification notification = new Notification(icon,"",time);
+        Notification notification = new Notification(icon,"",System.currentTimeMillis());
         Intent intention = new Intent(context, MainActivity.class);
         PendingIntent pendIntent = PendingIntent.getActivity(context, 0,intention,0);
 
         interval = interval * 60 * 1000;
         String intervalBegin = "";
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis()-interval);
+        calendar.setTimeInMillis(time-interval);
 
         intervalBegin += calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
         notification.setLatestEventInfo(context, "Hälytys asetettu: ",intervalBegin + " - "+endTime,pendIntent);
