@@ -17,7 +17,7 @@ import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.AlarmTimePicker;
-import ohtu.beddit.views.CustomTimePicker;
+import ohtu.beddit.views.timepicker.CustomTimePicker;
 
 public class MainActivity extends Activity
 {
