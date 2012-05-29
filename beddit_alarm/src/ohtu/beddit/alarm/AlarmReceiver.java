@@ -26,7 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Log.v(TAG, "Received alarm");
         Log.v(TAG, "second until last wake up "+ getSecondsUntilLastWakeUpTime(context));
-        if(getSecondsUntilLastWakeUpTime(context) < 5){ //last time reached, wake up
+        if(getSecondsUntilLastWakeUpTime(context) < 3){ //last time reached, wake up
             Log.v(TAG, "Wake up time reached, starting alarm");
             startAlarm(context);
         }
@@ -42,8 +42,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.v(TAG, "Scheduling next try");
             scheduleNextTry(context);
         }
-
     }
+
 
     private void startAlarm(Context context) {
         Intent newintent = new Intent(context, AlarmActivity.class);
@@ -82,16 +82,15 @@ public class AlarmReceiver extends BroadcastReceiver {
         Calendar timeForNextTry = Calendar.getInstance();
         timeForNextTry.add(Calendar.SECOND, wakeUpAttemptInterval);
 
-        Calendar lastPossibleTry = getLastWakeUpTime(context);
-        lastPossibleTry.add(Calendar.SECOND, -checkTime);
+        Calendar lastWakeUpTime = getLastWakeUpTime(context);
 
-        if(timeForNextTry.before(lastPossibleTry)){
+        if(timeForNextTry.before(lastWakeUpTime)){ //still time for another interval
             Log.v(TAG, "next try scheduled to "+timeForNextTry.get(Calendar.HOUR_OF_DAY)+":"+timeForNextTry.get(Calendar.MINUTE)+":"+timeForNextTry.get(Calendar.SECOND));
             alarmService.addAlarmTry(context, timeForNextTry);
         }
-        else{
-            Log.v(TAG, "next try scheduled to last possible try "+lastPossibleTry.get(Calendar.HOUR_OF_DAY)+":"+lastPossibleTry.get(Calendar.MINUTE)+":"+lastPossibleTry.get(Calendar.SECOND));
-            alarmService.addAlarmTry(context, lastPossibleTry);
+        else{ //no more time, schedule final wake up
+            Log.v(TAG, "next try scheduled to last wake up time "+lastWakeUpTime.get(Calendar.HOUR_OF_DAY)+":"+lastWakeUpTime.get(Calendar.MINUTE)+":"+lastWakeUpTime.get(Calendar.SECOND));
+            alarmService.addAlarmTry(context, lastWakeUpTime);
         }
     }
 
