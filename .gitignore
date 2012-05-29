@@ -9,3 +9,5 @@
 *.iml
 */out
 *.properties
+.idea
+out

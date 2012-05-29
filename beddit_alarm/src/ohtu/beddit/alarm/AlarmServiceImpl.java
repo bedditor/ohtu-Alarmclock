@@ -2,10 +2,16 @@ package ohtu.beddit.alarm;
 
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.util.Log;
+
+import ohtu.beddit.R;
+import ohtu.beddit.activity.MainActivity;
 import ohtu.beddit.io.FileHandler;
 
 import java.util.Calendar;
@@ -31,6 +37,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         // Calculate first wake up try
         Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
+        setNotification(1,interval,calendar.getTimeInMillis(),context);
         addWakeUpAttempt(context, calendar);
     }
 
@@ -40,7 +47,6 @@ public class AlarmServiceImpl implements AlarmService {
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
         String timeString = time.get(Calendar.HOUR_OF_DAY) + ":" + time.get(Calendar.MINUTE) + ":" + time.get(Calendar.SECOND);
         Log.v(TAG, "next wake up try set to "+timeString);
-
         alarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), sender);
     }
 
@@ -56,6 +62,7 @@ public class AlarmServiceImpl implements AlarmService {
         }
 
         alarmTime.add(Calendar.MINUTE, -interval);
+
 
         Calendar currentTime = Calendar.getInstance();
         if(alarmTime.after(currentTime)){
@@ -73,6 +80,8 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.cancel(sender);
         FileHandler.disableAlarm(context);
 
+        resetNotification(1,context);
+
     }
 
     public boolean isAlarmSet(Context context){
@@ -85,6 +94,33 @@ public class AlarmServiceImpl implements AlarmService {
 
     private int[] getAlarm(Context context){
         return FileHandler.getAlarm(context);
+    }
+
+    public int setNotification(int ID, long interval, long time ,Context context){
+        NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        int icon = R.drawable.kello48;
+        Notification notification = new Notification(icon,"",System.currentTimeMillis());
+        Intent intention = new Intent(context, MainActivity.class);
+        PendingIntent pendIntent = PendingIntent.getActivity(context, 0,intention,0);
+
+        interval = interval * 60 * 1000;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        String intervalBegin = ""+ calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+        calendar.setTimeInMillis(time+interval);
+        String intervalEnd = ""+ calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+
+        String timeprint = intervalBegin + " - " + intervalEnd;
+        if(intervalBegin.equals(intervalEnd))
+            timeprint = intervalBegin;
+        notification.setLatestEventInfo(context, "Hälytys asetettu: ",timeprint,pendIntent);
+        notificationman.notify(ID, notification);
+        return ID;
+    }
+
+    public void resetNotification(int ID, Context context){
+        NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationman.cancel(ID);
     }
 
     @Override
