@@ -106,9 +106,16 @@ public class AlarmServiceImpl implements AlarmService {
         interval = interval * 60 * 1000;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
-        String intervalBegin = ""+ calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        String intervalBegin = timeAsString(hour, minute);
+
         calendar.setTimeInMillis(time+interval);
-        String intervalEnd = ""+ calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+
+        String intervalEnd = timeAsString(hour,minute);
 
         String timeprint = intervalBegin + " - " + intervalEnd;
         if(intervalBegin.equals(intervalEnd))
@@ -116,6 +123,19 @@ public class AlarmServiceImpl implements AlarmService {
         notification.setLatestEventInfo(context, "Hälytys asetettu: ",timeprint,pendIntent);
         notificationman.notify(ID, notification);
         return ID;
+    }
+
+    //staattinen funktio jonka voi tunkea muualle
+    public static String timeAsString(int hour, int minute){
+        String hourString = "";
+        String minuteString = "";
+        if (hour < 10)
+            hourString += "0";
+        if (minute < 10)
+            minuteString += "0";
+        hourString += hour;
+        minuteString += minute;
+        return hourString+":"+minuteString;
     }
 
     public void resetNotification(int ID, Context context){
