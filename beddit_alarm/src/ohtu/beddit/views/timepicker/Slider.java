@@ -6,6 +6,9 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.Log;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: psaikko
@@ -13,19 +16,37 @@ import android.util.Log;
  * Time: 14:46
  * To change this template use File | Settings | File Templates.
  */
-public class Slider {
-    public float x;
-    public float y;
-    public float w;
-    public float h;
-    public int maxValue;
-    public int currentValue;
+public class Slider implements Grabbable {
+    private float x;
+    private float y;
+    private float w;
+    private float h;
+    private int maxValue;
+    private int currentValue;
 
-    public float strokeWidth;
-    public float grabPointRadius;
+    private Paint p;
+    private GrabPoint gp;
 
-    public float sliderGrabX;
-    public float sliderGrabY;
+    List<SliderListener> listeners = new LinkedList<SliderListener>();
+
+    public Slider(float x, float y, float width, float height,
+                  int maxValue, int initValue,
+                  Paint p,
+                  float grabPointSize) {
+        this.x = x;
+        this.y = y;
+        this.w = width;
+        this.h = height;
+        this.maxValue = maxValue;
+        this.currentValue = initValue;
+        this.p = p;
+        this.gp = new GrabPoint(getRectF().left + ((float)currentValue)/((float)maxValue) * w,
+                                getRectF().centerY(), grabPointSize, p);
+    }
+
+    public void addListener(SliderListener listener) {
+        listeners.add(listener);
+    }
 
     public RectF getRectF() {
         return new RectF(x,y,x+w,y+h);
@@ -38,37 +59,56 @@ public class Slider {
             currentValue = maxValue;
         else
             currentValue = (int)(((newX - x)/w)*(float)maxValue);
+
+        for(SliderListener sl : listeners) sl.onValueChanged(currentValue);
     }
 
     public void draw(Canvas c) {
-        Paint intervalBarPaint = new Paint();
-        intervalBarPaint.setColor(Color.BLACK);
-
-        intervalBarPaint.setStyle(Paint.Style.STROKE);
-        intervalBarPaint.setStrokeWidth(strokeWidth);
-        intervalBarPaint.setAntiAlias(true);
-
         c.drawLine(getRectF().left,
                 getRectF().centerY(),
                 getRectF().right,
                 getRectF().centerY(),
-                intervalBarPaint);
+                p);
 
-        sliderGrabX = getRectF().left + ((float)currentValue)/((float)maxValue) * w;
-        sliderGrabY = getRectF().centerY();
-
-        c.drawCircle(sliderGrabX, sliderGrabY, grabPointRadius, intervalBarPaint);
-    }
-
-    public boolean onGrabPoint(float x_, float y_) {
-        Log.v("slider_grab_dist", ""+dist(x_,y_,sliderGrabX,sliderGrabY));
-        Log.v("slider_grab_dist", ""+grabPointRadius*2);
-        Log.v("slider_grab_dist", ""+(dist(x_,y_,sliderGrabX,sliderGrabY) < grabPointRadius*2));
-        return dist(x_,y_,sliderGrabX,sliderGrabY) < grabPointRadius*2;
-
+        gp.setX(getRectF().left + ((float)currentValue)/((float)maxValue) * w);
+        gp.setY(getRectF().centerY());
+        gp.draw(c);
     }
 
     private double dist(float x1, float y1, float x2, float y2) {
         return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    }
+
+    private boolean grabbed;
+
+    @Override
+    public boolean grab(float x, float y) {
+        return grabbed = gp.onGrabPoint(x, y);
+    }
+
+    @Override
+    public void releaseGrab() {
+        grabbed = false;
+    }
+
+    @Override
+    public boolean isGrabbed() {
+        return grabbed;
+    }
+
+    public int getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
+    }
+
+    public int getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(int currentValue) {
+        this.currentValue = currentValue;
     }
 }

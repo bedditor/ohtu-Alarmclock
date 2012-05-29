@@ -10,30 +10,32 @@ import android.util.Log;
  * Time: 14:45
  * To change this template use File | Settings | File Templates.
  */
-public class AnalogClock {
+public class AnalogClock implements SliderListener{
 
-    public float x;
-    public float y;
-    public float radius;
-    public float interval;
-    public float numberSize;
-    public float hourHandLength;
-    public double minuteHandAngle;
+    private float x;
+    private float y;
+    private float radius;
+    private float numberSize;
+    private ClockHand minuteHand;
+    private ClockHand hourHand;
+    private int interval;
 
-    public double getAngleToMidpoint(float x_, float y_) {
-        double angle = Math.atan((y_ - y) / (x_ - x)) + Math.PI / 2;
-        Log.v("ANGLE", ""+Math.toDegrees(angle));
-        if (x_ - x < 0)
-            angle += Math.PI;
-        return angle;
+    public AnalogClock(float x, float y, float radius, float numberSize,
+                       ClockHand minuteHand, ClockHand hourHand) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.numberSize = numberSize;
+        this.minuteHand = minuteHand;
+        this.hourHand = hourHand;
     }
 
     public boolean onHourArea(float x_, float y_) {
-        return dist(x_,y_,x,y) < hourHandLength;
+        return dist(x_,y_,x,y) < hourHand.getLength();
     }
 
     public boolean onMinuteArea(float x_, float y_) {
-        return dist(x_,y_,x,y) < radius;
+        return dist(x_,y_,x,y) < minuteHand.getLength();
     }
 
     private double dist(float x1, float y1, float x2, float y2) {
@@ -55,17 +57,18 @@ public class AnalogClock {
         clockMinBackground.setAntiAlias(true);
 
         c.drawArc(new RectF(x-radius, y-radius, x+radius, y+radius),
-                (float) Math.toDegrees(minuteHandAngle - Math.PI / 2),
+                (float) Math.toDegrees(minuteHand.getAngle()),
                 (float) Math.toDegrees(-(Math.PI / 30.0) * interval),
                 true,
                 intervalArcPaint);
         c.drawCircle(x,y, radius * 0.95f, clockMinBackground);
-        c.drawCircle(x,y, hourHandLength, clockHourBackground);
+        c.drawCircle(x,y, hourHand.getLength(), clockHourBackground);
 
         Paint linePaint = new Paint();
         linePaint.setColor(Color.DKGRAY);
         linePaint.setAntiAlias(true);
         linePaint.setStrokeWidth(2);
+
         for (double m = 0; m < 60; m++) {
             double angle = Math.PI * 2 * m / 60;
             float xDir = (float) Math.cos(angle);
@@ -91,8 +94,12 @@ public class AnalogClock {
                     linePaint);
         }
 
+        hourHand.draw(c);
+        minuteHand.draw(c);
     }
 
-
-
+    @Override
+    public void onValueChanged(int value) {
+        interval = value;
+    }
 }

@@ -3,6 +3,7 @@ package ohtu.beddit.views.timepicker;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,46 +12,83 @@ import android.graphics.Paint;
  * Time: 15:15
  * To change this template use File | Settings | File Templates.
  */
-public class ClockHand {
-    public float x;
-    public float y;
-    public double angle;
-    public float length;
-    public float grabPointSize;
-    public float grabPointX;
-    public float grabPointY;
-    public float strokeWidth;
-    public float grabPointOffset;
+public class ClockHand implements Grabbable {
+    private float x;
+    private float y;
+    private double angle;
+    private float length;
+    private float grabPointOffset;
+    private Paint p;
+    private GrabPoint gp;
+
+    public ClockHand(float x, float y, double angle, float length, Paint p, float grabPointOffset, float grabPointSize) {
+        this.x = x;
+        this.y = y;
+        this.angle = angle;
+        this.grabPointOffset = grabPointOffset;
+        this.length = length;
+        this.p = p;
+        this.gp = new GrabPoint(x + (float)Math.cos(angle) * (length-grabPointOffset),
+                                y + (float)Math.sin(angle) * (length-grabPointOffset),
+                                grabPointSize, p);
+    }
 
     public void draw(Canvas c) {
-        Paint clockHand = new Paint();
-        clockHand.setColor(Color.BLACK);
-        clockHand.setAntiAlias(true);
-        clockHand.setStrokeWidth(strokeWidth);
-        clockHand.setStyle(Paint.Style.STROKE);
-
         double xDir = Math.cos(angle);
         double yDir = Math.sin(angle);
 
         float endX = (float) xDir * length;
         float endY = (float) yDir * length;
 
-        grabPointX = x + (float) xDir * (length-grabPointOffset);
-        grabPointY = y + (float) yDir * (length-grabPointOffset);
+        gp.setX(x + (float) xDir * (length-grabPointOffset));
+        gp.setY(y + (float) yDir * (length-grabPointOffset));
 
-        c.drawLine(x, y, x + endX, y + endY, clockHand);
 
-        c.drawCircle(grabPointX, grabPointY, grabPointSize, clockHand);
-        clockHand.setStyle(Paint.Style.FILL);
-        c.drawCircle(x,y,strokeWidth/2,clockHand);
+        gp.draw(c);
+        c.drawLine(x, y, x + endX, y + endY, p);
+
+        p.setStyle(Paint.Style.FILL);
+        c.drawCircle(x,y,p.getStrokeWidth()/2,p);
+        p.setStyle(Paint.Style.STROKE);
     }
 
-    public boolean onGrabPoint(float x_, float y_) {
-        return dist(x_,y_,grabPointX,grabPointY) < grabPointSize*2;
+
+    boolean grabbed = false;
+
+    @Override
+    public boolean grab(float x, float y) {
+        return grabbed = gp.onGrabPoint(x, y);
     }
 
-    private double dist(float x1, float y1, float x2, float y2) {
-        return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    @Override
+    public void releaseGrab() {
+        grabbed = false;
     }
 
+    @Override
+    public boolean isGrabbed() {
+        return grabbed;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+
+    public float getLength() {
+        return length;
+    }
+
+    public void setLength(float length) {
+        this.length = length;
+    }
+
+    public double getAngleToMidpoint(float x_, float y_) {
+        double angle = Math.atan((y_ - y) / (x_ - x)) + Math.PI / 2;
+        if (x_ - x < 0) angle += Math.PI;
+        return angle;
+    }
 }

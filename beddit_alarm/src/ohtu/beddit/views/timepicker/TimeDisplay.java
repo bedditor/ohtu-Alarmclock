@@ -12,27 +12,37 @@ import android.graphics.Paint;
  * To change this template use File | Settings | File Templates.
  */
 public class TimeDisplay {
-    public float x;
-    public float y;
-    public float textSize;
-    public int hours;
-    public int minutes;
+    private float x;
+    private float y;
+    private int hours;
+    private int minutes;
+    private Paint p;
 
-    public void draw(Canvas c) {
-        Paint textPaint = new Paint();
-        textPaint.setTextSize(textSize);
-        textPaint.setAntiAlias(true);
-        textPaint.setColor(Color.BLACK);
-
-        String time = timeToString(hours, minutes);
-        float textLength = textPaint.measureText(time);
-
-        c.drawText(time, x - textLength / 2, y, textPaint);
+    public TimeDisplay(float x, float y, int hours, int minutes, Paint p) {
+        this.x = x;
+        this.y = y;
+        this.hours = hours;
+        this.minutes = minutes;
+        this.p = p;
     }
 
-    public String timeToString(int h, int m) {
+    public void draw(Canvas c) {
+        String time = timeToString(hours, minutes);
+        float textLength = p.measureText(time);
+        c.drawText(time, x - textLength / 2, y, p);
+    }
+
+    private String timeToString(int h, int m) {
         String hours = h < 10 ? "0" + h : Integer.toString(h);
         String minutes = m < 10 ? "0" + m : Integer.toString(m);
         return hours + ":" + minutes;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
     }
 }
