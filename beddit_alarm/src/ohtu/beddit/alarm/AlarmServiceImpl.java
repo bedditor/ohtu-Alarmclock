@@ -97,6 +97,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public int setNotification(int ID, long interval, long time ,Context context){
+        Log.v("Notification","added");
         NotificationManager notificationman= (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         int icon = R.drawable.kello48;
         Notification notification = new Notification(icon,"",System.currentTimeMillis());

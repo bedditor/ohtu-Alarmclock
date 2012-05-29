@@ -17,7 +17,7 @@ public class AlarmCheckerRandomImpl implements AlarmChecker{
 
     @Override
     public int getWakeUpAttemptInterval() {
-        return 30;
+        return 180;
     }
 
     @Override

@@ -41,11 +41,11 @@ public class AlarmActivity extends Activity {
 
         Log.v(TAG, "I want WakeUpLock");
         WakeUpLock.acquire(this);
-
         makeNewAlarmServiceAndDeleteAlarm();
         makeButtons();
         vibratePhone();
         playMusic();
+
     }
 
 

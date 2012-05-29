@@ -46,9 +46,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
     private void startAlarm(Context context) {
-        Intent newintent = new Intent(context, AlarmActivity.class);
-        newintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-        context.startActivity(newintent);
+        Intent newIntent = new Intent(context, AlarmActivity.class);
+        newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+        context.startActivity(newIntent);
     }
 
     private int getSecondsUntilLastWakeUpTime(Context context){
@@ -59,20 +59,13 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private Calendar getLastWakeUpTime(Context context){
-        Calendar twoHoursBeforeCurrentTime = Calendar.getInstance();
-        twoHoursBeforeCurrentTime.add(Calendar.HOUR_OF_DAY, -2);
         Calendar wakeUpTime = Calendar.getInstance();
         wakeUpTime.set(Calendar.HOUR_OF_DAY, alarmService.getAlarmHours(context));
         wakeUpTime.set(Calendar.MINUTE, alarmService.getAlarmMinutes(context));
         wakeUpTime.set(Calendar.SECOND, 0);
         wakeUpTime.set(Calendar.MILLISECOND, 0);
 
-        /*
-            If wake up time is a lot before current time, change day.
-            The day will be not changed if its just before current time to avoid problems.
-            45 min max interval guarantees that the day will be set right.
-         */
-        if(wakeUpTime.before(twoHoursBeforeCurrentTime)){
+        if (wakeUpTime.getTimeInMillis() + 5000 < System.currentTimeMillis()){
             wakeUpTime.add(Calendar.DAY_OF_YEAR, 1);
         }
         return wakeUpTime;
