@@ -25,5 +25,6 @@
 
     <string name="pref_title_alarm_settings">Herätysasetukset</string>
     <string name="pref_title_snooze_length">Torkkuherätyksen viive</string>
+    <string name="help_text_1">Do you really need help with this.. -_-</string>
 
 </resources>
