@@ -2,11 +2,14 @@ package ohtu.beddit.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import ohtu.beddit.R;
 import ohtu.beddit.io.FileHandler;
+import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.AmazingWebClient;
 import ohtu.beddit.web.TokenListener;
 
@@ -48,10 +51,12 @@ public class AuthActivity extends Activity implements TokenListener {
         Log.v("AuthActivity", "Trying to match: " + token);
         if (m.matches()) {
             Log.v("AuthActivity", "Matches: " + m.group(1));
-            FileHandler.saveOAuth2code(m.group(1), this);
+            PreferenceService.setSetting(this, R.string.pref_key_userToken, m.group(1));
+
+            Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
             super.finish();
         }
-        if (lol == 3) //menit jonnekki muualle, kuole pois
+        if (lol == 666) //menit jonnekki muualle, kuole pois
             super.finish();
         //super.finish();
     }

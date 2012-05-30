@@ -23,6 +23,7 @@ import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.AlarmTimePicker;
 import ohtu.beddit.io.FileHandler;
+import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.views.CustomTimePicker;
 
 public class MainActivity extends Activity
@@ -51,9 +52,9 @@ public class MainActivity extends Activity
         updateButtons();
         setClockHandles();
 
-        boolean debugWeb = false;
-        Log.v("MainActivity", FileHandler.loadOAuth2code(this));
-        if (FileHandler.loadOAuth2code(this).equals("") && debugWeb) {
+        boolean debugWeb = true;
+        String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
+        if ( token == null || token.equals("") && debugWeb) {
             Intent myIntent = new Intent(this, AuthActivity.class);
             this.startActivity(myIntent);
         }
