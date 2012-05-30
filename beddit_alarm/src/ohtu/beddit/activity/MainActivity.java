@@ -56,7 +56,7 @@ public class MainActivity extends Activity
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if ( token == null || token.equals("") && debugWeb) {
             Intent myIntent = new Intent(this, AuthActivity.class);
-            this.startActivity(myIntent);
+            startActivityForResult(myIntent,2);
         }
 
     }
@@ -114,6 +114,12 @@ public class MainActivity extends Activity
         }
     }
 
+    public class backButtonlisten {
+        public void onBack(View view) {
+            MainActivity.this.finish();
+        }
+    }
+
 
     // Set buttons to on/off
     public void updateButtons(){
@@ -153,6 +159,19 @@ public class MainActivity extends Activity
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (2) : {
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    this.finish();
+                }
+                break;
+            }
+        }
     }
 
     // These methods are for tests
