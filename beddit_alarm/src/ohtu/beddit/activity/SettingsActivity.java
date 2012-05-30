@@ -82,6 +82,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public boolean onPreferenceClick(Preference preference) {
         if(preference.getKey().equals(this.getString(R.string.pref_key_forget))){
             PreferenceService.setSetting(this, R.string.pref_key_username, "");
+            PreferenceService.setSetting(this, R.string.pref_key_userToken, "");
             handleForgetPref();
         }
         else if(preference.getKey().equals(this.getString(R.string.pref_key_relogin))){
