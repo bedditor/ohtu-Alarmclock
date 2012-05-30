@@ -67,11 +67,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private void handleForgetPref(){
         String username = PreferenceService.getSettingString(this, R.string.pref_key_username);
-        if(username == null || username.equals("")){
+        String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
+        if((token == null || token.equals("")) && (username == null || username.equals(""))){
             forgetButton.setSummary(getString(R.string.pref_not_logged_in));
             forgetButton.setEnabled(false);
         }
-        else{
+        else{ //joko token tai username löytyy
             forgetButton.setSummary(getString(R.string.pref_logged_in_as) + " " + username);
             forgetButton.setEnabled(true);
         }
