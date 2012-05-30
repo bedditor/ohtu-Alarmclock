@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Beddit Alarm</string>
-    <string name="alarm_set">Set Alarm</string>
-    <string name="alarm_unset">Cancel Alarm</string>
+
+    <string name="settings_button_title">Settings</string>
+    <string name="help_button_title">Help</string>
+
+    <string name="toast_alarmset">Alarm set</string>
+    <string name="toast_alarmremoved">Alarm removed</string>
+
+    <string name="main_act_set_alarm_button">Add Alarm</string>
+    <string name="main_act_delete_alarm_button">Delete Alarm</string>
 
     <string name="pref_title_beddit_settings">Beddit login settings</string>
     <string name="pref_summary_beddit_settings">Connect to your beddit account</string>
 
     <string name="pref_title_username">Username</string>
-    <string name="pref_key_username">username</string>
 
     <string name="pref_title_password">Password</string>
-    <string name="pref_key_password">password</string>
 
     <string name="pref_title_other_settings">Other settings</string>
 
     <string name="pref_title_awesome">Make this app awesome</string>
     <string name="pref_summary_awesome">This setting is completely useless.</string>
-    <string name="pref_key_awesome">awesome</string>
-    <string name="settings_button_title">Settings</string>
-    <string name="help_button_title">Help</string>
+
     <string name="pref_title_alarm_settings">Alarm settings</string>
-    <string name="pref_key_snooze">snooze length</string>
     <string name="pref_title_snooze_length">Snooze time length</string>
-    <string name="toast_alarmset">Alarm set</string>
-    <string name="toast_alarmremoved">Alarm removed</string>
 
 </resources>

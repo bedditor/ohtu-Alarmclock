@@ -27,14 +27,14 @@
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Add Alarm"
+                android:text="@string/main_act_set_alarm_button"
                 />
         <Button
                 android:id="@+id/deleteAlarmButton"
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Delete Alarm"
+                android:text="@string/main_act_delete_alarm_button"
                 />
     </LinearLayout>
 </LinearLayout>
