@@ -29,5 +29,6 @@
         </receiver>
         <activity android:name=".activity.SettingsActivity"/>
         <activity android:name=".activity.AuthActivity" />
+        <activity android:name=".activity.HelpActivity" />
     </application>
 </manifest> 

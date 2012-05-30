@@ -133,11 +133,11 @@ public class MainActivity extends Activity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-        Intent settingsIntent = new Intent(this.getApplicationContext(),
-                SettingsActivity.class);
-
         MenuItem settings = menu.findItem(R.id.settings_menu_button);
-        settings.setIntent(settingsIntent);
+        settings.setIntent(new Intent(this.getApplicationContext(), SettingsActivity.class));
+
+        MenuItem help = menu.findItem(R.id.help_menu_button);
+        help.setIntent(new Intent(this.getApplicationContext(), HelpActivity.class));
 
         return true;
     }
@@ -146,6 +146,9 @@ public class MainActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu_button:
+                startActivity(item.getIntent());
+                break;
+            case R.id.help_menu_button:
                 startActivity(item.getIntent());
                 break;
         }
