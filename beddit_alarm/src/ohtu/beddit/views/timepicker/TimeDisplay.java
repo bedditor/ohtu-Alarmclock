@@ -1,7 +1,6 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 /**
@@ -11,7 +10,7 @@ import android.graphics.Paint;
  * Time: 15:05
  * To change this template use File | Settings | File Templates.
  */
-public class TimeDisplay {
+public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     private float x;
     private float y;
     private int hours;
@@ -38,11 +37,13 @@ public class TimeDisplay {
         return hours + ":" + minutes;
     }
 
-    public void setHours(int hours) {
-        this.hours = hours;
+    @Override
+    public void onHourChanged(int value) {
+        this.hours = value;
     }
 
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
+    @Override
+    public void onMinuteChanged(int value) {
+        this.minutes = value;
     }
 }

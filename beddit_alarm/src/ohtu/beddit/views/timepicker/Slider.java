@@ -1,10 +1,9 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
+import android.view.View;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +15,10 @@ import java.util.List;
  * Time: 14:46
  * To change this template use File | Settings | File Templates.
  */
-public class Slider implements Grabbable {
+public class Slider extends Movable {
+
+    private static final int DEFAULT_MOVE_SPEED = 5;
+
     private float x;
     private float y;
     private float w;
@@ -27,12 +29,12 @@ public class Slider implements Grabbable {
     private Paint p;
     private GrabPoint gp;
 
-    List<SliderListener> listeners = new LinkedList<SliderListener>();
+
 
     public Slider(float x, float y, float width, float height,
-                  int maxValue, int initValue,
-                  Paint p,
-                  float grabPointSize) {
+                  int maxValue, int initValue, Paint p,
+                  float grabPointSize, View parent) {
+        super(parent);
         this.x = x;
         this.y = y;
         this.w = width;
@@ -44,23 +46,14 @@ public class Slider implements Grabbable {
                                 getRectF().centerY(), grabPointSize, p);
     }
 
-    public void addListener(SliderListener listener) {
+    List<ValueChangedListener> listeners = new LinkedList<ValueChangedListener>();
+
+    public void addListener(ValueChangedListener listener) {
         listeners.add(listener);
     }
 
     public RectF getRectF() {
         return new RectF(x,y,x+w,y+h);
-    }
-
-    public void update(float newX) {
-        if (newX < x)
-            currentValue = 0;
-        else if (newX > x+w)
-            currentValue = maxValue;
-        else
-            currentValue = (int)(((newX - x)/w)*(float)maxValue);
-
-        for(SliderListener sl : listeners) sl.onValueChanged(currentValue);
     }
 
     public void draw(Canvas c) {
@@ -75,11 +68,9 @@ public class Slider implements Grabbable {
         gp.draw(c);
     }
 
-    private double dist(float x1, float y1, float x2, float y2) {
-        return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-    }
 
     private boolean grabbed;
+    private boolean clicked;
 
     @Override
     public boolean grab(float x, float y) {
@@ -96,6 +87,48 @@ public class Slider implements Grabbable {
         return grabbed;
     }
 
+    @Override
+    public int getValue() {
+        return currentValue;
+    }
+
+    @Override
+    public void incrementValue(int inc) {
+        setValue(currentValue + inc);
+    }
+
+    @Override
+    public boolean click(float x, float y) {
+        return clicked = getRectF().contains(x,y);
+    }
+
+    @Override
+    public boolean wasClicked() {
+        return clicked;
+    }
+
+    @Override
+    public void releaseClick() {
+        clicked = false;
+    }
+
+    @Override
+    public void updatePositionFromClick(float newX, float newY) {
+        int newValue;
+        if (newX < x)
+            newValue = 0;
+        else if (newX > x+w)
+            newValue = maxValue;
+        else
+            newValue = (int)(((newX - x)/w)*(float)maxValue);
+        setValue(newValue);
+    }
+
+    public void setValue(int newValue) {
+        this.currentValue = newValue;
+        for(ValueChangedListener sl : listeners) sl.onValueChanged(currentValue);
+    }
+
     public int getMaxValue() {
         return maxValue;
     }
@@ -104,11 +137,24 @@ public class Slider implements Grabbable {
         this.maxValue = maxValue;
     }
 
-    public int getCurrentValue() {
-        return currentValue;
+    @Override
+    public int createTargetFromClick(float x, float y) {
+        return (int) (((Math.min(getRectF().right,
+                Math.max(getRectF().left, x)) - getRectF().left) /
+                getRectF().width()) * (float) maxValue);
     }
 
-    public void setCurrentValue(int currentValue) {
-        this.currentValue = currentValue;
+    @Override
+    protected Animator createAnimator(int target) {
+        return new Animator(parent, DEFAULT_MOVE_SPEED, target, this) {
+            @Override
+            public void animate() {
+                int interval = movable.getValue();
+                if (interval < target)
+                    movable.incrementValue(1);
+                else
+                    movable.incrementValue(-1);
+            }
+        };
     }
 }

@@ -1,7 +1,6 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.*;
-import android.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +9,7 @@ import android.util.Log;
  * Time: 14:45
  * To change this template use File | Settings | File Templates.
  */
-public class AnalogClock implements SliderListener{
+public class AnalogClock implements ValueChangedListener {
 
     private float x;
     private float y;
@@ -57,7 +56,7 @@ public class AnalogClock implements SliderListener{
         clockMinBackground.setAntiAlias(true);
 
         c.drawArc(new RectF(x-radius, y-radius, x+radius, y+radius),
-                (float) Math.toDegrees(minuteHand.getAngle()),
+                (float) Math.toDegrees(minuteHand.getAngle() - Math.PI / 2),
                 (float) Math.toDegrees(-(Math.PI / 30.0) * interval),
                 true,
                 intervalArcPaint);

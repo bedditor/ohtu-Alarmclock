@@ -1,9 +1,12 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.View;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,37 +15,41 @@ import android.util.Log;
  * Time: 15:15
  * To change this template use File | Settings | File Templates.
  */
-public class ClockHand implements Grabbable {
-    private float x;
-    private float y;
-    private double angle;
-    private float length;
-    private float grabPointOffset;
-    private Paint p;
-    private GrabPoint gp;
+public abstract class ClockHand extends Movable {
+    protected float x;
+    protected float y;
+    protected float length;
+    protected float grabPointOffset;
+    protected Paint p;
+    protected GrabPoint gp;
+    protected double incrementSize;
+    protected int value;
 
-    public ClockHand(float x, float y, double angle, float length, Paint p, float grabPointOffset, float grabPointSize) {
+    public ClockHand(float x, float y,
+                     int value, double incrementSize,
+                     float length, Paint p, float grabPointOffset, float grabPointSize, View parent) {
+        super(parent);
         this.x = x;
         this.y = y;
-        this.angle = angle;
+        this.value = value;
         this.grabPointOffset = grabPointOffset;
         this.length = length;
         this.p = p;
-        this.gp = new GrabPoint(x + (float)Math.cos(angle) * (length-grabPointOffset),
-                                y + (float)Math.sin(angle) * (length-grabPointOffset),
+        this.incrementSize = incrementSize;
+        this.gp = new GrabPoint(x + (float)Math.cos(getAngle()- Math.PI / 2) * (length-grabPointOffset),
+                                y + (float)Math.sin(getAngle()- Math.PI / 2) * (length-grabPointOffset),
                                 grabPointSize, p);
     }
 
     public void draw(Canvas c) {
-        double xDir = Math.cos(angle);
-        double yDir = Math.sin(angle);
+        double xDir = Math.cos(getAngle() - Math.PI / 2);
+        double yDir = Math.sin(getAngle() - Math.PI / 2);
 
         float endX = (float) xDir * length;
         float endY = (float) yDir * length;
 
         gp.setX(x + (float) xDir * (length-grabPointOffset));
         gp.setY(y + (float) yDir * (length-grabPointOffset));
-
 
         gp.draw(c);
         c.drawLine(x, y, x + endX, y + endY, p);
@@ -52,8 +59,8 @@ public class ClockHand implements Grabbable {
         p.setStyle(Paint.Style.STROKE);
     }
 
-
     boolean grabbed = false;
+    boolean clicked = false;
 
     @Override
     public boolean grab(float x, float y) {
@@ -70,25 +77,64 @@ public class ClockHand implements Grabbable {
         return grabbed;
     }
 
-    public double getAngle() {
-        return angle;
+    @Override
+    public void releaseClick() {
+        clicked = false;
     }
 
-    public void setAngle(double angle) {
-        this.angle = angle;
+    @Override
+    public boolean wasClicked() {
+        return clicked;
+    }
+
+    @Override
+    public boolean click(float x, float y) {
+        return clicked = dist(x,y,this.x,this.y) < length;
+    }
+
+    @Override
+    public int getValue() {
+        return this.value;
+    }
+
+    @Override
+    public void updatePositionFromClick(float x, float y) {
+        setAngle(getAngleToMidpoint(x,y));
     }
 
     public float getLength() {
         return length;
     }
 
-    public void setLength(float length) {
-        this.length = length;
+    public abstract double getAngle();
+
+    public abstract void setAngle(double angle);
+
+    public abstract void incrementValue(int increment);
+
+    public void setValue(int newValue) {
+        this.value = newValue;
     }
 
     public double getAngleToMidpoint(float x_, float y_) {
         double angle = Math.atan((y_ - y) / (x_ - x)) + Math.PI / 2;
         if (x_ - x < 0) angle += Math.PI;
         return angle;
+    }
+
+    public static double angleDiff(double a1, double a2) {
+        double diff = a2 - a1;
+        if (diff < -Math.PI) diff += Math.PI*2;
+        else if (diff > Math.PI) diff -= Math.PI*2;
+        return diff;
+    }
+
+    public static double dist(float x1, float y1, float x2, float y2) {
+        return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    }
+
+    @Override
+    public int createTargetFromClick(float x, float y) {
+        return (int)(getAngleToMidpoint(x, y) / incrementSize);
     }
 }

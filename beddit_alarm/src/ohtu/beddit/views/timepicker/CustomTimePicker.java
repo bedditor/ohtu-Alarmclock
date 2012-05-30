@@ -9,6 +9,9 @@ import android.view.View;
 import ohtu.beddit.alarm.AlarmTimePicker;
 import ohtu.beddit.R;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: psaikko
@@ -17,35 +20,31 @@ import ohtu.beddit.R;
  * To change this template use File | Settings | File Templates.
  */
 public class CustomTimePicker extends View implements AlarmTimePicker {
-    int minsize;
+    int minSize;
 
+    // sizes as a fraction of the clock's radius
     private final static float GRAB_POINT_OFFSET = 0.2f;
     private final static float GRAB_POINT_SIZE = 0.1f;
     private final static float HAND_WIDTH = 0.02f;
+    private final static float HOUR_HAND_LENGTH = 0.55f;
+    private final static float CLOCK_NUMBER_SIZE = 0.2f;
+
     private final static double MINUTE_INCREMENT = Math.PI / 30.0;
     private final static double HOUR_INCREMENT = Math.PI / 6.0;
-    private final static float HOUR_HAND_LENGTH = 0.55f;
+
     private final static int MAX_INTERVAL = 45;
-    private final static float CLOCK_NUMBER_SIZE = 0.2f;
 
     Slider intervalSlider;
     AnalogClock analogClock;
     TimeDisplay timeDisplay;
-    ClockHand minuteHand;
-    ClockHand hourHand;
+    MinuteHand minuteHand;
+    HourHand hourHand;
 
-    int minutes = 0;
-    int hours = 0;
+    List<Movable> movables = new LinkedList<Movable>();
 
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        for (int i = 0; i < attrs.getAttributeCount(); i++)
-            Log.i("attribute", attrs.getAttributeName(i));
-
-        this.minsize = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minsize"));
-        this.minutes = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minutes"));
-        this.hours = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "hours"));
+        this.minSize = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minSize"));
         updateSize();
     }
 
@@ -57,185 +56,38 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         intervalSlider.draw(c);
     }
 
-    boolean hourClicking = false;
-    boolean minClicking = false;
-    boolean sliderClicking = false;
-
-    int minTarget = 0;
-    int hourTarget = 0;
-    int sliderTarget = 0;
-    boolean animating = false;
-
-    Thread minAnimator = new Thread();
-    Thread hourAnimator = new Thread();
-    Thread sliderAnimator = new Thread();
-
     final View v = findViewById(R.id.alarmTimePicker);
-    Runnable invalidator = new Runnable(){ public void run(){ v.invalidate(); } };
-    Runnable minRunnable = new Runnable() {
-            public void run() {
-                while (minutes != minTarget) {
-                    if (minutes < minTarget)  {
-                        if (Math.abs(minutes - minTarget) > 30)
-                            incrementMinutes(-1);
-                        else
-                            incrementMinutes(1);
-                    } else {
-                        if (Math.abs(minutes - minTarget) > 30)
-                            incrementMinutes(1);
-                        else
-                            incrementMinutes(-1);
-                    }
-
-                    v.post(invalidator);
-                    try { Thread.sleep(5); } catch (Throwable t) {}
-                }
-            }};
-    Runnable hourRunnable = new Runnable() {
-        public void run() {
-            while ((hours%12) != hourTarget) {
-                if ((hours%12) < hourTarget)  {
-                    if (Math.abs((hours%12) - hourTarget) > 6)
-                        incrementHours(-1);
-                    else
-                        incrementHours(1);
-                } else {
-                    if (Math.abs((hours%12) - hourTarget) > 6)
-                        incrementHours(1);
-                    else
-                        incrementHours(-1);
-                }
-                v.post(invalidator);
-
-                try { Thread.sleep(20); } catch (Throwable t) {}
-            }
-        }};
-    Runnable sliderRunnable = new Runnable() {
-        public void run() {
-            while (intervalSlider.getCurrentValue() != sliderTarget) {
-                int interval = intervalSlider.getCurrentValue();
-                if (interval < sliderTarget)
-                    intervalSlider.setCurrentValue(interval + 1);
-                else
-                    intervalSlider.setCurrentValue(interval - 1);
-                v.post(invalidator);
-
-                try { Thread.sleep(5); } catch (Throwable t) {}
-            }
-        }};
 
     public boolean onTouchEvent(MotionEvent me) {
+        boolean eventHandled = false;
+        float x = me.getX(), y = me.getY();
         switch (me.getAction()) {
             case (MotionEvent.ACTION_UP):
-                if (minClicking) {
-                    Log.v("threadstart", "min");
-                    minTarget = (int)(minuteHand.getAngleToMidpoint(me.getX(), me.getY()) / MINUTE_INCREMENT);
-                    if (!minAnimator.isAlive()) (minAnimator = new Thread(minRunnable)).start();
-
-                } else if (hourClicking) {
-                    Log.v("threadstart", "hour");
-                    hourTarget = (int)(hourHand.getAngleToMidpoint(me.getX(), me.getY()) / HOUR_INCREMENT);
-                    if (!hourAnimator.isAlive()) (hourAnimator = new Thread(hourRunnable)).start();
-                } else if (sliderClicking) {
-                    Log.v("threadstart", "interval");
-                    sliderTarget  = (int)(((Math.min(intervalSlider.getRectF().right,
-                                            Math.max(intervalSlider.getRectF().left, me.getX())) - intervalSlider.getRectF().left) /
-                                        intervalSlider.getRectF().width()) * (float)intervalSlider.getMaxValue());
-                    if (!sliderAnimator.isAlive()) (sliderAnimator = new Thread(sliderRunnable)).start();
+                for (Movable mv : movables) {
+                    if (mv.wasClicked())
+                        mv.animate(mv.createTargetFromClick(x, y));
+                    mv.releaseClick();
+                    mv.releaseGrab();
                 }
-
-                intervalSlider.releaseGrab();
-                minuteHand.releaseGrab();
-                hourHand.releaseGrab();
-
-                minClicking = hourClicking = sliderClicking = false;
+                eventHandled = true;
                 break;
             case (MotionEvent.ACTION_DOWN):
-                if (!minuteHand.grab(me.getX(), me.getY()))
-                    if (!hourHand.grab(me.getX(), me.getY()))
-                        if (!intervalSlider.grab(me.getX(), me.getY())) {
-                            if (intervalSlider.getRectF().contains(me.getX(),me.getY())) {
-                                Log.v("clicking", "interval");
-                                sliderClicking = true;
-                            } else if (analogClock.onHourArea(me.getX(), me.getY())) {
-                                Log.v("clicking", "hours");
-                                hourClicking = true;
-                            } else if (analogClock.onMinuteArea(me.getX(), me.getY())) {
-                                Log.v("clicking", "minutes");
-                                minClicking = true;
-                            }
-                        }
+                for (Movable mv : movables)
+                    if (eventHandled = mv.grab(x, y)) break;
+                for (Movable mv : movables)
+                    if (eventHandled = mv.click(x, y)) break;
                 break;
             case (MotionEvent.ACTION_MOVE):
-                if (minuteHand.isGrabbed()) updateMinuteHand(minuteHand.getAngleToMidpoint(me.getX(), me.getY()));
-                else if (hourHand.isGrabbed()) updateHourHand(hourHand.getAngleToMidpoint(me.getX(), me.getY()));
-                else if (intervalSlider.isGrabbed()) intervalSlider.update(me.getX());
+                for (Movable mv : movables)
+                    if (mv.isGrabbed())
+                        mv.updatePositionFromClick(x, y);
+                eventHandled = true;
                 break;
         }
-
         invalidate();
-        return true;
+        return eventHandled;
     }
 
-    private double angleDiff(double a1, double a2) {
-        double diff = a2 - a1;
-        if (diff < -Math.PI) diff += Math.PI*2;
-        else if (diff > Math.PI) diff -= Math.PI*2;
-        return diff;
-    }
-
-    private void updateMinuteHand(double newAngle) {
-        double diff = angleDiff(getMinuteHandAngle(), newAngle);
-        if (Math.abs(diff) > MINUTE_INCREMENT) {
-            double increments = (diff / MINUTE_INCREMENT);
-            increments = Math.round(increments);
-
-            Log.v("clock","incrementing mins by "+increments);
-
-            incrementMinutes((int)increments);
-        }
-    }
-
-    private void updateHourHand(double newAngle) {
-        double diff = angleDiff(getHourHandAngle(), newAngle);
-        if (Math.abs(diff) > HOUR_INCREMENT) {
-            double increments = (diff / HOUR_INCREMENT);
-            increments = Math.round(increments);
-
-            Log.v("clock","incrementing hours by "+increments);
-            incrementHours((int) increments);
-        }
-    }
-
-    public void incrementMinutes(int increment) {
-        minutes += increment;
-        if (minutes >= 60) {
-            minutes %= 60;
-            incrementHours(1);
-        } else if (minutes < 0) {
-            minutes += 60;
-            incrementHours(-1);
-        }
-        minuteHand.setAngle(getMinuteHandAngle() - Math.PI / 2);
-        hourHand.setAngle(getHourHandAngle() - Math.PI / 2);
-        timeDisplay.setMinutes(minutes);
-    }
-
-    private void incrementHours(int increment) {
-        hours = (hours + increment) % 24;
-        if (hours < 0) hours += 24;
-
-        hourHand.setAngle(getHourHandAngle() - Math.PI / 2);
-        timeDisplay.setHours(hours);
-    }
-
-    private double getHourHandAngle() {
-        return ((hours % 12) * HOUR_INCREMENT) + (minutes / 60.0 * HOUR_INCREMENT);
-    }
-
-    private double getMinuteHandAngle() {
-        return (minutes * MINUTE_INCREMENT);
-    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -260,41 +112,27 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         linePaint.setColor(Color.BLACK);
         linePaint.setStrokeWidth(radius * HAND_WIDTH);
         linePaint.setStyle(Paint.Style.STROKE);
+
         Paint timePaint = new Paint();
         timePaint.setAntiAlias(true);
         timePaint.setColor(Color.BLACK);
         timePaint.setTextSize(barHeight);
 
-        intervalSlider = new Slider(
-                midX - radius*0.9f,
-                midY + radius,
-                radius * 1.8f,
-                barHeight,
-                MAX_INTERVAL, 0,
-                linePaint,
-                grabPointSize);
-
-        hourHand = new ClockHand(
-                midX, midY,
-                -Math.PI / 2,
-                radius * HOUR_HAND_LENGTH,
-                linePaint,
-                grabPointOffset,
-                grabPointSize);
-
-        minuteHand = new ClockHand(
-                midX, midY,
-                -Math.PI / 2,
-                radius,
-                linePaint,
-                grabPointOffset,
-                grabPointSize);
-
+        intervalSlider = new Slider(midX - radius * 0.9f, midY + radius, radius * 1.8f, barHeight, MAX_INTERVAL, 0, linePaint, grabPointSize, this);
+        hourHand = new HourHand(midX, midY, 0, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointOffset, grabPointSize, this);
+        minuteHand = new MinuteHand(midX, midY, 0, MINUTE_INCREMENT, radius, linePaint, grabPointOffset, grabPointSize, this, hourHand);
         analogClock = new AnalogClock(midX, midY, radius, radius * CLOCK_NUMBER_SIZE, minuteHand, hourHand);
-
         timeDisplay = new TimeDisplay(midX, midY - radius, 0, 0, timePaint);
-
         intervalSlider.addListener(analogClock);
+        hourHand.addListener(timeDisplay);
+        minuteHand.addListener(hourHand);
+        minuteHand.addListener(timeDisplay);
+
+        movables.clear();
+        // order is important, we want to handle hour hand before minute hand
+        movables.add(hourHand);
+        movables.add(minuteHand);
+        movables.add(intervalSlider);
     }
 
     @Override
@@ -311,7 +149,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
         } else {
-            result = minsize;
+            result = minSize;
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
             }
@@ -328,7 +166,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
         } else {
-            result = minsize;
+            result = minSize;
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
             }
@@ -337,17 +175,17 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     }
 
     @Override
-    public int getHours() { return hours; }
+    public int getHours() { return hourHand.getValue(); }
 
     @Override
-    public int getMinutes() { return minutes; }
+    public int getMinutes() { return minuteHand.getValue(); }
 
     @Override
-    public int getInterval() { return intervalSlider.getCurrentValue(); }
+    public int getInterval() { return intervalSlider.getValue(); }
 
-    public void setHours(int hours) { this.hours = hours; }
+    public void setHours(int hours) { hourHand.setValue(hours); }
 
-    public void setMinutes(int minutes) { this.minutes = minutes; }
+    public void setMinutes(int minutes) { minuteHand.setValue(minutes); }
 
-    public void setInterval(int interval){ intervalSlider.setCurrentValue(interval); }
+    public void setInterval(int interval) { intervalSlider.setValue(interval); }
 }
