@@ -12,7 +12,6 @@ import java.io.IOException;
 public class FileHandler {
 
     public static final String ALARMS_FILENAME = "beddit_alarms";
-    public static final String OAUTH_FILENAME = "beddit_oauth";
 
 
     public static boolean writeToFile(String filename, String writable, Context context){
@@ -53,12 +52,13 @@ public class FileHandler {
     }
 
     public static boolean saveAlarm(int hour, int minute, int interval, boolean enabled, Context context){
-        int alarmSet = -1;
-        if(enabled) alarmSet = 1;
+        int alarmSet = enabled ? 1 : -1;
         String towrite = ""+alarmSet+'#'+hour+'#'+minute+'#'+interval;
         return writeToFile(ALARMS_FILENAME, towrite, context);
     }
 
+
+    // Disables alarm, but keeps the wake up time in memory
     public static boolean disableAlarm(Context context){
         int[] oldData = getAlarm(context);
         return saveAlarm(oldData[1], oldData[2], oldData[3], false, context);
@@ -89,15 +89,6 @@ public class FileHandler {
             saveAlarm(0, 0, 0, false, context);
         }
         return alarmValues;
-    }
-
-
-    public static boolean saveOAuth2code(String code, Context context){
-        return writeToFile(OAUTH_FILENAME, code, context);
-    }
-
-    public static String loadOAuth2code(Context context){
-        return readStringFromFile(OAUTH_FILENAME,context);
     }
 
 }

@@ -4,9 +4,12 @@
     <PreferenceCategory
             android:title="@string/pref_title_beddit_settings"
             android:summary="@string/pref_summary_beddit_settings">
-        <EditTextPreference
-                android:title="@string/pref_title_username"
-                android:key="@string/pref_key_username"/>
+        <Preference
+                android:title="@string/pref_title_forget"
+                android:key="@string/pref_key_forget"/>
+        <Preference
+                android:title="@string/pref_title_relogin"
+                android:key="@string/pref_key_relogin"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_title_other_settings">

@@ -3,5 +3,7 @@
     <string name="pref_key_awesome">awesome</string>
     <string name="pref_key_snooze">snooze length</string>
     <string name="pref_key_userToken">user token</string>
+    <string name="pref_key_forget">forget</string>
+    <string name="pref_key_relogin">relogin</string>
 
 </resources>

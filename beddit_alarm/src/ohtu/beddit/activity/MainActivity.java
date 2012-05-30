@@ -50,7 +50,10 @@ public class MainActivity extends Activity
 
         boolean debugWeb = true;
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
-        if ( token == null || token.equals("") && debugWeb) {
+        if (token != null){
+            Log.v("Token:", token);
+        }
+        if ( (token == null || token.equals("")) && debugWeb) {
             Intent myIntent = new Intent(this, AuthActivity.class);
             this.startActivity(myIntent);
         }

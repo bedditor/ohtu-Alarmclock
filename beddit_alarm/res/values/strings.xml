@@ -13,8 +13,11 @@
 
     <string name="pref_title_beddit_settings">Beddit login settings</string>
     <string name="pref_summary_beddit_settings">Connect to your beddit account</string>
+    <string name="pref_title_forget">Forget me</string>
+    <string name="pref_title_relogin">Login to beddit again</string>
+    <string name="pref_logged_in_as">You are logged in as</string>
+    <string name="pref_not_logged_in">You are not logged in</string>
 
-    <string name="pref_title_username">Username</string>
 
     <string name="pref_title_other_settings">Other settings</string>
 
@@ -33,7 +36,6 @@
     to set the earliest time you would like to wake up. This app will try to wake you up on that timespan
     while you are at a light sleep stage. Finally press \'add alarm\' to set the alarm. You can unset the
     alarm by pressing \'delete alarm\'.</string>
-
 
 
 </resources>
