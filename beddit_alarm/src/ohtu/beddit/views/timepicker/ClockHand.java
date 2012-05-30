@@ -31,6 +31,7 @@ public abstract class ClockHand extends Movable {
         super(parent);
         this.x = x;
         this.y = y;
+        Log.v("CLOCK HAND VALUE <-", "0");
         this.value = value;
         this.grabPointOffset = grabPointOffset;
         this.length = length;

@@ -27,7 +27,6 @@ public abstract class Animator implements Runnable {
     protected abstract void animate();
 
     public boolean finished() {
-        Log.v(""+ movable.getValue(), ""+target);
         return movable.getValue() == target;
     }
 

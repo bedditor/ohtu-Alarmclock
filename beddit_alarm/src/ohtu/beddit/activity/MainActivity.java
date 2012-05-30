@@ -46,7 +46,7 @@ public class MainActivity extends Activity
 
         // Update buttons and clock handles
         updateButtons();
-        setClockHandles();
+        setClockHands();
 
         boolean debugWeb = true;
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
@@ -72,12 +72,11 @@ public class MainActivity extends Activity
 
     }
 
-    private void setClockHandles() {
-        Context context = MainActivity.this;
-        CustomTimePicker clock = (CustomTimePicker)alarmTimePicker;
-        clock.setHours(alarmService.getAlarmHours(context));
-        clock.setMinutes(alarmService.getAlarmMinutes(context));
-        clock.setInterval(alarmService.getAlarmInterval(context));
+    private void setClockHands() {
+        Log.v("HERP",""+alarmService.getAlarmHours(this));
+        alarmTimePicker.setHours(alarmService.getAlarmHours(this));
+        alarmTimePicker.setMinutes(alarmService.getAlarmMinutes(this));
+        alarmTimePicker.setInterval(alarmService.getAlarmInterval(this));
     }
 
     @Override

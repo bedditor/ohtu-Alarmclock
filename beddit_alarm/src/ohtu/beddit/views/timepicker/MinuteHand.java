@@ -1,6 +1,7 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -37,6 +38,7 @@ public class MinuteHand extends ClockHand {
 
     @Override
     public void setValue(int newValue) {
+        Log.v("SETTING MINUTE", "" + newValue);
         this.value = newValue;
         for (MinuteChangedListener mcl : listeners)
             mcl.onMinuteChanged(newValue);

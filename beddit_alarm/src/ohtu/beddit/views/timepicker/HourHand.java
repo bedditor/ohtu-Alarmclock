@@ -1,6 +1,7 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -17,13 +18,14 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
 
     private static final int DEFAULT_MOVE_SPEED = 20;
     private int minuteValue = 0;
+    List<HourChangedListener> listeners = new LinkedList<HourChangedListener>();
 
     public HourHand(float x, float y, int value, double incrementSize, float length, Paint p,
                     float grabPointOffset, float grabPointSize, View parent) {
         super(x, y, value, incrementSize, length, p, grabPointOffset, grabPointSize, parent);
     }
 
-    List<HourChangedListener> listeners = new LinkedList<HourChangedListener>();
+
 
     public void addListener(HourChangedListener listener) {
         listeners.add(listener);
@@ -36,6 +38,7 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
 
     @Override
     public void setValue(int newValue) {
+        Log.v("SETTING HOUR", ""+newValue);
         this.value = newValue;
         for (HourChangedListener hcl : listeners)
             hcl.onHourChanged(newValue);
