@@ -19,7 +19,7 @@ import java.util.Calendar;
 public class AlarmServiceImpl implements AlarmService {
 
     private final String TAG = "Alarm Service";
-    AlarmManagerInterface alarmManager;
+    private AlarmManagerInterface alarmManager;
 
     public AlarmServiceImpl(Context context) {
         this.alarmManager = new AlarmManagerAndroid(context);
@@ -37,6 +37,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         // Calculate first wake up try
         Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
+
         Notifications.setNotification(1, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
                                      hours, minutes,context);
         addWakeUpAttempt(context, calendar);
