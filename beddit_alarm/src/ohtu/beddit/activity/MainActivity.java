@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -12,8 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.view.View.OnClickListener;
@@ -22,9 +19,8 @@ import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.AlarmTimePicker;
-import ohtu.beddit.io.FileHandler;
+import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.views.CustomTimePicker;
 
 public class MainActivity extends Activity
 {
@@ -54,6 +50,9 @@ public class MainActivity extends Activity
 
         boolean debugWeb = true;
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
+        if (token != null){
+            Log.v("Token:", token);
+        }
         if ( (token == null || token.equals("")) && debugWeb) {
             Intent myIntent = new Intent(this, AuthActivity.class);
             this.startActivity(myIntent);

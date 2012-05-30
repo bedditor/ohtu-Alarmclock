@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MyTextView">
-        <attr name="minsize" format="integer"></attr>
-        <attr name="minutes" format="integer"></attr>
-        <attr name="hours" format="integer"></attr>
+        <attr name="minSize" format="integer"></attr>
     </declare-styleable>
 </resources>

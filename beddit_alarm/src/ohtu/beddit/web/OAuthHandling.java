@@ -14,13 +14,13 @@ public class OAuthHandling {
 
 
     public boolean createOAuth2Code(Context context){
-        if(FileHandler.loadOAuth2code(context) == ""){
+       /* if(FileHandler.loadOAuth2code(context) == ""){
             //tee tunnus
             String code = "";
             FileHandler.saveOAuth2code(code,context);
         }else{
             //jos tunnus on jo olemassa: tehdäänkö kuitenkin uusi? (esim. jos tunnus ei syystä tai toisesta toimi)
-        }
+        }*/
         return true;
     }
 
