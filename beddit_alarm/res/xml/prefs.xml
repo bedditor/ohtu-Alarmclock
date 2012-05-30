@@ -7,10 +7,6 @@
         <EditTextPreference
                 android:title="@string/pref_title_username"
                 android:key="@string/pref_key_username"/>
-        <EditTextPreference
-                android:title="@string/pref_title_password"
-                android:key="@string/pref_key_password"
-                android:password="true"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_title_other_settings">

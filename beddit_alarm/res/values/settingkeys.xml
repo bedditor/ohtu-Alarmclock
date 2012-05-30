@@ -1,6 +1,5 @@
 <resources>
     <string name="pref_key_username">username</string>
-    <string name="pref_key_password">password</string>
     <string name="pref_key_awesome">awesome</string>
     <string name="pref_key_snooze">snooze length</string>
     <string name="pref_key_userToken">user token</string>
