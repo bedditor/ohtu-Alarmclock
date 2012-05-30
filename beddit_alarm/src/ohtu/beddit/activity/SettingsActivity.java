@@ -1,5 +1,6 @@
 package ohtu.beddit.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -9,7 +10,7 @@ import ohtu.beddit.R;
 import ohtu.beddit.io.PreferenceService;
 
 
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
 
     private ListPreference snoozeTimePref;
     private Preference forgetButton;
@@ -41,6 +42,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
         // Set up a listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        forgetButton.setOnPreferenceClickListener(this);
+        reloginButton.setOnPreferenceClickListener(this);
+
     }
 
     @Override
@@ -73,4 +77,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         }
 
     }
+
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        if(preference.getKey().equals(this.getString(R.string.pref_key_forget))){
+            PreferenceService.setSetting(this, R.string.pref_key_username, "");
+            handleForgetPref();
+        }
+        else if(preference.getKey().equals(this.getString(R.string.pref_key_relogin))){
+            Intent myIntent = new Intent(this, AuthActivity.class);
+            this.startActivity(myIntent);
+        }
+        return true;
+    }
+
 }
