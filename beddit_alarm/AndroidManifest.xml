@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ohtu.beddit"
-          android:versionCode="1"
-          android:versionName="1.0">
+          android:versionCode="2"
+          android:versionName="0.1">
     <uses-sdk android:minSdkVersion="8"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <application android:label="@string/app_name">
         <activity android:name=".activity.MainActivity"
-                  android:label="@string/app_name">
+                  android:label="@string/app_name"
+                  android:icon="@drawable/icon">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -16,6 +22,13 @@
                   android:label="@string/app_name">
         </activity>
         <receiver android:name=".alarm.AlarmReceiver" android:process=":remote" />
+        <receiver android:name=".alarm.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
         <activity android:name=".activity.SettingsActivity"/>
+        <activity android:name=".activity.AuthActivity" />
+        <activity android:name=".activity.HelpActivity" />
     </application>
 </manifest> 

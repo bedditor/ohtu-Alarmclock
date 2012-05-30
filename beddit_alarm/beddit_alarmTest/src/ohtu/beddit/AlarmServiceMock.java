@@ -1,6 +1,10 @@
-package com.example;
+package ohtu.beddit;
 
 import android.content.Context;
+import ohtu.beddit.alarm.AlarmManagerInterface;
+import ohtu.beddit.alarm.AlarmService;
+
+import java.util.Calendar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,7 +13,7 @@ import android.content.Context;
  * Time: 11:04
  * To change this template use File | Settings | File Templates.
  */
-public class AlarmSchedulerMock implements AlarmScheduler {
+public class AlarmServiceMock implements AlarmService {
     int hours = -1;
     int minutes = -1;
     int interval = -1;
@@ -17,7 +21,7 @@ public class AlarmSchedulerMock implements AlarmScheduler {
     int deletes = 0;
     boolean alarmSet = false;
 
-    public AlarmSchedulerMock(){
+    public AlarmServiceMock(){
         this.hours = -1;
         this.minutes = -1;
         this.interval = -1;
@@ -36,6 +40,11 @@ public class AlarmSchedulerMock implements AlarmScheduler {
     }
 
     @Override
+    public void addWakeUpAttempt(Context context, Calendar time) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void deleteAlarm(Context context) {
         this.alarmSet = false;
         deletes++;
@@ -47,13 +56,23 @@ public class AlarmSchedulerMock implements AlarmScheduler {
     }
 
     @Override
-    public int[] getAlarm(Context context) {
-        return new int[0];  //To change body of implemented methods use File | Settings | File Templates.
+    public boolean isAlarmSet(Context context) {
+        return alarmSet;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean isAlarmSet(Context context) {
-        return alarmSet;  //To change body of implemented methods use File | Settings | File Templates.
+    public int getAlarmHours(Context context) {
+        return hours;
+    }
+
+    @Override
+    public int getAlarmMinutes(Context context) {
+        return minutes;
+    }
+
+    @Override
+    public int getAlarmInterval(Context context) {
+        return interval;
     }
 
     public int getHours() {

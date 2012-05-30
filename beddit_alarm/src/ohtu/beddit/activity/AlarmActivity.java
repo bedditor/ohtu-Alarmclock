@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
+import ohtu.beddit.alarm.WakeUpLock;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.music.MusicHandler;
 
@@ -24,7 +27,9 @@ import java.util.Calendar;
  */
 public class AlarmActivity extends Activity {
 
-    public MusicHandler music = null;
+    private final String TAG = "AlarmActivity";
+    private MusicHandler music = null;
+    private Vibrator vibrator;
 
     /** Called when the alarm is first created. */
     @Override
@@ -32,46 +37,40 @@ public class AlarmActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm);
+        Log.v(TAG, "Recieved alarm at " + Calendar.getInstance().getTime());
 
-       /* ((Button)findViewById(R.id.setAlarmButton)).setOnClickListener(setListener);
-        ((Button)findViewById(R.id.deleteAlarmButton)).setOnClickListener(deleteListener);*/
-        ActivityDeleteButtonClickListener deleteListener = new ActivityDeleteButtonClickListener();
-        SnoozeButtonClickListener snoozeListener = new SnoozeButtonClickListener();
-        ((Button)findViewById(R.id.deleteButton)).setOnClickListener(deleteListener);
-        ((Button)findViewById(R.id.snoozeButton)).setOnClickListener(snoozeListener);
-        LinearLayout layout = (LinearLayout)findViewById(R.id.alarmLayout);
-        layout.setBackgroundColor(Color.WHITE);
+        Log.v(TAG, "I want WakeUpLock");
+        WakeUpLock.acquire(this);
+        makeNewAlarmServiceAndDeleteAlarm();
+        makeButtons();
+        vibratePhone();
+        playMusic();
 
-        Context context = AlarmActivity.this.getApplicationContext();
-        AlarmService alarmService = new AlarmServiceImpl(context);
-        alarmService.deleteAlarm(context);
-
-        Log.v("AlarmReceiver", "Recieved alarm at " + Calendar.getInstance().getTime());
-        music = new MusicHandler();
-        music.setMusic(this);
-        music.setLooping(true);
-        music.play(true);
-        Log.v("AlarmReceiver", "AlarmReceiver ended at " + Calendar.getInstance().getTime());
     }
 
 
     @Override
     public void finish(){
-        music.release();
+        Log.v(TAG, "Trying to Finish AlarmActivity");
+        music.release();          // Alarm has rung and we have closed the dialog. Music is released.
+        vibrator.cancel();        // Also no need to vibrate anymore.
+        WakeUpLock.release();     // And no need to keep device open.
         super.finish();
     }
 
     @Override
-    public void onPause(){
+    public void onPause(){ //We really don't want to go onPause. Rather forcibly keep the activity on top of everything.
+                           //TODO: What about when user is on call?
+        Log.v(TAG, "Trying to put AlarmActivity on pause");
         super.onPause();
-        //music.pause();
-        //super.finish();
     }
 
     @Override
-    public void onStop(){
+    public void onStop(){ //We call this when we stop the activity.
+        Log.v(TAG, "Trying to put AlarmActivity on stop");
         super.onStop();
-        music.stop();
+        //WakeUpLock.release();
+        //vibrator.cancel();
         super.finish();
     }
 
@@ -99,4 +98,31 @@ public class AlarmActivity extends Activity {
         }
     }
 
+    private void playMusic() {
+        music = new MusicHandler();
+        music.setMusic(this);
+        music.setLooping(true);
+        music.play(true);
+    }
+
+    private void vibratePhone() {
+        Log.v(TAG, "I want to Vibrate 8==D");
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = { 0, 200, 500 };
+        vibrator.vibrate(pattern, 0);
+        Log.v(TAG, "Vibrator says:" + vibrator.toString());
+    }
+
+    private void makeButtons() {
+        ActivityDeleteButtonClickListener deleteListener = new ActivityDeleteButtonClickListener();
+        SnoozeButtonClickListener snoozeListener = new SnoozeButtonClickListener();
+        ((Button)findViewById(R.id.deleteButton)).setOnClickListener(deleteListener);
+        ((Button)findViewById(R.id.snoozeButton)).setOnClickListener(snoozeListener);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.alarmLayout);
+        layout.setBackgroundColor(Color.WHITE);
+    }
+
+    private void makeNewAlarmServiceAndDeleteAlarm() {
+        new AlarmServiceImpl(this).deleteAlarm(this);
+    }
 }

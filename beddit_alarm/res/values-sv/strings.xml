@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Beddit Alarm</string>
+
+    <string name="settings_button_title">Asetukset</string>
+    <string name="help_button_title">Ohjeet</string>
+
+    <string name="toast_alarmset">Herätys asetettu</string>
+    <string name="toast_alarmremoved">Herätys poistettu</string>
+
+    <string name="main_act_set_alarm_button">Aseta herätys</string>
+    <string name="main_act_delete_alarm_button">Poista herätys</string>
+
+    <string name="pref_title_beddit_settings">Beddit-kirjautumisasetukset</string>
+    <string name="pref_summary_beddit_settings">Yhdistä beddit-tiliisi</string>
+
+    <string name="pref_title_username">Käyttäjänimi</string>
+
+    <string name="pref_title_other_settings">Muut asetukset</string>
+
+    <string name="pref_title_awesome">Tee ohjelmasta SUPER</string>
+    <string name="pref_summary_awesome">Tämä asetus on hyödytön.</string>
+
+    <string name="pref_title_alarm_settings">Herätysasetukset</string>
+    <string name="pref_title_snooze_length">Torkkuherätyksen viive</string>
+    <string name="pref_summary_snooze_length">Torkkuherätyksen viive</string>
+
+    <string name="alarm_stopAlarm">Lopeta herätys</string>
+    <string name="alarm_Snooze">Torkku</string>
+
+    <string name="help_text_1">Do you really need help with this.. -_-</string>
+
+
+
+</resources>

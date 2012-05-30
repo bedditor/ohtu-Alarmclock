@@ -1,7 +1,8 @@
-package com.example;
+package ohtu.beddit;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import ohtu.beddit.alarm.AlarmManagerInterface;
 
 public class AlarmManagerMock implements AlarmManagerInterface {
 

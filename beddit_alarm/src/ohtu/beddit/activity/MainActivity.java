@@ -1,6 +1,7 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,97 +14,113 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.AlarmTimePicker;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
+import ohtu.beddit.io.PreferenceService;
 
 public class MainActivity extends Activity
 {
 
     private AlarmService alarmService;
-    AlarmTimePicker alarmTimePicker;
-    Button addAlarm;
-    Button deleteAlarm;
+    private AlarmTimePicker alarmTimePicker;
+    private Button addAlarmButton;
+    private Button deleteAlarmButton;
+
 
     /** Called when the alarm is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         setAlarmService(new AlarmServiceImpl(this));
 
         //initialize default values for settings if called for the first time
         PreferenceManager.setDefaultValues(this, R.xml.prefs, false);
+        setUI();
 
-        addAlarm = (Button) findViewById(R.id.setAlarmButton);
-        addAlarm.setOnClickListener(new AlarmSetButtonClickListener());
-        deleteAlarm = (Button)findViewById(R.id.deleteAlarmButton);
-        deleteAlarm.setOnClickListener(new AlarmDeleteButtonClickListener());
+        // Update buttons and clock handles
+        updateButtons();
+        setClockHandles();
+
+        boolean debugWeb = true;
+        String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
+        if ( token == null || token.equals("") && debugWeb) {
+            Intent myIntent = new Intent(this, AuthActivity.class);
+            this.startActivity(myIntent);
+        }
+
+    }
+
+    private void setUI() {
+        //Set clock, buttons and listeners
+        alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
+
+        addAlarmButton = (Button) findViewById(R.id.setAlarmButton);
+        addAlarmButton.setOnClickListener(new AlarmSetButtonClickListener());
+        deleteAlarmButton = (Button)findViewById(R.id.deleteAlarmButton);
+        deleteAlarmButton.setOnClickListener(new AlarmDeleteButtonClickListener());
+
+        //Set layout
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
-        alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
+    }
 
-        MainActivity.this.setButtons();
-        int[] results = alarmService.getAlarm(MainActivity.this);
+    private void setClockHandles() {
+        Context context = MainActivity.this;
         CustomTimePicker clock = (CustomTimePicker)alarmTimePicker;
-        if(results[0] < 1){
-            //muokkaa näppäimiä
-        }else{
-            clock.setHours(results[1]);
-            clock.setMinutes(results[2]);
-            clock.setInterval(results[3]);
-        }
-
+        clock.setHours(alarmService.getAlarmHours(context));
+        clock.setMinutes(alarmService.getAlarmMinutes(context));
+        clock.setInterval(alarmService.getAlarmInterval(context));
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        setButtons();
+        updateButtons();
     }
 
-    public void setAlarmService(AlarmService alarmService) {
-        this.alarmService = alarmService;
 
-    }
-
-    public AlarmService getAlarmService() {
-        return alarmService;
-    }
 
     public class AlarmSetButtonClickListener implements OnClickListener {
 
         @Override
         public void onClick(View view) {
             alarmService.addAlarm(MainActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
-            MainActivity.this.setButtons();
+            MainActivity.this.updateButtons();
+            // Tell the user about what we did.
+            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmset), Toast.LENGTH_LONG).show();
 
         }
     }
+
 
     public class AlarmDeleteButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
             alarmService.deleteAlarm(MainActivity.this);
-            MainActivity.this.setButtons();
-
+            MainActivity.this.updateButtons();
+            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmremoved), Toast.LENGTH_LONG).show();
         }
     }
 
 
-    public void setButtons(){
-        Log.v("Buttons", "Set");
+    // Set buttons to on/off
+    public void updateButtons(){
         if (alarmService.isAlarmSet(this.getApplicationContext())){
-            addAlarm.setEnabled(false);
-            deleteAlarm.setEnabled(true);
+            addAlarmButton.setEnabled(false);
+            deleteAlarmButton.setEnabled(true);
         } else {
-            addAlarm.setEnabled(true);
-            deleteAlarm.setEnabled(false);
+            addAlarmButton.setEnabled(true);
+            deleteAlarmButton.setEnabled(false);
         }
+        Log.v("User Interface", "Buttons updated");
 
     }
 
@@ -112,11 +129,11 @@ public class MainActivity extends Activity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-        Intent settingsIntent = new Intent(this.getApplicationContext(),
-                SettingsActivity.class);
-
         MenuItem settings = menu.findItem(R.id.settings_menu_button);
-        settings.setIntent(settingsIntent);
+        settings.setIntent(new Intent(this.getApplicationContext(), SettingsActivity.class));
+
+        MenuItem help = menu.findItem(R.id.help_menu_button);
+        help.setIntent(new Intent(this.getApplicationContext(), HelpActivity.class));
 
         return true;
     }
@@ -127,8 +144,22 @@ public class MainActivity extends Activity
             case R.id.settings_menu_button:
                 startActivity(item.getIntent());
                 break;
+            case R.id.help_menu_button:
+                startActivity(item.getIntent());
+                break;
         }
         return true;
+    }
+
+    // These methods are for tests
+
+    public void setAlarmService(AlarmService alarmService) {
+        this.alarmService = alarmService;
+
+    }
+
+    public AlarmService getAlarmService() {
+        return alarmService;
     }
 
 }

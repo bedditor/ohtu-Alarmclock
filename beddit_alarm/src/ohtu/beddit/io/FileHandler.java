@@ -8,28 +8,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: lagvare
- * Date: 21.5.2012
- * Time: 15:41
- * To change this template use File | Settings | File Templates.
- */
+
 public class FileHandler {
+
+    public static final String ALARMS_FILENAME = "beddit_alarms";
+    public static final String OAUTH_FILENAME = "beddit_oauth";
+
 
     public static boolean writeToFile(String filename, String writable, Context context){
         FileOutputStream fos = null;
         try{
             fos = context.openFileOutput(filename,Context.MODE_PRIVATE);
-        }catch(Exception e){
-            System.err.println("Could not create fileoutputstream");
-            return false;
-        }
-        try{
             fos.write(writable.getBytes());
             fos.close();
-        }catch(IOException f){
-            System.err.println("Could not write to file");
+        }catch(Exception e){
+            Log.v("Filehandler", "Writing crashed");
             return false;
         }
         return true;
@@ -41,115 +34,70 @@ public class FileHandler {
         try{
             fis = context.openFileInput(filename);
         }catch(FileNotFoundException e){
-            System.err.println("file not found");
+            Log.v("Filehandler", "File not found");
             return "";
         }
+
         try{
-            int readCharacter = fis.read();
-            if(readCharacter > -1){
+            int readCharacter;
+            while((readCharacter = fis.read()) != -1){
                 returnedString += (char)readCharacter;
-            }
-            while(readCharacter != -1){
-                readCharacter=fis.read();
-                if(readCharacter != -1){
-                    returnedString += (char)readCharacter;
-                }
             }
             fis.close();
         }catch (IOException f){
-            System.err.println("Unable to read the file: "+filename);
+            Log.v("Filehandler", "Can't read file: "+filename);
             return "";
         }
 
         return returnedString;
     }
 
-    public static String copyStr(String tocopy){
-        String copy = "";
-        for(int i = 0; i< tocopy.length(); i++){
-            copy += tocopy.charAt(i);
-        }
-        return copy;
+    public static boolean saveAlarm(int hour, int minute, int interval, boolean enabled, Context context){
+        int alarmSet = -1;
+        if(enabled) alarmSet = 1;
+        String towrite = ""+alarmSet+'#'+hour+'#'+minute+'#'+interval;
+        return writeToFile(ALARMS_FILENAME, towrite, context);
     }
 
-    public static boolean saveAlarm(int hour, int minute, int interval, Context context, boolean isAlarm){
-        int realAlarm = 0;
-        if(isAlarm){
-            realAlarm = 1;
-        }
-        String towrite = ""+realAlarm+'#'+hour+'&'+minute+'?'+interval+'\n';
-        return writeToFile("alarms", towrite, context);
+    public static boolean disableAlarm(Context context){
+        int[] oldData = getAlarm(context);
+        return saveAlarm(oldData[1], oldData[2], oldData[3], false, context);
     }
 
     /*
-        returns int[4] in the form of   1: if alarm exists
-                                        2: hours
-                                        3: minutes
-                                        4: interval
+        returns int[4] in the form of   0: if alarm exists
+                                        1: hours
+                                        2: minutes
+                                        3: interval
      */
-    public static int[] getAlarms(Context context){
-        //pahasti kesken
-        String alarmsString = readStringFromFile("alarms", context);
-        if(alarmsString == ""){
-            int[] returnable = new int[4];
-            returnable[0] = -2;
-            returnable[1] = -2;
-            returnable[2] = -2;
-            returnable[3] = -2;
-            return returnable;
-        }
-        char letter = 'a';
-        String aux = "";
-        String isAlarm = "";
-        String hour = "";
-        String minute = "";
-        String interval = "";
-        for(int i = 0; i< alarmsString.length(); i++){
-            letter = alarmsString.charAt(i);
-            if(letter == '#'){
-                isAlarm = copyStr(aux);
-                aux = "";
-            }
-            else if(letter =='&'){
-                hour = copyStr(aux);
-                aux = "";
-            }else if(letter == '?'){
-                minute = copyStr(aux);
-                aux = "";
-            }else if(letter == '\n'){
-                interval = copyStr(aux);
-                aux = "";
-            }else{
-                aux += letter;
-            }
-        }
-        int[] clockValues = new int[4];
+    public static int[] getAlarm(Context context){
+        String[] alarmData = readStringFromFile(ALARMS_FILENAME, context).split("#");
+
+        int[] alarmValues = new int[4];
         try{
-            clockValues[0] = Integer.parseInt(isAlarm);
-            clockValues[1] = Integer.parseInt(hour);
-            clockValues[2] = Integer.parseInt(minute);
-            clockValues[3] = Integer.parseInt(interval);
+            alarmValues[0] = Integer.parseInt(alarmData[0]);
+            alarmValues[1] = Integer.parseInt(alarmData[1]);
+            alarmValues[2] = Integer.parseInt(alarmData[2]);
+            alarmValues[3] = Integer.parseInt(alarmData[3]);
         }catch (Exception e){
-            int[] returnable = new int[4];
-            returnable[0] = -1;
-            returnable[1] = -1;
-            returnable[2] = -1;
-            returnable[3] = -1;
-            return returnable;
+            Log.v("Exception", e.getMessage());
+            //  Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
+            alarmValues[0] = -1;
+            for (int i = 1; i < alarmValues.length; i++){
+                alarmValues[i] = 0;
+            }
+            saveAlarm(0, 0, 0, false, context);
         }
-        return clockValues;
-        //return "Hours: "+hour+" and minutes: "+minute+" and interval: "+interval;
+        return alarmValues;
     }
 
 
     public static boolean saveOAuth2code(String code, Context context){
-        return writeToFile("OAuth2", code, context);
+        return writeToFile(OAUTH_FILENAME, code, context);
     }
 
     public static String loadOAuth2code(Context context){
-        return readStringFromFile("OAuth2",context);
+        return readStringFromFile(OAUTH_FILENAME,context);
     }
-
-
 
 }
