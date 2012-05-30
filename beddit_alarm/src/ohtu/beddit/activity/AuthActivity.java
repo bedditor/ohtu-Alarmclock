@@ -1,12 +1,18 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.text.AndroidCharacter;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
@@ -25,27 +31,35 @@ import java.util.regex.Pattern;
  */
 public class AuthActivity extends Activity implements TokenListener {
     WebViewClient wvc;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);    //To change body of overridden methods use File | Settings | File Templates.
+        setContentView(R.layout.webview);
 
-        WebView webview = new WebView(this);
+        //WebView webview = new WebView(this);
+        WebView webview = (WebView) findViewById(R.id.webLayout);
         WebSettings settings = webview.getSettings();
+        webview.setInitialScale(1);
         settings.setSavePassword(false);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setAppCacheEnabled(false);
-        setContentView(webview);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+
         wvc = new AmazingWebClient(this);
         webview.setWebViewClient(wvc);
         webview.loadUrl("http://peach-app.appspot.com/testi");
-        lol = 0;
     }
-
-    int lol;
 
     @Override
     public void onTokenRecieved(String token) {
-        lol++;
+        if (token.equals("Not Supported")) {
+            Toast.makeText(this, token, Toast.LENGTH_SHORT);
+            return;
+        }
         Pattern p = Pattern.compile(".*code=(.{24})");
         Matcher m = p.matcher(token);
         Log.v("AuthActivity", "Trying to match: " + token);
@@ -56,8 +70,12 @@ public class AuthActivity extends Activity implements TokenListener {
             Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
             super.finish();
         }
-        if (lol == 666) //menit jonnekki muualle, kuole pois
-            super.finish();
-        //super.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent((String) null);
+        setResult(Activity.RESULT_CANCELED, resultIntent);
+        super.finish();
     }
 }
