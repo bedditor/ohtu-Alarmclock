@@ -25,5 +25,7 @@
 
     <string name="pref_title_alarm_settings">Alarm settings</string>
     <string name="pref_title_snooze_length">Snooze time length</string>
+    <string name="alarm_stopAlarm">Stop alarm</string>
+    <string name="alarm_Snooze">Snooze</string>
 
 </resources>
