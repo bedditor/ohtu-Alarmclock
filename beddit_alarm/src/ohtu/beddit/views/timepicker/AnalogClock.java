@@ -14,59 +14,41 @@ public class AnalogClock implements ValueChangedListener {
     private float x;
     private float y;
     private float radius;
-    private float numberSize;
     private ClockHand minuteHand;
     private ClockHand hourHand;
     private int interval;
+    Paint intervalArcPaint, backgroundPaint, linePaint;
 
-    public AnalogClock(float x, float y, float radius, float numberSize,
+
+    public AnalogClock(float x, float y, float radius,
+                       Paint intervalArcPaint, Paint backgroundPaint, Paint linePaint,
                        ClockHand minuteHand, ClockHand hourHand) {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        this.numberSize = numberSize;
         this.minuteHand = minuteHand;
         this.hourHand = hourHand;
-    }
-
-    public boolean onHourArea(float x_, float y_) {
-        return dist(x_,y_,x,y) < hourHand.getLength();
-    }
-
-    public boolean onMinuteArea(float x_, float y_) {
-        return dist(x_,y_,x,y) < minuteHand.getLength();
-    }
-
-    private double dist(float x1, float y1, float x2, float y2) {
-        return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+        this.intervalArcPaint = intervalArcPaint;
+        this.backgroundPaint = backgroundPaint;
+        this.linePaint = linePaint;
     }
 
     public void draw(Canvas c) {
-        Paint clockHourBackground = new Paint();
-        Paint clockMinBackground = new Paint();
-        Paint intervalArcPaint = new Paint();
-
-        intervalArcPaint.setColor(Color.CYAN);
-        clockHourBackground.setColor(Color.LTGRAY);
-        clockHourBackground.setStyle(Paint.Style.STROKE);
-        clockMinBackground.setColor(Color.WHITE);
-
-        intervalArcPaint.setAntiAlias(true);
-        clockHourBackground.setAntiAlias(true);
-        clockMinBackground.setAntiAlias(true);
-
         c.drawArc(new RectF(x-radius, y-radius, x+radius, y+radius),
                 (float) Math.toDegrees(minuteHand.getAngle() - Math.PI / 2),
                 (float) Math.toDegrees(-(Math.PI / 30.0) * interval),
                 true,
                 intervalArcPaint);
-        c.drawCircle(x,y, radius * 0.95f, clockMinBackground);
-        c.drawCircle(x,y, hourHand.getLength(), clockHourBackground);
 
-        Paint linePaint = new Paint();
-        linePaint.setColor(Color.DKGRAY);
-        linePaint.setAntiAlias(true);
+        linePaint.setStrokeWidth(1);
+        linePaint.setStyle(Paint.Style.STROKE);
+
+        c.drawCircle(x,y, radius * 0.95f, backgroundPaint);
+        c.drawCircle(x,y, hourHand.getLength(), linePaint);
+
         linePaint.setStrokeWidth(2);
+        linePaint.setStyle(Paint.Style.FILL);
+
 
         for (double m = 0; m < 60; m++) {
             double angle = Math.PI * 2 * m / 60;
@@ -79,7 +61,7 @@ public class AnalogClock implements ValueChangedListener {
                     y + yDir * radius * 0.95f, linePaint);
         }
 
-        linePaint.setTextSize(numberSize);
+
         for (double h = 1; h < 13; h++) {
             double angle = Math.PI * 2 * h / 12 - Math.PI / 2;
             float xDir = (float) Math.cos(angle);

@@ -53,6 +53,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.minSize = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minSize"));
+        initializePaints();
     }
 
     protected void onDraw(Canvas c) {
@@ -104,48 +105,67 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         createComponents();
     }
 
-    private void createComponents() {
-        int minDimension = Math.min(getWidth(), getHeight());
+    Paint linePaint = new Paint();
+    Paint timePaint = new Paint();
+    Paint clockFaceLinePaint = new Paint();
+    Paint backgroundPaint = new Paint();
+    Paint intervalArcPaint = new Paint();
 
+    private void initializePaints() {
+
+        linePaint.setAntiAlias(true);
+        linePaint.setColor(Color.BLACK);
+
+        linePaint.setStyle(Paint.Style.STROKE);
+        timePaint.setAntiAlias(true);
+        timePaint.setColor(Color.BLACK);
+
+        clockFaceLinePaint.setColor(Color.BLACK - 70 << 24);
+        clockFaceLinePaint.setAntiAlias(true);
+
+        intervalArcPaint.setColor(Color.argb(255,255,89,0));
+        backgroundPaint.setColor(Color.WHITE);
+
+        intervalArcPaint.setAntiAlias(true);
+        backgroundPaint.setAntiAlias(true);
+    }
+
+    private void createComponents() {
         float radius = getHeight() >= (1 + BAR_HEIGHT) * getWidth() ?
                 getWidth() * 0.5f : Math.min(getWidth(), getHeight()) * (0.5f - BAR_HEIGHT);
 
         float barHeight = (radius * BAR_HEIGHT)*(1-SPACER_SIZE);
         float barSpacer = barHeight * SPACER_SIZE;
-
         float midX = getWidth() / 2f;
         float midY = getHeight() / 2f;
-
         float grabPointSize = radius * GRAB_POINT_SIZE;
 
-        Paint linePaint = new Paint();
-        linePaint.setAntiAlias(true);
-        linePaint.setColor(Color.BLACK);
+        // update scaled paint attributes
         linePaint.setStrokeWidth(radius * HAND_WIDTH);
-        linePaint.setStyle(Paint.Style.STROKE);
-
-        Paint timePaint = new Paint();
-        timePaint.setAntiAlias(true);
-        timePaint.setColor(Color.BLACK);
         timePaint.setTextSize(barHeight);
+        clockFaceLinePaint.setTextSize(radius * CLOCK_NUMBER_SIZE);
 
-        Log.v("BAR HEIGHT", ""+barHeight);
-        Log.v("SPACER SIZE", ""+barSpacer);
-        Log.v("RADIUS", ""+radius);
-
+        // create individual view components
         intervalSlider = new Slider(midX - radius * 0.9f, midY + radius + barSpacer,
                 radius * 1.8f, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
         hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointSize, this);
         minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointSize, this, hourHand);
-        analogClock = new AnalogClock(midX, midY, radius, radius * CLOCK_NUMBER_SIZE, minuteHand, hourHand);
-        timeDisplay = new TimeDisplay(midX, midY - radius - barSpacer, initialHours, initialMinutes, timePaint);
+        analogClock = new AnalogClock(midX, midY, radius,
+                intervalArcPaint, backgroundPaint, clockFaceLinePaint,
+                minuteHand, hourHand);
+        timeDisplay = new TimeDisplay(midX, midY - radius - barSpacer, timePaint);
+
+        // link components together
         intervalSlider.addListener(analogClock);
         hourHand.addListener(timeDisplay);
         minuteHand.addListener(hourHand);
         minuteHand.addListener(timeDisplay);
 
+        // make sure we have the right initial values
         analogClock.onValueChanged(initialInterval);
         hourHand.onMinuteChanged(initialMinutes);
+        timeDisplay.onHourChanged(initialHours);
+        timeDisplay.onMinuteChanged(initialMinutes);
 
         movables.clear();
         movables.add(hourHand);
@@ -243,12 +263,29 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     }
 
     @Override
-    public void setLocked(boolean lock) {
-        this.locked = lock;
+    public void setEnabled(boolean enabled) {
+        this.locked = enabled;
     }
 
     @Override
-    public boolean isLocked() {
+    public boolean isEnabled() {
         return locked;
+    }
+
+    @Override
+    public void setBackgroundColor(int c) {
+        backgroundPaint.setColor(c);
+    }
+
+    @Override
+    public void setForegroundColor(int c) {
+        linePaint.setColor(c);
+        timePaint.setColor(c);
+        clockFaceLinePaint.setColor(c - (64 << 24));
+    }
+
+    @Override
+    public void setSpecialColor(int c) {
+        intervalArcPaint.setColor(c);
     }
 }

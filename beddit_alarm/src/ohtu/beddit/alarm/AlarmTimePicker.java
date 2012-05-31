@@ -1,5 +1,7 @@
 package ohtu.beddit.alarm;
 
+import android.graphics.Color;
+
 /**
  * Created with IntelliJ IDEA.
  * User: joosakur
@@ -14,6 +16,7 @@ public interface AlarmTimePicker {
     public void setHours(int h);
     public void setMinutes(int m);
     public void setInterval(int i);
-    public void setLocked(boolean lock);
-    public boolean isLocked();
+    public void setBackgroundColor(int c);
+    public void setForegroundColor(int c);
+    public void setSpecialColor(int c);
 }

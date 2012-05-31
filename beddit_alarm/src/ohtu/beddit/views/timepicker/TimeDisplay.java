@@ -17,11 +17,9 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     private int minutes;
     private Paint p;
 
-    public TimeDisplay(float x, float y, int hours, int minutes, Paint p) {
+    public TimeDisplay(float x, float y, Paint p) {
         this.x = x;
         this.y = y;
-        this.hours = hours;
-        this.minutes = minutes;
         this.p = p;
     }
 

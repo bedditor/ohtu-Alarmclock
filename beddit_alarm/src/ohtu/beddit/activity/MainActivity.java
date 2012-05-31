@@ -75,13 +75,16 @@ public class MainActivity extends Activity
         //Set background color
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
-
+        /* for white on black color scheme
+        layout.setBackgroundColor(Color.BLACK);
+        alarmTimePicker.setBackgroundColor(Color.BLACK);
+        alarmTimePicker.setForegroundColor(Color.WHITE);
+        alarmTimePicker.setSpecialColor(Color.argb(255,255,89,0));
+        */
     }
 
     private void setClockHands() {
-        Log.v("hours",""+alarmService.getAlarmHours(this));
-        Log.v("mins",""+alarmService.getAlarmMinutes(this));
-        Log.v("interval",""+alarmService.getAlarmInterval(this));
+
 
         alarmTimePicker.setHours(alarmService.getAlarmHours(this));
         alarmTimePicker.setMinutes(alarmService.getAlarmMinutes(this));
