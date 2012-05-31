@@ -13,6 +13,22 @@
             android:layout_weight="1"
             app:minSize="200"
             />
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="0dp">
+        <TextView
+                android:id="@+id/interval_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:text="@string/main_act_interval_title"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:textColor="#000000"/>
+    </RelativeLayout>
+
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res/com.example"

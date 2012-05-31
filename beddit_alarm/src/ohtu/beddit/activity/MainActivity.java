@@ -51,7 +51,7 @@ public class MainActivity extends Activity
         updateButtons();
         setClockHands();
 
-        boolean debugWeb = true;
+        boolean debugWeb = false;
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if (token != null){
             Log.v("Token:", token);
