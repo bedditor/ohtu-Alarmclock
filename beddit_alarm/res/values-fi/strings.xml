@@ -37,7 +37,7 @@
     <string name="help_text_3">Lopuksi aseta herätys painamalla \'Aseta herätys\'-nappia.</string>
     <string name="help_text_4">Voit poistaa herätyksen painamalla \'Poista herätys\'-nappia.</string>
 
-    <string name="main_act_interval_title">Wake up interval</string>
+    <string name="main_act_interval_title">Aikaväli herätykselle</string>
     <string name="help_title">Käyttöohjeet</string>
 
 
