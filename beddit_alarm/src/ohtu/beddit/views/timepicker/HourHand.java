@@ -21,8 +21,8 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
     List<HourChangedListener> listeners = new LinkedList<HourChangedListener>();
 
     public HourHand(float x, float y, int value, double incrementSize, float length, Paint p,
-                    float grabPointOffset, float grabPointSize, View parent) {
-        super(x, y, value, incrementSize, length, p, grabPointOffset, grabPointSize, parent);
+                    float grabPointSize, View parent) {
+        super(x, y, value, incrementSize, length, p, grabPointSize, parent);
     }
 
 
@@ -38,7 +38,6 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
 
     @Override
     public void setValue(int newValue) {
-        Log.v("SETTING HOUR", ""+newValue);
         this.value = newValue;
         for (HourChangedListener hcl : listeners)
             hcl.onHourChanged(newValue);

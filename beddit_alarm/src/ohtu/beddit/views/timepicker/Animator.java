@@ -39,6 +39,7 @@ public abstract class Animator implements Runnable {
                     parent.invalidate();
                 }
             });
+
             try { Thread.sleep(sleepTime); } catch (InterruptedException ie) {}
         }
     }

@@ -16,12 +16,12 @@ import java.util.List;
  */
 public class MinuteHand extends ClockHand {
 
-    private static final int DEFAULT_MOVE_SPEED = 5;
+    private static final int DEFAULT_MOVE_SPEED = 20;
     private ClockHand hourHand;
 
     public MinuteHand(float x, float y, int value, double incrementSize, float length, Paint p,
-                      float grabPointOffset, float grabPointSize, View parent, ClockHand hourHand) {
-        super(x, y, value, incrementSize, length, p, grabPointOffset, grabPointSize, parent);
+                      float grabPointSize, View parent, ClockHand hourHand) {
+        super(x, y, value, incrementSize, length, p, grabPointSize, parent);
         this.hourHand = hourHand;
     }
 
@@ -38,7 +38,6 @@ public class MinuteHand extends ClockHand {
 
     @Override
     public void setValue(int newValue) {
-        Log.v("SETTING MINUTE", "" + newValue);
         this.value = newValue;
         for (MinuteChangedListener mcl : listeners)
             mcl.onMinuteChanged(newValue);
@@ -74,17 +73,18 @@ public class MinuteHand extends ClockHand {
             @Override
             public void animate() {
                 int minutes = movable.getValue();
-                if (minutes < target)  {
-                    if (Math.abs(minutes - target) > 30)
-                        movable.incrementValue(-1);
-                    else
-                        movable.incrementValue(1);
-                } else {
-                    if (Math.abs(minutes - target) > 30)
-                        movable.incrementValue(1);
-                    else
-                        movable.incrementValue(-1);
+                int dir = 1, inc = Math.abs(target-minutes);
+
+                if (inc > 30) {
+                    inc = Math.abs(inc - 60);
+                    dir *= -1;
                 }
+
+                if (minutes > target) {
+                    dir *= -1;
+                }
+
+                movable.incrementValue(dir*Math.min(inc, 3));
             }
         };
     }

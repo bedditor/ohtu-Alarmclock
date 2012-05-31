@@ -3,6 +3,7 @@ package ohtu.beddit.views.timepicker;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import ohtu.beddit.alarm.AlarmTimePicker;
@@ -22,11 +23,13 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     int minSize;
 
     // sizes as a fraction of the clock's radius
-    private final static float GRAB_POINT_OFFSET = 0.2f;
     private final static float GRAB_POINT_SIZE = 0.1f;
     private final static float HAND_WIDTH = 0.02f;
     private final static float HOUR_HAND_LENGTH = 0.55f;
     private final static float CLOCK_NUMBER_SIZE = 0.2f;
+    private final static float BAR_HEIGHT = 0.25f;
+    // as a fraction of bar height
+    private final static float SPACER_SIZE = 0.2f;
 
     private final static double MINUTE_INCREMENT = Math.PI / 30.0;
     private final static double HOUR_INCREMENT = Math.PI / 6.0;
@@ -103,15 +106,17 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
     private void createComponents() {
         int minDimension = Math.min(getWidth(), getHeight());
-        float barHeight = minDimension / 8;
-        float radius = getHeight() >= 1.25f * getWidth() ?
-                getWidth() / 2f : Math.min(getWidth(), getHeight()) / 2f - barHeight;
+
+        float radius = getHeight() >= (1 + BAR_HEIGHT) * getWidth() ?
+                getWidth() * 0.5f : Math.min(getWidth(), getHeight()) * (0.5f - BAR_HEIGHT);
+
+        float barHeight = (radius * BAR_HEIGHT)*(1-SPACER_SIZE);
+        float barSpacer = barHeight * SPACER_SIZE;
 
         float midX = getWidth() / 2f;
         float midY = getHeight() / 2f;
 
         float grabPointSize = radius * GRAB_POINT_SIZE;
-        float grabPointOffset = radius * GRAB_POINT_OFFSET;
 
         Paint linePaint = new Paint();
         linePaint.setAntiAlias(true);
@@ -124,11 +129,16 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         timePaint.setColor(Color.BLACK);
         timePaint.setTextSize(barHeight);
 
-        intervalSlider = new Slider(midX - radius * 0.9f, midY + radius, radius * 1.8f, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
-        hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointOffset, grabPointSize, this);
-        minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointOffset, grabPointSize, this, hourHand);
+        Log.v("BAR HEIGHT", ""+barHeight);
+        Log.v("SPACER SIZE", ""+barSpacer);
+        Log.v("RADIUS", ""+radius);
+
+        intervalSlider = new Slider(midX - radius * 0.9f, midY + radius + barSpacer,
+                radius * 1.8f, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
+        hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointSize, this);
+        minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointSize, this, hourHand);
         analogClock = new AnalogClock(midX, midY, radius, radius * CLOCK_NUMBER_SIZE, minuteHand, hourHand);
-        timeDisplay = new TimeDisplay(midX, midY - radius, initialHours, initialMinutes, timePaint);
+        timeDisplay = new TimeDisplay(midX, midY - radius - barSpacer, initialHours, initialMinutes, timePaint);
         intervalSlider.addListener(analogClock);
         hourHand.addListener(timeDisplay);
         minuteHand.addListener(hourHand);
@@ -138,7 +148,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         hourHand.onMinuteChanged(initialMinutes);
 
         movables.clear();
-        // order is important, we want to handle hour hand before minute hand
         movables.add(hourHand);
         movables.add(minuteHand);
         movables.add(intervalSlider);
