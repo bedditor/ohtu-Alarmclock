@@ -16,6 +16,8 @@ public interface AlarmTimePicker {
     public void setHours(int h);
     public void setMinutes(int m);
     public void setInterval(int i);
+    public void setEnabled(boolean enabled);
+    public boolean isEnabled();
     public void setBackgroundColor(int c);
     public void setForegroundColor(int c);
     public void setSpecialColor(int c);
