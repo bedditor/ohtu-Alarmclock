@@ -16,12 +16,12 @@ import java.util.List;
  */
 public class MinuteHand extends ClockHand {
 
-    private static final int DEFAULT_MOVE_SPEED = 5;
+    private static final int DEFAULT_MOVE_SPEED = 10;
     private ClockHand hourHand;
 
     public MinuteHand(float x, float y, int value, double incrementSize, float length, Paint p,
-                      float grabPointOffset, float grabPointSize, View parent, ClockHand hourHand) {
-        super(x, y, value, incrementSize, length, p, grabPointOffset, grabPointSize, parent);
+                      float grabPointSize, View parent, ClockHand hourHand) {
+        super(x, y, value, incrementSize, length, p, grabPointSize, parent);
         this.hourHand = hourHand;
     }
 
@@ -38,7 +38,6 @@ public class MinuteHand extends ClockHand {
 
     @Override
     public void setValue(int newValue) {
-        Log.v("SETTING MINUTE", "" + newValue);
         this.value = newValue;
         for (MinuteChangedListener mcl : listeners)
             mcl.onMinuteChanged(newValue);

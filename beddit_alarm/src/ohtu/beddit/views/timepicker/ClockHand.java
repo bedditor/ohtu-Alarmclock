@@ -19,7 +19,6 @@ public abstract class ClockHand extends Movable {
     protected float x;
     protected float y;
     protected float length;
-    protected float grabPointOffset;
     protected Paint p;
     protected GrabPoint gp;
     protected double incrementSize;
@@ -27,18 +26,16 @@ public abstract class ClockHand extends Movable {
 
     public ClockHand(float x, float y,
                      int value, double incrementSize,
-                     float length, Paint p, float grabPointOffset, float grabPointSize, View parent) {
+                     float length, Paint p, float grabPointSize, View parent) {
         super(parent);
         this.x = x;
         this.y = y;
-        Log.v("CLOCK HAND VALUE <-", ""+value);
         this.value = value;
-        this.grabPointOffset = grabPointOffset;
         this.length = length;
         this.p = p;
         this.incrementSize = incrementSize;
-        this.gp = new GrabPoint(x + (float)Math.cos(getAngle()- Math.PI / 2) * (length-grabPointOffset),
-                                y + (float)Math.sin(getAngle()- Math.PI / 2) * (length-grabPointOffset),
+        this.gp = new GrabPoint(x + (float)Math.cos(getAngle()- Math.PI / 2) * (length-2*grabPointSize),
+                                y + (float)Math.sin(getAngle()- Math.PI / 2) * (length-2*grabPointSize),
                                 grabPointSize, p);
     }
 
@@ -49,8 +46,8 @@ public abstract class ClockHand extends Movable {
         float endX = (float) xDir * length;
         float endY = (float) yDir * length;
 
-        gp.setX(x + (float) xDir * (length-grabPointOffset));
-        gp.setY(y + (float) yDir * (length-grabPointOffset));
+        gp.setX(x + (float) xDir * (length-2*gp.getRadius()));
+        gp.setY(y + (float) yDir * (length-2*gp.getRadius()));
 
         gp.draw(c);
         c.drawLine(x, y, x + endX, y + endY, p);
@@ -90,7 +87,8 @@ public abstract class ClockHand extends Movable {
 
     @Override
     public boolean click(float x, float y) {
-        return clicked = dist(x,y,this.x,this.y) < length;
+        double distanceFromCenter = dist(x,y,this.x,this.y);
+        return clicked = distanceFromCenter < length && distanceFromCenter > length - 4*gp.getRadius();
     }
 
     @Override

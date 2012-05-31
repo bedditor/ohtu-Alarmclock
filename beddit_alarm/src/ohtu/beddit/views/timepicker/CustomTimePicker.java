@@ -125,8 +125,8 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         timePaint.setTextSize(barHeight);
 
         intervalSlider = new Slider(midX - radius * 0.9f, midY + radius, radius * 1.8f, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
-        hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointOffset, grabPointSize, this);
-        minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointOffset, grabPointSize, this, hourHand);
+        hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointSize, this);
+        minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointSize, this, hourHand);
         analogClock = new AnalogClock(midX, midY, radius, radius * CLOCK_NUMBER_SIZE, minuteHand, hourHand);
         timeDisplay = new TimeDisplay(midX, midY - radius, initialHours, initialMinutes, timePaint);
         intervalSlider.addListener(analogClock);
@@ -138,7 +138,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         hourHand.onMinuteChanged(initialMinutes);
 
         movables.clear();
-        // order is important, we want to handle hour hand before minute hand
         movables.add(hourHand);
         movables.add(minuteHand);
         movables.add(intervalSlider);
