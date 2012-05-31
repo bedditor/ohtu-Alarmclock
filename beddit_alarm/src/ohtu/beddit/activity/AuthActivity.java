@@ -8,7 +8,9 @@ import android.preference.Preference;
 import android.text.AndroidCharacter;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,6 +33,7 @@ import java.util.regex.Pattern;
  */
 public class AuthActivity extends Activity implements TokenListener {
     WebViewClient wvc;
+    WebView webview;
 
 
     @Override
@@ -39,7 +42,9 @@ public class AuthActivity extends Activity implements TokenListener {
         setContentView(R.layout.webview);
 
         //WebView webview = new WebView(this);
-        WebView webview = (WebView) findViewById(R.id.webLayout);
+        webview = (WebView) findViewById(R.id.webLayout);
+        webview.clearHistory();
+
         WebSettings settings = webview.getSettings();
         webview.setInitialScale(1);
         settings.setSavePassword(false);
@@ -49,9 +54,12 @@ public class AuthActivity extends Activity implements TokenListener {
         settings.setLoadWithOverviewMode(true);
         settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
 
-        wvc = new AmazingWebClient(this);
+
+        wvc = new AmazingWebClient(this, webview);
         webview.setWebViewClient(wvc);
         webview.loadUrl("http://peach-app.appspot.com/testi");
+
+
     }
 
     @Override
@@ -68,7 +76,7 @@ public class AuthActivity extends Activity implements TokenListener {
             PreferenceService.setSetting(this, R.string.pref_key_userToken, m.group(1));
 
             Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
-            super.finish();
+            finish();
         }
     }
 
@@ -76,6 +84,14 @@ public class AuthActivity extends Activity implements TokenListener {
     public void onBackPressed() {
         Intent resultIntent = new Intent((String) null);
         setResult(Activity.RESULT_OK, resultIntent);
-        super.finish();
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        webview.clearCache(true);
+        webview.clearView();
+        webview.clearHistory();
+        super.finish();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

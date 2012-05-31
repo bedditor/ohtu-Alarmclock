@@ -32,13 +32,13 @@
     <string name="alarm_stopAlarm">Lopeta herätys</string>
     <string name="alarm_Snooze">Torkku</string>
 
-    <string name="help_text_1">Aseta herätysaika kääntämällä kellon viisareita ja käytä intervallisäädintä
-        valitaksesi aikaisimman herätysajan. Sinut pyritään herättämään tällä välillä ollessasi kevyessä
-        univaiheessa. Lopuksi aseta herätys painamalla \'Aseta herätys\'-nappia. Voit poistaa herätyksen
-        painamalla \'Poista herätys\'-nappia.</string>
-    <string name="dialog_username_msg">This is needed to fetch your sleep information.</string>
-    <string name="dialog_username_title">Please enter your username:</string>
-    <string name="dialog_username_button">Proceed</string>
+    <string name="help_text_1">Aseta herätysaika kääntämällä kellon viisareita ja käytä intervallisäädintä.</string>
+    <string name="help_text_2">Sinut pyritään herättämään tällä välillä ollessasi kevyessä univaiheessa.</string>
+    <string name="help_text_3">Lopuksi aseta herätys painamalla \'Aseta herätys\'-nappia.</string>
+    <string name="help_text_4">Voit poistaa herätyksen painamalla \'Poista herätys\'-nappia.</string>
+
+    <string name="main_act_interval_title">Wake up interval</string>
+    <string name="help_title">Käyttöohjeet</string>
 
 
 </resources>

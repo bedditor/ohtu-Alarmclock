@@ -32,13 +32,17 @@
 
     <string name="pref_summary_snooze_length">Snooze time is set to</string>
 
+
     <string name="help_text_1">Set alarm time by turning the clock pointers and use the interval slider
-    to set the earliest time you would like to wake up. This app will try to wake you up on that timespan
-    while you are at a light sleep stage. Finally press \'add alarm\' to set the alarm. You can unset the
-    alarm by pressing \'delete alarm\'.</string>
-    <string name="dialog_username_msg">This is needed to fetch your sleep information.</string>
-    <string name="dialog_username_title">Please enter your username:</string>
-    <string name="dialog_username_button">Proceed</string>
+    to set the earliest time you would like to wake up.</string>
+    <string name="help_text_2">This app will try to wake you up on that timespan while you are at
+        a light sleep stage.</string>
+    <string name="help_text_3">Finally press \'add alarm\' to set the alarm.</string>
+    <string name="help_text_4">You can unset the alarm by pressing \'delete alarm\'.</string>
+
+    <string name="main_act_interval_title">Wake up interval</string>
+    <string name="help_title">Instructions</string>
+
 
 
 </resources>
