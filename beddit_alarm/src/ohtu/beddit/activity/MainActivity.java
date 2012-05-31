@@ -75,6 +75,7 @@ public class MainActivity extends Activity
         //Set background color
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
+        alarmTimePicker.set24HourMode(false);
         /* for white on black color scheme
         layout.setBackgroundColor(Color.BLACK);
         alarmTimePicker.setBackgroundColor(Color.BLACK);

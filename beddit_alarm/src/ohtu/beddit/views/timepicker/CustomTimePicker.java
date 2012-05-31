@@ -3,11 +3,9 @@ package ohtu.beddit.views.timepicker;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import ohtu.beddit.alarm.AlarmTimePicker;
-import ohtu.beddit.R;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +38,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     private int initialHours = 0;
     private int initialInterval = 0;
     private boolean componentsCreated = false;
-    private boolean locked = false;
+    private boolean enabled = true;
     private boolean is24Hour = true;
 
     Slider intervalSlider;
@@ -66,7 +64,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     }
 
     public boolean onTouchEvent(MotionEvent me) {
-        if (!locked) {
+        if (enabled) {
             boolean eventHandled = false;
             float x = me.getX(), y = me.getY();
             switch (me.getAction()) {
@@ -265,12 +263,12 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
     @Override
     public void setEnabled(boolean enabled) {
-        this.locked = enabled;
+        this.enabled = enabled;
     }
 
     @Override
     public boolean isEnabled() {
-        return locked;
+        return enabled;
     }
 
     @Override
