@@ -69,14 +69,17 @@ public class MainActivity extends Activity
         deleteAlarmButton = (Button)findViewById(R.id.deleteAlarmButton);
         deleteAlarmButton.setOnClickListener(new AlarmDeleteButtonClickListener());
 
-        //Set layout
+        //Set background color
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
 
     }
 
     private void setClockHands() {
-        Log.v("HERP",""+alarmService.getAlarmHours(this));
+        Log.v("hours",""+alarmService.getAlarmHours(this));
+        Log.v("mins",""+alarmService.getAlarmMinutes(this));
+        Log.v("interval",""+alarmService.getAlarmInterval(this));
+
         alarmTimePicker.setHours(alarmService.getAlarmHours(this));
         alarmTimePicker.setMinutes(alarmService.getAlarmMinutes(this));
         alarmTimePicker.setInterval(alarmService.getAlarmInterval(this));

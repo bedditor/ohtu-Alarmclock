@@ -3,7 +3,6 @@ package ohtu.beddit.views.timepicker;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import ohtu.beddit.alarm.AlarmTimePicker;
@@ -34,6 +33,12 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
 
     private final static int MAX_INTERVAL = 45;
 
+    private int initialMinutes = 0;
+    private int initialHours = 0;
+    private int initialInterval = 0;
+    private boolean componentsCreated = false;
+    private boolean locked = false;
+
     Slider intervalSlider;
     AnalogClock analogClock;
     TimeDisplay timeDisplay;
@@ -45,7 +50,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.minSize = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minSize"));
-        updateSize();
     }
 
     protected void onDraw(Canvas c) {
@@ -56,46 +60,48 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         intervalSlider.draw(c);
     }
 
-    final View v = findViewById(R.id.alarmTimePicker);
-
     public boolean onTouchEvent(MotionEvent me) {
-        boolean eventHandled = false;
-        float x = me.getX(), y = me.getY();
-        switch (me.getAction()) {
-            case (MotionEvent.ACTION_UP):
-                for (Movable mv : movables) {
-                    if (mv.wasClicked())
-                        mv.animate(mv.createTargetFromClick(x, y));
-                    mv.releaseClick();
-                    mv.releaseGrab();
-                }
-                eventHandled = true;
-                break;
-            case (MotionEvent.ACTION_DOWN):
-                for (Movable mv : movables)
-                    if (eventHandled = mv.grab(x, y)) break;
-                for (Movable mv : movables)
-                    if (eventHandled = mv.click(x, y)) break;
-                break;
-            case (MotionEvent.ACTION_MOVE):
-                for (Movable mv : movables)
-                    if (mv.isGrabbed())
-                        mv.updatePositionFromClick(x, y);
-                eventHandled = true;
-                break;
+        if (!locked) {
+            boolean eventHandled = false;
+            float x = me.getX(), y = me.getY();
+            switch (me.getAction()) {
+                case (MotionEvent.ACTION_UP):
+                    for (Movable mv : movables) {
+                        if (mv.wasClicked())
+                            mv.animate(mv.createTargetFromClick(x, y));
+                        mv.releaseClick();
+                        mv.releaseGrab();
+                    }
+                    eventHandled = true;
+                    break;
+                case (MotionEvent.ACTION_DOWN):
+                    for (Movable mv : movables)
+                        if (eventHandled = mv.grab(x, y)) break;
+                    for (Movable mv : movables)
+                        if (eventHandled = mv.click(x, y)) break;
+                    break;
+                case (MotionEvent.ACTION_MOVE):
+                    for (Movable mv : movables)
+                        if (mv.isGrabbed())
+                            mv.updatePositionFromClick(x, y);
+                    eventHandled = true;
+                    break;
+            }
+            invalidate();
+            return eventHandled;
+        } else {
+            return false;
         }
-        invalidate();
-        return eventHandled;
     }
 
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        updateSize();
+        createComponents();
     }
 
-    private void updateSize() {
+    private void createComponents() {
         int minDimension = Math.min(getWidth(), getHeight());
         float barHeight = minDimension / 8;
         float radius = getHeight() >= 1.25f * getWidth() ?
@@ -118,21 +124,26 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         timePaint.setColor(Color.BLACK);
         timePaint.setTextSize(barHeight);
 
-        intervalSlider = new Slider(midX - radius * 0.9f, midY + radius, radius * 1.8f, barHeight, MAX_INTERVAL, 0, linePaint, grabPointSize, this);
-        hourHand = new HourHand(midX, midY, 0, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointOffset, grabPointSize, this);
-        minuteHand = new MinuteHand(midX, midY, 0, MINUTE_INCREMENT, radius, linePaint, grabPointOffset, grabPointSize, this, hourHand);
+        intervalSlider = new Slider(midX - radius * 0.9f, midY + radius, radius * 1.8f, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
+        hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointOffset, grabPointSize, this);
+        minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointOffset, grabPointSize, this, hourHand);
         analogClock = new AnalogClock(midX, midY, radius, radius * CLOCK_NUMBER_SIZE, minuteHand, hourHand);
-        timeDisplay = new TimeDisplay(midX, midY - radius, 0, 0, timePaint);
+        timeDisplay = new TimeDisplay(midX, midY - radius, initialHours, initialMinutes, timePaint);
         intervalSlider.addListener(analogClock);
         hourHand.addListener(timeDisplay);
         minuteHand.addListener(hourHand);
         minuteHand.addListener(timeDisplay);
+
+        analogClock.onValueChanged(initialInterval);
+        hourHand.onMinuteChanged(initialMinutes);
 
         movables.clear();
         // order is important, we want to handle hour hand before minute hand
         movables.add(hourHand);
         movables.add(minuteHand);
         movables.add(intervalSlider);
+
+        componentsCreated = true;
     }
 
     @Override
@@ -175,17 +186,60 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     }
 
     @Override
-    public int getHours() { return hourHand.getValue(); }
+    public int getHours() {
+        if (componentsCreated)
+            return hourHand.getValue();
+        else
+            return initialHours;
+    }
 
     @Override
-    public int getMinutes() { return minuteHand.getValue(); }
+    public int getMinutes() {
+        if (componentsCreated)
+            return minuteHand.getValue();
+        else
+            return initialMinutes;
+    }
 
     @Override
-    public int getInterval() { return intervalSlider.getValue(); }
+    public int getInterval() {
+        if (componentsCreated)
+            return intervalSlider.getValue();
+        else
+            return initialInterval;
+    }
 
-    public void setHours(int hours) { hourHand.setValue(hours); }
+    @Override
+    public void setHours(int hours) {
+        if (componentsCreated)
+            hourHand.setValue(hours);
+        else
+            initialHours = hours;
+    }
 
-    public void setMinutes(int minutes) { minuteHand.setValue(minutes); }
+    @Override
+    public void setMinutes(int minutes) {
+        if (componentsCreated)
+            minuteHand.setValue(minutes);
+        else
+            initialMinutes = minutes;
+    }
 
-    public void setInterval(int interval) { intervalSlider.setValue(interval); }
+    @Override
+    public void setInterval(int interval) {
+        if (componentsCreated)
+            intervalSlider.setValue(interval);
+        else
+            initialInterval = interval;
+    }
+
+    @Override
+    public void setLocked(boolean lock) {
+        this.locked = lock;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return locked;
+    }
 }

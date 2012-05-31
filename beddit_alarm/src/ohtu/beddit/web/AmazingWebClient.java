@@ -13,11 +13,11 @@ import android.webkit.WebViewClient;
 public class AmazingWebClient extends WebViewClient {
     TokenListener listener;
     public AmazingWebClient(TokenListener listener) {
-       this.listener = listener;
+        this.listener = listener;
     }
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-           listener.onTokenRecieved(url);
+        listener.onTokenRecieved(url);
         return false;
     }
 }
