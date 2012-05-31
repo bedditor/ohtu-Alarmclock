@@ -16,11 +16,13 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     private int hours;
     private int minutes;
     private Paint p;
+    private boolean is24Hour;
 
-    public TimeDisplay(float x, float y, Paint p) {
+    public TimeDisplay(float x, float y, Paint p, boolean is24Hour) {
         this.x = x;
         this.y = y;
         this.p = p;
+        this.is24Hour = is24Hour;
     }
 
     public void draw(Canvas c) {
@@ -30,9 +32,13 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     }
 
     private String timeToString(int h, int m) {
-        String hours = h < 10 ? "0" + h : Integer.toString(h);
+        String hours = h < 10 ? "0" + h : Integer.toString(is24Hour ? h : h % 12);
         String minutes = m < 10 ? "0" + m : Integer.toString(m);
-        return hours + ":" + minutes;
+        return hours + ":" + minutes + (is24Hour ? "" : (h > 12 ? " am" : " pm"));
+    }
+
+    public void setIs24Hour(boolean b) {
+        this.is24Hour = b;
     }
 
     @Override

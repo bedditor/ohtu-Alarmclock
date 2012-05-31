@@ -41,6 +41,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     private int initialInterval = 0;
     private boolean componentsCreated = false;
     private boolean locked = false;
+    private boolean is24Hour = true;
 
     Slider intervalSlider;
     AnalogClock analogClock;
@@ -153,7 +154,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         analogClock = new AnalogClock(midX, midY, radius,
                 intervalArcPaint, backgroundPaint, clockFaceLinePaint,
                 minuteHand, hourHand);
-        timeDisplay = new TimeDisplay(midX, midY - radius - barSpacer, timePaint);
+        timeDisplay = new TimeDisplay(midX, midY - radius - barSpacer, timePaint, is24Hour);
 
         // link components together
         intervalSlider.addListener(analogClock);
@@ -287,5 +288,13 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     @Override
     public void setSpecialColor(int c) {
         intervalArcPaint.setColor(c);
+    }
+
+    @Override
+    public void set24HourMode(boolean b) {
+        if (componentsCreated)
+            timeDisplay.setIs24Hour(b);
+        else
+            is24Hour = b;
     }
 }

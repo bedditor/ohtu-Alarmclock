@@ -19,4 +19,5 @@ public interface AlarmTimePicker {
     public void setBackgroundColor(int c);
     public void setForegroundColor(int c);
     public void setSpecialColor(int c);
+    public void set24HourMode(boolean b);
 }
