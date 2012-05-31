@@ -37,11 +37,6 @@
     <string name="help_text_3">Finally press \'add alarm\' to set the alarm.</string>
     <string name="help_text_4">You can unset the alarm by pressing \'delete alarm\'.</string>
 
-    <string name="dialog_username_msg">This is needed to fetch your sleep information.</string>
-    <string name="dialog_username_title">Please enter your username:</string>
-    <string name="dialog_username_button">Proceed</string>
     <string name="main_act_interval_title">Wake up interval</string>
     <string name="help_title">Instructions</string>
-
-
 </resources>

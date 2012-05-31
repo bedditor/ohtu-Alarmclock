@@ -32,9 +32,6 @@
 
     <string name="pref_summary_snooze_length">Snooze time is set to</string>
 
-    <string name="dialog_username_msg">This is needed to fetch your sleep information.</string>
-    <string name="dialog_username_title">Please enter your username:</string>
-    <string name="dialog_username_button">Proceed</string>
 
     <string name="help_text_1">Set alarm time by turning the clock pointers and use the interval slider
     to set the earliest time you would like to wake up.</string>
