@@ -4,7 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import ohtu.beddit.activity.MainActivity;
 import ohtu.beddit.alarm.AlarmService;
-import ohtu.beddit.views.CustomTimePicker;
+import ohtu.beddit.views.timepicker.CustomTimePicker;
 
 public class MyActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
