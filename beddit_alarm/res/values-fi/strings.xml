@@ -36,6 +36,9 @@
         valitaksesi aikaisimman herätysajan. Sinut pyritään herättämään tällä välillä ollessasi kevyessä
         univaiheessa. Lopuksi aseta herätys painamalla \'Aseta herätys\'-nappia. Voit poistaa herätyksen
         painamalla \'Poista herätys\'-nappia.</string>
+    <string name="dialog_username_msg">This is needed to fetch your sleep information.</string>
+    <string name="dialog_username_title">Please enter your username:</string>
+    <string name="dialog_username_button">Proceed</string>
 
 
 </resources>

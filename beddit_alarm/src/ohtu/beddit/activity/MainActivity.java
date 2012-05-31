@@ -1,7 +1,9 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.view.View.OnClickListener;
@@ -170,11 +173,33 @@ public class MainActivity extends Activity
                 if (resultCode == Activity.RESULT_OK) {
                     Log.v("MainActivity", "We got message to finish main.");
                     this.finish();
+                } else {
+                    DialogSetUserName();
                 }
                 break;
             }
         }
     }
+
+    public void DialogSetUserName() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog dialog = builder.create();
+        dialog.setTitle(getString(R.string.dialog_username_title));
+        dialog.setMessage(getString(R.string.dialog_username_msg));
+        final EditText input = new EditText(this);
+        dialog.setView(input);
+        DialogInterface.OnClickListener listenerAccept = new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "Great! Welcome.", Toast.LENGTH_SHORT).show();
+                PreferenceService.setSetting(MainActivity.this, R.string.pref_key_username, input.getText().toString());
+            }
+        };
+        dialog.setButton(getString(R.string.dialog_username_button), listenerAccept);
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
 
     // These methods are for tests
 
