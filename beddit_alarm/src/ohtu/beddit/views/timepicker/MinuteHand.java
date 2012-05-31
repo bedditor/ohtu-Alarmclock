@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class MinuteHand extends ClockHand {
 
-    private static final int DEFAULT_MOVE_SPEED = 10;
+    private static final int DEFAULT_MOVE_SPEED = 20;
     private ClockHand hourHand;
 
     public MinuteHand(float x, float y, int value, double incrementSize, float length, Paint p,
@@ -73,17 +73,18 @@ public class MinuteHand extends ClockHand {
             @Override
             public void animate() {
                 int minutes = movable.getValue();
-                if (minutes < target)  {
-                    if (Math.abs(minutes - target) > 30)
-                        movable.incrementValue(-1);
-                    else
-                        movable.incrementValue(1);
-                } else {
-                    if (Math.abs(minutes - target) > 30)
-                        movable.incrementValue(1);
-                    else
-                        movable.incrementValue(-1);
+                int dir = 1, inc = Math.abs(target-minutes);
+
+                if (inc > 30) {
+                    inc = Math.abs(inc - 60);
+                    dir *= -1;
                 }
+
+                if (minutes > target) {
+                    dir *= -1;
+                }
+
+                movable.incrementValue(dir*Math.min(inc, 3));
             }
         };
     }
