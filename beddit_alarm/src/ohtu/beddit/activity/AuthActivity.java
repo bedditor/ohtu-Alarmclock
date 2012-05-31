@@ -75,7 +75,7 @@ public class AuthActivity extends Activity implements TokenListener {
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent((String) null);
-        setResult(Activity.RESULT_CANCELED, resultIntent);
+        setResult(Activity.RESULT_OK, resultIntent);
         super.finish();
     }
 }

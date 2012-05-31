@@ -33,8 +33,5 @@
         <activity android:name=".activity.AuthActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.HelpActivity" android:screenOrientation="portrait" />
 
-        <activity android:name=".activity.MainActivity"
-                  android:label="@string/app_name"
-                  android:screenOrientation="portrait" />
     </application>
 </manifest> 

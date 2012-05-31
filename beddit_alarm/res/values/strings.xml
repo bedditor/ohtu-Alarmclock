@@ -36,6 +36,9 @@
     to set the earliest time you would like to wake up. This app will try to wake you up on that timespan
     while you are at a light sleep stage. Finally press \'add alarm\' to set the alarm. You can unset the
     alarm by pressing \'delete alarm\'.</string>
+    <string name="dialog_username_msg">This is needed to fetch your sleep information.</string>
+    <string name="dialog_username_title">Please enter your username:</string>
+    <string name="dialog_username_button">Proceed</string>
 
 
 </resources>

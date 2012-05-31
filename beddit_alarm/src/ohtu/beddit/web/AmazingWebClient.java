@@ -1,5 +1,6 @@
 package ohtu.beddit.web;
 
+import android.graphics.Bitmap;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -28,4 +29,5 @@ public class AmazingWebClient extends WebViewClient {
         listener.onTokenRecieved(url);
         return false;
     }
+
 }
