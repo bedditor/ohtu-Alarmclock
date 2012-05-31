@@ -9,8 +9,7 @@ import com.google.gson.JsonElement;
  * Time: 13:46
  * To change this template use File | Settings | File Templates.
  */
-public interface JsonReader {
+public interface BedditJsonReader {
     Night getNight(String json);
-    Night getNight(JsonElement json);
 
 }
