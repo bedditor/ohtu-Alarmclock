@@ -167,7 +167,8 @@ public class MainActivity extends Activity
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (2) : {
-                if (resultCode == Activity.RESULT_CANCELED) {
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.v("MainActivity", "We got message to finish main.");
                     this.finish();
                 }
                 break;
