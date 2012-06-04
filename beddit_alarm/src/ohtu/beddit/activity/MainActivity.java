@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.view.*;
 import android.util.Log;
 import android.widget.EditText;
@@ -68,6 +70,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         super.onResume();
         updateButtons();
         updateColours();
+        update24HourMode();
     }
 
 
@@ -81,8 +84,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         addAlarmButton.setOnClickListener(new AlarmSetButtonClickListener());
         deleteAlarmButton = (Button)findViewById(R.id.deleteAlarmButton);
         deleteAlarmButton.setOnClickListener(new AlarmDeleteButtonClickListener());
-
-        alarmTimePicker.set24HourMode(false);
 
         updateColours();
     }
@@ -102,6 +103,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             alarmTimePicker.setForegroundColor(Color.BLACK);
             alarmTimePicker.setSpecialColor(Color.argb(255,255,89,0));
         }
+    }
+
+    private void update24HourMode(){
+        alarmTimePicker.set24HourMode(DateFormat.is24HourFormat(this));
     }
 
     private void setClockHands() {
