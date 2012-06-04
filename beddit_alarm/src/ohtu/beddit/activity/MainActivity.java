@@ -140,9 +140,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         if (alarmService.isAlarmSet(this.getApplicationContext())){
             addAlarmButton.setEnabled(false);
             deleteAlarmButton.setEnabled(true);
+            alarmTimePicker.setEnabled(false);
         } else {
             addAlarmButton.setEnabled(true);
             deleteAlarmButton.setEnabled(false);
+            alarmTimePicker.setEnabled(true);
         }
         Log.v("User Interface", "Buttons updated");
 
