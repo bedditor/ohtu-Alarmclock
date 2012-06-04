@@ -40,6 +40,11 @@ public class AlarmServiceMock implements AlarmService {
     }
 
     @Override
+    public void changeAlarm(Context context, int hours, int minutes, int interval) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void addWakeUpAttempt(Context context, Calendar time) {
         //To change body of implemented methods use File | Settings | File Templates.
     }

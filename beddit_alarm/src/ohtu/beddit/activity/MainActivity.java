@@ -59,6 +59,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             startActivityForResult(myIntent,2);
         }
 
+        myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
+
     }
 
     private void setUI() {
@@ -75,6 +77,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.setBackgroundColor(Color.WHITE);
         alarmTimePicker.set24HourMode(false);
+
         /* for white on black color scheme
         layout.setBackgroundColor(Color.BLACK);
         alarmTimePicker.setBackgroundColor(Color.BLACK);
@@ -100,21 +103,25 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     @Override
     public void onAlarmTimeChanged(int hours, int minutes, int interval) {
         alarmService.changeAlarm(this, hours, minutes, interval);
-        Log.v("ALARM CHANGED TO", "h:"+hours+" m:"+minutes+" i:"+interval);
 
-        this.runOnUiThread(new Runnable() {
+        if (alarmService.isAlarmSet(this))
+            showMeTheToast(getString(R.string.toast_alarmupdated));
+
+    }
+
+    private Toast myToast = null;
+
+    private void showMeTheToast(final String message) {
+
+        runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
-                Log.v("Toast length", "" +Toast.LENGTH_LONG);
-                Toast t = Toast.makeText(MainActivity.this, "Fuck you asshole",0);
-
-                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, 0);
-                t.show();
-
+                myToast.setText(message);
+                myToast.setGravity(Gravity.TOP | Gravity.RIGHT, 0, 0);
+                myToast.show();
             }
         });
-
     }
 
 
@@ -125,10 +132,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             alarmService.addAlarm(MainActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
             MainActivity.this.updateButtons();
             // Tell the user about what we did.
-            Toast toasteri = Toast.makeText(MainActivity.this, getString(R.string.toast_alarmset), Toast.LENGTH_SHORT);
-            toasteri.setGravity(Gravity.TOP | Gravity.RIGHT, 0, 0);
-            toasteri.show();
-
+            showMeTheToast(getString(R.string.toast_alarmset));
         }
     }
 
@@ -138,7 +142,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         public void onClick(View view) {
             alarmService.deleteAlarm(MainActivity.this);
             MainActivity.this.updateButtons();
-            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmremoved), Toast.LENGTH_SHORT).show();
+            showMeTheToast(getString(R.string.toast_alarmremoved));
+
         }
     }
 

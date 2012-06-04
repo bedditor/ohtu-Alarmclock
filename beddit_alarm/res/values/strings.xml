@@ -7,9 +7,10 @@
 
     <string name="toast_alarmset">Alarm set</string>
     <string name="toast_alarmremoved">Alarm removed</string>
+    <string name="toast_alarmupdated">Alarm updated</string>
 
-    <string name="main_act_set_alarm_button">Add Alarm</string>
-    <string name="main_act_delete_alarm_button">Delete Alarm</string>
+    <string name="main_act_set_alarm_button">Set Alarm</string>
+    <string name="main_act_delete_alarm_button">Cancel Alarm</string>
 
     <string name="pref_title_beddit_settings">Beddit login settings</string>
     <string name="pref_summary_beddit_settings">Connect to your beddit account</string>
