@@ -43,7 +43,10 @@
 
     <string name="main_act_interval_title">Wake up interval</string>
     <string name="help_title">Instructions</string>
-
+    <string name="pref_title_graphics">Graphics settings</string>
+    <string name="pref_title_colour_theme">Colour theme</string>
+    <string name="pref_summary_colour_theme">Colour theme is set to</string>
+    <string name="pref_title_advanced">Advanced options</string>
 
 
 </resources>

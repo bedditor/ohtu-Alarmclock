@@ -12,13 +12,6 @@
                 android:key="@string/pref_key_relogin"/>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="@string/pref_title_other_settings">
-            <CheckBoxPreference
-                android:summary="@string/pref_summary_awesome"
-                android:title="@string/pref_title_awesome"
-                android:key="@string/pref_key_awesome"/>
-    </PreferenceCategory>
-    <PreferenceCategory
         android:title="@string/pref_title_alarm_settings">
         <ListPreference
                 android:title="@string/pref_title_snooze_length"
@@ -26,5 +19,11 @@
                 android:defaultValue="5"
                 android:entries="@array/snoozeArrayTitles"
                 android:entryValues="@array/snoozeArrayValues" />
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/pref_title_advanced">
+        <Preference
+                android:title="@string/pref_title_advanced"
+                android:key="@string/pref_key_advanced"/>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -63,6 +63,15 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        updateButtons();
+        updateColours();
+    }
+
+
+
     private void setUI() {
         //Set clock, buttons and listeners
         alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
@@ -73,17 +82,26 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         deleteAlarmButton = (Button)findViewById(R.id.deleteAlarmButton);
         deleteAlarmButton.setOnClickListener(new AlarmDeleteButtonClickListener());
 
-        //Set background color
-        LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
-        layout.setBackgroundColor(Color.WHITE);
         alarmTimePicker.set24HourMode(false);
 
-        /* for white on black color scheme
-        layout.setBackgroundColor(Color.BLACK);
-        alarmTimePicker.setBackgroundColor(Color.BLACK);
-        alarmTimePicker.setForegroundColor(Color.WHITE);
-        alarmTimePicker.setSpecialColor(Color.argb(255,255,89,0));
-        */
+        updateColours();
+    }
+
+    private void updateColours(){
+        String theme = PreferenceService.getSettingString(this, R.string.pref_key_colour_theme);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
+        if(theme.equals("dark")){
+            layout.setBackgroundColor(Color.BLACK);
+            alarmTimePicker.setBackgroundColor(Color.BLACK);
+            alarmTimePicker.setForegroundColor(Color.WHITE);
+            alarmTimePicker.setSpecialColor(Color.argb(255,255,89,0));
+        }
+        else if(theme.equals("light")){
+            layout.setBackgroundColor(Color.WHITE);
+            alarmTimePicker.setBackgroundColor(Color.WHITE);
+            alarmTimePicker.setForegroundColor(Color.BLACK);
+            alarmTimePicker.setSpecialColor(Color.argb(255,255,89,0));
+        }
     }
 
     private void setClockHands() {
@@ -94,11 +112,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         alarmTimePicker.setInterval(alarmService.getAlarmInterval(this));
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        updateButtons();
-    }
 
     @Override
     public void onAlarmTimeChanged(int hours, int minutes, int interval) {
