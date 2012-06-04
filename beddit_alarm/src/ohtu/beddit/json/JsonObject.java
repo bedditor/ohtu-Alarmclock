@@ -1,15 +1,11 @@
 package ohtu.beddit.json;
 
-import com.google.gson.JsonElement;
-
 /**
  * Created with IntelliJ IDEA.
  * User: joosakur
- * Date: 31.5.2012
- * Time: 13:46
+ * Date: 4.6.2012
+ * Time: 11:25
  * To change this template use File | Settings | File Templates.
  */
-public interface BedditJsonReader {
-    Night getNight(String json);
-
+public class JsonObject {
 }
