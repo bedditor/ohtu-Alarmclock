@@ -8,11 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.*;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Button;
@@ -102,7 +99,23 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     @Override
     public void onAlarmTimeChanged(int hours, int minutes, int interval) {
+        alarmService.changeAlarm(this, hours, minutes, interval);
         Log.v("ALARM CHANGED TO", "h:"+hours+" m:"+minutes+" i:"+interval);
+
+        this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Log.v("Toast length", "" +Toast.LENGTH_LONG);
+                Toast t = Toast.makeText(MainActivity.this, "Fuck you asshole",0);
+
+                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, 0);
+                t.show();
+
+            }
+        });
+
+
     }
 
 
@@ -113,7 +126,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             alarmService.addAlarm(MainActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
             MainActivity.this.updateButtons();
             // Tell the user about what we did.
-            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmset), Toast.LENGTH_LONG).show();
+            Toast toasteri = Toast.makeText(MainActivity.this, getString(R.string.toast_alarmset), Toast.LENGTH_SHORT);
+            toasteri.setGravity(Gravity.TOP | Gravity.RIGHT, 0, 0);
+            toasteri.show();
 
         }
     }
@@ -124,7 +139,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         public void onClick(View view) {
             alarmService.deleteAlarm(MainActivity.this);
             MainActivity.this.updateButtons();
-            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmremoved), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, getString(R.string.toast_alarmremoved), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -140,11 +155,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         if (alarmService.isAlarmSet(this.getApplicationContext())){
             addAlarmButton.setEnabled(false);
             deleteAlarmButton.setEnabled(true);
-            alarmTimePicker.setEnabled(false);
         } else {
             addAlarmButton.setEnabled(true);
             deleteAlarmButton.setEnabled(false);
-            alarmTimePicker.setEnabled(true);
         }
         Log.v("User Interface", "Buttons updated");
 

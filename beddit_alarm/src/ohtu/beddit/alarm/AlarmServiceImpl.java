@@ -38,7 +38,6 @@ public class AlarmServiceImpl implements AlarmService {
         // Calculate first wake up try
         Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
 
-        Notifications.resetNotification(1, context);
         Notifications.setNotification(1, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
                                      hours, minutes,context);
         addWakeUpAttempt(context, calendar);
