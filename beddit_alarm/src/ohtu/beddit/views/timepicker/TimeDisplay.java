@@ -32,9 +32,20 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     }
 
     private String timeToString(int h, int m) {
-        String hours = h < 10 ? (is24Hour ? "0" : "") + (is24Hour ? h : (h == 0 ? 12 : h)) : Integer.toString(is24Hour ? h : (h == 12 ? 12 : h % 12));
-        String minutes = m < 10 ? "0" + m : Integer.toString(m);
-        return hours + ":" + minutes + (is24Hour ? "" : (h > 11 ? " am" : " pm"));
+        String minutes = (m < 10 ? "0" + m : Integer.toString(m));
+        String hours = "";
+        if (!is24Hour) {
+            if (h == 0 || h == 12) {
+                hours = "12";
+            } else {
+                hours += (h % 12);
+            }
+        } else {
+            if (h < 10)
+                hours += "0";
+            hours += h;
+        }
+        return hours + ":" + minutes + (is24Hour ? "" : (h > 11 ? " pm" : " am"));
     }
 
     public void setIs24Hour(boolean b) {
