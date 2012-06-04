@@ -3,6 +3,9 @@ package ohtu.beddit.views.timepicker;
 import android.util.Log;
 import android.view.View;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: psaikko
@@ -16,12 +19,17 @@ public abstract class Animator implements Runnable {
     protected int sleepTime;
     protected int target;
     protected Movable movable;
+    private List<AnimationFinishedListener> animationFinishedListeners = new LinkedList<AnimationFinishedListener>();
 
     public Animator(View parent, int sleepTime, int target, Movable movable) {
         this.parent = parent;
         this.sleepTime = sleepTime;
         this.target = target;
         this.movable = movable;
+    }
+
+    public void addAnimationFinishedListener(AnimationFinishedListener l) {
+        animationFinishedListeners.add(l);
     }
 
     protected abstract void animate();
@@ -42,6 +50,9 @@ public abstract class Animator implements Runnable {
 
             try { Thread.sleep(sleepTime); } catch (InterruptedException ie) {}
         }
+
+        for (AnimationFinishedListener l : animationFinishedListeners)
+            l.onAnimationFinished();
     }
 
     public int getTarget() {

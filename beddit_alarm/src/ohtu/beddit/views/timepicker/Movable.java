@@ -1,5 +1,6 @@
 package ohtu.beddit.views.timepicker;
 
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -35,13 +36,20 @@ public abstract class Movable {
     private Thread t;
     private Animator a;
 
-    public void animate(int target) {
-        if (a == null)
+    public void animate(int target, AnimationFinishedListener l) {
+        if (a == null) {
             a = createAnimator(target);
-        else
+            a.addAnimationFinishedListener(l);
+        } else {
             a.setTarget(target);
+        }
+
         if (t == null || !t.isAlive())
             (t = new Thread(a)).start();
+    }
+
+    public boolean isAnimating() {
+        return t != null && t.isAlive();
     }
 
     protected abstract Animator createAnimator(int target);

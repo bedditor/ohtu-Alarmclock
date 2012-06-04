@@ -22,4 +22,5 @@ public interface AlarmTimePicker {
     public void setForegroundColor(int c);
     public void setSpecialColor(int c);
     public void set24HourMode(boolean b);
+    public void addAlarmTimeChangedListener(AlarmTimeChangedListener l);
 }

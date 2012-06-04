@@ -3,8 +3,10 @@ package ohtu.beddit.views.timepicker;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import ohtu.beddit.alarm.AlarmTimeChangedListener;
 import ohtu.beddit.alarm.AlarmTimePicker;
 
 import java.util.LinkedList;
@@ -17,7 +19,7 @@ import java.util.List;
  * Time: 13:49
  * To change this template use File | Settings | File Templates.
  */
-public class CustomTimePicker extends View implements AlarmTimePicker {
+public class CustomTimePicker extends View implements AlarmTimePicker, AnimationFinishedListener {
     int minSize;
 
     // sizes as a fraction of the clock's radius
@@ -40,6 +42,8 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
     private boolean componentsCreated = false;
     private boolean enabled = true;
     private boolean is24Hour = true;
+
+    private List<AlarmTimeChangedListener> alarmTimeChangedListeners = new LinkedList<AlarmTimeChangedListener>();
 
     Slider intervalSlider;
     AnalogClock analogClock;
@@ -71,17 +75,21 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
                 case (MotionEvent.ACTION_UP):
                     for (Movable mv : movables) {
                         if (mv.wasClicked())
-                            mv.animate(mv.createTargetFromClick(x, y));
+                            mv.animate(mv.createTargetFromClick(x, y), this);
                         mv.releaseClick();
-                        mv.releaseGrab();
+                        if (mv.isGrabbed()) {
+                            mv.releaseGrab();
+                            for (AlarmTimeChangedListener l : alarmTimeChangedListeners)
+                                l.onAlarmTimeChanged(hourHand.getValue(), minuteHand.getValue(), intervalSlider.getValue());
+                        }
                     }
                     eventHandled = true;
                     break;
                 case (MotionEvent.ACTION_DOWN):
                     for (Movable mv : movables)
-                        if (eventHandled = mv.grab(x, y)) break;
+                        if (eventHandled = mv.grab(x, y)) return true;
                     for (Movable mv : movables)
-                        if (eventHandled = mv.click(x, y)) break;
+                        if (eventHandled = mv.click(x, y)) return true;
                     break;
                 case (MotionEvent.ACTION_MOVE):
                     for (Movable mv : movables)
@@ -95,13 +103,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         } else {
             return false;
         }
-    }
-
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        createComponents();
     }
 
     Paint linePaint = new Paint();
@@ -119,7 +120,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         timePaint.setAntiAlias(true);
         timePaint.setColor(Color.BLACK);
 
-        clockFaceLinePaint.setColor(Color.BLACK - 70 << 24);
+        clockFaceLinePaint.setColor(Color.BLACK - (70 << 24));
         clockFaceLinePaint.setAntiAlias(true);
 
         intervalArcPaint.setColor(Color.argb(255,255,89,0));
@@ -174,12 +175,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         componentsCreated = true;
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec),
-                measureHeight(heightMeasureSpec));
-    }
-
     private int measureWidth(int measureSpec) {
         int result = 0;
         int specMode = MeasureSpec.getMode(measureSpec);
@@ -211,6 +206,26 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
             }
         }
         return result;
+    }
+
+    @Override
+    public void onAnimationFinished() {
+        for (AlarmTimeChangedListener l : alarmTimeChangedListeners)
+            l.onAlarmTimeChanged(hourHand.getValue(), minuteHand.getValue(), intervalSlider.getValue());
+    }
+
+    //<editor-fold overrides>
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(measureWidth(widthMeasureSpec),
+                measureHeight(heightMeasureSpec));
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        createComponents();
     }
 
     @Override
@@ -295,4 +310,11 @@ public class CustomTimePicker extends View implements AlarmTimePicker {
         else
             is24Hour = b;
     }
+
+    @Override
+    public void addAlarmTimeChangedListener(AlarmTimeChangedListener l) {
+        alarmTimeChangedListeners.add(l);
+    }
+
+    //</editor-fold>
 }

@@ -21,11 +21,12 @@ import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
+import ohtu.beddit.alarm.AlarmTimeChangedListener;
 import ohtu.beddit.alarm.AlarmTimePicker;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements AlarmTimeChangedListener
 {
 
     private AlarmService alarmService;
@@ -66,6 +67,7 @@ public class MainActivity extends Activity
     private void setUI() {
         //Set clock, buttons and listeners
         alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
+        alarmTimePicker.addAlarmTimeChangedListener(this);
 
         addAlarmButton = (Button) findViewById(R.id.setAlarmButton);
         addAlarmButton.setOnClickListener(new AlarmSetButtonClickListener());
@@ -98,6 +100,10 @@ public class MainActivity extends Activity
         updateButtons();
     }
 
+    @Override
+    public void onAlarmTimeChanged(int hours, int minutes, int interval) {
+        Log.v("ALARM CHANGED TO", "h:"+hours+" m:"+minutes+" i:"+interval);
+    }
 
 
     public class AlarmSetButtonClickListener implements OnClickListener {
