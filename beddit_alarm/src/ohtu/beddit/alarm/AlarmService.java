@@ -28,4 +28,5 @@ public interface AlarmService {
 
     public int getAlarmInterval(Context context);
 
+    void changeAlarm(Context context, int hours, int minutes, int interval);
 }
