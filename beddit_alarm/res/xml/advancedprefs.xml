@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="@string/pref_title_graphics">
+        <ListPreference
+                android:title="@string/pref_title_colour_theme"
+                android:key="@string/pref_key_colour_theme"
+                android:defaultValue="light"
+                android:entries="@array/themeArrayTitles"
+                android:entryValues="@array/themeArrayValues" />
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/pref_title_other_settings">
+        <CheckBoxPreference
+                android:summary="@string/pref_summary_awesome"
+                android:title="@string/pref_title_awesome"
+                android:key="@string/pref_key_awesome"/>
+    </PreferenceCategory>
+</PreferenceScreen>

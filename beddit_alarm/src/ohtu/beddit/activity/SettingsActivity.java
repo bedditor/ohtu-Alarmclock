@@ -15,6 +15,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private ListPreference snoozeTimePref;
     private Preference forgetButton;
     private Preference reloginButton;
+    private Preference advancedButton;
+
 
 
     @Override
@@ -29,6 +31,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
         forgetButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
         reloginButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_relogin));
+        advancedButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
 
     }
 
@@ -44,7 +47,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         forgetButton.setOnPreferenceClickListener(this);
         reloginButton.setOnPreferenceClickListener(this);
-
+        advancedButton.setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -90,6 +93,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             Intent myIntent = new Intent(this, AuthActivity.class);
             this.startActivity(myIntent);
         }
+        else if(preference.getKey().equals(this.getString(R.string.pref_key_advanced))){
+            Intent myIntent = new Intent(this, AdvancedSettingsActivity.class);
+            this.startActivity(myIntent);
+        }
+
         return true;
     }
 

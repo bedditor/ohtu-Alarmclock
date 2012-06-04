@@ -5,5 +5,8 @@
     <string name="pref_key_userToken">user token</string>
     <string name="pref_key_forget">forget</string>
     <string name="pref_key_relogin">relogin</string>
+    <string name="pref_key_colour_theme">colour theme</string>
+    <string name="pref_key_advanced">advanced options</string>
+
 
 </resources>

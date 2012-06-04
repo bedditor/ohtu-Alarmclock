@@ -29,6 +29,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <activity android:name=".activity.AdvancedSettingsActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.SettingsActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.AuthActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.HelpActivity" android:screenOrientation="portrait" />
