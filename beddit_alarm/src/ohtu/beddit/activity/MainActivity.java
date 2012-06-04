@@ -44,8 +44,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         setAlarmService(new AlarmServiceImpl(this));
 
         //initialize default values for settings if called for the first time
-        PreferenceManager.setDefaultValues(this, R.xml.prefs, false);
-        PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, false);
+        PreferenceManager.setDefaultValues(this, R.xml.prefs, true);
+        PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         setUI();
 
         // Update buttons and clock handles
