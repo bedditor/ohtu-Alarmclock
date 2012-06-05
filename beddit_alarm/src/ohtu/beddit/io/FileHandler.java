@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 public class FileHandler {
@@ -28,27 +29,14 @@ public class FileHandler {
     }
 
     public static String readStringFromFile(String filename, Context context){
-        String returnedString = "";
-        FileInputStream fis = null;
         try{
-            fis = context.openFileInput(filename);
-        }catch(FileNotFoundException e){
+            Scanner scanner = new Scanner(context.openFileInput(filename));
+            String line = scanner.nextLine();
+            return line;
+        }catch(Exception e){
             Log.v("Filehandler", "File not found");
             return "";
         }
-
-        try{
-            int readCharacter;
-            while((readCharacter = fis.read()) != -1){
-                returnedString += (char)readCharacter;
-            }
-            fis.close();
-        }catch (IOException f){
-            Log.v("Filehandler", "Can't read file: "+filename);
-            return "";
-        }
-
-        return returnedString;
     }
 
     public static boolean saveAlarm(int hour, int minute, int interval, boolean enabled, Context context){
