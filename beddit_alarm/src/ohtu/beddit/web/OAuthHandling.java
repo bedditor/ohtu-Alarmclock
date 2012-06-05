@@ -20,7 +20,6 @@ import java.util.Scanner;
  */
 public class OAuthHandling {
 
-
     public static String getAccessToken(Context context, String url){
         String token = "error";
         try {
@@ -28,15 +27,29 @@ public class OAuthHandling {
             HttpsURLConnection connect = (HttpsURLConnection) address.openConnection();
             connect.connect();
             Scanner scanscan = new Scanner(connect.getInputStream());
-            scanscan.nextLine();
-            token = scanscan.nextLine();
-            token = token.substring(19,token.length()-2);
-            Log.v("AccessToken" , token);
-            //JsonParser lol = new JsonParser();
-            //JsonElement hmm = lol.parse(token);
-            //Log.v("TokenWat", hmm.getAsString());
+            String stash = scanscan.nextLine();
+            while(scanscan.hasNext()) {
+                stash += scanscan.nextLine();
+            }
+
+            Log.v("AccessToken/Debug", "Parse phase 0.:\t" + stash);
+            stash = stash.replace("\n", "");
+            Log.v("AccessToken/Debug", "Parse phase 1.:\t" + stash);
+            stash = stash.replace("\"", "");
+            Log.v("AccessToken/Debug", "Parse phase 2.:\t" + stash);
+            stash = stash.replace(":", "");
+            Log.v("AccessToken/Debug", "Parse phase 3.:\t" + stash);
+            stash = stash.replace("{", "");
+            stash = stash.replace("}", "");
+            Log.v("AccessToken/Debug", "Parse phase 4.:\t" + stash);
+            stash = stash.trim();
+            stash = stash.substring("access_token".length());
+            stash = stash.trim();
+            Log.v("AccessToken/Debug", "fullString 6.:\t" + stash);
+            Log.v("AccessToken" ,"AccessToken = \""+stash+"\"");
+            token = stash;
         } catch (Throwable e) {
-            Log.v("accesstoken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
+            Log.v("AccessToken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
         }
         return token;
     }

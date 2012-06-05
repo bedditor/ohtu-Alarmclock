@@ -67,14 +67,11 @@ public class AuthActivity extends Activity implements TokenListener {
 
     @Override
     public void onTokenRecieved(String token) {
-        if (token.equals("Not Supported")) {
-            Toast.makeText(this, token, Toast.LENGTH_SHORT);
-            return;
-        }
-        Pattern p = Pattern.compile(".*(access_token).*");
-        Matcher m = p.matcher(token);
+        //Toasts don't work in webview
+        Pattern S = Pattern.compile("https...api.beddit.com.api.oauth.access_token.client_id.*redirect_uri.https...peach-app.appspot.com.oauth.client_secret.*grant_type.code.code.*");
+        Matcher supah = S.matcher(token);
         Log.v(TAG, "Trying to match: " + token);
-        if (m.matches()) {
+        if (supah.matches()) {
             Log.v(TAG, "Matches: " + token);
             String result = OAuthHandling.getAccessToken(this, token);
             if (result.equalsIgnoreCase("error"))
