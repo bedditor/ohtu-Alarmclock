@@ -2,22 +2,11 @@ package ohtu.beddit.web;
 
 import android.content.Context;
 import android.util.Log;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import ohtu.beddit.io.FileHandler;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-/**
- * Created with IntelliJ IDEA.
- * User: lagvare
- * Date: 24.5.2012
- * Time: 12:29
- * To change this template use File | Settings | File Templates.
- */
 public class OAuthHandling {
 
     public static String getAccessToken(Context context, String url){
@@ -48,6 +37,7 @@ public class OAuthHandling {
             Log.v("AccessToken/Debug", "fullString 6.:\t" + stash);
             Log.v("AccessToken" ,"AccessToken = \""+stash+"\"");
             token = stash;
+
         } catch (Throwable e) {
             Log.v("AccessToken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
         }

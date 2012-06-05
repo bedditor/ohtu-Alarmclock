@@ -19,7 +19,9 @@ import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
+import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.web.AmazingWebClient;
+import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.web.OAuthHandling;
 import ohtu.beddit.web.TokenListener;
 
@@ -78,9 +80,21 @@ public class AuthActivity extends Activity implements TokenListener {
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
             PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
             Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
+            saveUsername();
             finish();
         }
     }
+
+
+    private void saveUsername() {
+        BedditWebConnector webConnector = new BedditWebConnector();
+        String usernameJson = webConnector.getUsernameJson(this);
+        Log.v("AuthActivity","got json: "+usernameJson);
+        BedditApiController apiController = new BedditApiController();
+        String username = apiController.getUsername(usernameJson, 0);
+        PreferenceService.setSetting(this, R.string.pref_key_username, username);
+    }
+
 
     @Override
     public void onBackPressed() {
