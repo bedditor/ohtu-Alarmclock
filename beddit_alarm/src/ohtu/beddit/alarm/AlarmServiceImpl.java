@@ -20,9 +20,12 @@ public class AlarmServiceImpl implements AlarmService {
 
     private final String TAG = "Alarm Service";
     private AlarmManagerInterface alarmManager;
+    private static boolean alarmIsSet = false;
 
     public AlarmServiceImpl(Context context) {
         this.alarmManager = new AlarmManagerAndroid(context);
+        alarmIsSet = checkAlarmFromFile(context);
+
     }
 
     @Override
@@ -41,11 +44,12 @@ public class AlarmServiceImpl implements AlarmService {
         Notifications.setNotification(1, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
                                      hours, minutes,context);
         addWakeUpAttempt(context, calendar);
+        alarmIsSet = true;
     }
 
     @Override
     public void changeAlarm(Context context, int hours, int minutes, int interval){
-        if (isAlarmSet(context)){
+        if (alarmIsSet){
             addAlarm(context, hours, minutes, interval);
         }
     }
@@ -90,10 +94,15 @@ public class AlarmServiceImpl implements AlarmService {
         FileHandler.disableAlarm(context);
 
         Notifications.resetNotification(1,context);
+        alarmIsSet = false;
 
     }
 
     public boolean isAlarmSet(Context context){
+        return alarmIsSet;
+    }
+
+    private boolean checkAlarmFromFile(Context context){
         int [] alarms = getAlarm(context);
         if (alarms[0] < 1){
             return false;
