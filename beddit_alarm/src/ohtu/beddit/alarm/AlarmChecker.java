@@ -8,7 +8,7 @@ package ohtu.beddit.alarm;
  * To change this template use File | Settings | File Templates.
  */
 public interface AlarmChecker {
-    public boolean wakeUpNow();
+    public boolean wakeUpNow(char sleepstage);
     public int getWakeUpAttemptInterval(); //how often (seconds) we should try to wake up
     public int getCheckTime(); //how long (seconds) it may take to do the checking
 

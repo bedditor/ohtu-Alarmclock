@@ -23,6 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
         checkTime = alarmChecker.getCheckTime();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
+        char sleepstage = 'A'; //the sleep stage you want to wake up from
 
         Log.v(TAG, "Received alarm");
         Log.v(TAG, "second until last wake up "+ getSecondsUntilLastWakeUpTime(context));
@@ -34,7 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.v(TAG, "No time to check anymore, schedule wake up");
             alarmService.addWakeUpAttempt(context, getLastWakeUpTime(context));
         }
-        else if(alarmChecker.wakeUpNow()){ //check if we should wake up now
+        else if(alarmChecker.wakeUpNow(sleepstage)){ //check if we should wake up now
             Log.v(TAG, "Alarm checker gave permission to wake up, starting alarm");
             startAlarm(context);
         }
