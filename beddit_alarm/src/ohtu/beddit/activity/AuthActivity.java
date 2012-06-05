@@ -19,7 +19,9 @@ import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
+import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.web.AmazingWebClient;
+import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.web.OAuthHandling;
 import ohtu.beddit.web.TokenListener;
 
@@ -67,23 +69,32 @@ public class AuthActivity extends Activity implements TokenListener {
 
     @Override
     public void onTokenRecieved(String token) {
-        if (token.equals("Not Supported")) {
-            Toast.makeText(this, token, Toast.LENGTH_SHORT);
-            return;
-        }
-        Pattern p = Pattern.compile(".*(access_token).*");
-        Matcher m = p.matcher(token);
+        //Toasts don't work in webview
+        Pattern S = Pattern.compile("https...api.beddit.com.api.oauth.access_token.client_id.*redirect_uri.https...peach-app.appspot.com.oauth.client_secret.*grant_type.code.code.*");
+        Matcher supah = S.matcher(token);
         Log.v(TAG, "Trying to match: " + token);
-        if (m.matches()) {
+        if (supah.matches()) {
             Log.v(TAG, "Matches: " + token);
             String result = OAuthHandling.getAccessToken(this, token);
             if (result.equalsIgnoreCase("error"))
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
             PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
             Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
+            saveUsername();
             finish();
         }
     }
+
+
+    private void saveUsername() {
+        BedditWebConnector webConnector = new BedditWebConnector();
+        String usernameJson = webConnector.getUsernameJson(this);
+        Log.v("AuthActivity","got json: "+usernameJson);
+        BedditApiController apiController = new BedditApiController();
+        String username = apiController.getUsername(usernameJson, 0);
+        PreferenceService.setSetting(this, R.string.pref_key_username, username);
+    }
+
 
     @Override
     public void onBackPressed() {

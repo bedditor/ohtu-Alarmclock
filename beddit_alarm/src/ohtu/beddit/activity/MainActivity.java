@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateButtons();
         setClockHands();
 
-        boolean debugWeb = false;
+        boolean debugWeb = true;
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if (token != null){
             Log.v("Token:", token);

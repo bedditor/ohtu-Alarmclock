@@ -1,20 +1,29 @@
 package ohtu.beddit.json;
 
-/**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 4.6.2012
- * Time: 11:11
- * To change this template use File | Settings | File Templates.
- */
-public class User extends JsonObject {
+public class User {
     private String username;
+    private String url;
+    private String first_name;
+    private String last_name;
+    private String email;
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUrl() {
+        return url;
+    }
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

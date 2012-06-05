@@ -6,8 +6,8 @@ public class BedditApiController {
 
     private static BedditJsonParser jsonParser = new BedditJsonParserImpl();
 
-    public String getUsername(String json){
-        return jsonParser.getUser(json).getUsername();
+    public String getUsername(String json, int userIndex){
+        return jsonParser.getUsers(json).getUsername(userIndex);
     }
 
     public char getLastSleepStage(String json){

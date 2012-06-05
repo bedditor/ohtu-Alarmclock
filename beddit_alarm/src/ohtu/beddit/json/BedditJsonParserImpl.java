@@ -15,8 +15,10 @@ public class BedditJsonParserImpl implements BedditJsonParser {
     }
 
     @Override
-    public User getUser(String json){
-        return getObject(json, User.class);
+    public Users getUsers(String json){
+        String editedJson = "{\"users\": "+json+"}";
+        Log.v("JsonParser",editedJson);
+        return getObject(editedJson, Users.class);
     }
 
     private <T extends JsonObject> T getObject(String json, Class<T> type){
