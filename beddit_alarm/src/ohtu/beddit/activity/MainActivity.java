@@ -111,8 +111,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     private void setClockHands() {
-
-
         alarmTimePicker.setHours(alarmService.getAlarmHours(this));
         alarmTimePicker.setMinutes(alarmService.getAlarmMinutes(this));
         alarmTimePicker.setInterval(alarmService.getAlarmInterval(this));

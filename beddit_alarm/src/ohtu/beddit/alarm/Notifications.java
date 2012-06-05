@@ -22,7 +22,7 @@ import java.util.Calendar;
 public class Notifications {
 
     public static int setNotification(int ID, int startHours, int startMinutes, int endHours, int endMinutes ,Context context){
-        Notification notification = new Notification(R.drawable.kello48,"",0);
+        Notification notification = new Notification(R.drawable.alarm_notification,"",0);
         notification.flags = Notification.FLAG_NO_CLEAR;
 
         String intervalBegin = timeAsString(startHours, startMinutes);
