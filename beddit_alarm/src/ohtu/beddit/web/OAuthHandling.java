@@ -1,7 +1,15 @@
 package ohtu.beddit.web;
 
 import android.content.Context;
+import android.util.Log;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import ohtu.beddit.io.FileHandler;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Scanner;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,15 +21,24 @@ import ohtu.beddit.io.FileHandler;
 public class OAuthHandling {
 
 
-    public boolean createOAuth2Code(Context context){
-       /* if(FileHandler.loadOAuth2code(context) == ""){
-            //tee tunnus
-            String code = "";
-            FileHandler.saveOAuth2code(code,context);
-        }else{
-            //jos tunnus on jo olemassa: tehdäänkö kuitenkin uusi? (esim. jos tunnus ei syystä tai toisesta toimi)
-        }*/
-        return true;
+    public static String getAccessToken(Context context, String url){
+        String token = "error";
+        try {
+            URL address = new URL(url);
+            HttpsURLConnection connect = (HttpsURLConnection) address.openConnection();
+            connect.connect();
+            Scanner scanscan = new Scanner(connect.getInputStream());
+            scanscan.nextLine();
+            token = scanscan.nextLine();
+            token = token.substring(19,token.length()-2);
+            Log.v("AccessToken" , token);
+            //JsonParser lol = new JsonParser();
+            //JsonElement hmm = lol.parse(token);
+            //Log.v("TokenWat", hmm.getAsString());
+        } catch (Throwable e) {
+            Log.v("accesstoken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return token;
     }
 
 }

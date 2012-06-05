@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.text.AndroidCharacter;
+import android.text.Html;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -19,6 +20,7 @@ import ohtu.beddit.R;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.AmazingWebClient;
+import ohtu.beddit.web.OAuthHandling;
 import ohtu.beddit.web.TokenListener;
 
 import java.util.regex.Matcher;
@@ -34,6 +36,7 @@ import java.util.regex.Pattern;
 public class AuthActivity extends Activity implements TokenListener {
     WebViewClient wvc;
     WebView webview;
+    private final String TAG = "AuthActivity";
 
 
     @Override
@@ -68,13 +71,15 @@ public class AuthActivity extends Activity implements TokenListener {
             Toast.makeText(this, token, Toast.LENGTH_SHORT);
             return;
         }
-        Pattern p = Pattern.compile(".*code=(.{24})");
+        Pattern p = Pattern.compile(".*(access_token).*");
         Matcher m = p.matcher(token);
-        Log.v("AuthActivity", "Trying to match: " + token);
+        Log.v(TAG, "Trying to match: " + token);
         if (m.matches()) {
-            Log.v("AuthActivity", "Matches: " + m.group(1));
-            PreferenceService.setSetting(this, R.string.pref_key_userToken, m.group(1));
-
+            Log.v(TAG, "Matches: " + token);
+            String result = OAuthHandling.getAccessToken(this, token);
+            if (result.equalsIgnoreCase("error"))
+                Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
+            PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
             Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
             finish();
         }
