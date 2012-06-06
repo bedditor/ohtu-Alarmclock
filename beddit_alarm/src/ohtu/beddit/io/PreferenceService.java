@@ -23,7 +23,7 @@ public class PreferenceService {
 
     public static String getSettingString(Context context, int settingId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(context.getString(settingId), null);
+        return prefs.getString(context.getString(settingId), "");
     }
 
     public static void setSetting(Context context, int settingId, String newValue) {

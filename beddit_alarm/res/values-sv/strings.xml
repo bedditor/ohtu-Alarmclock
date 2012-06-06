@@ -14,7 +14,6 @@
     <string name="pref_title_beddit_settings">Beddit-kirjautumisasetukset</string>
     <string name="pref_summary_beddit_settings">Yhdistä beddit-tiliisi</string>
     <string name="pref_title_forget">Forget me</string>
-    <string name="pref_title_relogin">Login to beddit again</string>
     <string name="pref_logged_in_as">You are logged in as</string>
     <string name="pref_not_logged_in">You are not logged in</string>
 

@@ -1,20 +1,11 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.text.AndroidCharacter;
-import android.text.Html;
 import android.util.Log;
-import android.view.Display;
-import android.view.View;
-import android.view.WindowManager;
 import android.webkit.*;
-import android.widget.Toast;
 import ohtu.beddit.R;
-import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.web.AmazingWebClient;
@@ -46,11 +37,11 @@ public class AuthActivity extends Activity implements TokenListener {
         //WebView webview = new WebView(this);
         webview = (WebView) findViewById(R.id.webLayout);
         webview.clearHistory();
+
         CookieSyncManager cookieMonster = CookieSyncManager.createInstance(webview.getContext());
         CookieManager.getInstance().removeSessionCookie();
         CookieManager.getInstance().removeAllCookie();
         cookieMonster.sync();
-
 
         WebSettings settings = webview.getSettings();
         webview.setInitialScale(1);
