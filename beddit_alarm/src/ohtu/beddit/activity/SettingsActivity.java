@@ -73,7 +73,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             forgetMe();
             updateForgetMeButton();
             startAuthActivity();
-
         }
         else if(preference.getKey().equals(this.getString(R.string.pref_key_advanced))){
             Intent myIntent = new Intent(this, AdvancedSettingsActivity.class);
@@ -93,7 +92,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if(token.equals("") || username.equals("")){
             forgetButton.setSummary(getString(R.string.pref_not_logged_in));
-            forgetButton.setEnabled(false);
+            forgetButton.setEnabled(true); //true for debug
         }
         else{ //joko token tai username löytyy
             forgetButton.setSummary(getString(R.string.pref_logged_in_as) + " " + username);
