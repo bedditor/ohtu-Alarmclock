@@ -21,11 +21,11 @@ public class OAuthHandling {
             HttpsURLConnection connect = (HttpsURLConnection) address.openConnection();
             connect.connect();
             Scanner scanscan = new Scanner(connect.getInputStream());
-            connect.disconnect();
             String stash = "";
             while(scanscan.hasNext()) {
                 stash += scanscan.next();
             }
+            connect.disconnect();
             String token1 = new JsonParser().parse(stash).getAsJsonObject().get("access_token").getAsString();
             Log.v("AccessToken" ,"AccessToken = \""+token1+"\"");
 
