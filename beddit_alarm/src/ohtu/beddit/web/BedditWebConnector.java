@@ -15,6 +15,10 @@ public class BedditWebConnector {
         return getSomething(context, "");
     }
 
+    public String getWakeUpJson(Context context){
+        return getSomething(context, "query"); //add
+    }
+
     public String getSomething(Context context, String query){
         String response = "";
         try {
