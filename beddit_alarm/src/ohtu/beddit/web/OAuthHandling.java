@@ -16,10 +16,11 @@ public class OAuthHandling {
             HttpsURLConnection connect = (HttpsURLConnection) address.openConnection();
             connect.connect();
             Scanner scanscan = new Scanner(connect.getInputStream());
-            String stash = scanscan.nextLine();
+            String stash = "";
             while(scanscan.hasNext()) {
-                stash += scanscan.nextLine();
+                stash += scanscan.next();
             }
+            Log.v("AccessToken/Debug", "We should have something parseable json:\n" + stash);
 
             Log.v("AccessToken/Debug", "Parse phase 0.:\t" + stash);
             stash = stash.replace("\n", "");
