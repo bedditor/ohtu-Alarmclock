@@ -28,6 +28,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     private final static float HOUR_HAND_LENGTH = 0.55f;
     private final static float CLOCK_NUMBER_SIZE = 0.2f;
     private final static float BAR_HEIGHT = 0.25f;
+    private final static float BAR_WIDTH = 1.8f;
     // as a fraction of bar height
     private final static float SPACER_SIZE = 0.2f;
 
@@ -87,9 +88,9 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
                     break;
                 case (MotionEvent.ACTION_DOWN):
                     for (Movable mv : movables)
-                        if (eventHandled = mv.grab(x, y)) return true;
+                        if (mv.grab(x, y)) return true;
                     for (Movable mv : movables)
-                        if (eventHandled = mv.click(x, y)) return true;
+                        if (mv.click(x, y)) return true;
                     break;
                 case (MotionEvent.ACTION_MOVE):
                     for (Movable mv : movables)
@@ -147,8 +148,8 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         clockFaceLinePaint.setTextSize(radius * CLOCK_NUMBER_SIZE);
 
         // create individual view components
-        intervalSlider = new Slider(midX - radius * 0.9f, midY + radius + barSpacer,
-                radius * 1.8f, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
+        intervalSlider = new Slider(midX - radius * BAR_WIDTH / 2, midY + radius + barSpacer,
+                radius * BAR_WIDTH, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
         hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointSize, this);
         minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointSize, this, hourHand);
         analogClock = new AnalogClock(midX, midY, radius,
