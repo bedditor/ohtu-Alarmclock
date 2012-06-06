@@ -47,6 +47,7 @@ public class AuthActivity extends Activity implements TokenListener {
         webview = (WebView) findViewById(R.id.webLayout);
         webview.clearHistory();
         CookieSyncManager cookieMonster = CookieSyncManager.createInstance(webview.getContext());
+        CookieManager.getInstance().removeSessionCookie();
         CookieManager.getInstance().removeAllCookie();
         cookieMonster.sync();
 
@@ -68,8 +69,10 @@ public class AuthActivity extends Activity implements TokenListener {
 
     }
 
+
+
     @Override
-    public void onTokenRecieved(String token) {
+    public void onTokenReceived(String token) {
         //Toasts don't work in webview
         Pattern S = Pattern.compile("https...api.beddit.com.api.oauth.access_token.client_id.*redirect_uri.https...peach-app.appspot.com.oauth.client_secret.*grant_type.code.code.*");
         Matcher supah = S.matcher(token);

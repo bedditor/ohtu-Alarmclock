@@ -52,12 +52,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateButtons();
         setClockHands();
 
-        boolean debugWeb = false;
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if (token != null){
             Log.v("Token:", token);
         }
-        if ( (token == null || token.equals("")) && debugWeb) {
+        if (token == null || token.equals("")) {
             Intent myIntent = new Intent(this, AuthActivity.class);
             startActivityForResult(myIntent,2);
         }

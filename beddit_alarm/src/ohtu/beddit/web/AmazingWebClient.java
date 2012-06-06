@@ -22,12 +22,12 @@ public class AmazingWebClient extends WebViewClient {
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         for (String filter: blacklist) {
             if (url.equalsIgnoreCase(filter)) {
-                listener.onTokenRecieved("Not Supported");
+                listener.onTokenReceived("Not Supported");
                 return true;
             }
         }
 
-        listener.onTokenRecieved(url);
+        listener.onTokenReceived(url);
         return false;
     }
 

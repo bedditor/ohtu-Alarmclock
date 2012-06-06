@@ -8,5 +8,5 @@ package ohtu.beddit.web;
  * To change this template use File | Settings | File Templates.
  */
 public interface TokenListener {
-    public void onTokenRecieved(String token);
+    public void onTokenReceived(String token);
 }
