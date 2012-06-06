@@ -30,7 +30,6 @@ public class OAuthHandling {
             connect.connect();
             Log.v("OAuth","responseCode: "+connect.getResponseCode());
 
-
             inputStream = connect.getInputStream();
             scanscan = new Scanner(inputStream);
 
@@ -39,6 +38,7 @@ public class OAuthHandling {
                 stash += scanscan.next();
             }
             Log.v("OAuth","stash: "+stash);
+
             String token1 = new JsonParser().parse(stash).getAsJsonObject().get("access_token").getAsString();
             Log.v("AccessToken" ,"AccessToken = \""+token1+"\"");
 
