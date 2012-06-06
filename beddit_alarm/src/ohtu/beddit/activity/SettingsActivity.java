@@ -73,7 +73,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if((token == null || token.equals("")) && (username == null || username.equals(""))){
             forgetButton.setSummary(getString(R.string.pref_not_logged_in));
-            forgetButton.setEnabled(false);
+            //forgetButton.setEnabled(false);
         }
         else{ //joko token tai username löytyy
             forgetButton.setSummary(getString(R.string.pref_logged_in_as) + " " + username);

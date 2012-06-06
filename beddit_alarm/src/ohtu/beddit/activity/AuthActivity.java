@@ -80,11 +80,18 @@ public class AuthActivity extends Activity implements TokenListener {
         if (supah.matches()) {
             Log.v(TAG, "Matches: " + token);
             String result = OAuthHandling.getAccessToken(this, token);
-            if (result.equalsIgnoreCase("error"))
+            Log.v("GET","Token ennen tallennusta: "+result);
+            if (result == null || result.equalsIgnoreCase("error")){
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
-            PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
+                PreferenceService.setSetting(this, R.string.pref_key_userToken, "");
+                PreferenceService.setSetting(this, R.string.pref_key_username, "");
+                //try authing again
+            }else{
+                Log.v("GET","Token niinQ just ennen tallennusta: "+result);
+                PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
+                saveUsername();
+            }
             Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
-            saveUsername();
             finish();
         }
     }

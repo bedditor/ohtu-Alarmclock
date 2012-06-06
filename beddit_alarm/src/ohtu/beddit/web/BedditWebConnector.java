@@ -23,7 +23,9 @@ public class BedditWebConnector {
         String response = "";
         try {
             String token = PreferenceService.getSettingString(context, R.string.pref_key_userToken);
+            Log.v("GET","Token: "+R.string.pref_key_userToken);
             URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
+            Log.v("GET","Token: "+url);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.connect();
             Scanner scanner = new Scanner(new BufferedInputStream(connection.getInputStream()));
@@ -32,7 +34,7 @@ public class BedditWebConnector {
         } catch (Throwable e) {
             Log.e("LOL", Log.getStackTraceString(e));
         }
-
+        Log.v("GET","Getattu: "+response);
         return response;
     }
 
