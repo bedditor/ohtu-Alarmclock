@@ -21,6 +21,7 @@ public class OAuthHandling {
             HttpsURLConnection connect = (HttpsURLConnection) address.openConnection();
             connect.connect();
             Scanner scanscan = new Scanner(connect.getInputStream());
+            connect.disconnect();
             String stash = "";
             while(scanscan.hasNext()) {
                 stash += scanscan.next();
