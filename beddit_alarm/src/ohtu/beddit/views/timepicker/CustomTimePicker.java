@@ -131,8 +131,9 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     }
 
     private void createComponents() {
-        float radius = getHeight() >= (1 + BAR_HEIGHT) * getWidth() ?
-                getWidth() * 0.5f : Math.min(getWidth(), getHeight()) * (0.5f - BAR_HEIGHT);
+        float radius = (getHeight() / 2) * (1-BAR_HEIGHT);
+        if (radius*2 > getWidth())
+            radius = getWidth() / 2;
 
         float barHeight = (radius * BAR_HEIGHT)*(1-SPACER_SIZE);
         float barSpacer = barHeight * SPACER_SIZE;
