@@ -2,6 +2,11 @@ package ohtu.beddit.web;
 
 import android.content.Context;
 import android.util.Log;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.net.URL;
@@ -16,29 +21,15 @@ public class OAuthHandling {
             HttpsURLConnection connect = (HttpsURLConnection) address.openConnection();
             connect.connect();
             Scanner scanscan = new Scanner(connect.getInputStream());
+            connect.disconnect();
             String stash = "";
             while(scanscan.hasNext()) {
                 stash += scanscan.next();
             }
-            Log.v("AccessToken/Debug", "We should have something parseable json:\n" + stash);
+            String token1 = new JsonParser().parse(stash).getAsJsonObject().get("access_token").getAsString();
+            Log.v("AccessToken" ,"AccessToken = \""+token1+"\"");
 
-            Log.v("AccessToken/Debug", "Parse phase 0.:\t" + stash);
-            stash = stash.replace("\n", "");
-            Log.v("AccessToken/Debug", "Parse phase 1.:\t" + stash);
-            stash = stash.replace("\"", "");
-            Log.v("AccessToken/Debug", "Parse phase 2.:\t" + stash);
-            stash = stash.replace(":", "");
-            Log.v("AccessToken/Debug", "Parse phase 3.:\t" + stash);
-            stash = stash.replace("{", "");
-            stash = stash.replace("}", "");
-            Log.v("AccessToken/Debug", "Parse phase 4.:\t" + stash);
-            stash = stash.trim();
-            stash = stash.substring("access_token".length());
-            stash = stash.trim();
-            Log.v("AccessToken/Debug", "fullString 6.:\t" + stash);
-            Log.v("AccessToken" ,"AccessToken = \""+stash+"\"");
-            token = stash;
-
+            token = token1;
         } catch (Throwable e) {
             Log.v("AccessToken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
         }
