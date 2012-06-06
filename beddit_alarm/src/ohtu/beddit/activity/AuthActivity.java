@@ -11,10 +11,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.CookieManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.webkit.*;
 import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.io.FileHandler;
@@ -49,6 +46,10 @@ public class AuthActivity extends Activity implements TokenListener {
         //WebView webview = new WebView(this);
         webview = (WebView) findViewById(R.id.webLayout);
         webview.clearHistory();
+        CookieSyncManager cookieMonster = CookieSyncManager.createInstance(webview.getContext());
+        CookieManager.getInstance().removeAllCookie();
+        cookieMonster.sync();
+
 
         WebSettings settings = webview.getSettings();
         webview.setInitialScale(1);
