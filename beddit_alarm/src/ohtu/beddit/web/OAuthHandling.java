@@ -47,6 +47,7 @@ public class OAuthHandling {
             token = token1;
         } catch (Throwable e) {
             Log.e("AccessToken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
+            token = "error";
         }
         finally {
             connect.disconnect();
@@ -55,6 +56,7 @@ public class OAuthHandling {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    return "error";
                 }
             }
         }

@@ -51,17 +51,16 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateButtons();
         setClockHands();
         checkAuth();
-
-        myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
-
+        //myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
     }
 
     private void checkAuth() {
         String token = PreferenceService.getToken(this);
+        String username = PreferenceService.getUsername(this, 0);
         if (token != null){
             Log.v("Token:", token);
         }
-        if (token == null || token.equals("")) {
+        if (token == null || token.equals("") || username == null || username.equals("")) {
             Intent myIntent = new Intent(this, AuthActivity.class);
             startActivityForResult(myIntent,2);
         }
@@ -142,6 +141,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
 
+
+
+
     public class AlarmSetButtonClickListener implements OnClickListener {
 
         @Override
@@ -210,13 +212,33 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         switch(requestCode) {
             case (2) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.v("MainActivity", "We got message to finish main.");
-                    this.finish();
+                    Log.v("MainActivity", "Auth fails miserably");
+                    //start dialog / whatever
+                    createDialog();
+                    //then finish
+                    //this.finish();
                 }
                 break;
             }
         }
     }
+
+    public void createDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("CRASH!");
+        builder.setCancelable(false);
+        builder.setPositiveButton("D:", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        MainActivity.this.finish();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        Log.v("dialogi", "nakyy: "+alert.isShowing());
+        alert.show();
+        Log.v("dialogi", "nakyy: "+alert.isShowing());
+
+    }
+
 
     // These methods are for tests
     public void setAlarmService(AlarmService alarmService) {

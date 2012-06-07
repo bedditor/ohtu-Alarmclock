@@ -57,12 +57,14 @@ public class AuthActivity extends Activity implements TokenListener {
             if (result.equalsIgnoreCase("error")) {
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
                 fail();
+            }else{
+                Log.v(TAG, "result: "+result);
+                // We put the correct access token to safe and be happy. User is allowed to use the program now.
+                PreferenceService.setToken(this, result);
+                Log.v("Toukenizer:", PreferenceService.getToken(this));
+                saveUserData();
+                finish();
             }
-            // We put the correct access token to safe and be happy. User is allowed to use the program now.
-            PreferenceService.setToken(this, result);
-            Log.v("Toukenizer:", PreferenceService.getToken(this));
-            saveUserData();
-            finish();
         }
         // If user doesn't allow the program to access, we simply terminate the program.
         if (problem.matches()) {
@@ -73,12 +75,14 @@ public class AuthActivity extends Activity implements TokenListener {
     private void fail(){
         Intent resultIntent = new Intent((String) null);
         setResult(Activity.RESULT_OK, resultIntent);
-        PreferenceService.setSetting(this, R.string.pref_key_userToken, "");
-        PreferenceService.setSetting(this, R.string.pref_key_username, "");
+        PreferenceService.setUsername(this, "", 0);
+        PreferenceService.setUsername(this, "", 1);
+        PreferenceService.setToken(this, "");
         finish();
     }
 
     private void saveUserData() {
+        checkJson();
         BedditApiController apiController = new BedditApiController(new BedditConnectorImpl());
         int userCount = apiController.getUserCount(this);
         for(int i=0; i<userCount; i++){
@@ -86,6 +90,15 @@ public class AuthActivity extends Activity implements TokenListener {
             PreferenceService.setFirstname(this, apiController.getFirstName(this, i), i);
             PreferenceService.setLastname(this, apiController.getLastName(this, i), i);
             Log.v("Auth","Set username "+i+" to "+PreferenceService.getUsername(this, i));
+        }
+    }
+
+    private void checkJson() {
+        BedditWebConnector webConnector = new BedditWebConnector();
+        String usernameJson = webConnector.getUsernameJson(this);
+        Log.v(TAG,"got username json: "+usernameJson);
+        if (usernameJson.equals("")){
+            fail();
         }
     }
 
