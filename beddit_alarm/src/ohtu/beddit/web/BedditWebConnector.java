@@ -50,7 +50,6 @@ public class BedditWebConnector {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             }
-            scanner.close();
         }
 
         return response;

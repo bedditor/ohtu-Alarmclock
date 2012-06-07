@@ -49,4 +49,6 @@
     <string name="notification_text">Alarm set at</string>
 
 
+    <string name="page_loading">Loading page, please wait...</string>
+
 </resources>

@@ -12,6 +12,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.cert.Certificate;
 import java.util.Scanner;
 
 public class OAuthHandling {
@@ -27,6 +28,7 @@ public class OAuthHandling {
 
             System.setProperty("http.keepAlive", "false");
             connect = (HttpsURLConnection) address.openConnection();
+
             connect.connect();
             Log.v("OAuth","responseCode: "+connect.getResponseCode());
 
@@ -44,7 +46,7 @@ public class OAuthHandling {
 
             token = token1;
         } catch (Throwable e) {
-            Log.v("AccessToken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
+            Log.e("AccessToken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
         }
         finally {
             connect.disconnect();
@@ -55,7 +57,6 @@ public class OAuthHandling {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             }
-            scanscan.close();
         }
         return token;
     }
