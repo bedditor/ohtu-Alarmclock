@@ -7,9 +7,6 @@
         <Preference
                 android:title="@string/pref_title_forget"
                 android:key="@string/pref_key_forget"/>
-        <Preference
-                android:title="@string/pref_title_relogin"
-                android:key="@string/pref_key_relogin"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_title_alarm_settings">

@@ -38,7 +38,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         setAlarmService(new AlarmServiceImpl(this));
@@ -201,7 +200,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu_button:
-                startActivity(item.getIntent());
+                startActivityForResult(item.getIntent(), 2);
                 break;
             case R.id.help_menu_button:
                 startActivity(item.getIntent());
