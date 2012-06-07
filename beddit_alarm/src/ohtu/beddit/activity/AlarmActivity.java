@@ -79,7 +79,7 @@ public class AlarmActivity extends Activity {
         @Override
         public void onClick(View view){
             //get snooze length from preferences
-            int snoozeLength = Integer.parseInt(PreferenceService.getSettingString(AlarmActivity.this, R.string.pref_key_snooze));
+            int snoozeLength = PreferenceService.getSnoozeLength(AlarmActivity.this);
 
             Calendar snoozeTime = Calendar.getInstance();
             snoozeTime.add(Calendar.MINUTE, snoozeLength);

@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     private void checkAuth() {
-        String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
+        String token = PreferenceService.getToken(this);
         if (token != null){
             Log.v("Token:", token);
         }
@@ -91,7 +91,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     private void updateColours(){
-        String theme = PreferenceService.getSettingString(this, R.string.pref_key_colour_theme);
+        String theme = PreferenceService.getColourTheme(this);
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         if(theme.equals("dark")){
             layout.setBackgroundColor(Color.BLACK);

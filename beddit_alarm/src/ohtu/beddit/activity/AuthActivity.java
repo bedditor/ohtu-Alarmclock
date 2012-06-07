@@ -9,10 +9,7 @@ import ohtu.beddit.R;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.json.BedditApiController;
-import ohtu.beddit.web.AmazingWebClient;
-import ohtu.beddit.web.BedditWebConnector;
-import ohtu.beddit.web.OAuthHandling;
-import ohtu.beddit.web.TokenListener;
+import ohtu.beddit.web.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,9 +59,9 @@ public class AuthActivity extends Activity implements TokenListener {
                 fail();
             }
             // We put the correct access token to safe and be happy. User is allowed to use the program now.
-            PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
-            Log.v("Tokenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
-            saveUsername();
+            PreferenceService.setToken(this, result);
+            Log.v("Toukenizer:", PreferenceService.getToken(this));
+            saveUserData();
             finish();
         }
         // If user doesn't allow the program to access, we simply terminate the program.
@@ -81,13 +78,15 @@ public class AuthActivity extends Activity implements TokenListener {
         finish();
     }
 
-    private void saveUsername() {
-        BedditWebConnector webConnector = new BedditWebConnector();
-        String usernameJson = webConnector.getUsernameJson(this);
-        Log.v(TAG,"got username json: "+usernameJson);
-        BedditApiController apiController = new BedditApiController();
-        String username = apiController.getUsername(usernameJson, 0);
-        PreferenceService.setSetting(this, R.string.pref_key_username, username);
+    private void saveUserData() {
+        BedditApiController apiController = new BedditApiController(new BedditConnectorImpl());
+        int userCount = apiController.getUserCount(this);
+        for(int i=0; i<userCount; i++){
+            PreferenceService.setUsername(this, apiController.getUsername(this, i), i);
+            PreferenceService.setFirstname(this, apiController.getFirstName(this, i), i);
+            PreferenceService.setLastname(this, apiController.getLastName(this, i), i);
+            Log.v("Auth","Set username "+i+" to "+PreferenceService.getUsername(this, i));
+        }
     }
 
     @Override

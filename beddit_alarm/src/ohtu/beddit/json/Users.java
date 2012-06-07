@@ -18,4 +18,14 @@ public class Users extends JsonObject {
         return users[userIndex].getUsername();
     }
 
+    public String getFirstName(int userIndex){
+        return users[userIndex].getFirst_name();
+    }
+
+    public String getLastName(int userIndex){
+        return users[userIndex].getLast_name();
+    }
+
+
+
 }
