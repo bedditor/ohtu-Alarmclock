@@ -32,6 +32,7 @@ public class AmazingWebClient extends WebViewClient {
         dialog = new Dialog(context, R.style.CustomDialogTheme);
         dialog.setContentView(R.layout.loading_dialog);
         dialog.show();
+
     }
 
     public void addTokenListener(TokenListener l) {
@@ -47,8 +48,7 @@ public class AmazingWebClient extends WebViewClient {
                 return true;
             }
         }
-
-        Pattern S = Pattern.compile("https...api.beddit.com.api.oauth.access_token.client_id.*redirect_uri.https...peach-app.appspot.com.oauth.client_secret.*grant_type.code.code.*");
+        Pattern S = Pattern.compile("\\Qhttps://api.beddit.com/api/oauth/access_token?client_id=\\E.*\\Q&redirect_uri=https://peach-app.appspot.com/oauth&client_secret=\\E.*\\Q&grant_type=code&code=\\E.*");
         Matcher match = S.matcher(url);
         if (match.matches())
             return true;
