@@ -63,7 +63,6 @@ public class AlarmActivity extends Activity {
                            //TODO: What about when user is on call?
         Log.v(TAG, "Trying to put AlarmActivity on pause");
         super.onPause();
-        finish();
     }
 
     @Override
