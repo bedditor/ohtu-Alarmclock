@@ -1,11 +1,20 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.text.AndroidCharacter;
+import android.text.Html;
 import android.util.Log;
+import android.view.Display;
+import android.view.View;
+import android.view.WindowManager;
 import android.webkit.*;
+import android.widget.Toast;
 import ohtu.beddit.R;
+import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.web.AmazingWebClient;
@@ -37,11 +46,11 @@ public class AuthActivity extends Activity implements TokenListener {
         //WebView webview = new WebView(this);
         webview = (WebView) findViewById(R.id.webLayout);
         webview.clearHistory();
-
         CookieSyncManager cookieMonster = CookieSyncManager.createInstance(webview.getContext());
         CookieManager.getInstance().removeSessionCookie();
         CookieManager.getInstance().removeAllCookie();
         cookieMonster.sync();
+
 
         WebSettings settings = webview.getSettings();
         webview.setInitialScale(1);
@@ -55,9 +64,8 @@ public class AuthActivity extends Activity implements TokenListener {
 
         wvc = new AmazingWebClient(this, webview);
         webview.setWebViewClient(wvc);
-        webview.loadUrl("http://peach-app.appspot.com/testi");
-
-
+        Log.v("AuthActivity", FileHandler.getClientId(this) + " secret: " + FileHandler.getClientSecret(this));
+        webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id="+ FileHandler.getClientId(this) + "&redirect_uri=https://peach-app.appspot.com/oauth&response_type=code");
     }
 
 
@@ -65,11 +73,12 @@ public class AuthActivity extends Activity implements TokenListener {
     @Override
     public void onTokenReceived(String token) {
         //Toasts don't work in webview
-        Pattern S = Pattern.compile("https...api.beddit.com.api.oauth.access_token.client_id.*redirect_uri.https...peach-app.appspot.com.oauth.client_secret.*grant_type.code.code.*");
+        Pattern S = Pattern.compile("https...peach.app.appspot.com.oauth.code=(.+)");
         Matcher supah = S.matcher(token);
         Log.v(TAG, "Trying to match: " + token);
         if (supah.matches()) {
             Log.v(TAG, "Matches: " + token);
+            token = "https://api.beddit.com/api/oauth/access_token?client_id="+ FileHandler.getClientId(this) + "&redirect_uri=https://peach-app.appspot.com/oauth&client_secret="+ FileHandler.getClientSecret(this) + "&grant_type=code&code="+supah.group(1);
             String result = OAuthHandling.getAccessToken(this, token);
             if (result.equalsIgnoreCase("error"))
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
