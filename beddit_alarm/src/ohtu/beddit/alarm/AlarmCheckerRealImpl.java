@@ -1,8 +1,8 @@
 package ohtu.beddit.alarm;
 
-import android.util.Log;
 import ohtu.beddit.json.BedditApiController;
-import ohtu.beddit.web.BedditWebConnector;
+import ohtu.beddit.web.BedditConnector;
+import ohtu.beddit.web.BedditConnectorImpl;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +15,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
 
     @Override
     public boolean wakeUpNow(char sleepstage) {
-        BedditApiController api = new BedditApiController();
-        BedditWebConnector web = new BedditWebConnector();
+        BedditApiController api = new BedditApiController(new BedditConnectorImpl());
         //check for sleepstage || ask for api if should wakeup
         return false;
     }

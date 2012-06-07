@@ -16,7 +16,6 @@
     </string-array>
 
 
-
     <string-array name="themeArrayTitles">
         <item>Dark</item>
         <item>Light</item>
@@ -26,6 +25,17 @@
         <item>dark</item>
         <item>light</item>
     </string-array>
+
+
+
+    <string-array name="userArrayTitles">
+    </string-array>
+
+    <string-array name="userArrayValues">
+    </string-array>
+
+
+
 
 
 </resources>

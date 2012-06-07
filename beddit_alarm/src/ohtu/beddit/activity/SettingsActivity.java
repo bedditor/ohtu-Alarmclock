@@ -7,100 +7,147 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.util.Log;
 import ohtu.beddit.R;
 import ohtu.beddit.io.PreferenceService;
+import ohtu.beddit.json.BedditApiController;
+import ohtu.beddit.web.BedditConnectorImpl;
 
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
 
+    private PreferenceCategory bedditConnectionPrefs;
     private ListPreference snoozeTimePref;
+    private ListPreference userSelectionPreference;
     private Preference forgetButton;
     private Preference advancedButton;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.prefs);
 
-        initPrefVars();
     }
 
     private void initPrefVars() {
+        bedditConnectionPrefs = (PreferenceCategory)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_bedditconnect));
         snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
         forgetButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
+        userSelectionPreference = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_userIndex));
         advancedButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        initPrefVars();
+
         // Setup the initial values
-        setSnoozeSummary();
-        updateForgetMeButton();
+        updateSnoozeSummary();
+        updateLoginDataToSummary();
+        updateUserSelectionPreferences();
 
         // Set up a listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         forgetButton.setOnPreferenceClickListener(this);
+        userSelectionPreference.setOnPreferenceClickListener(this);
         advancedButton.setOnPreferenceClickListener(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         // Unregister the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_snooze))) {
-            setSnoozeSummary();
+            updateSnoozeSummary();
+        }
+        else if (key.equals(this.getString(R.string.pref_key_userIndex))) {
+            updateLoginDataToSummary();
         }
     }
 
-    private void setSnoozeSummary(){
+    private void updateSnoozeSummary(){
         snoozeTimePref.setSummary(getString(R.string.pref_summary_snooze_length) + " " + snoozeTimePref.getEntry());
+    }
+
+    private void updateLoginDataToSummary(){
+        int userIndex = PreferenceService.getUserIndex(this);
+        String fullName = PreferenceService.getFullName(this, userIndex) ;
+        String username = PreferenceService.getUsername(this, userIndex);
+        String token = PreferenceService.getToken(this);
+
+        if(token.equals("") || username.equals("")){
+            forgetButton.setSummary(getString(R.string.pref_not_logged_in));
+        }
+        else{ //joko token tai username löytyy
+            forgetButton.setSummary(getString(R.string.pref_logged_in_as) + " " + fullName);
+        }
     }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if(preference.getKey().equals(this.getString(R.string.pref_key_forget))){
             forgetMe();
-            updateForgetMeButton();
+            updateLoginDataToSummary();
             startAuthActivity();
         }
         else if(preference.getKey().equals(this.getString(R.string.pref_key_advanced))){
-            Intent myIntent = new Intent(this, AdvancedSettingsActivity.class);
-            this.startActivity(myIntent);
+            startAdvancedSettingsActivity();
         }
 
         return true;
     }
 
-    private void forgetMe(){
-        PreferenceService.setSetting(this, R.string.pref_key_username, "");
-        PreferenceService.setSetting(this, R.string.pref_key_userToken, "");
-    }
-
-    private void updateForgetMeButton(){
-        String username = PreferenceService.getSettingString(this, R.string.pref_key_username);
-        String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
-        if(token.equals("") || username.equals("")){
-            forgetButton.setSummary(getString(R.string.pref_not_logged_in));
-        }
-        else{ //user and access_token both found:
-            forgetButton.setSummary(getString(R.string.pref_logged_in_as) + " " + username);
-        }
-    }
-
     private void startAuthActivity() {
         Intent myIntent = new Intent(this, AuthActivity.class);
         this.startActivityForResult(myIntent, 3);
+    }
+
+    private void startAdvancedSettingsActivity() {
+        Intent myIntent = new Intent(this, AdvancedSettingsActivity.class);
+        this.startActivity(myIntent);
+    }
+
+    private void updateUserSelectionPreferences(){
+        int userCount = 2;
+        if(PreferenceService.getUsername(this, 1).equals(""))
+            userCount = 1;
+
+        CharSequence[] entries = new CharSequence[userCount];
+        CharSequence[] entryValues = new CharSequence[userCount];
+        for(int i=0; i<userCount; i++){
+            entries[i] = PreferenceService.getFullName(this, i);
+            entryValues[i] = Integer.toString(i);
+        }
+
+        userSelectionPreference.setEntries(entries);
+        userSelectionPreference.setEntryValues(entryValues);
+    }
+
+    private void forgetMe(){
+        PreferenceService.setUsername(this, "", 0);
+        PreferenceService.setUsername(this, "", 1);
+        PreferenceService.setFirstname(this, "", 0);
+        PreferenceService.setFirstname(this, "", 1);
+        PreferenceService.setLastname(this, "", 0);
+        PreferenceService.setLastname(this, "", 1);
+        PreferenceService.setToken(this, "");
+    }
+
+
+    private String getFullNameFromApi(int userIndex){
+        BedditApiController apiController = getApiController();
+        return apiController.getFirstName(this, userIndex) + " " + apiController.getLastName(this, userIndex);
+    }
+
+    private BedditApiController getApiController(){
+        return new BedditApiController(new BedditConnectorImpl());
     }
 
     @Override

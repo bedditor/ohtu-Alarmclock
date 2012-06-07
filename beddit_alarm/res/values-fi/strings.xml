@@ -44,5 +44,6 @@
     <string name="pref_summary_colour_theme">Väriteemaksesi on asetettu </string>
     <string name="pref_title_advanced">Edistyneet asetukset</string>
     <string name="notification_text">Herätys asetettu</string>
+    <string name="pref_title_user_index">Choose user</string>
 
 </resources>

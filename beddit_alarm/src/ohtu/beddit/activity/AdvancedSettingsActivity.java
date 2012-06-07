@@ -9,7 +9,7 @@ import ohtu.beddit.R;
 import ohtu.beddit.io.PreferenceService;
 
 
-public class AdvancedSettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
+public class AdvancedSettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private ListPreference colourThemePref;
 
@@ -52,11 +52,6 @@ public class AdvancedSettingsActivity extends PreferenceActivity implements Shar
 
     private void setColourThemeSummary(){
         colourThemePref.setSummary(getString(R.string.pref_summary_colour_theme) + " " + colourThemePref.getEntry());
-    }
-
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-        return true;
     }
 
 }
