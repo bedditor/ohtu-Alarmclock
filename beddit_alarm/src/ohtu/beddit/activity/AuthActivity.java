@@ -1,6 +1,7 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +25,6 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class AuthActivity extends Activity implements TokenListener {
-    WebViewClient wvc;
     WebView webview;
     private final String TAG = "AuthActivity";
 
@@ -34,7 +34,6 @@ public class AuthActivity extends Activity implements TokenListener {
         super.onCreate(savedInstanceState);    //To change body of overridden methods use File | Settings | File Templates.
         setContentView(R.layout.webview);
 
-        //WebView webview = new WebView(this);
         webview = (WebView) findViewById(R.id.webLayout);
         webview.clearHistory();
 
@@ -53,11 +52,10 @@ public class AuthActivity extends Activity implements TokenListener {
         settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
 
 
-        wvc = new AmazingWebClient(this, webview);
-        webview.setWebViewClient(wvc);
+        AmazingWebClient client = new AmazingWebClient(this);
+        client.addTokenListener(this);
+        webview.setWebViewClient(client);
         webview.loadUrl("http://peach-app.appspot.com/testi");
-
-
     }
 
 
@@ -74,12 +72,11 @@ public class AuthActivity extends Activity implements TokenListener {
             if (result.equalsIgnoreCase("error"))
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
             PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
-            Log.v("Toukenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
+            Log.v("Tokenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
             saveUsername();
             finish();
         }
     }
-
 
     private void saveUsername() {
         BedditWebConnector webConnector = new BedditWebConnector();
@@ -89,7 +86,6 @@ public class AuthActivity extends Activity implements TokenListener {
         String username = apiController.getUsername(usernameJson, 0);
         PreferenceService.setSetting(this, R.string.pref_key_username, username);
     }
-
 
     @Override
     public void onBackPressed() {
