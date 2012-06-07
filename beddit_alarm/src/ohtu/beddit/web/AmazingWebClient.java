@@ -11,6 +11,9 @@ import ohtu.beddit.R;
 import java.util.LinkedList;
 import java.util.List;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created with IntelliJ IDEA.
  * User: juho
@@ -21,6 +24,7 @@ import java.util.List;
 public class AmazingWebClient extends WebViewClient {
     Context context;
     List<TokenListener> listeners = new LinkedList<TokenListener>();
+
     String[] blacklist = {"http://www.beddit.com/", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/"};
     public AmazingWebClient(Context context) {
         this.context = context;
@@ -42,6 +46,10 @@ public class AmazingWebClient extends WebViewClient {
             }
         }
 
+        Pattern S = Pattern.compile("https...api.beddit.com.api.oauth.access_token.client_id.*redirect_uri.https...peach-app.appspot.com.oauth.client_secret.*grant_type.code.code.*");
+        Matcher match = S.matcher(url);
+        if (match.matches())
+            return true;
         for (TokenListener l : listeners)
             l.onTokenReceived(url);
         return false;
@@ -55,6 +63,4 @@ public class AmazingWebClient extends WebViewClient {
         super.onPageFinished(view, url);    //To change body of overridden methods use File | Settings | File Templates.
         dialog.dismiss();
     }
-
-
 }

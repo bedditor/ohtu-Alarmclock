@@ -2,11 +2,10 @@ package ohtu.beddit.io;
 
 import android.content.*;
 import android.util.Log;
+import com.google.gson.JsonParser;
+import ohtu.beddit.R;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 
@@ -79,4 +78,31 @@ public class FileHandler {
         return alarmValues;
     }
 
+    public static String getClientId(Context context) {
+        String json= "";
+        try{
+            InputStream inputStream = context.getResources().openRawResource(R.raw.secret);
+            Scanner scanner = new Scanner(inputStream);
+            while (scanner.hasNext()) { json+=scanner.next();}
+        }catch(Exception e){
+            Log.v("Filehandler", "File not found");
+            return "";
+        }
+        String clientid=new JsonParser().parse(json).getAsJsonObject().get("client_id").getAsString();
+        return clientid;
+    }
+
+    public static String getClientSecret(Context context) {
+        String json= "";
+        try{
+            InputStream inputStream = context.getResources().openRawResource(R.raw.secret);
+            Scanner scanner = new Scanner(inputStream);
+            while (scanner.hasNext()) { json+=scanner.next();}
+        }catch(Exception e){
+            Log.v("Filehandler", "File not found");
+            return "";
+        }
+        String clientid=new JsonParser().parse(json).getAsJsonObject().get("client_secret").getAsString();
+        return clientid;
+    }
 }
