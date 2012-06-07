@@ -64,6 +64,8 @@ public class AuthActivity extends Activity implements TokenListener {
     public void onTokenReceived(String token) {
         //Toasts don't work in webview
         Pattern S = Pattern.compile("\\Qhttps://peach-app.appspot.com/oauth?code=\\E(.+)");
+        Pattern error = Pattern.compile("\\Qhttps://peach-app.appspot.com/oauth?error=access_denied\\E");
+        Matcher problem = error.matcher(token);
         Matcher supah = S.matcher(token);
         Log.v(TAG, "Trying to match: " + token);
         if (supah.matches()) {
@@ -75,6 +77,11 @@ public class AuthActivity extends Activity implements TokenListener {
             PreferenceService.setSetting(this, R.string.pref_key_userToken, result);
             Log.v("Tokenizer:", PreferenceService.getSettingString(this, R.string.pref_key_userToken));
             saveUsername();
+            finish();
+        }
+        if (problem.matches()) {
+            Intent resultIntent = new Intent((String) null);
+            setResult(Activity.RESULT_OK, resultIntent);
             finish();
         }
     }
