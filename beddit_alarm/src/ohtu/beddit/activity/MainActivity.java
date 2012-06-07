@@ -114,7 +114,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         alarmTimePicker.setInterval(alarmService.getAlarmInterval(this));
     }
 
-
     @Override
     public void onAlarmTimeChanged(int hours, int minutes, int interval) {
         alarmService.changeAlarm(this, hours, minutes, interval);
@@ -161,13 +160,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
         }
     }
-
-    public class backButtonlisten {
-        public void onBack(View view) {
-            MainActivity.this.finish();
-        }
-    }
-
 
     // Set buttons to on/off
     public void updateButtons(){
@@ -223,13 +215,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         }
     }
 
-
-
     // These methods are for tests
-
     public void setAlarmService(AlarmService alarmService) {
         this.alarmService = alarmService;
-
     }
 
     public AlarmService getAlarmService() {

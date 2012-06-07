@@ -1,11 +1,14 @@
 package ohtu.beddit.web;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
 import ohtu.beddit.R;
 
 import java.util.LinkedList;
@@ -23,11 +26,13 @@ import java.util.regex.Pattern;
  */
 public class AmazingWebClient extends WebViewClient {
     List<TokenListener> listeners = new LinkedList<TokenListener>();
-
+    Dialog dialog;
     String[] blacklist = {"http://www.beddit.com/", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/"};
     public AmazingWebClient(Context context) {
-        dialog = ProgressDialog.show(context, "",
-                context.getString(R.string.page_loading), true);
+        dialog = new Dialog(context, R.style.CustomDialogTheme);
+        dialog.setContentView(R.layout.loading_dialog);
+        dialog.show();
+
     }
 
     public void addTokenListener(TokenListener l) {
@@ -51,9 +56,6 @@ public class AmazingWebClient extends WebViewClient {
             l.onTokenReceived(url);
         return false;
     }
-
-    ProgressDialog dialog;
-
 
     @Override
     public void onPageFinished(WebView view, String url) {
