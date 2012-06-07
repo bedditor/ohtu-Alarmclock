@@ -11,3 +11,4 @@
 *.properties
 .idea
 out
+*/res/raw/secret
