@@ -22,12 +22,10 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class AmazingWebClient extends WebViewClient {
-    Context context;
     List<TokenListener> listeners = new LinkedList<TokenListener>();
 
     String[] blacklist = {"http://www.beddit.com/", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/"};
     public AmazingWebClient(Context context) {
-        this.context = context;
         dialog = ProgressDialog.show(context, "",
                 context.getString(R.string.page_loading), true);
     }
@@ -45,8 +43,7 @@ public class AmazingWebClient extends WebViewClient {
                 return true;
             }
         }
-
-        Pattern S = Pattern.compile("https...api.beddit.com.api.oauth.access_token.client_id.*redirect_uri.https...peach-app.appspot.com.oauth.client_secret.*grant_type.code.code.*");
+        Pattern S = Pattern.compile("\\Qhttps://api.beddit.com/api/oauth/access_token?client_id=\\E.*\\Q&redirect_uri=https://peach-app.appspot.com/oauth&client_secret=\\E.*\\Q&grant_type=code&code=\\E.*");
         Matcher match = S.matcher(url);
         if (match.matches())
             return true;

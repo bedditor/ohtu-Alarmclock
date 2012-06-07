@@ -54,8 +54,8 @@ public class AuthActivity extends Activity implements TokenListener {
         AmazingWebClient client = new AmazingWebClient(this);
         client.addTokenListener(this);
         webview.setWebViewClient(client);
-        Log.v("AuthActivity", FileHandler.getClientId(this) + " secret: " + FileHandler.getClientSecret(this));
-        webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id="+ FileHandler.getClientId(this) + "&redirect_uri=https://peach-app.appspot.com/oauth&response_type=code");
+        Log.v("AuthActivity", FileHandler.getClientInfo(this, FileHandler.CLIENT_ID) + " secret: " + FileHandler.getClientInfo(this, FileHandler.CLIENT_SECRET));
+        webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id="+ FileHandler.getClientInfo(this, FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&response_type=code");
     }
 
 
@@ -63,12 +63,12 @@ public class AuthActivity extends Activity implements TokenListener {
     @Override
     public void onTokenReceived(String token) {
         //Toasts don't work in webview
-        Pattern S = Pattern.compile("https...peach.app.appspot.com.oauth.code=(.+)");
+        Pattern S = Pattern.compile("\\Qhttps://peach-app.appspot.com/oauth?code=\\E(.+)");
         Matcher supah = S.matcher(token);
         Log.v(TAG, "Trying to match: " + token);
         if (supah.matches()) {
             Log.v(TAG, "Matches: " + token);
-            token = "https://api.beddit.com/api/oauth/access_token?client_id="+ FileHandler.getClientId(this) + "&redirect_uri=https://peach-app.appspot.com/oauth&client_secret="+ FileHandler.getClientSecret(this) + "&grant_type=code&code="+supah.group(1);
+            token = "https://api.beddit.com/api/oauth/access_token?client_id="+ FileHandler.getClientInfo(this, FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&client_secret="+ FileHandler.getClientInfo(this, FileHandler.CLIENT_SECRET) + "&grant_type=code&code="+supah.group(1);
             String result = OAuthHandling.getAccessToken(this, token);
             if (result.equalsIgnoreCase("error"))
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");

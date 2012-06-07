@@ -12,7 +12,8 @@ import java.util.Scanner;
 public class FileHandler {
 
     public static final String ALARMS_FILENAME = "beddit_alarms";
-
+    public static final String CLIENT_ID = "client_id";
+    public static final String CLIENT_SECRET = "client_secret";
 
     public static boolean writeToFile(String filename, String writable, Context context){
         FileOutputStream fos = null;
@@ -78,7 +79,7 @@ public class FileHandler {
         return alarmValues;
     }
 
-    public static String getClientId(Context context) {
+    public static String getClientInfo(Context context, String request) {
         String json= "";
         try{
             InputStream inputStream = context.getResources().openRawResource(R.raw.secret);
@@ -88,21 +89,7 @@ public class FileHandler {
             Log.v("Filehandler", "File not found");
             return "";
         }
-        String clientid=new JsonParser().parse(json).getAsJsonObject().get("client_id").getAsString();
-        return clientid;
-    }
-
-    public static String getClientSecret(Context context) {
-        String json= "";
-        try{
-            InputStream inputStream = context.getResources().openRawResource(R.raw.secret);
-            Scanner scanner = new Scanner(inputStream);
-            while (scanner.hasNext()) { json+=scanner.next();}
-        }catch(Exception e){
-            Log.v("Filehandler", "File not found");
-            return "";
-        }
-        String clientid=new JsonParser().parse(json).getAsJsonObject().get("client_secret").getAsString();
+        String clientid=new JsonParser().parse(json).getAsJsonObject().get(request).getAsString();
         return clientid;
     }
 }
