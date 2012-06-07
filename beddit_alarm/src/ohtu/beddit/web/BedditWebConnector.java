@@ -7,6 +7,8 @@ import ohtu.beddit.io.PreferenceService;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -21,21 +23,39 @@ public class BedditWebConnector {
 
     public String getSomething(Context context, String query){
         String response = "";
+
+        HttpsURLConnection connection = null;
+        InputStream inputStream = null;
+        Scanner scanner = null;
+
         try {
             String token = PreferenceService.getSettingString(context, R.string.pref_key_userToken);
-            Log.v("GET","Token: "+R.string.pref_key_userToken);
+            Log.v("GET","Token: "+token);
             URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
             Log.v("GET","Token: "+url);
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection = (HttpsURLConnection) url.openConnection();
             connection.connect();
-            Scanner scanner = new Scanner(new BufferedInputStream(connection.getInputStream()));
+            inputStream = connection.getInputStream();
+            scanner = new Scanner(inputStream);
             while(scanner.hasNext())
                 response += scanner.nextLine();
-        } catch (Throwable e) {
-            Log.e("LOL", Log.getStackTraceString(e));
         }
-        Log.v("GET","Getattu: "+response);
-        return response;
+        catch (Throwable e) {
+            Log.e("LOL", Log.getStackTraceString(e));
+            response = "";
+        }
+        finally {
+            connection.disconnect();
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    return "";
+                }
+            }
+            return response;
+        }
     }
 
 }
