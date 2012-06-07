@@ -1,0 +1,8 @@
+<resources>
+
+    <string-array name="themeArrayTitles">
+        <item>Tumma</item>
+        <item>Vaalea</item>
+    </string-array>
+
+</resources>

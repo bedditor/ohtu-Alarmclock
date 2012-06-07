@@ -92,11 +92,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if(token.equals("") || username.equals("")){
             forgetButton.setSummary(getString(R.string.pref_not_logged_in));
-            forgetButton.setEnabled(true); //true for debug
         }
-        else{ //joko token tai username löytyy
+        else{ //user and access_token both found:
             forgetButton.setSummary(getString(R.string.pref_logged_in_as) + " " + username);
-            forgetButton.setEnabled(true);
         }
     }
 
@@ -111,7 +109,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         switch(requestCode) {
             case (3) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.v("SettingsActivity", "We got message to finish main.");
+                    Log.v("SettingsActivity", "OAuth failure");
                     Intent resultIntent = new Intent((String) null);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();

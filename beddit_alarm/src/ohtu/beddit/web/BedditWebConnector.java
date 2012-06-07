@@ -30,7 +30,9 @@ public class BedditWebConnector {
 
         try {
             String token = PreferenceService.getSettingString(context, R.string.pref_key_userToken);
+            Log.v("GET","Token: "+token);
             URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
+            Log.v("GET","Token: "+url);
             connection = (HttpsURLConnection) url.openConnection();
             connection.connect();
             inputStream = connection.getInputStream();
@@ -40,6 +42,7 @@ public class BedditWebConnector {
         }
         catch (Throwable e) {
             Log.e("LOL", Log.getStackTraceString(e));
+            response = "";
         }
         finally {
             connection.disconnect();
@@ -48,11 +51,11 @@ public class BedditWebConnector {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    return "";
                 }
             }
+            return response;
         }
-
-        return response;
     }
 
 }
