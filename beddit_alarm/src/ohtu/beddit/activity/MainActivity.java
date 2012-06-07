@@ -50,7 +50,13 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         // Update buttons and clock handles
         updateButtons();
         setClockHands();
+        checkAuth();
 
+        myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
+
+    }
+
+    private void checkAuth() {
         String token = PreferenceService.getSettingString(this, R.string.pref_key_userToken);
         if (token != null){
             Log.v("Token:", token);
@@ -59,9 +65,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             Intent myIntent = new Intent(this, AuthActivity.class);
             startActivityForResult(myIntent,2);
         }
-
-        myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
-
     }
 
     @Override
