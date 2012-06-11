@@ -35,7 +35,7 @@ public class SleepInfoActivity extends Activity {
         feelBatMan.setOnClickListener(new SleepInfoActivity.FeelsBadManButtonClickListener());
 
         overallSleep = (TextView)findViewById(R.id.sleep_info_overall_text);
-        overallSleep.setText("TEST");
+        overallSleep.setText("TEST\nasd");
 
     }
 

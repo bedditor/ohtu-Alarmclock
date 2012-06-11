@@ -51,9 +51,12 @@
 
     <string name="loading_dialog_text">Connecting, please wait...</string>
     <string name="sleep_info_title">SleepInfoWIP</string>
-    <string name="sleep_info_well_button">I feel I can wrestle with elephants today!</string>
-    <string name="sleep_info_badly_button">My wife wants to get divorced again!</string>
-    <string name="sleep_info_overall_total">REPLACEME</string>
-    <string name="sleep_info_deep_total">REPLACEME</string>
+    <string name="sleep_info_well_button">Feeling good</string>
+    <string name="sleep_info_overall_total">1h30min01sec</string>
+    <string name="sleep_info_overall_minitotal">Total amount of sleep</string>
+    <string name="sleep_info_deep_total">30min00sec</string>
+    <string name="sleep_info_deep_minitotal">Total amount of quiet sleep</string>
+    <string name="sleep_info_badly_button">Im tired</string>
+    <string name="sleep_info_overall_title">Last night</string>
 
 </resources>
