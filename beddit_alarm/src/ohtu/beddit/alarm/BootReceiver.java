@@ -1,10 +1,8 @@
 package ohtu.beddit.alarm;
 
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import ohtu.beddit.io.FileHandler;
 
 public class BootReceiver extends BroadcastReceiver {
 
@@ -14,18 +12,18 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         alarmService = new AlarmServiceImpl(context);
 
-        if (alarmService.isAlarmSet(context)){
+        if (alarmService.isAlarmSet()){
             addAlarm(context);
         }
 
     }
 
     private void addAlarm(Context context){
-        int hours = alarmService.getAlarmHours(context);
-        int minutes = alarmService.getAlarmMinutes(context);
-        int interval = alarmService.getAlarmInterval(context);
+        int hours = alarmService.getAlarmHours();
+        int minutes = alarmService.getAlarmMinutes();
+        int interval = alarmService.getAlarmInterval();
 
-        alarmService.addAlarm(context, hours, minutes, interval);
+        alarmService.addAlarm(hours, minutes, interval);
     }
 
 }

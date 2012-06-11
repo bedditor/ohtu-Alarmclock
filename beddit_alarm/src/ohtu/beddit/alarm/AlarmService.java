@@ -12,19 +12,19 @@ import java.util.Calendar;
  * To change this template use File | Settings | File Templates.
  */
 public interface AlarmService {
-    void addAlarm(Context context, int hours, int minutes, int interval);
+    void addAlarm(int hours, int minutes, int interval);
 
-    void addWakeUpAttempt(Context context, Calendar time);
+    void addWakeUpAttempt(Calendar time);
 
-    void deleteAlarm(Context context);
+    void deleteAlarm();
 
-    public boolean isAlarmSet(Context context);
+    public boolean isAlarmSet();
 
-    public int getAlarmHours(Context context);
+    public int getAlarmHours();
 
-    public int getAlarmMinutes(Context context);
+    public int getAlarmMinutes();
 
-    public int getAlarmInterval(Context context);
+    public int getAlarmInterval();
 
-    void changeAlarm(Context context, int hours, int minutes, int interval);
+    void changeAlarm(int hours, int minutes, int interval);
 }

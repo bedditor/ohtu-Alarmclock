@@ -1,19 +1,15 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.view.*;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.view.View.OnClickListener;
@@ -23,7 +19,6 @@ import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.AlarmTimeChangedListener;
 import ohtu.beddit.alarm.AlarmTimePicker;
-import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 
@@ -114,16 +109,16 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     private void setClockHands() {
-        alarmTimePicker.setHours(alarmService.getAlarmHours(this));
-        alarmTimePicker.setMinutes(alarmService.getAlarmMinutes(this));
-        alarmTimePicker.setInterval(alarmService.getAlarmInterval(this));
+        alarmTimePicker.setHours(alarmService.getAlarmHours());
+        alarmTimePicker.setMinutes(alarmService.getAlarmMinutes());
+        alarmTimePicker.setInterval(alarmService.getAlarmInterval());
     }
 
     @Override
     public void onAlarmTimeChanged(int hours, int minutes, int interval) {
-        alarmService.changeAlarm(this, hours, minutes, interval);
+        alarmService.changeAlarm(hours, minutes, interval);
 
-        if (alarmService.isAlarmSet(this))
+        if (alarmService.isAlarmSet())
             showMeTheToast(getString(R.string.toast_alarmupdated));
 
     }
@@ -145,7 +140,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
         @Override
         public void onClick(View view) {
-            alarmService.addAlarm(MainActivity.this, alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
+            alarmService.addAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
             MainActivity.this.updateButtons();
             // Tell the user about what we did.
             showMeTheToast(getString(R.string.toast_alarmset));
@@ -156,7 +151,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public class AlarmDeleteButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
-            alarmService.deleteAlarm(MainActivity.this);
+            alarmService.deleteAlarm();
             MainActivity.this.updateButtons();
             showMeTheToast(getString(R.string.toast_alarmremoved));
 
@@ -165,7 +160,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     // Set buttons to on/off
     public void updateButtons(){
-        if (alarmService.isAlarmSet(this.getApplicationContext())){
+        if (alarmService.isAlarmSet()){
             addAlarmButton.setEnabled(false);
             deleteAlarmButton.setEnabled(true);
         } else {

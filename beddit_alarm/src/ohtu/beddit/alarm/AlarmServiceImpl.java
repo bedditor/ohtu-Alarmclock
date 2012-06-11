@@ -2,16 +2,11 @@ package ohtu.beddit.alarm;
 
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.util.Log;
 
-import ohtu.beddit.R;
-import ohtu.beddit.activity.MainActivity;
 import ohtu.beddit.io.FileHandler;
 
 import java.util.Calendar;
@@ -21,24 +16,27 @@ public class AlarmServiceImpl implements AlarmService {
     private final String TAG = "Alarm Service";
     private AlarmManager alarmManager;
     private FileHandler fileHandler;
+    private Context context;
     private static boolean alarmIsSet = false;
 
     public AlarmServiceImpl(Context context){
-        this.alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        this.fileHandler = new FileHandler(context);
-        alarmIsSet = checkAlarmFromFile(context);
+        this.context = context;
+        this.alarmManager = (AlarmManager) this.context.getSystemService(context.ALARM_SERVICE);
+        this.fileHandler = new FileHandler(this.context);
+        alarmIsSet = checkAlarmFromFile();
     }
 
     public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler) {
+        this.context = context;
         this.alarmManager = alarmManager;
         this.fileHandler = filehandler;
-        alarmIsSet = checkAlarmFromFile(context);
+        alarmIsSet = checkAlarmFromFile();
 
     }
 
     //this method saves a new alarm with an interval
     @Override
-    public void addAlarm(Context context, int hours, int minutes, int interval){
+    public void addAlarm(int hours, int minutes, int interval){
         fileHandler.saveAlarm(hours, minutes, interval, true);
 
         // Calculate first wake up try
@@ -46,19 +44,19 @@ public class AlarmServiceImpl implements AlarmService {
 
         Notifications.setNotification(1, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
                                      hours, minutes,context);
-        addWakeUpAttempt(context, calendar);
+        addWakeUpAttempt(calendar);
         alarmIsSet = true;
     }
 
     @Override
-    public void changeAlarm(Context context, int hours, int minutes, int interval){
+    public void changeAlarm(int hours, int minutes, int interval){
         if (alarmIsSet){
-            addAlarm(context, hours, minutes, interval);
+            addAlarm(hours, minutes, interval);
         }
     }
 
     //this method sets alarm manager to try wake up on given time
-    public void addWakeUpAttempt(Context context, Calendar time){
+    public void addWakeUpAttempt(Calendar time){
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
         String timeString = time.get(Calendar.HOUR_OF_DAY) + ":" + time.get(Calendar.MINUTE) + ":" + time.get(Calendar.SECOND);
@@ -88,7 +86,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public void deleteAlarm(Context context){
+    public void deleteAlarm(){
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
@@ -101,35 +99,35 @@ public class AlarmServiceImpl implements AlarmService {
 
     }
 
-    public boolean isAlarmSet(Context context){
+    public boolean isAlarmSet(){
         return alarmIsSet;
     }
 
-    private boolean checkAlarmFromFile(Context context){
-        int [] alarms = getAlarm(context);
+    private boolean checkAlarmFromFile(){
+        int [] alarms = getAlarm();
         if (alarms[0] < 1){
             return false;
         }
         return true;
     }
 
-    private int[] getAlarm(Context context){
+    private int[] getAlarm(){
         return fileHandler.getAlarm();
     }
 
     @Override
-    public int getAlarmHours(Context context) {
-        return getAlarm(context)[1];
+    public int getAlarmHours() {
+        return getAlarm()[1];
     }
 
     @Override
-    public int getAlarmMinutes(Context context) {
-        return getAlarm(context)[2];
+    public int getAlarmMinutes() {
+        return getAlarm()[2];
     }
 
     @Override
-    public int getAlarmInterval(Context context) {
-        return getAlarm(context)[3];
+    public int getAlarmInterval() {
+        return getAlarm()[3];
     }
 
 

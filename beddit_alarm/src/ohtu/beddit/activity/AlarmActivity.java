@@ -1,11 +1,9 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +12,6 @@ import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.WakeUpLock;
-import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.music.MusicHandler;
 
@@ -88,7 +85,7 @@ public class AlarmActivity extends Activity {
             //set alarm
             Context context = AlarmActivity.this;
             AlarmService alarmService = new AlarmServiceImpl(context);
-            alarmService.addAlarm(AlarmActivity.this, snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
+            alarmService.addAlarm(snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
 
             AlarmActivity.this.finish();
         }

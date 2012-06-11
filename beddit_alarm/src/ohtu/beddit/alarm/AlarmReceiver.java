@@ -1,12 +1,10 @@
 package ohtu.beddit.alarm;
 
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import ohtu.beddit.activity.AlarmActivity;
-import ohtu.beddit.io.FileHandler;
 
 import java.util.Calendar;
 
@@ -35,7 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         else if(getSecondsUntilLastWakeUpTime(context) <= checkTime){ //no time to do any more checking, schedule final wake up
             Log.v(TAG, "No time to check anymore, schedule wake up");
-            alarmService.addWakeUpAttempt(context, getLastWakeUpTime(context));
+            alarmService.addWakeUpAttempt(getLastWakeUpTime(context));
         }
         else if(alarmChecker.wakeUpNow(sleepstage)){ //check if we should wake up now
             Log.v(TAG, "Alarm checker gave permission to wake up, starting alarm");
@@ -63,8 +61,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private Calendar getLastWakeUpTime(Context context){
         Calendar wakeUpTime = Calendar.getInstance();
-        wakeUpTime.set(Calendar.HOUR_OF_DAY, alarmService.getAlarmHours(context));
-        wakeUpTime.set(Calendar.MINUTE, alarmService.getAlarmMinutes(context));
+        wakeUpTime.set(Calendar.HOUR_OF_DAY, alarmService.getAlarmHours());
+        wakeUpTime.set(Calendar.MINUTE, alarmService.getAlarmMinutes());
         wakeUpTime.set(Calendar.SECOND, 0);
         wakeUpTime.set(Calendar.MILLISECOND, 0);
 
@@ -82,11 +80,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if(timeForNextTry.before(lastWakeUpTime)){ //still time for another interval
             Log.v(TAG, "next try scheduled to "+timeForNextTry.get(Calendar.HOUR_OF_DAY)+":"+timeForNextTry.get(Calendar.MINUTE)+":"+timeForNextTry.get(Calendar.SECOND));
-            alarmService.addWakeUpAttempt(context, timeForNextTry);
+            alarmService.addWakeUpAttempt(timeForNextTry);
         }
         else{ //no more time, schedule final wake up
             Log.v(TAG, "next try scheduled to last wake up time "+lastWakeUpTime.get(Calendar.HOUR_OF_DAY)+":"+lastWakeUpTime.get(Calendar.MINUTE)+":"+lastWakeUpTime.get(Calendar.SECOND));
-            alarmService.addWakeUpAttempt(context, lastWakeUpTime);
+            alarmService.addWakeUpAttempt(lastWakeUpTime);
         }
     }
 
