@@ -82,23 +82,30 @@ public class AuthActivity extends Activity implements TokenListener {
     }
 
     private void saveUserData() {
-        checkJson();
-        BedditApiController apiController = new BedditApiController(new BedditConnectorImpl());
-        int userCount = apiController.getUserCount(this);
-        for(int i=0; i<userCount; i++){
-            PreferenceService.setUsername(this, apiController.getUsername(this, i), i);
-            PreferenceService.setFirstname(this, apiController.getFirstName(this, i), i);
-            PreferenceService.setLastname(this, apiController.getLastName(this, i), i);
-            Log.v("Auth","Set username "+i+" to "+PreferenceService.getUsername(this, i));
+        if(checkJson()){
+            BedditApiController apiController = new BedditApiController(new BedditWebConnector());
+            //
+            //check for errors in each apicontroller method call
+            //
+            int userCount = apiController.getUserCount(this);
+            for(int i=0; i<userCount; i++){
+                PreferenceService.setUsername(this, apiController.getUsername(this, i), i);
+                PreferenceService.setFirstname(this, apiController.getFirstName(this, i), i);
+                PreferenceService.setLastname(this, apiController.getLastName(this, i), i);
+                Log.v("Auth","Set username "+i+" to "+PreferenceService.getUsername(this, i));
+            }
         }
     }
 
-    private void checkJson() {
+    private boolean checkJson() {
         BedditWebConnector webConnector = new BedditWebConnector();
-        String usernameJson = webConnector.getUsernameJson(this);
+        String usernameJson = webConnector.getUserJson(this);
         Log.v(TAG,"got username json: "+usernameJson);
         if (usernameJson.equals("")){
             fail();
+            return false;
+        }else{
+            return true;
         }
     }
 

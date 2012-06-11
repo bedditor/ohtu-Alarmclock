@@ -12,7 +12,7 @@ import android.util.Log;
 import ohtu.beddit.R;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.json.BedditApiController;
-import ohtu.beddit.web.BedditConnectorImpl;
+import ohtu.beddit.web.BedditWebConnector;
 
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
@@ -147,7 +147,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private BedditApiController getApiController(){
-        return new BedditApiController(new BedditConnectorImpl());
+        return new BedditApiController(new BedditWebConnector());
     }
 
     @Override

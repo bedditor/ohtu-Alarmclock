@@ -12,16 +12,16 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
-public class BedditWebConnector {
-    public String getUsernameJson(Context context){
-        return getSomething(context, "");
+public class BedditWebConnector implements BedditConnector {
+    public String getUserJson(Context context){
+        return getSomeJson(context, "");
     }
 
     public String getWakeUpJson(Context context){
-        return getSomething(context, "query"); //add
+        return getSomeJson(context, "query"); //add
     }
 
-    public String getSomething(Context context, String query){
+    public String getSomeJson(Context context, String query){
         String response = "";
 
         HttpsURLConnection connection = null;
