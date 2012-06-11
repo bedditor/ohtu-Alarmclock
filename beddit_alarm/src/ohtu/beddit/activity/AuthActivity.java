@@ -75,8 +75,7 @@ public class AuthActivity extends Activity implements TokenListener {
     private void fail(){
         Intent resultIntent = new Intent((String) null);
         setResult(Activity.RESULT_OK, resultIntent);
-        PreferenceService.setUsername(this, "", 0);
-        PreferenceService.setUsername(this, "", 1);
+        PreferenceService.setUsername(this, "");
         PreferenceService.setToken(this, "");
         finish();
     }
@@ -87,13 +86,9 @@ public class AuthActivity extends Activity implements TokenListener {
             //
             //check for errors in each apicontroller method call
             //
-            int userCount = apiController.getUserCount(this);
-            for(int i=0; i<userCount; i++){
-                PreferenceService.setUsername(this, apiController.getUsername(this, i), i);
-                PreferenceService.setFirstname(this, apiController.getFirstName(this, i), i);
-                PreferenceService.setLastname(this, apiController.getLastName(this, i), i);
-                Log.v("Auth","Set username "+i+" to "+PreferenceService.getUsername(this, i));
-            }
+            PreferenceService.setUsername(this, apiController.getUsername(this, 0));
+            PreferenceService.setFirstname(this, apiController.getFirstName(this, 0));
+            PreferenceService.setLastname(this, apiController.getLastName(this, 0));
         }
     }
 

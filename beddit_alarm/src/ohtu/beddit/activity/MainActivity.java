@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     private void checkAuth() {
         String token = PreferenceService.getToken(this);
-        String username = PreferenceService.getUsername(this, 0);
+        String username = PreferenceService.getUsername(this);
         if (token != null){
             Log.v("Token:", token);
         }

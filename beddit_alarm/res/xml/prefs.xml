@@ -3,14 +3,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
             android:title="@string/pref_title_beddit_settings"
-            android:key="@string/pref_key_bedditconnect">
+            android:key="@string/pref_key_beddit_connect_category">
         <Preference
                 android:title="@string/pref_title_forget"
                 android:key="@string/pref_key_forget"/>
-        <ListPreference
-                android:title="@string/pref_title_user_index"
-                android:key="@string/pref_key_userIndex"
-                android:defaultValue="0"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_title_alarm_settings">

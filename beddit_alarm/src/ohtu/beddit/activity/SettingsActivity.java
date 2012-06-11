@@ -19,7 +19,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private PreferenceCategory bedditConnectionPrefs;
     private ListPreference snoozeTimePref;
-    private ListPreference userSelectionPreference;
     private Preference forgetButton;
     private Preference advancedButton;
 
@@ -31,10 +30,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void initPrefVars() {
-        bedditConnectionPrefs = (PreferenceCategory)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_bedditconnect));
+        bedditConnectionPrefs = (PreferenceCategory)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_beddit_connect_category));
         snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
         forgetButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
-        userSelectionPreference = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_userIndex));
         advancedButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
     }
 
@@ -47,12 +45,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // Setup the initial values
         updateSnoozeSummary();
         updateLoginDataToSummary();
-        updateUserSelectionPreferences();
 
         // Set up a listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         forgetButton.setOnPreferenceClickListener(this);
-        userSelectionPreference.setOnPreferenceClickListener(this);
         advancedButton.setOnPreferenceClickListener(this);
     }
 
@@ -67,9 +63,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         if (key.equals(this.getString(R.string.pref_key_snooze))) {
             updateSnoozeSummary();
         }
-        else if (key.equals(this.getString(R.string.pref_key_userIndex))) {
-            updateLoginDataToSummary();
-        }
     }
 
     private void updateSnoozeSummary(){
@@ -77,9 +70,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void updateLoginDataToSummary(){
-        int userIndex = PreferenceService.getUserIndex(this);
-        String fullName = PreferenceService.getFullName(this, userIndex) ;
-        String username = PreferenceService.getUsername(this, userIndex);
+        String fullName = PreferenceService.getFullName(this) ;
+        String username = PreferenceService.getUsername(this);
         String token = PreferenceService.getToken(this);
 
         if(token.equals("") || username.equals("")){
@@ -114,29 +106,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         this.startActivity(myIntent);
     }
 
-    private void updateUserSelectionPreferences(){
-        int userCount = 2;
-        if(PreferenceService.getUsername(this, 1).equals(""))
-            userCount = 1;
-
-        CharSequence[] entries = new CharSequence[userCount];
-        CharSequence[] entryValues = new CharSequence[userCount];
-        for(int i=0; i<userCount; i++){
-            entries[i] = PreferenceService.getFullName(this, i);
-            entryValues[i] = Integer.toString(i);
-        }
-
-        userSelectionPreference.setEntries(entries);
-        userSelectionPreference.setEntryValues(entryValues);
-    }
-
     private void forgetMe(){
-        PreferenceService.setUsername(this, "", 0);
-        PreferenceService.setUsername(this, "", 1);
-        PreferenceService.setFirstname(this, "", 0);
-        PreferenceService.setFirstname(this, "", 1);
-        PreferenceService.setLastname(this, "", 0);
-        PreferenceService.setLastname(this, "", 1);
+        PreferenceService.setUsername(this, "");
+        PreferenceService.setFirstname(this, "");
+        PreferenceService.setLastname(this, "");
         PreferenceService.setToken(this, "");
     }
 
