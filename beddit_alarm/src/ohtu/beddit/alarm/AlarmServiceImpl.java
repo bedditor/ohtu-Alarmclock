@@ -19,18 +19,13 @@ import java.util.Calendar;
 public class AlarmServiceImpl implements AlarmService {
 
     private final String TAG = "Alarm Service";
-    private AlarmManagerInterface alarmManager;
+    private AlarmManager alarmManager;
     private static boolean alarmIsSet = false;
 
     public AlarmServiceImpl(Context context) {
-        this.alarmManager = new AlarmManagerAndroid(context);
+        this.alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         alarmIsSet = checkAlarmFromFile(context);
 
-    }
-
-    @Override
-    public void setAlarmManager(AlarmManagerInterface alarmManager){
-        this.alarmManager = alarmManager;
     }
 
     //this method saves a new alarm with an interval

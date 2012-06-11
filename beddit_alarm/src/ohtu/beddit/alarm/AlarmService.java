@@ -18,8 +18,6 @@ public interface AlarmService {
 
     void deleteAlarm(Context context);
 
-    public void setAlarmManager(AlarmManagerInterface alarmManager);
-
     public boolean isAlarmSet(Context context);
 
     public int getAlarmHours(Context context);
