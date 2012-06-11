@@ -10,9 +10,9 @@ import android.content.Context;
  * To change this template use File | Settings | File Templates.
  */
 public interface BedditConnector {
-    String getUserJson(Context context);
+    String getUserJson(Context context) throws MalformedBedditJsonException;
 
-    String getWakeUpJson(Context context);
+    String getWakeUpJson(Context context) throws MalformedBedditJsonException;
 
-    String getSomeJson(Context context, String query);
+    String getSomeJson(Context context, String query) throws MalformedBedditJsonException;
 }

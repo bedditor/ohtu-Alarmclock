@@ -114,11 +114,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
 
-    private String getFullNameFromApi(int userIndex){
-        BedditApiController apiController = getApiController();
-        return apiController.getFirstName(this, userIndex) + " " + apiController.getLastName(this, userIndex);
-    }
-
     private BedditApiController getApiController(){
         return new BedditApiController(new BedditWebConnector());
     }
