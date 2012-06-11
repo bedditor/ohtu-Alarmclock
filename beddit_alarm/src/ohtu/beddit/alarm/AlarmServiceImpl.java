@@ -17,19 +17,22 @@ public class AlarmServiceImpl implements AlarmService {
     private AlarmManager alarmManager;
     private FileHandler fileHandler;
     private Context context;
+    private NotificationFactory notfFactory;
     private static boolean alarmIsSet = false;
 
     public AlarmServiceImpl(Context context){
         this.context = context;
         this.alarmManager = (AlarmManager) this.context.getSystemService(context.ALARM_SERVICE);
         this.fileHandler = new FileHandler(this.context);
+        this.notfFactory = new NotificationFactory(this.context);
         alarmIsSet = checkAlarmFromFile();
     }
 
-    public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler) {
+    public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler, NotificationFactory notfFactory) {
         this.context = context;
         this.alarmManager = alarmManager;
         this.fileHandler = filehandler;
+        this.notfFactory = notfFactory;
         alarmIsSet = checkAlarmFromFile();
 
     }
@@ -42,8 +45,7 @@ public class AlarmServiceImpl implements AlarmService {
         // Calculate first wake up try
         Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
 
-        Notifications.setNotification(1, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
-                                     hours, minutes,context);
+        notfFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), hours, minutes);
         addWakeUpAttempt(calendar);
         alarmIsSet = true;
     }
@@ -94,7 +96,7 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.cancel(sender);
         fileHandler.disableAlarm();
 
-        Notifications.resetNotification(1,context);
+        notfFactory.resetNotification();
         alarmIsSet = false;
 
     }
