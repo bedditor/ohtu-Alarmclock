@@ -190,6 +190,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         MenuItem help = menu.findItem(R.id.help_menu_button);
         help.setIntent(new Intent(this.getApplicationContext(), HelpActivity.class));
 
+        MenuItem sleepInfo = menu.findItem(R.id.sleep_info_button);
+        sleepInfo.setIntent(new Intent(this.getApplicationContext(), SleepInfoActivity.class));
         return true;
     }
 
@@ -200,6 +202,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 startActivityForResult(item.getIntent(), 2);
                 break;
             case R.id.help_menu_button:
+                startActivity(item.getIntent());
+                break;
+            case R.id.sleep_info_button:
                 startActivity(item.getIntent());
                 break;
         }

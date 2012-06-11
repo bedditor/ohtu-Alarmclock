@@ -7,4 +7,7 @@
     <item
         android:id="@+id/help_menu_button"
         android:title="@string/help_button_title" />
+    <item
+        android:id="@+id/sleep_info_button"
+        android:title="@string/sleep_info_title" />
 </menu>
