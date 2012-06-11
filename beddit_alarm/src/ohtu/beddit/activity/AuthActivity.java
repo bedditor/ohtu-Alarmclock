@@ -73,6 +73,7 @@ public class AuthActivity extends Activity implements TokenListener {
     }
 
     private void fail(){
+        Log.v("AuthActivity", "fail called");
         Intent resultIntent = new Intent((String) null);
         setResult(Activity.RESULT_OK, resultIntent);
         PreferenceService.setUsername(this, "");
@@ -81,26 +82,14 @@ public class AuthActivity extends Activity implements TokenListener {
     }
 
     private void saveUserData() {
-        if(checkJson()){
+        try{
             BedditApiController apiController = new BedditApiController(new BedditWebConnector());
-            //
-            //check for errors in each apicontroller method call
-            //
             PreferenceService.setUsername(this, apiController.getUsername(this, 0));
             PreferenceService.setFirstname(this, apiController.getFirstName(this, 0));
             PreferenceService.setLastname(this, apiController.getLastName(this, 0));
         }
-    }
-
-    private boolean checkJson() {
-        BedditWebConnector webConnector = new BedditWebConnector();
-        String usernameJson = webConnector.getUserJson(this);
-        Log.v(TAG,"got username json: "+usernameJson);
-        if (usernameJson.equals("")){
+        catch (Exception e){
             fail();
-            return false;
-        }else{
-            return true;
         }
     }
 

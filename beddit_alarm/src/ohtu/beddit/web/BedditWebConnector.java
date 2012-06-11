@@ -13,49 +13,57 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class BedditWebConnector implements BedditConnector {
-    public String getUserJson(Context context){
+    public String getUserJson(Context context) throws MalformedBedditJsonException {
         return getSomeJson(context, "");
     }
 
-    public String getWakeUpJson(Context context){
+    public String getWakeUpJson(Context context) throws MalformedBedditJsonException {
         return getSomeJson(context, "query"); //add
     }
 
-    public String getSomeJson(Context context, String query){
+    public String getSomeJson(Context context, String query) throws MalformedBedditJsonException {
         String response = "";
 
         HttpsURLConnection connection = null;
         InputStream inputStream = null;
-        Scanner scanner = null;
 
         try {
-            String token = PreferenceService.getSettingString(context, R.string.pref_key_userToken);
-            Log.v("GET","Token: "+token);
-            URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
-            Log.v("GET","Token: "+url);
-            connection = (HttpsURLConnection) url.openConnection();
-            connection.connect();
+            connection = connect(context, query, connection);
             inputStream = connection.getInputStream();
-            scanner = new Scanner(inputStream);
+            Scanner scanner = new Scanner(inputStream);
             while(scanner.hasNext())
                 response += scanner.nextLine();
         }
         catch (Throwable e) {
-            Log.e("LOL", Log.getStackTraceString(e));
-            response = "";
+            Log.e("WebConnector", Log.getStackTraceString(e));
+            throw new MalformedBedditJsonException();
         }
         finally {
-            connection.disconnect();
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    return "";
-                }
+            closeConnections(connection, inputStream);
+            if(response.equals("")) throw new MalformedBedditJsonException();
+        }
+        return response;
+    }
+
+    private HttpsURLConnection connect(Context context, String query, HttpsURLConnection connection) throws IOException {
+        String token = PreferenceService.getSettingString(context, R.string.pref_key_userToken);
+        URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
+        Log.v("GET", "Token: " + url);
+        connection = (HttpsURLConnection) url.openConnection();
+        connection.connect();
+        return connection;
+    }
+
+    private void closeConnections(HttpsURLConnection connection, InputStream inputStream) {
+        connection.disconnect();
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                Log.e("WebConnector", Log.getStackTraceString(e));
             }
-            return response;
         }
     }
+
 
 }
