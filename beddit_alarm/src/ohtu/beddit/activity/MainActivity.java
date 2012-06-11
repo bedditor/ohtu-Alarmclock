@@ -51,7 +51,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateButtons();
         setClockHands();
         checkAuth();
-        //myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
+        myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
     }
 
     private void checkAuth() {
@@ -139,10 +139,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             }
         });
     }
-
-
-
-
 
     public class AlarmSetButtonClickListener implements OnClickListener {
 

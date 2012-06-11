@@ -15,6 +15,7 @@ public class GrabPoint {
     private float y;
     private float radius;
     private Paint p;
+    private static final int COLOR_ALPHA = 64;
 
     public GrabPoint(float x, float y, float radius, Paint p)  {
         this.x = x;
@@ -24,7 +25,10 @@ public class GrabPoint {
     }
 
     public void draw(Canvas c) {
+        int color = p.getColor();
+        p.setColor(color - ((255-COLOR_ALPHA) << 24));
         c.drawCircle(x, y, radius, p);
+        p.setColor(color);
     }
 
     public float getX() {
