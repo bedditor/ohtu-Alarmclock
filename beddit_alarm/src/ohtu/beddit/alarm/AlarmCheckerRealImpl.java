@@ -3,6 +3,8 @@ package ohtu.beddit.alarm;
 import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.web.BedditWebConnector;
 
+import java.util.Calendar;
+
 /**
  * Created with IntelliJ IDEA.
  * User: lagvare
@@ -14,9 +16,18 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
 
     @Override
     public boolean wakeUpNow(char sleepstage) {
+
         BedditApiController api = new BedditApiController(new BedditWebConnector());
         //check for sleepstage || ask for api if should wakeup
         return false;
+    }
+
+    public static String getQueryDateString(){
+        Calendar kalenteri = Calendar.getInstance();
+        int year = kalenteri.get(Calendar.YEAR);
+        int month = kalenteri.get(Calendar.MONTH);
+        int day = kalenteri.get(Calendar.DAY_OF_MONTH);
+        return year+"/"+(month+1)+"/"+day;
     }
 
     @Override
@@ -26,6 +37,6 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
 
     @Override
     public int getCheckTime() {
-        return 10;
+        return 5;
     }
 }

@@ -14,21 +14,36 @@ import java.util.Scanner;
 
 public class BedditWebConnector implements BedditConnector {
     public String getUserJson(Context context) throws MalformedBedditJsonException {
-        return getSomeJson(context, "");
+        return getSomeJson(context, "", false);
     }
 
-    public String getWakeUpJson(Context context) throws MalformedBedditJsonException {
-        return getSomeJson(context, "query"); //add
+
+    public String getWakeUpJson(Context context,String date) throws MalformedBedditJsonException {
+        String username = PreferenceService.getUsername(context);
+        String query = username+"/"+date+"/sleep";
+        return getSomeJson(context, query, false); //add
     }
 
-    public String getSomeJson(Context context, String query) throws MalformedBedditJsonException {
+    public String getQueueStateJson(Context context, String date) throws MalformedBedditJsonException{
+        String username = PreferenceService.getUsername(context);
+        String query = username+"/"+date+"/sleep/queue_for_analysis";
+        return getSomeJson(context, query, false); //add
+    }
+
+    //need to check if POSTing actually works as it is:
+    public String requestDataAnalysis(Context context, String date) throws MalformedBedditJsonException{
+        String username = PreferenceService.getUsername(context);
+        String query = username+"/"+date+"/sleep/queue_for_analysis";
+        return getSomeJson(context, query, true); //add
+    }
+
+    public String getSomeJson(Context context, String query, boolean do_post) throws MalformedBedditJsonException {
         String response = "";
 
         HttpsURLConnection connection = null;
         InputStream inputStream = null;
-
         try {
-            connection = connect(context, query, connection);
+            connection = connect(context, query, connection,do_post);
             inputStream = connection.getInputStream();
             Scanner scanner = new Scanner(inputStream);
             while(scanner.hasNext())
@@ -45,11 +60,18 @@ public class BedditWebConnector implements BedditConnector {
         return response;
     }
 
-    private HttpsURLConnection connect(Context context, String query, HttpsURLConnection connection) throws IOException {
-        String token = PreferenceService.getToken(context);
+    private HttpsURLConnection connect(Context context, String query, HttpsURLConnection connection, boolean do_post) throws IOException {
+            String token = PreferenceService.getToken(context);
         URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
         Log.v("GET", "Token: " + url);
         connection = (HttpsURLConnection) url.openConnection();
+        if(do_post){
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+        }else{
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(false);
+        }
         connection.connect();
         return connection;
     }

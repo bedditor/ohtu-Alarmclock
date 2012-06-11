@@ -59,8 +59,8 @@ public class OAuthHandling {
                     return "error";
                 }
             }
+            return token;
         }
-        return token;
     }
 
 }

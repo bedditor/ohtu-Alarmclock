@@ -32,13 +32,13 @@ public class BedditApiController {
         return jsonParser.getUsers(json).getLastName(userIndex);
     }
 
-    public char getLastSleepStage(Context context) throws MalformedBedditJsonException {
-        String json = bedditConnector.getWakeUpJson(context);
+    public char getLastSleepStage(Context context, String date) throws MalformedBedditJsonException {
+        String json = bedditConnector.getWakeUpJson(context, date);
         return jsonParser.getNight(json).getLastSleepStage();
     }
 
-    public Calendar getTimeOfLastSleepStage(Context context) throws MalformedBedditJsonException {
-        String json = bedditConnector.getWakeUpJson(context);
+    public Calendar getTimeOfLastSleepStage(Context context, String date) throws MalformedBedditJsonException {
+        String json = bedditConnector.getWakeUpJson(context, date);
         return jsonParser.getNight(json).getLastSleepStageTime();
     }
 }

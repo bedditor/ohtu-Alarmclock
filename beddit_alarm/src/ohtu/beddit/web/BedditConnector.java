@@ -12,7 +12,9 @@ import android.content.Context;
 public interface BedditConnector {
     String getUserJson(Context context) throws MalformedBedditJsonException;
 
-    String getWakeUpJson(Context context) throws MalformedBedditJsonException;
+    String getWakeUpJson(Context context, String date) throws MalformedBedditJsonException;
 
-    String getSomeJson(Context context, String query) throws MalformedBedditJsonException;
+    String getQueueStateJson(Context context, String date) throws MalformedBedditJsonException;
+
+    String getSomeJson(Context context, String query, boolean do_post) throws MalformedBedditJsonException;
 }
