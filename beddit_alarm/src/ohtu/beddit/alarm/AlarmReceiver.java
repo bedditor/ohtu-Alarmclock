@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import ohtu.beddit.activity.AlarmActivity;
+import ohtu.beddit.io.FileHandler;
 
 import java.util.Calendar;
 
@@ -20,7 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        alarmService = new AlarmServiceImpl(context, (AlarmManager) context.getSystemService(context.ALARM_SERVICE));
+        alarmService = new AlarmServiceImpl(context);
         AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
         checkTime = alarmChecker.getCheckTime();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();

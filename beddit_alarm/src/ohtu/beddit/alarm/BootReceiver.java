@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import ohtu.beddit.io.FileHandler;
 
 public class BootReceiver extends BroadcastReceiver {
 
@@ -11,7 +12,7 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        alarmService = new AlarmServiceImpl(context, (AlarmManager) context.getSystemService(context.ALARM_SERVICE));
+        alarmService = new AlarmServiceImpl(context);
 
         if (alarmService.isAlarmSet(context)){
             addAlarm(context);

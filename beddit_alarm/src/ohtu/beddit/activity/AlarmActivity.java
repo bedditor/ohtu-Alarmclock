@@ -14,6 +14,7 @@ import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.WakeUpLock;
+import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.music.MusicHandler;
 
@@ -86,7 +87,7 @@ public class AlarmActivity extends Activity {
 
             //set alarm
             Context context = AlarmActivity.this;
-            AlarmService alarmService = new AlarmServiceImpl(context, (AlarmManager) context.getSystemService(context.ALARM_SERVICE));
+            AlarmService alarmService = new AlarmServiceImpl(context);
             alarmService.addAlarm(AlarmActivity.this, snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
 
             AlarmActivity.this.finish();
@@ -125,6 +126,6 @@ public class AlarmActivity extends Activity {
     }
 
     private void makeNewAlarmServiceAndDeleteAlarm() {
-        new AlarmServiceImpl(this, (AlarmManager) this.getSystemService(this.ALARM_SERVICE)).deleteAlarm(this);
+        new AlarmServiceImpl(this);
     }
 }

@@ -14,8 +14,13 @@ public class FileHandler {
     public static final String ALARMS_FILENAME = "beddit_alarms";
     public static final String CLIENT_ID = "client_id";
     public static final String CLIENT_SECRET = "client_secret";
+    private Context context;
 
-    public static boolean writeToFile(String filename, String writable, Context context){
+    public FileHandler(Context context){
+        this.context = context;
+    }
+
+    public boolean writeToFile(String filename, String writable){
         FileOutputStream fos = null;
         try{
             fos = context.openFileOutput(filename,Context.MODE_PRIVATE);
@@ -28,7 +33,7 @@ public class FileHandler {
         return true;
     }
 
-    public static String readStringFromFile(String filename, Context context){
+    public String readStringFromFile(String filename){
         try{
             Scanner scanner = new Scanner(context.openFileInput(filename));
             String line = scanner.nextLine();
@@ -39,17 +44,17 @@ public class FileHandler {
         }
     }
 
-    public static boolean saveAlarm(int hour, int minute, int interval, boolean enabled, Context context){
+    public boolean saveAlarm(int hour, int minute, int interval, boolean enabled){
         int alarmSet = enabled ? 1 : -1;
         String towrite = ""+alarmSet+'#'+hour+'#'+minute+'#'+interval;
-        return writeToFile(ALARMS_FILENAME, towrite, context);
+        return writeToFile(ALARMS_FILENAME, towrite);
     }
 
 
     // Disables alarm, but keeps the wake up time in memory
-    public static boolean disableAlarm(Context context){
-        int[] oldData = getAlarm(context);
-        return saveAlarm(oldData[1], oldData[2], oldData[3], false, context);
+    public boolean disableAlarm(){
+        int[] oldData = getAlarm();
+        return saveAlarm(oldData[1], oldData[2], oldData[3], false);
     }
 
     /*
@@ -58,8 +63,8 @@ public class FileHandler {
                                         2: minutes
                                         3: interval
      */
-    public static int[] getAlarm(Context context){
-        String[] alarmData = readStringFromFile(ALARMS_FILENAME, context).split("#");
+    public int[] getAlarm(){
+        String[] alarmData = readStringFromFile(ALARMS_FILENAME).split("#");
 
         int[] alarmValues = new int[4];
         try{
@@ -74,12 +79,12 @@ public class FileHandler {
             for (int i = 1; i < alarmValues.length; i++){
                 alarmValues[i] = 0;
             }
-            saveAlarm(0, 0, 0, false, context);
+            saveAlarm(0, 0, 0, false);
         }
         return alarmValues;
     }
 
-    public static String getClientInfo(Context context, String request) {
+    public String getClientInfo(String request) {
         String json= "";
         try{
             InputStream inputStream = context.getResources().openRawResource(R.raw.secret);

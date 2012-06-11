@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 public class AuthActivity extends Activity implements TokenListener {
     WebView webview;
     private final String TAG = "AuthActivity";
+    private FileHandler fileHandler;
 
 
     @Override
@@ -30,6 +31,7 @@ public class AuthActivity extends Activity implements TokenListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview);
 
+        fileHandler = new FileHandler(this);
         webview = (WebView) findViewById(R.id.webLayout);
         webview.clearHistory();
         removeCookies();
@@ -51,7 +53,7 @@ public class AuthActivity extends Activity implements TokenListener {
         if (match.matches()) {
             Log.v(TAG, "Success");
             // We got the right url so we construct our https get url and give it to OAuthHandling class which will get the access token by https connection
-            token = "https://api.beddit.com/api/oauth/access_token?client_id="+ FileHandler.getClientInfo(this, FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&client_secret="+ FileHandler.getClientInfo(this, FileHandler.CLIENT_SECRET) + "&grant_type=code&code="+match.group(1);
+            token = "https://api.beddit.com/api/oauth/access_token?client_id="+ fileHandler.getClientInfo(FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&client_secret="+ fileHandler.getClientInfo(FileHandler.CLIENT_SECRET) + "&grant_type=code&code="+match.group(1);
             String result = OAuthHandling.getAccessToken(this, token);
             // If we get error, well you shouldn't. We close the program because we won't get correct access_token. Breaks other code?
             if (result.equalsIgnoreCase("error")) {
@@ -126,8 +128,8 @@ public class AuthActivity extends Activity implements TokenListener {
         AmazingWebClient client = new AmazingWebClient(this);
         client.addTokenListener(this);
         webview.setWebViewClient(client);
-        Log.v(TAG, FileHandler.getClientInfo(this, FileHandler.CLIENT_ID) + " secret: " + FileHandler.getClientInfo(this, FileHandler.CLIENT_SECRET));
-        webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id="+ FileHandler.getClientInfo(this, FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&response_type=code");
+        Log.v(TAG, fileHandler.getClientInfo(FileHandler.CLIENT_ID) + " secret: " + fileHandler.getClientInfo(FileHandler.CLIENT_SECRET));
+        webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id="+ fileHandler.getClientInfo(FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&response_type=code");
     }
 
     private void removeCookies() {

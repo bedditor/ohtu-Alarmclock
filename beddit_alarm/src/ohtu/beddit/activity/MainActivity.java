@@ -23,6 +23,7 @@ import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.AlarmTimeChangedListener;
 import ohtu.beddit.alarm.AlarmTimePicker;
+import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 
@@ -42,7 +43,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        alarmService = new AlarmServiceImpl(this, (AlarmManager) this.getSystemService(this.ALARM_SERVICE));
+        alarmService = new AlarmServiceImpl(this);
 
         //initialize default values for settings if called for the first time
         PreferenceManager.setDefaultValues(this, R.xml.prefs, true);

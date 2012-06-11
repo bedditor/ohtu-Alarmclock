@@ -20,10 +20,18 @@ public class AlarmServiceImpl implements AlarmService {
 
     private final String TAG = "Alarm Service";
     private AlarmManager alarmManager;
+    private FileHandler fileHandler;
     private static boolean alarmIsSet = false;
 
-    public AlarmServiceImpl(Context context, AlarmManager alarmManager) {
+    public AlarmServiceImpl(Context context){
+        this.alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        this.fileHandler = new FileHandler(context);
+        alarmIsSet = checkAlarmFromFile(context);
+    }
+
+    public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler) {
         this.alarmManager = alarmManager;
+        this.fileHandler = filehandler;
         alarmIsSet = checkAlarmFromFile(context);
 
     }
@@ -31,7 +39,7 @@ public class AlarmServiceImpl implements AlarmService {
     //this method saves a new alarm with an interval
     @Override
     public void addAlarm(Context context, int hours, int minutes, int interval){
-        FileHandler.saveAlarm(hours, minutes, interval, true, context);
+        fileHandler.saveAlarm(hours, minutes, interval, true);
 
         // Calculate first wake up try
         Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
@@ -86,7 +94,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         // Cancel the alarm!
         alarmManager.cancel(sender);
-        FileHandler.disableAlarm(context);
+        fileHandler.disableAlarm();
 
         Notifications.resetNotification(1,context);
         alarmIsSet = false;
@@ -106,7 +114,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     private int[] getAlarm(Context context){
-        return FileHandler.getAlarm(context);
+        return fileHandler.getAlarm();
     }
 
     @Override
