@@ -46,7 +46,7 @@ public class BedditWebConnector implements BedditConnector {
     }
 
     private HttpsURLConnection connect(Context context, String query, HttpsURLConnection connection) throws IOException {
-        String token = PreferenceService.getSettingString(context, R.string.pref_key_userToken);
+        String token = PreferenceService.getToken(context);
         URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
         Log.v("GET", "Token: " + url);
         connection = (HttpsURLConnection) url.openConnection();

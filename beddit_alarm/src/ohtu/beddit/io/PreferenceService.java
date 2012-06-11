@@ -7,24 +7,24 @@ import ohtu.beddit.R;
 
 public class PreferenceService {
 
-    public static boolean getSettingBoolean(Context context, int settingId) {
+    private static boolean getSettingBoolean(Context context, int settingId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(context.getString(settingId), false);
     }
 
-    public static void setSetting(Context context, int settingId, boolean newValue) {
+    private static void setSetting(Context context, int settingId, boolean newValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putBoolean(context.getString(settingId), newValue);
         prefsEditor.commit();
     }
 
-    public static String getSettingString(Context context, int settingId) {
+    private static String getSettingString(Context context, int settingId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(settingId), "");
     }
 
-    public static void setSetting(Context context, int settingId, String newValue) {
+    private static void setSetting(Context context, int settingId, String newValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(context.getString(settingId), newValue);
@@ -39,16 +39,16 @@ public class PreferenceService {
         return getSettingString(context, R.string.pref_key_username);
     }
 
-    public static String getFirstname(Context context){
+    public static String getFirstName(Context context){
         return getSettingString(context, R.string.pref_key_first_name);
     }
 
-    public static String getLastname(Context context){
+    public static String getLastName(Context context){
             return getSettingString(context, R.string.pref_key_last_name);
     }
 
     public static String getFullName(Context context){
-        return getFirstname(context) + " " + getLastname(context);
+        return getFirstName(context) + " " + getLastName(context);
     }
 
     public static void setToken(Context context, String token){
@@ -59,12 +59,12 @@ public class PreferenceService {
         setSetting(context, R.string.pref_key_username, username);
     }
 
-    public static void setFirstname(Context context, String firstname){
-        setSetting(context, R.string.pref_key_first_name, firstname);
+    public static void setFirstName(Context context, String firstName){
+        setSetting(context, R.string.pref_key_first_name, firstName);
     }
 
-    public static void setLastname(Context context, String lastname){
-        setSetting(context, R.string.pref_key_last_name, lastname);
+    public static void setLastName(Context context, String lastName){
+        setSetting(context, R.string.pref_key_last_name, lastName);
     }
 
     public static int getSnoozeLength(Context context){
@@ -76,19 +76,11 @@ public class PreferenceService {
         }
     }
 
-    public static void setSnoozeLength(Context context, String snoozeLength){
-        setSetting(context, R.string.pref_key_snooze, snoozeLength);
-    }
-
-    public static void setSnoozeLength(Context context, int snoozeLength){
-        setSnoozeLength(context, Integer.toString(snoozeLength));
-    }
-
     public static String getColourTheme(Context context){
         return getSettingString(context, R.string.pref_key_colour_theme);
     }
 
-    public static void setColourTheme(Context context, String theme){
-        setSetting(context, R.string.pref_key_colour_theme, theme);
+    public static char getWakeUpSleepStage(Context context){
+        return getSettingString(context, R.string.pref_key_wake_up_sleep_stage).charAt(0);
     }
 }

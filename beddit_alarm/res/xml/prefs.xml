@@ -16,6 +16,12 @@
                 android:defaultValue="5"
                 android:entries="@array/snoozeArrayTitles"
                 android:entryValues="@array/snoozeArrayValues" />
+        <ListPreference
+                android:title="@string/pref_title_wake_up_sleep_stage"
+                android:key="@string/pref_key_wake_up_sleep_stage"
+                android:defaultValue="L"
+                android:entries="@array/sleepStageArrayTitles"
+                android:entryValues="@array/sleepStageArrayValues" />
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/pref_title_advanced">

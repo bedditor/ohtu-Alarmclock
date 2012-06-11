@@ -50,5 +50,6 @@
 
 
     <string name="loading_dialog_text">Connecting, please wait...</string>
+    <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
 
 </resources>

@@ -44,4 +44,5 @@
     <string name="pref_title_advanced">Advanced options</string>
     <string name="notification_text">Alarm set at</string>
     <string name="pref_title_user_index">Choose user</string>
+    <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
 </resources>

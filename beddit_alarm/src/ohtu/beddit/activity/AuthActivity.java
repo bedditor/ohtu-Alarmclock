@@ -85,8 +85,8 @@ public class AuthActivity extends Activity implements TokenListener {
         try{
             BedditApiController apiController = new BedditApiController(new BedditWebConnector());
             PreferenceService.setUsername(this, apiController.getUsername(this, 0));
-            PreferenceService.setFirstname(this, apiController.getFirstName(this, 0));
-            PreferenceService.setLastname(this, apiController.getLastName(this, 0));
+            PreferenceService.setFirstName(this, apiController.getFirstName(this, 0));
+            PreferenceService.setLastName(this, apiController.getLastName(this, 0));
         }
         catch (Exception e){
             fail();

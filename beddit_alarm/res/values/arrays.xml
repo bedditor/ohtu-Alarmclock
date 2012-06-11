@@ -28,10 +28,14 @@
 
 
 
-    <string-array name="userArrayTitles">
+    <string-array name="sleepStageArrayTitles">
+        <item>Light sleep</item>
+        <item>REM sleep</item>
     </string-array>
 
-    <string-array name="userArrayValues">
+    <string-array name="sleepStageArrayValues">
+        <item>L</item>
+        <item>R</item>
     </string-array>
 
 

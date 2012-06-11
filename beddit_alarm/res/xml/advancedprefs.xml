@@ -6,7 +6,7 @@
         <ListPreference
                 android:title="@string/pref_title_colour_theme"
                 android:key="@string/pref_key_colour_theme"
-                android:defaultValue="light"
+                android:defaultValue="dark"
                 android:entries="@array/themeArrayTitles"
                 android:entryValues="@array/themeArrayValues" />
     </PreferenceCategory>

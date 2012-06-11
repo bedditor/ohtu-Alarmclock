@@ -5,4 +5,10 @@
         <item>Vaalea</item>
     </string-array>
 
+
+    <string-array name="sleepStageArrayTitles">
+        <item>Light sleep</item>
+        <item>REM sleep</item>
+    </string-array>
+
 </resources>

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.util.Log;
 import ohtu.beddit.R;
 import ohtu.beddit.io.PreferenceService;
@@ -17,8 +16,8 @@ import ohtu.beddit.web.BedditWebConnector;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
 
-    private PreferenceCategory bedditConnectionPrefs;
     private ListPreference snoozeTimePref;
+    private ListPreference sleepStagePref;
     private Preference forgetButton;
     private Preference advancedButton;
 
@@ -30,8 +29,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void initPrefVars() {
-        bedditConnectionPrefs = (PreferenceCategory)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_beddit_connect_category));
         snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
+        sleepStagePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_wake_up_sleep_stage));
         forgetButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
         advancedButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
     }
@@ -63,11 +62,20 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         if (key.equals(this.getString(R.string.pref_key_snooze))) {
             updateSnoozeSummary();
         }
+        else if (key.equals(this.getString(R.string.pref_key_wake_up_sleep_stage))) {
+            updateSleepStageSummary();
+        }
     }
 
     private void updateSnoozeSummary(){
         snoozeTimePref.setSummary(getString(R.string.pref_summary_snooze_length) + " " + snoozeTimePref.getEntry());
     }
+
+    private void updateSleepStageSummary(){
+        sleepStagePref.setSummary(sleepStagePref.getEntry());
+    }
+
+
 
     private void updateLoginDataToSummary(){
         String fullName = PreferenceService.getFullName(this) ;
@@ -108,8 +116,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private void forgetMe(){
         PreferenceService.setUsername(this, "");
-        PreferenceService.setFirstname(this, "");
-        PreferenceService.setLastname(this, "");
+        PreferenceService.setFirstName(this, "");
+        PreferenceService.setLastName(this, "");
         PreferenceService.setToken(this, "");
     }
 
