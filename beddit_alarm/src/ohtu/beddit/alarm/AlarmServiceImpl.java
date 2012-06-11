@@ -22,8 +22,8 @@ public class AlarmServiceImpl implements AlarmService {
     private AlarmManager alarmManager;
     private static boolean alarmIsSet = false;
 
-    public AlarmServiceImpl(Context context) {
-        this.alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+    public AlarmServiceImpl(Context context, AlarmManager alarmManager) {
+        this.alarmManager = alarmManager;
         alarmIsSet = checkAlarmFromFile(context);
 
     }

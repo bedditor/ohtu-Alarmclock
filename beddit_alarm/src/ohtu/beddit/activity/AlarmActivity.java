@@ -1,6 +1,7 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -84,7 +85,8 @@ public class AlarmActivity extends Activity {
             snoozeTime.add(Calendar.MINUTE, snoozeLength);
 
             //set alarm
-            AlarmService alarmService = new AlarmServiceImpl(AlarmActivity.this.getApplicationContext());
+            Context context = AlarmActivity.this;
+            AlarmService alarmService = new AlarmServiceImpl(context, (AlarmManager) context.getSystemService(context.ALARM_SERVICE));
             alarmService.addAlarm(AlarmActivity.this, snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
 
             AlarmActivity.this.finish();
@@ -123,6 +125,6 @@ public class AlarmActivity extends Activity {
     }
 
     private void makeNewAlarmServiceAndDeleteAlarm() {
-        new AlarmServiceImpl(this).deleteAlarm(this);
+        new AlarmServiceImpl(this, (AlarmManager) this.getSystemService(this.ALARM_SERVICE)).deleteAlarm(this);
     }
 }

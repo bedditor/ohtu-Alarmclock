@@ -1,6 +1,7 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +30,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 {
 
     private AlarmService alarmService;
+    private Toast myToast;
     private AlarmTimePicker alarmTimePicker;
     private Button addAlarmButton;
     private Button deleteAlarmButton;
@@ -40,7 +42,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        setAlarmService(new AlarmServiceImpl(this));
+        alarmService = new AlarmServiceImpl(this, (AlarmManager) this.getSystemService(this.ALARM_SERVICE));
 
         //initialize default values for settings if called for the first time
         PreferenceManager.setDefaultValues(this, R.xml.prefs, true);
@@ -124,8 +126,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             showMeTheToast(getString(R.string.toast_alarmupdated));
 
     }
-
-    private Toast myToast = null;
 
     private void showMeTheToast(final String message) {
 
@@ -233,16 +233,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         alert.show();
         Log.v("dialogi", "nakyy: "+alert.isShowing());
 
-    }
-
-
-    // These methods are for tests
-    public void setAlarmService(AlarmService alarmService) {
-        this.alarmService = alarmService;
-    }
-
-    public AlarmService getAlarmService() {
-        return alarmService;
     }
 
 }
