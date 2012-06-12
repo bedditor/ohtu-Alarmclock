@@ -21,6 +21,13 @@ public class BedditJsonParserImpl implements BedditJsonParser {
         return getObject(editedJson, Users.class);
     }
 
+    @Override
+    public QueueData getQueueData(String json){
+        return getObject(json, QueueData.class);
+    }
+
+
+
     private <T extends JsonObject> T getObject(String json, Class<T> type){
         try {
             Gson gson = new Gson();

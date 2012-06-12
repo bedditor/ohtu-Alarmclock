@@ -6,4 +6,5 @@ public interface BedditJsonParser {
 
     Users getUsers(String json);
 
+    QueueData getQueueData(String json);
 }
