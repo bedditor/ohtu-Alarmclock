@@ -1,12 +1,15 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
@@ -36,66 +39,53 @@ public class AlarmActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm);
+        getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
         Log.v(TAG, "Recieved alarm at " + Calendar.getInstance().getTime());
 
-        Log.v(TAG, "I want WakeUpLock");
         WakeUpLock.acquire(this);
-        makeNewAlarmServiceAndDeleteAlarm();
+        removeAlarm();
         makeButtons();
         vibratePhone();
         playMusic();
-
     }
 
 
     @Override
     public void finish(){
-        Log.v(TAG, "Trying to Finish AlarmActivity");
+        Log.v(TAG, "finish");
+
         music.release();          // Alarm has rung and we have closed the dialog. Music is released.
         vibrator.cancel();        // Also no need to vibrate anymore.
         WakeUpLock.release();     // And no need to keep device open.
+
         super.finish();
     }
 
     @Override
     public void onPause(){ //We really don't want to go onPause. Rather forcibly keep the activity on top of everything.
                            //TODO: What about when user is on call?
-        Log.v(TAG, "Trying to put AlarmActivity on pause");
+        Log.v(TAG, "onPause");
+
+        finish(); // NEVER leave AlarmActivity ringing in the background, kill on any event that tries to suppress it
+
         super.onPause();
     }
 
     @Override
     public void onStop(){ //We call this when we stop the activity.
-        Log.v(TAG, "Trying to put AlarmActivity on stop");
+        Log.v(TAG, "onStop");
         super.onStop();
-        //WakeUpLock.release();
-        //vibrator.cancel();
-        finish();
     }
 
-    public class SnoozeButtonClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view){
-            //get snooze length from preferences
-            int snoozeLength = PreferenceService.getSnoozeLength(AlarmActivity.this);
-
-            Calendar snoozeTime = Calendar.getInstance();
-            snoozeTime.add(Calendar.MINUTE, snoozeLength);
-
-            //set alarm
-            Context context = AlarmActivity.this;
-            AlarmService alarmService = new AlarmServiceImpl(context);
-            alarmService.addAlarm(snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
-
-            AlarmActivity.this.finish();
-        }
+    @Override
+    protected void onDestroy() {
+        Log.v(TAG, "onDestroy");
+        super.onDestroy();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public class ActivityDeleteButtonClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            AlarmActivity.this.finish();
-        }
+    @Override
+    public void onBackPressed() {
+        // do not respond to back button in AlarmActivity
     }
 
     private void playMusic() {
@@ -114,15 +104,33 @@ public class AlarmActivity extends Activity {
     }
 
     private void makeButtons() {
-        ActivityDeleteButtonClickListener deleteListener = new ActivityDeleteButtonClickListener();
-        SnoozeButtonClickListener snoozeListener = new SnoozeButtonClickListener();
-        ((Button)findViewById(R.id.deleteButton)).setOnClickListener(deleteListener);
-        ((Button)findViewById(R.id.snoozeButton)).setOnClickListener(snoozeListener);
-        LinearLayout layout = (LinearLayout)findViewById(R.id.alarmLayout);
-        layout.setBackgroundColor(Color.WHITE);
+        ((Button)findViewById(R.id.deleteButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlarmActivity.this.finish();
+            }
+        });
+        ((Button)findViewById(R.id.snoozeButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                //get snooze length from preferences
+                int snoozeLength = PreferenceService.getSnoozeLength(AlarmActivity.this);
+
+                Calendar snoozeTime = Calendar.getInstance();
+                snoozeTime.add(Calendar.MINUTE, snoozeLength);
+
+                //set alarm
+                Context context = AlarmActivity.this;
+                AlarmService alarmService = new AlarmServiceImpl(context);
+                alarmService.addAlarm(snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
+
+                AlarmActivity.this.finish();
+            }
+        });
+
     }
 
-    private void makeNewAlarmServiceAndDeleteAlarm() {
-        new AlarmServiceImpl(this);
+    private void removeAlarm() {
+        new AlarmServiceImpl(this).deleteAlarm();
     }
 }
