@@ -17,7 +17,7 @@ public class FileHandler {
     private Context context;
 
     public FileHandler(Context context){
-        this.context = context;
+        this.context = context.getApplicationContext();
     }
 
     public boolean writeToFile(String filename, String writable){

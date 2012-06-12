@@ -21,7 +21,7 @@ public class AlarmServiceImpl implements AlarmService {
     private static boolean alarmIsSet = false;
 
     public AlarmServiceImpl(Context context){
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.alarmManager = (AlarmManager) this.context.getSystemService(context.ALARM_SERVICE);
         this.fileHandler = new FileHandler(this.context);
         this.notfFactory = new NotificationFactory(this.context);
@@ -29,7 +29,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler, NotificationFactory notfFactory) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.alarmManager = alarmManager;
         this.fileHandler = filehandler;
         this.notfFactory = notfFactory;

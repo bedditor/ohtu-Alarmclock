@@ -19,12 +19,12 @@ public class NotificationFactory {
     private static final int ID = 1;
 
     public NotificationFactory(Context context){
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.notfManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     public NotificationFactory(Context context, NotificationManager notfManager){
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.notfManager = notfManager;
     }
 
