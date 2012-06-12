@@ -7,6 +7,10 @@
         <Preference
                 android:title="@string/pref_title_forget"
                 android:key="@string/pref_key_forget"/>
+        <ohtu.beddit.views.MultiLineCheckBox
+                android:title="Show summary of sleep data on wake up"
+                android:key="@string/pref_key_show_sleep_data_checkbox"
+                android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_title_alarm_settings">
