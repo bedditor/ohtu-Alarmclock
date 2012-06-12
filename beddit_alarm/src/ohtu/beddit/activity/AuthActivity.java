@@ -32,6 +32,7 @@ public class AuthActivity extends Activity implements TokenListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "OnCreate");
         setContentView(R.layout.webview);
 
         fileHandler = new FileHandler(this);
@@ -85,6 +86,7 @@ public class AuthActivity extends Activity implements TokenListener {
         }
         // If user doesn't allow the program to access, we simply terminate the program.
         if (problem.matches()) {
+            Log.v(TAG, "problem.matches() == true");
             fail();
         }
     }
@@ -112,7 +114,7 @@ public class AuthActivity extends Activity implements TokenListener {
 
 
     private void fail(){
-        Log.v("AuthActivity", "fail called");
+        Log.v(TAG, "fail called");
         Intent resultIntent = new Intent((String) null);
         setResult(Activity.RESULT_OK, resultIntent);
         PreferenceService.setUsername(this, "");
@@ -121,6 +123,7 @@ public class AuthActivity extends Activity implements TokenListener {
     }
 
     private void saveUserData() {
+        Log.v(TAG, "saving user data");
         try{
             BedditApiController apiController = new BedditApiController(new BedditWebConnector());
             PreferenceService.setUsername(this, apiController.getUsername(this, 0));
@@ -128,20 +131,19 @@ public class AuthActivity extends Activity implements TokenListener {
             PreferenceService.setLastName(this, apiController.getLastName(this, 0));
         }
         catch (Exception e){
+            Log.v(TAG, "saving user data failed");
             fail();
         }
     }
 
     @Override
     public void onBackPressed() {
-        //If we stop before getting access token, we will terminate the program.
-        Intent resultIntent = new Intent((String) null);
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        fail();
     }
 
     @Override
     public void finish() {
+        Log.v(TAG, "finishing");
         webview.clearCache(true);
         webview.clearView();
         webview.clearHistory();

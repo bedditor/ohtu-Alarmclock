@@ -21,12 +21,16 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private Preference forgetButton;
     private Preference advancedButton;
 
+    private final String TAG = "SettingsActivity";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.prefs);
-
+        Log.v(TAG, "onCreate");
     }
+
 
     private void initPrefVars() {
         snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
@@ -38,7 +42,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.v(TAG, "onResume");
         initPrefVars();
 
         // Setup the initial values
@@ -54,9 +58,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     protected void onPause() {
         super.onPause();
+        Log.v(TAG, "onPause");
         // Unregister the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
+
+
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_snooze))) {
@@ -105,6 +112,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void startAuthActivity() {
+        Log.v(TAG, "starting auth activity");
         Intent myIntent = new Intent(this, AuthActivity.class);
         this.startActivityForResult(myIntent, 3);
     }
@@ -122,17 +130,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
 
-    private BedditApiController getApiController(){
-        return new BedditApiController(new BedditWebConnector());
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (3) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.v("SettingsActivity", "OAuth failure");
+                    Log.v("SettingsActivity", "AuthActivity sent fail");
                     Intent resultIntent = new Intent((String) null);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();

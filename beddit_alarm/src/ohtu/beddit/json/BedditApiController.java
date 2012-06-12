@@ -5,7 +5,11 @@ import android.util.Log;
 import ohtu.beddit.web.BedditConnector;
 import ohtu.beddit.web.MalformedBedditJsonException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class BedditApiController {
 
@@ -15,6 +19,22 @@ public class BedditApiController {
 
     public BedditApiController(BedditConnector bedditConnector) {
         this.bedditConnector = bedditConnector;
+    }
+
+    public static Calendar bedditTimeStringToCalendar(String timeString){
+        timeString = timeString.replaceAll("T", " ");
+        Date date;
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            date = (Date)dateFormat.parse(timeString);
+        } catch (ParseException e) {
+            System.out.println("Night: "+e.getMessage());
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
     }
 
     public String getUsername(Context context, int userIndex) throws MalformedBedditJsonException {

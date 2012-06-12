@@ -10,4 +10,5 @@
     <string name="pref_key_colour_theme">beddit_colour_theme</string>
     <string name="pref_key_advanced">beddit_advanced_options</string>
     <string name="pref_key_wake_up_sleep_stage">beddit_wake_up_sleep_stage</string>
+    <string name="pref_key_show_sleep_data_checkbox">beddit_show_sleep_data_checkbox</string>
 </resources>

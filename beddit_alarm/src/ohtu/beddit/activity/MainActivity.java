@@ -19,8 +19,11 @@ import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.AlarmTimeChangedListener;
 import ohtu.beddit.alarm.AlarmTimePicker;
+import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
+import ohtu.beddit.web.BedditWebConnector;
+import ohtu.beddit.web.MalformedBedditJsonException;
 
 public class MainActivity extends Activity implements AlarmTimeChangedListener
 {
@@ -38,6 +41,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        Log.v("MainActivity", "OnCreate");
         alarmService = new AlarmServiceImpl(this);
 
         //initialize default values for settings if called for the first time
@@ -48,19 +52,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         // Update buttons and clock handles
         updateButtons();
         setClockHands();
-        checkAuth();
-        myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
-    }
-
-    private void checkAuth() {
-        String token = PreferenceService.getToken(this);
-        String username = PreferenceService.getUsername(this);
-        if (token != null){
-            Log.v("Token:", token);
-        }
-        if (token == null || token.equals("") || username == null || username.equals("")) {
-            Intent myIntent = new Intent(this, AuthActivity.class);
-            startActivityForResult(myIntent,2);
+        if(!isTokenValid()){
+            startAuthActivity();
         }
     }
 
@@ -71,7 +64,47 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateColours();
         update24HourMode();
         setClockHands();
+        Log.v("MainActivity", "OnResume");
     }
+
+    @Override
+    public void finish() {
+        Log.v("MainActivity", "Finishing");
+        super.finish();
+    }
+
+    private boolean isTokenValid() {
+        Log.v("MainActivity","Validating token");
+        String token = PreferenceService.getToken(this);
+        if (token == null || token.equals("")) {
+            Log.v("MainActivity","Token was empty");
+            return false;
+        }
+
+        BedditApiController apiController = new BedditApiController(new BedditWebConnector());
+        String username;
+        try {
+            username = apiController.getUsername(this, 0);
+        } catch (MalformedBedditJsonException e) {
+            Log.v("MainActivity","Got malformed json while trying to get username and validate token");
+            return false;
+        }
+
+        if (username == null || username.equals("")) {
+            Log.v("MainActivity","Username was empty while validating token");
+            return false;
+        }
+        Log.v("MainActivity","Token was valid");
+        return true;
+    }
+
+    private void startAuthActivity() {
+        Log.v("MainActivity","Starting authActivity");
+        Intent myIntent = new Intent(this, AuthActivity.class);
+        startActivityForResult(myIntent,2);
+    }
+
+
 
 
 
@@ -84,6 +117,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         addAlarmButton.setOnClickListener(new AlarmSetButtonClickListener());
         deleteAlarmButton = (Button)findViewById(R.id.deleteAlarmButton);
         deleteAlarmButton.setOnClickListener(new AlarmDeleteButtonClickListener());
+
+        myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
 
         updateColours();
     }
@@ -183,6 +218,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         MenuItem help = menu.findItem(R.id.help_menu_button);
         help.setIntent(new Intent(this.getApplicationContext(), HelpActivity.class));
 
+        MenuItem sleepInfo = menu.findItem(R.id.sleep_info_button);
+        sleepInfo.setIntent(new Intent(this.getApplicationContext(), SleepInfoActivity.class));
         return true;
     }
 
@@ -190,9 +227,12 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu_button:
-                startActivityForResult(item.getIntent(), 2);
+                startActivityForResult(item.getIntent(), 3);
                 break;
             case R.id.help_menu_button:
+                startActivity(item.getIntent());
+                break;
+            case R.id.sleep_info_button:
                 startActivity(item.getIntent());
                 break;
         }
@@ -205,11 +245,15 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         switch(requestCode) {
             case (2) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.v("MainActivity", "Auth fails miserably");
-                    //start dialog / whatever
+                    Log.v("MainActivity", "AuthActivity sent fail");
                     createDialog();
-                    //then finish
-                    //this.finish();
+                }
+                break;
+            }
+            case (3) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.v("MainActivity", "SettingsActivity sent fail");
+                    createDialog();
                 }
                 break;
             }
@@ -217,19 +261,18 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     public void createDialog(){
+        Log.v("MainActivity", "Dialog created");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("CRASH!");
         builder.setCancelable(false);
         builder.setPositiveButton("D:", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        MainActivity.this.finish();
-                    }
-                });
+            public void onClick(DialogInterface dialog, int id) {
+                Log.v("MainActivity", "Dialog ok clicked");
+                MainActivity.this.finish();
+            }
+        });
         AlertDialog alert = builder.create();
-        Log.v("dialogi", "nakyy: "+alert.isShowing());
         alert.show();
-        Log.v("dialogi", "nakyy: "+alert.isShowing());
-
     }
 
 }
