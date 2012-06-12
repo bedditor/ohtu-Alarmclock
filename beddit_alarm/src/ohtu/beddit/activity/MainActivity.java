@@ -70,6 +70,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateButtons();
         updateColours();
         update24HourMode();
+        setClockHands();
     }
 
 
