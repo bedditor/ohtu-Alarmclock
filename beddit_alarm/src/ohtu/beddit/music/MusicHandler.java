@@ -31,7 +31,8 @@ public class MusicHandler {
         //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         player = MediaPlayer.create(context, R.raw.alarm);
         released = false;
-        player.setVolume(100.f, 100.f);
+        player.setVolume(1f, 1f);
+
         Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
     }
 
