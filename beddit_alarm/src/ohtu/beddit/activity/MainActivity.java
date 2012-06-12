@@ -15,10 +15,8 @@ import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 import ohtu.beddit.R;
-import ohtu.beddit.alarm.AlarmService;
-import ohtu.beddit.alarm.AlarmServiceImpl;
-import ohtu.beddit.alarm.AlarmTimeChangedListener;
-import ohtu.beddit.alarm.AlarmTimePicker;
+import ohtu.beddit.alarm.*;
+
 import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
@@ -55,6 +53,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         if(!isTokenValid()){
             startAuthActivity();
         }
+        // leave britney alone! testDialog();
     }
 
     @Override
@@ -84,7 +83,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         BedditApiController apiController = new BedditApiController(new BedditWebConnector());
         String username;
         try {
-            username = apiController.getUsername(this, 0);
+            apiController.updateUserInfo(this);
+            username = apiController.getUsername(0);
         } catch (MalformedBedditJsonException e) {
             Log.v("MainActivity","Got malformed json while trying to get username and validate token");
             return false;
@@ -273,6 +273,28 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void testDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Spam api requests:");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes I will", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                BedditWebConnector blob = new BedditWebConnector();
+                /*try{
+                    Log.v("derp", "tila on: "+blob.getQueueStateJson(MainActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
+                    Log.v("derp", "post: " + blob.requestDataAnalysis(MainActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
+                }catch(MalformedBedditJsonException m){
+                    Log.v("derp", "D: virhe");
+                }*/
+                AlarmChecker check = new AlarmCheckerRealImpl();
+                check.wakeUpNow(MainActivity.this, 'M');
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
 }

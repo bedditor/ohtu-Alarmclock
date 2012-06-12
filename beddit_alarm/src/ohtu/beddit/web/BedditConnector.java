@@ -17,4 +17,6 @@ public interface BedditConnector {
     String getQueueStateJson(Context context, String date) throws MalformedBedditJsonException;
 
     String getSomeJson(Context context, String query, boolean do_post) throws MalformedBedditJsonException;
+
+    String requestDataAnalysis(Context context, String date) throws MalformedBedditJsonException;
 }

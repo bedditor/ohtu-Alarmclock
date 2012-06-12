@@ -1,5 +1,6 @@
 package ohtu.beddit.alarm;
 
+import android.content.Context;
 import android.util.Log;
 
 public class AlarmCheckerRandomImpl implements AlarmChecker{
@@ -10,7 +11,7 @@ public class AlarmCheckerRandomImpl implements AlarmChecker{
     }
 
     @Override
-    public boolean wakeUpNow(char sleepstage) {
+    public boolean wakeUpNow(Context context, char sleepstage) {
         double random = Math.random();
 
         Log.v("AlarmChecker:", "Random must be < " + wakeUpChance);

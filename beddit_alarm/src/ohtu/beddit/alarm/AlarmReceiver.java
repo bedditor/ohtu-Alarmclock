@@ -35,7 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.v(TAG, "No time to check anymore, schedule wake up");
             alarmService.addWakeUpAttempt(getLastWakeUpTime(context));
         }
-        else if(alarmChecker.wakeUpNow(sleepstage)){ //check if we should wake up now
+        else if(alarmChecker.wakeUpNow(context, sleepstage)){ //check if we should wake up now
             Log.v(TAG, "Alarm checker gave permission to wake up, starting alarm");
             startAlarm(context);
         }
