@@ -59,7 +59,7 @@
     <string name="sleep_info_deep_minitotal">Total amount of quiet sleep</string>
     <string name="sleep_info_badly_button">Im tired</string>
     <string name="sleep_info_overall_title">Last night</string>
-    <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?
-    </string>
+    <string name="sleep_info_delay">0 minutes old</string>
 
+    <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?</string>
 </resources>
