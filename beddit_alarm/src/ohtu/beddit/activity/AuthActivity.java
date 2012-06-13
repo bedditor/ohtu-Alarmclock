@@ -17,16 +17,11 @@ import ohtu.beddit.web.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created with IntelliJ IDEA.
- * User: juho
- * Date: 29.5.2012
- * Time: 13:42
- */
 public class AuthActivity extends Activity implements TokenListener {
     WebView webview;
     private final String TAG = "AuthActivity";
     private FileHandler fileHandler;
+
 
 
     @Override
@@ -62,7 +57,7 @@ public class AuthActivity extends Activity implements TokenListener {
             // If we get error, well you shouldn't. We close the program because we won't get correct access_token. Breaks other code?
             if (result.equalsIgnoreCase("error")) {
                 Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
-                fail();
+                fail(false);
             }else{
                 Log.v(TAG, "result: "+result);
                 // We put the correct access token to safe and be happy. User is allowed to use the program now.
@@ -87,7 +82,7 @@ public class AuthActivity extends Activity implements TokenListener {
         // If user doesn't allow the program to access, we simply terminate the program.
         if (problem.matches()) {
             Log.v(TAG, "problem.matches() == true");
-            fail();
+            fail(false);
         }
     }
 
@@ -113,10 +108,15 @@ public class AuthActivity extends Activity implements TokenListener {
     }
 
 
-    private void fail(){
+    private void fail(boolean cancelledByUser){
         Log.v(TAG, "fail called");
         Intent resultIntent = new Intent((String) null);
-        setResult(Activity.RESULT_OK, resultIntent);
+        if(cancelledByUser){
+            setResult(MainActivity.RESULT_AUTH_CANCELLED, resultIntent);
+        }
+        else {
+            setResult(MainActivity.RESULT_AUTH_FAILED, resultIntent);
+        }
         PreferenceService.setUsername(this, "");
         PreferenceService.setToken(this, "");
         finish();
@@ -133,13 +133,13 @@ public class AuthActivity extends Activity implements TokenListener {
         }
         catch (Exception e){
             Log.v(TAG, "saving user data failed");
-            fail();
+            fail(false);
         }
     }
 
     @Override
     public void onBackPressed() {
-        fail();
+        fail(true);
     }
 
     @Override

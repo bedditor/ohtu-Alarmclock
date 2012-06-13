@@ -143,12 +143,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (3) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.v("SettingsActivity", "AuthActivity sent fail");
-                    Intent resultIntent = new Intent((String) null);
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish();
-                }
+                Intent resultIntent = new Intent((String) null);
+                setResult(resultCode, resultIntent);
+                finish();
                 break;
             }
         }
