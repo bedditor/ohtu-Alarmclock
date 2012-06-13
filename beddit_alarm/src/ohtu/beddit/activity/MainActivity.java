@@ -33,6 +33,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     private Button addAlarmButton;
     private Button deleteAlarmButton;
 
+    private static final int DARK_THEME_BACKGROUND = Color.BLACK;
+    private static final int DARK_THEME_FOREGROUND = Color.WHITE;
+    private static final int LIGHT_THEME_BACKGROUND = Color.WHITE;
+    private static final int LIGHT_THEME_FOREGROUND = Color.BLACK;
+    private static final int BEDDIT_ORANGE = Color.argb(255,255,89,0);
 
     /** Called when the alarm is first created. */
     @Override
@@ -64,7 +69,37 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateColours();
         update24HourMode();
         setClockHands();
-        Log.v(TAG, "OnResume");
+        Log.v(TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        Log.v(TAG, "onPause");
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.v(TAG, "onResume");
+        super.onRestart();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.v(TAG, "onDestroy");
+        super.onDestroy();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onStop() {
+        Log.v(TAG, "onStop");
+        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onStart() {
+        Log.v(TAG, "onStart");
+        super.onStart();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
@@ -128,18 +163,18 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         String theme = PreferenceService.getColourTheme(this);
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         if(theme.equals("dark")){
-            layout.setBackgroundColor(Color.BLACK);
-            alarmTimePicker.setBackgroundColor(Color.BLACK);
-            alarmTimePicker.setForegroundColor(Color.WHITE);
-            alarmTimePicker.setSpecialColor(Color.argb(255,255,89,0));
-            ((TextView)findViewById(R.id.interval_title)).setTextColor(Color.WHITE);
+            layout.setBackgroundColor(DARK_THEME_BACKGROUND);
+            alarmTimePicker.setBackgroundColor(DARK_THEME_BACKGROUND);
+            alarmTimePicker.setForegroundColor(DARK_THEME_FOREGROUND);
+            alarmTimePicker.setSpecialColor(BEDDIT_ORANGE);
+            ((TextView)findViewById(R.id.interval_title)).setTextColor(DARK_THEME_FOREGROUND);
         }
         else if(theme.equals("light")){
-            layout.setBackgroundColor(Color.WHITE);
-            alarmTimePicker.setBackgroundColor(Color.WHITE);
-            alarmTimePicker.setForegroundColor(Color.BLACK);
-            alarmTimePicker.setSpecialColor(Color.argb(255,255,89,0));
-            ((TextView)findViewById(R.id.interval_title)).setTextColor(Color.BLACK);
+            layout.setBackgroundColor(LIGHT_THEME_BACKGROUND);
+            alarmTimePicker.setBackgroundColor(LIGHT_THEME_BACKGROUND);
+            alarmTimePicker.setForegroundColor(LIGHT_THEME_FOREGROUND);
+            alarmTimePicker.setSpecialColor(BEDDIT_ORANGE);
+            ((TextView)findViewById(R.id.interval_title)).setTextColor(LIGHT_THEME_FOREGROUND);
         }
     }
 

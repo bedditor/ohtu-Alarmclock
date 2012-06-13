@@ -53,17 +53,6 @@ public class AlarmActivity extends Activity {
 
         Log.v(TAG, "Recieved alarm at " + Calendar.getInstance().getTime());
 
-        Button snooze = (Button)findViewById(R.id.alarmActivity_button_snooze);
-        Button dismiss = (Button)findViewById(R.id.alarmActivity_button_dismiss);
-
-        snooze.setTextSize(snooze.getHeight());
-        dismiss.setTextSize(dismiss.getHeight());
-        snooze.setTextScaleX(snooze.getWidth());
-
-        LinearLayout ll = (LinearLayout)findViewById(R.id.alarmActivity_layout);
-
-
-
         WakeUpLock.acquire(this);
         removeAlarm();
         makeButtons();
