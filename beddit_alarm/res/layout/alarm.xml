@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical"
-              android:id="@+id/alarmLayout">
+              android:id="@+id/alarmActivity_layout">
 
-        <Button
-            android:id="@+id/deleteButton"
+        <ohtu.beddit.views.timepicker.TextScalingButton
+            android:id="@+id/alarmActivity_button_dismiss"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:text="@string/alarm_stopAlarm"
-            android:textSize="32dip"
-
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/alarmActivity_dismiss"
         />
 
-        <Button
-            android:id="@+id/snoozeButton"
+        <ohtu.beddit.views.timepicker.TextScalingButton
+            android:id="@+id/alarmActivity_button_snooze"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
-            android:layout_weight="2"
-            android:text="@string/alarm_Snooze"
-            android:textSize="55dip"
-
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/alarmActivity_snooze"
         />
 
 ></LinearLayout>

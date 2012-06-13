@@ -5,11 +5,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.*;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
@@ -33,14 +36,33 @@ public class AlarmActivity extends Activity {
     private MusicHandler music = null;
     private Vibrator vibrator;
 
+    private static final float DIALOG_HEIGHT = 0.7f;
+    private static final float DIALOG_WIDTH = 0.9f;
+
     /** Called when the alarm is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm);
-        getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+
+        Display display = getWindowManager().getDefaultDisplay();
+
+        getWindow().setLayout((int)(display.getWidth() * DIALOG_WIDTH),
+                              (int)(display.getHeight() * DIALOG_HEIGHT));
+
         Log.v(TAG, "Recieved alarm at " + Calendar.getInstance().getTime());
+
+        Button snooze = (Button)findViewById(R.id.alarmActivity_button_snooze);
+        Button dismiss = (Button)findViewById(R.id.alarmActivity_button_dismiss);
+
+        snooze.setTextSize(snooze.getHeight());
+        dismiss.setTextSize(dismiss.getHeight());
+        snooze.setTextScaleX(snooze.getWidth());
+
+        LinearLayout ll = (LinearLayout)findViewById(R.id.alarmActivity_layout);
+
+
 
         WakeUpLock.acquire(this);
         removeAlarm();
@@ -48,6 +70,8 @@ public class AlarmActivity extends Activity {
         vibratePhone();
         playMusic();
     }
+
+
 
 
     @Override
@@ -104,13 +128,13 @@ public class AlarmActivity extends Activity {
     }
 
     private void makeButtons() {
-        ((Button)findViewById(R.id.deleteButton)).setOnClickListener(new View.OnClickListener() {
+        ((Button)findViewById(R.id.alarmActivity_button_dismiss)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlarmActivity.this.finish();
             }
         });
-        ((Button)findViewById(R.id.snoozeButton)).setOnClickListener(new View.OnClickListener() {
+        ((Button)findViewById(R.id.alarmActivity_button_snooze)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 //get snooze length from preferences
