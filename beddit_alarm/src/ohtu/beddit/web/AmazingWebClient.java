@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -27,7 +28,7 @@ import java.util.regex.Pattern;
 public class AmazingWebClient extends WebViewClient {
     List<TokenListener> listeners = new LinkedList<TokenListener>();
     Dialog dialog;
-    String[] blacklist = {"http://www.beddit.com/", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/"};
+    String[] blacklist = {"http://www.beddit.com/","https://www.beddit.com/login", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/"};
     public AmazingWebClient(Context context) {
         dialog = new Dialog(context, R.style.CustomDialogTheme);
         dialog.setContentView(R.layout.loading_dialog);
@@ -41,6 +42,7 @@ public class AmazingWebClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        Log.v("AmazingWebClient", "shouldOverrideUrlLoading: " + url);
         for (String filter: blacklist) {
             if (url.equalsIgnoreCase(filter)) {
                 for (TokenListener l : listeners)

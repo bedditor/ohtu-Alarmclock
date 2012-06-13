@@ -66,6 +66,15 @@
                   android:textColor="#4D665C"
                   android:layout_below="@+id/sleep_info_deep_text"
                   android:layout_centerHorizontal="true"/>
+        <TextView android:id="@+id/sleep_info_delay"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:text="@string/sleep_info_delay"
+                  android:textSize="14sp"
+                  android:textColor="#4D665C"
+                  android:layout_below="@+id/sleep_info_deep_minitext"
+                  android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
     <Button

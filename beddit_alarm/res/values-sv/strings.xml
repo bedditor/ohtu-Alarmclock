@@ -45,4 +45,6 @@
     <string name="notification_text">Alarm set at</string>
     <string name="pref_title_user_index">Choose user</string>
     <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
+    <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?
+    </string>
 </resources>

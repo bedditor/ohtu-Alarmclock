@@ -1,6 +1,8 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +11,10 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import ohtu.beddit.R;
+import ohtu.beddit.alarm.AlarmChecker;
+import ohtu.beddit.alarm.AlarmCheckerRealImpl;
+import ohtu.beddit.alarm.AlarmService;
+import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.json.BedditApiController;
 import ohtu.beddit.web.BedditWebConnector;
@@ -100,9 +106,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if(preference.getKey().equals(this.getString(R.string.pref_key_forget))){
-            forgetMe();
-            updateLoginDataToSummary();
-            startAuthActivity();
+            AlarmService alarmService = new AlarmServiceImpl(this);
+            if(alarmService.isAlarmSet()){
+                showDisconnectDialog();
+            }
+            else disconnect();
         }
         else if(preference.getKey().equals(this.getString(R.string.pref_key_advanced))){
             startAdvancedSettingsActivity();
@@ -144,6 +152,33 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 break;
             }
         }
+    }
+
+    public void showDisconnectDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.disconnect_dialog_message));
+        builder.setCancelable(true);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                AlarmService alarmService = new AlarmServiceImpl(SettingsActivity.this);
+                alarmService.deleteAlarm();
+                disconnect();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Do nothing
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void disconnect() {
+        forgetMe();
+        updateLoginDataToSummary();
+        startAuthActivity();
     }
 
 
