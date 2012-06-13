@@ -33,6 +33,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     private Button addAlarmButton;
     private Button deleteAlarmButton;
 
+    public static final int RESULT_AUTH_CANCELLED = 101;
+    public static final int RESULT_AUTH_FAILED = 102;
+
+
 
     /** Called when the alarm is first created. */
     @Override
@@ -102,7 +106,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     private void startAuthActivity() {
         Log.v(TAG,"Starting authActivity");
         Intent myIntent = new Intent(this, AuthActivity.class);
-        startActivityForResult(myIntent,2);
+        startActivityForResult(myIntent, 2);
     }
 
 
@@ -247,30 +251,31 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (2) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.v(TAG, "AuthActivity sent fail");
-                    createDialog();
-                }
+                handleResult(resultCode);
                 break;
             }
             case (3) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.v(TAG, "SettingsActivity sent fail");
-                    createDialog();
-                }
+                handleResult(resultCode);
                 break;
             }
         }
     }
 
-    public void createDialog(){
-        Log.v(TAG, "Dialog created");
+    private void handleResult(int resultCode){
+        if (resultCode == RESULT_AUTH_FAILED) {
+            createClosingDialog("Login or authorisation failed.");
+        }
+        else if (resultCode == RESULT_AUTH_CANCELLED) {
+            createClosingDialog("This app can not be used without connecting to your beddit account");
+        }
+    }
+
+    public void createClosingDialog(String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("CRASH!");
+        builder.setMessage(message);
         builder.setCancelable(false);
-        builder.setPositiveButton("D:", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Log.v(TAG, "Dialog ok clicked");
                 MainActivity.this.finish();
             }
         });
