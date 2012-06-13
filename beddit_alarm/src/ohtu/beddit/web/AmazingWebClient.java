@@ -29,6 +29,7 @@ public class AmazingWebClient extends WebViewClient {
     List<TokenListener> listeners = new LinkedList<TokenListener>();
     Dialog dialog;
     String[] blacklist = {"http://www.beddit.com/","https://www.beddit.com/login", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/"};
+
     public AmazingWebClient(Context context) {
         dialog = new Dialog(context, R.style.CustomDialogTheme);
         dialog.setContentView(R.layout.loading_dialog);
