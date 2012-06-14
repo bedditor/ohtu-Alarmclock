@@ -183,7 +183,7 @@ public class AuthActivity extends Activity implements TokenListener {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.v(TAG, "HOME PRESSED");
-            exitApplication();
+            fail(true);
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -192,17 +192,17 @@ public class AuthActivity extends Activity implements TokenListener {
 
         if (keyCode == KeyEvent.KEYCODE_CALL) {
             Log.v(TAG, "CALL PRESSED");
-            exitApplication();
+            handleCallButton();
+            fail(true);
         }
 
         return super.onKeyDown(keyCode, event);
     }
 
-    private void exitApplication() {
-        Log.v(TAG, "CLOSING APPLICATION");
+    private void handleCallButton() {
+        Log.v(TAG, "HANDLING CALL BUTTON");
         Intent exitIntent = new Intent(this, ExitActivity.class);
         exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(exitIntent);
-        fail(true);
     }
 }

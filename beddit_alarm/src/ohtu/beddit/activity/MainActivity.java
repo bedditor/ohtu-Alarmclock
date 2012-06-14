@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.v(TAG, "HOME PRESSED");
-            exitApplication();
+            finish();
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -96,18 +96,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
         if (keyCode == KeyEvent.KEYCODE_CALL) {
             Log.v(TAG, "CALL PRESSED");
-            exitApplication();
+            finish();
         }
 
         return super.onKeyDown(keyCode, event);
-    }
-
-    private void exitApplication() {
-        Log.v(TAG, "CLOSING APPLICATION");
-        Intent exitIntent = new Intent(this, ExitActivity.class);
-        exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(exitIntent);
-        finish();
     }
 
     @Override
