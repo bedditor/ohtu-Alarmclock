@@ -1,4 +1,4 @@
-package ohtu.beddit.json;
+package ohtu.beddit.api.jsonclassimpl;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,5 +7,5 @@ package ohtu.beddit.json;
  * Time: 11:25
  * To change this template use File | Settings | File Templates.
  */
-public class JsonObject {
+class JsonObject {
 }

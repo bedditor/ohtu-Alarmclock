@@ -1,4 +1,6 @@
-package ohtu.beddit.json;
+package ohtu.beddit.api.jsonclassimpl;
+
+import ohtu.beddit.utils.Utils;
 
 import java.util.Calendar;
 
@@ -9,7 +11,7 @@ import java.util.Calendar;
  * Time: 11:02
  * To change this template use File | Settings | File Templates.
  */
-public class QueueData extends JsonObject {
+class QueueData extends JsonObject {
     private String results_available_up_to;
     private String sleep_analysis_status;
     private String results_available_up_to_when_sleep_analyzed;
@@ -20,6 +22,6 @@ public class QueueData extends JsonObject {
     }
 
     public Calendar getResults_available_up_to() {
-        return BedditApiController.bedditTimeStringToCalendar(results_available_up_to);
+        return Utils.bedditTimeStringToCalendar(results_available_up_to);
     }
 }

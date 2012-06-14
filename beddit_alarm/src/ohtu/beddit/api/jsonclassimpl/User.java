@@ -1,6 +1,6 @@
-package ohtu.beddit.json;
+package ohtu.beddit.api.jsonclassimpl;
 
-public class User {
+class User {
     private String username;
     private String url;
     private String first_name;

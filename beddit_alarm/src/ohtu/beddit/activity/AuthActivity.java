@@ -11,7 +11,8 @@ import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmCheckerRealImpl;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.json.BedditApiController;
+import ohtu.beddit.api.ApiController;
+import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.*;
 
 import java.util.regex.Matcher;
@@ -125,7 +126,7 @@ public class AuthActivity extends Activity implements TokenListener {
     private void saveUserData() {
         Log.v(TAG, "saving user data");
         try{
-            BedditApiController apiController = new BedditApiController(new BedditWebConnector());
+            ApiController apiController = new ApiControllerClassImpl(new BedditWebConnector());
             apiController.updateUserInfo(this); //updates the info in apicontroller for lines below:
             PreferenceService.setUsername(this, apiController.getUsername(0));
             PreferenceService.setFirstName(this, apiController.getFirstName(0));

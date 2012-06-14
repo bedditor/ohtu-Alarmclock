@@ -2,7 +2,8 @@ package ohtu.beddit.alarm;
 
 import android.content.Context;
 import android.util.Log;
-import ohtu.beddit.json.BedditApiController;
+import ohtu.beddit.api.ApiController;
+import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.web.MalformedBedditJsonException;
 
@@ -21,7 +22,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
     public boolean wakeUpNow(Context context,char sleepstage) {
 
         int atMostMillisOld = 1000 * 60 * 5;
-        BedditApiController api = new BedditApiController(new BedditWebConnector());
+        ApiController api = new ApiControllerClassImpl(new BedditWebConnector());
         String dateString = getQueryDateString();
         try{
             api.updateSleepInfo(context,dateString);

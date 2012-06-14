@@ -18,7 +18,8 @@ import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.*;
 
-import ohtu.beddit.json.BedditApiController;
+import ohtu.beddit.api.ApiController;
+import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.BedditWebConnector;
@@ -118,7 +119,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             return false;
         }
 
-        BedditApiController apiController = new BedditApiController(new BedditWebConnector());
+        ApiController apiController = new ApiControllerClassImpl(new BedditWebConnector());
         String username;
         try {
             apiController.updateUserInfo(this);

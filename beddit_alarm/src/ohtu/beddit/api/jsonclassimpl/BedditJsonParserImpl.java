@@ -1,4 +1,4 @@
-package ohtu.beddit.json;
+package ohtu.beddit.api.jsonclassimpl;
 
 import android.util.Log;
 import com.google.gson.Gson;
@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.StringReader;
 
-public class BedditJsonParserImpl implements BedditJsonParser {
+class BedditJsonParserImpl implements BedditJsonParser {
     private static final String TAG = "BedditJsonParser";
 
     @Override

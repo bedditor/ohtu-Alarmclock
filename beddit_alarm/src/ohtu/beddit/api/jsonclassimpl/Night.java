@@ -1,4 +1,6 @@
-package ohtu.beddit.json;
+package ohtu.beddit.api.jsonclassimpl;
+
+import ohtu.beddit.utils.Utils;
 
 import java.util.Calendar;
 
@@ -9,7 +11,7 @@ import java.util.Calendar;
  * Time: 13:43
  * To change this template use File | Settings | File Templates.
  */
-public class Night extends JsonObject{
+class Night extends JsonObject{
     private String date;
     private String[][] sleep_stages;
 
@@ -23,7 +25,7 @@ public class Night extends JsonObject{
 
     public Calendar getLastSleepStageTime(){
         String timeString = sleep_stages[sleep_stages.length-1][0];
-        return BedditApiController.bedditTimeStringToCalendar(timeString);
+        return Utils.bedditTimeStringToCalendar(timeString);
     }
 
 

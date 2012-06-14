@@ -1,6 +1,6 @@
-package ohtu.beddit.json;
+package ohtu.beddit.api.jsonclassimpl;
 
-public interface BedditJsonParser {
+interface BedditJsonParser {
 
     Night getNight(String json);
 

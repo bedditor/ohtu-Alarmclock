@@ -1,6 +1,5 @@
 package ohtu.beddit.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,13 +10,9 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import ohtu.beddit.R;
-import ohtu.beddit.alarm.AlarmChecker;
-import ohtu.beddit.alarm.AlarmCheckerRealImpl;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.json.BedditApiController;
-import ohtu.beddit.web.BedditWebConnector;
 
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
