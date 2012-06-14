@@ -77,7 +77,9 @@ public class BedditWebConnector implements BedditConnector {
     }
 
     private void closeConnections(HttpsURLConnection connection, InputStream inputStream) {
-        connection.disconnect();
+        if (connection != null){
+            connection.disconnect();
+        }
         if (inputStream != null) {
             try {
                 inputStream.close();

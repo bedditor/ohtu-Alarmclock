@@ -3,6 +3,7 @@ package ohtu.beddit.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -70,7 +71,6 @@ public class AlarmActivity extends Activity {
         music.release();          // Alarm has rung and we have closed the dialog. Music is released.
         vibrator.cancel();        // Also no need to vibrate anymore.
         WakeUpLock.release();     // And no need to keep device open.
-
         super.finish();
     }
 
@@ -120,6 +120,10 @@ public class AlarmActivity extends Activity {
         ((Button)findViewById(R.id.alarmActivity_button_dismiss)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (PreferenceService.getShowSleepData(AlarmActivity.this)){
+                    Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
+                    AlarmActivity.this.startActivity(myIntent);
+                }
                 AlarmActivity.this.finish();
             }
         });

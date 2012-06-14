@@ -39,21 +39,27 @@ public class SleepInfoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
 
-        getNightInfo();
-        setButtons();
-        updateText();
+        if (getNightInfo()){
+            setButtons();
+            updateText();
+        } else {
+            this.finish();
+        }
+
 
     }
 
-    private void getNightInfo() {
+    private boolean getNightInfo() {
         BedditWebConnector connectori = new BedditWebConnector();
         nightInfo = "";
         String date = AlarmCheckerRealImpl.getQueryDateString();
         try {
             nightInfo = connectori.getWakeUpJson(this, date);
+            return true;
         } catch (MalformedBedditJsonException e) {
             Log.v(TAG, "failed to get wake up info");
             e.printStackTrace();
+            return false;
         }
     }
 
