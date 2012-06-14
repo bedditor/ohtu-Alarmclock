@@ -10,10 +10,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.Display;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.*;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
@@ -149,5 +146,40 @@ public class AlarmActivity extends Activity {
 
     private void removeAlarm() {
         new AlarmServiceImpl(this).deleteAlarm();
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        Log.v(TAG,"SETTING KEYGUARD ON");
+        Log.v(TAG, "onAttachedToWindow");
+        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
+        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_HOME) {
+            Log.v(TAG, "HOME PRESSED");
+            exitApplication();
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.v(TAG, "BACK PRESSED");
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_CALL) {
+            Log.v(TAG, "CALL PRESSED");
+            exitApplication();
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exitApplication() {
+        Log.v(TAG, "CLOSING APPLICATION");
+        Intent exitIntent = new Intent(this, ExitActivity.class);
+        exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(exitIntent);
+        finish();
     }
 }

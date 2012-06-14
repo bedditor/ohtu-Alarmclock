@@ -37,6 +37,6 @@
         <activity android:name=".activity.AuthActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.HelpActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.SleepInfoActivity" android:screenOrientation="portrait" />
-
+        <activity android:name=".activity.ExitActivity" android:screenOrientation="portrait" />
     </application>
 </manifest> 

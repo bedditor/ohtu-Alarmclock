@@ -70,41 +70,44 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     @Override
-    public void onAttachedToWindow() {
-        Log.v(TAG, "onAttachedToWindow");
-        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.v(TAG, "onWindowFocusChanged to "+hasFocus);
         super.onWindowFocusChanged(hasFocus);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    private void setKeyGuard(boolean keyGuard) {
-        Log.v(TAG,"SETTING KEYGUARD "+(keyGuard ? "ON" : "OFF"));
-        if (keyGuard) {
-            this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
-        } else {
-            this.getWindow().setType(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        }
+    @Override
+    public void onAttachedToWindow() {
+        Log.v(TAG, "onAttachedToWindow");
+        Log.v(TAG,"SETTING KEYGUARD ON");
+        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
+        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.v(TAG, "HOME PRESSED");
+            exitApplication();
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Log.v(TAG, "BACK PRESSED");
         }
 
-
-        if (keyCode == KeyEvent.KEYCODE_POWER) {
-            Log.v(TAG, "POWER PRESSED");
+        if (keyCode == KeyEvent.KEYCODE_CALL) {
+            Log.v(TAG, "CALL PRESSED");
+            exitApplication();
         }
+
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void exitApplication() {
+        Log.v(TAG, "CLOSING APPLICATION");
+        Intent exitIntent = new Intent(this, ExitActivity.class);
+        exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(exitIntent);
+        finish();
     }
 
     @Override
