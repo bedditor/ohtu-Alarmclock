@@ -130,11 +130,6 @@ public class AuthActivity extends Activity implements TokenListener {
     }
 
     @Override
-    public void onBackPressed() {
-        fail(true);
-    }
-
-    @Override
     public void finish() {
         Log.v(TAG, "finishing");
         webview.clearCache(true);
@@ -178,6 +173,13 @@ public class AuthActivity extends Activity implements TokenListener {
         Log.v(TAG, "onAttachedToWindow");
         this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
         super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.v(TAG, "BACK PRESSED");
+        setResult(MainActivity.RESULT_KILL);
+        finish();
     }
 
     @Override

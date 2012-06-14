@@ -147,39 +147,4 @@ public class AlarmActivity extends Activity {
     private void removeAlarm() {
         new AlarmServiceImpl(this).deleteAlarm();
     }
-
-    @Override
-    public void onAttachedToWindow() {
-        Log.v(TAG,"SETTING KEYGUARD ON");
-        Log.v(TAG, "onAttachedToWindow");
-        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
-        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_HOME) {
-            Log.v(TAG, "HOME PRESSED");
-            finish();
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.v(TAG, "BACK PRESSED");
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_CALL) {
-            Log.v(TAG, "CALL PRESSED");
-            handleCallButton();
-            finish();
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    private void handleCallButton() {
-        Log.v(TAG, "HANDLING CALL BUTTON");
-        Intent exitIntent = new Intent(this, ExitActivity.class);
-        exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(exitIntent);
-    }
 }

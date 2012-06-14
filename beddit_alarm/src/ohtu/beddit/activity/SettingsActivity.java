@@ -18,7 +18,6 @@ import ohtu.beddit.io.PreferenceService;
 
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
-
     private ListPreference snoozeTimePref;
     private ListPreference sleepStagePref;
     private Preference forgetButton;
@@ -26,6 +25,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private final String TAG = "SettingsActivity";
 
+    private static final int FROM_ADVANCED = 6;
+    private static final int FROM_AUTHENTICATION = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         addPreferencesFromResource(R.xml.prefs);
         Log.v(TAG, "onCreate");
     }
-
 
     private void initPrefVars() {
         snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
@@ -66,8 +66,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
-
-
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_snooze))) {
             updateSnoozeSummary();
@@ -84,8 +82,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private void updateSleepStageSummary(){
         sleepStagePref.setSummary(sleepStagePref.getEntry());
     }
-
-
 
     private void updateLoginDataToSummary(){
         String fullName = PreferenceService.getFullName(this) ;
@@ -119,12 +115,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private void startAuthActivity() {
         Log.v(TAG, "starting auth activity");
         Intent myIntent = new Intent(this, AuthActivity.class);
-        this.startActivityForResult(myIntent, 3);
+        this.startActivityForResult(myIntent, FROM_AUTHENTICATION);
     }
 
     private void startAdvancedSettingsActivity() {
         Intent myIntent = new Intent(this, AdvancedSettingsActivity.class);
-        this.startActivity(myIntent);
+        this.startActivityForResult(myIntent, FROM_ADVANCED);
     }
 
     private void forgetMe(){
@@ -134,17 +130,36 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         PreferenceService.setToken(this, "");
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case (3) : {
-                Intent resultIntent = new Intent((String) null);
-                setResult(resultCode, resultIntent);
+            case (FROM_AUTHENTICATION) :
+                handleAuthActivityResult(resultCode);
+            case (FROM_ADVANCED) :
+                handleActivityResult(resultCode);
+                break;
+        }
+    }
+
+    private void handleActivityResult(int resultCode) {
+        switch (resultCode) {
+            case (MainActivity.RESULT_CALL_BUTTON_KILL) :
+            case (MainActivity.RESULT_HOME_BUTTON_KILL) :
+            case (MainActivity.RESULT_KILL) :
+                setResult(resultCode);
                 finish();
                 break;
-            }
+        }
+    }
+
+    private void handleAuthActivityResult(int resultCode) {
+        switch (resultCode) {
+            case (AuthActivity.RESULT_CANCELLED) :
+            case (AuthActivity.RESULT_FAILED) :
+                setResult(resultCode);
+                finish();
+                break;
         }
     }
 
@@ -177,8 +192,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public void onAttachedToWindow() {
-        Log.v(TAG,"SETTING KEYGUARD ON");
         Log.v(TAG, "onAttachedToWindow");
+        Log.v(TAG,"SETTING KEYGUARD ON");
         this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
         super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
     }

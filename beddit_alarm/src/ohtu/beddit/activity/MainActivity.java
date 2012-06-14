@@ -48,6 +48,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     public static final int RESULT_HOME_BUTTON_KILL = 9001;
     public static final int RESULT_CALL_BUTTON_KILL = 9002;
+    public static final int RESULT_KILL = 9003;
 
     /** Called when the alarm is first created. */
     @Override
@@ -345,25 +346,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (FROM_AUTHENTICATION) :
-                handleActivityResult(resultCode);
-                handleAuthActivityResult(resultCode);
-                break;
             case (FROM_SETTINGS) :
             case (FROM_HELP) :
             case (FROM_SLEEP_INFO) :
             default :
                 handleActivityResult(resultCode);
-                break;
-        }
-    }
-
-    private void handleAuthActivityResult(int resultCode){
-        switch(resultCode) {
-            case (AuthActivity.RESULT_FAILED) :
-                createClosingDialog("Login or authorisation failed.");
-                break;
-            case (AuthActivity.RESULT_CANCELLED) :
-                createClosingDialog("This app can not be used without connecting to your beddit account");
                 break;
         }
     }
@@ -375,6 +362,15 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 break;
             case (RESULT_HOME_BUTTON_KILL) :
                 killOnHomeButton();
+                break;
+            case (RESULT_KILL) :
+                finish();
+                break;
+            case (AuthActivity.RESULT_FAILED) :
+                createClosingDialog("Login or authorisation failed.");
+                break;
+            case (AuthActivity.RESULT_CANCELLED) :
+                createClosingDialog("This app can not be used without connecting to your beddit account");
                 break;
         }
     }
