@@ -1,7 +1,8 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,11 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
-import ohtu.beddit.utils.Utils;
-import ohtu.beddit.web.BedditWebConnector;
+import ohtu.beddit.utils.DialogUtils;
+import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
-import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.BedditConnectionException;
 
 import java.util.Calendar;
@@ -34,26 +34,22 @@ public class SleepInfoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.sleep_info);
         try {
             updateNightInfo();
-            setContentView(R.layout.sleep_info);
             setButtons();
             updateText();
         } catch (BedditConnectionException e) {
-            Utils.createOkDialog(this, "Could not connect to beddit");
+            DialogUtils.createActivityClosingDialog(this, getString(R.string.could_not_connect), getString(R.string.button_text_ok));
             Log.v(TAG, "Connection to beddit failed");
-            //this.finish();
         } catch (InvalidJsonException e) {
-            Utils.createOkDialog(this, "Could not get sleep data from beddit");
+            DialogUtils.createActivityClosingDialog(this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
             Log.v(TAG, "Parsing json failed");
-            //this.finish();
         }
 
     }
 
     private void updateNightInfo() throws BedditConnectionException, InvalidJsonException {
-        //BedditWebConnector connectori = new BedditWebConnector();
         ApiController apiController = new ApiControllerClassImpl();
         if(apiController.isSleepInfoFuckingOld()){
             Log.v("sleepinfoupdate", "Is fucking old");
@@ -104,7 +100,7 @@ public class SleepInfoActivity extends Activity {
 
     //expects format like this 2012-06-13T08:38:11 Please don't break it :)
     private String getTimeDifference(String data) {
-        Calendar time = Utils.bedditTimeStringToCalendar(data);
+        Calendar time = TimeUtils.bedditTimeStringToCalendar(data);
         int differenceInSeconds = (int) ((Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis())/1000);
         return getHoursAndMinutesFromSeconds(differenceInSeconds);
     }

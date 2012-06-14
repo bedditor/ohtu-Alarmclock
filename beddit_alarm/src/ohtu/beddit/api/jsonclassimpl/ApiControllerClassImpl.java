@@ -3,7 +3,7 @@ package ohtu.beddit.api.jsonclassimpl;
 import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
-import ohtu.beddit.utils.Utils;
+import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditConnector;
 import ohtu.beddit.web.BedditWebConnector;
@@ -28,6 +28,7 @@ public class ApiControllerClassImpl implements ApiController {
         this.bedditConnector = bedditConnector;
     }
 
+    @Override
     public void updateUserInfo(Context context) throws BedditConnectionException {
         userjson = bedditConnector.getUserJson(context);
         Log.v("apidapi", "update: "+userjson);
@@ -35,15 +36,23 @@ public class ApiControllerClassImpl implements ApiController {
 
     @Override
     public void updateSleepInfo(Context context) throws BedditConnectionException {
-        String date = Utils.getTodayAsQueryDateString();
+        String date = TimeUtils.getTodayAsQueryDateString();
         sleepjson = bedditConnector.getWakeUpJson(context,date);
         lastSleepUpdateTime = Calendar.getInstance();
         Log.v("apidapi", "update: "+sleepjson);
     }
 
     @Override
+    public boolean isSleepInfoFuckingOld(){
+        if(lastSleepUpdateTime == null || TimeUtils.isDifferenceGreaterThanXMinutes(Calendar.getInstance(), lastSleepUpdateTime, 1)){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void updateQueueInfo(Context context) throws BedditConnectionException {
-        String date = Utils.getTodayAsQueryDateString();
+        String date = TimeUtils.getTodayAsQueryDateString();
         queuejson = bedditConnector.getQueueStateJson(context,date);
         Log.v("apidapi", "update: "+queuejson);
     }
@@ -136,13 +145,6 @@ public class ApiControllerClassImpl implements ApiController {
 
     public Calendar getLastSleepUpdateTime() throws BedditConnectionException{
         return lastSleepUpdateTime;
-    }
-
-    public boolean isSleepInfoFuckingOld(){
-        if(lastSleepUpdateTime == null || Utils.isDifferenceGreaterThanXMinutes(Calendar.getInstance(), lastSleepUpdateTime,1)){
-            return true;
-        }
-        return false;
     }
 
     private String getUserjson(Context context) throws BedditConnectionException {

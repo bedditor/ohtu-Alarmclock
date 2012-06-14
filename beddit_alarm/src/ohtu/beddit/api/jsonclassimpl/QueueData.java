@@ -1,6 +1,6 @@
 package ohtu.beddit.api.jsonclassimpl;
 
-import ohtu.beddit.utils.Utils;
+import ohtu.beddit.utils.TimeUtils;
 
 import java.util.Calendar;
 
@@ -22,14 +22,14 @@ class QueueData extends JsonObject {
     }
 
     public Calendar getResults_available_up_to() {
-        return Utils.bedditTimeStringToCalendar(results_available_up_to);
+        return TimeUtils.bedditTimeStringToCalendar(results_available_up_to);
     }
 
     public Calendar getWhen_sleep_analyzed(){
-        return Utils.bedditTimeStringToCalendar(results_available_up_to_when_sleep_analyzed);
+        return TimeUtils.bedditTimeStringToCalendar(results_available_up_to_when_sleep_analyzed);
     }
 
     public Calendar getWhen_queued_for_sleep_analysis(){
-        return Utils.bedditTimeStringToCalendar(results_available_up_to_when_queued_for_sleep_analysis);
+        return TimeUtils.bedditTimeStringToCalendar(results_available_up_to_when_queued_for_sleep_analysis);
     }
 }

@@ -5,13 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.text.format.DateFormat;
 import ohtu.beddit.R;
 import ohtu.beddit.activity.MainActivity;
-import ohtu.beddit.utils.Utils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import ohtu.beddit.utils.TimeUtils;
 
 public class NotificationFactory {
 
@@ -33,9 +29,9 @@ public class NotificationFactory {
         Notification notification = new Notification(R.drawable.alarm_notification,"",0);
         notification.flags = Notification.FLAG_NO_CLEAR;
 
-        String print = Utils.timeAsString(startHours, startMinutes, context);
+        String print = TimeUtils.timeAsString(startHours, startMinutes, context);
         if (startHours != endHours || startMinutes != endMinutes){
-            print += " - " + Utils.timeAsString(endHours, endMinutes, context);;
+            print += " - " + TimeUtils.timeAsString(endHours, endMinutes, context);;
         }
         
         Intent intent = new Intent(context, MainActivity.class);

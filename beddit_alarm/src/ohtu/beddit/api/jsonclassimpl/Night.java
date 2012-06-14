@@ -1,6 +1,6 @@
 package ohtu.beddit.api.jsonclassimpl;
 
-import ohtu.beddit.utils.Utils;
+import ohtu.beddit.utils.TimeUtils;
 
 import ohtu.beddit.web.BedditConnectionException;
 
@@ -35,7 +35,7 @@ class Night extends JsonObject{
 
     public Calendar getLastSleepStageTime(){
         String timeString = sleep_stages[sleep_stages.length-1][0];
-        return Utils.bedditTimeStringToCalendar(timeString);
+        return TimeUtils.bedditTimeStringToCalendar(timeString);
     }
 
     public int getTimeSleeping() {

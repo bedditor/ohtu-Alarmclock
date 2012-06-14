@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Utils {
+public class TimeUtils {
 
     public static Calendar bedditTimeStringToCalendar(String timeString){
         timeString = timeString.replaceAll("T", " ");
@@ -54,19 +54,6 @@ public class Utils {
         return dateFormat.format(date);
     }
 
-    public static void createOkDialog(final Activity context, String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(message);
-        builder.setCancelable(false);
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                context.finish();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
     public static boolean isDifferenceGreaterThanXMinutes(Calendar a, Calendar b, int minutes){
         long timeA = a.getTimeInMillis();
         long timeB = b.getTimeInMillis();
@@ -78,5 +65,6 @@ public class Utils {
         }
 
     }
+
 
 }

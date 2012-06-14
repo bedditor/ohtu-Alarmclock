@@ -1,8 +1,6 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +12,6 @@ import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
-import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.*;
 
 import java.util.regex.Matcher;
@@ -43,39 +40,41 @@ public class AuthActivity extends Activity implements TokenListener {
     }
 
     @Override
-    public void onTokenReceived(String token) {
-        // Seeing if we get the right url
+    public void onTokenReceived(String url) {
+        // Seeing if we got the right url
         Pattern code = Pattern.compile("\\Qhttps://peach-app.appspot.com/oauth?code=\\E(.+)");
         Pattern error = Pattern.compile("\\Qhttps://peach-app.appspot.com/oauth?error=access_denied\\E");
-        Matcher match = code.matcher(token);
-        Matcher problem = error.matcher(token);
+        Matcher match = code.matcher(url);
+        Matcher problem = error.matcher(url);
 
-        Log.v(TAG, "Trying to match url: " + token);
+        Log.v(TAG, "Trying to match url: " + url);
         if (match.matches()) {
             Log.v(TAG, "Success");
-            // We got the right url so we construct our https get url and give it to OAuthHandling class which will get the access token by https connection
-            token = "https://api.beddit.com/api/oauth/access_token?client_id="+ fileHandler.getClientInfo(FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&client_secret="+ fileHandler.getClientInfo(FileHandler.CLIENT_SECRET) + "&grant_type=code&code="+match.group(1);
-            String result = OAuthHandling.getAccessToken(this, token);
+            // We got the right url so we construct our https get url and give it to BedditConnector which will get the access token by https connection
+            url = "https://api.beddit.com/api/oauth/access_token?client_id="+ fileHandler.getClientInfo(FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&client_secret="+ fileHandler.getClientInfo(FileHandler.CLIENT_SECRET) + "&grant_type=code&code="+match.group(1);
+
             // If we get error, well you shouldn't. We close the program because we won't get correct access_token. Breaks other code?
-            if (result.equalsIgnoreCase("error")) {
-                Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
-                fail(false);
-            }else{
-                Log.v(TAG, "result: "+result);
+            try{
+                BedditConnector bedditConnector = new BedditWebConnector();
+                String token = bedditConnector.getAccessToken(url);
+                Log.v(TAG, "result: "+token);
                 // We put the correct access token to safe and be happy. User is allowed to use the program now.
-                PreferenceService.setToken(this, result);
-                Log.v("Toukenizer:", PreferenceService.getToken(this));
+                PreferenceService.setToken(this, token);
                 saveUserData();
                 finish();
+            } catch (BedditConnectionException e){
+                Log.v(TAG, "Something went wrong while getting access token from correct url. *pfft*");
+                fail(false);
             }
         }
         // If user doesn't allow the program to access, we simply terminate the program.
-        if (problem.matches()) {
-            Log.v(TAG, "problem.matches() == true");
-            fail(false);
+        else if (problem.matches()) {
+            Log.v(TAG, "Access denied");
+            fail(true);
         }
     }
 
+    /*
     public void derpDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("CRASH!");
@@ -84,7 +83,7 @@ public class AuthActivity extends Activity implements TokenListener {
             public void onClick(DialogInterface dialog, int id) {
                 BedditWebConnector blob = new BedditWebConnector();
                 try{
-                    Log.v("derp", "tila on: "+blob.getQueueStateJson(AuthActivity.this, Utils.getTodayAsQueryDateString()));
+                    Log.v("derp", "tila on: "+blob.getQueueStateJson(AuthActivity.this, TimeUtils.getTodayAsQueryDateString()));
                 }catch (Exception e){
 
                 }
@@ -94,8 +93,8 @@ public class AuthActivity extends Activity implements TokenListener {
         Log.v("dialogi", "nakyy: "+alert.isShowing());
         alert.show();
         Log.v("dialogi", "nakyy: "+alert.isShowing());
-
     }
+    */
 
     private void fail(boolean cancelledByUser){
         Log.v(TAG, "fail called");
@@ -153,7 +152,7 @@ public class AuthActivity extends Activity implements TokenListener {
         client.addTokenListener(this);
         webview.setWebViewClient(client);
         Log.v(TAG, fileHandler.getClientInfo(FileHandler.CLIENT_ID) + " secret: " + fileHandler.getClientInfo(FileHandler.CLIENT_SECRET));
-        webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id="+ fileHandler.getClientInfo(FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&response_type=code");
+        webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id=" + fileHandler.getClientInfo(FileHandler.CLIENT_ID) + "&redirect_uri=https://peach-app.appspot.com/oauth&response_type=code");
     }
 
     private void removeCookies() {
@@ -166,7 +165,7 @@ public class AuthActivity extends Activity implements TokenListener {
 
     @Override
     public void onAttachedToWindow() {
-        Log.v(TAG,"SETTING KEYGUARD ON");
+        Log.v(TAG, "SETTING KEYGUARD ON");
         Log.v(TAG, "onAttachedToWindow");
         this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
         super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.

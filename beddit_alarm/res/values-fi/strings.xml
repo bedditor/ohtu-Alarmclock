@@ -48,5 +48,12 @@
     <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
     <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?
     </string>
+    <string name="button_text_close">Close</string>
+    <string name="login_or_authorisation_failed">Login or authorisation failed.</string>
+    <string name="must_connect_to_beddit_account">This app can not be used without connecting to your beddit account
+    </string>
+    <string name="button_text_ok">Ok</string>
+    <string name="sleep_data_fail">Could not get sleep data from beddit</string>
+    <string name="could_not_connect">Could not connect to beddit</string>
 
 </resources>

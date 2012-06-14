@@ -1,8 +1,6 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,9 +19,9 @@ import ohtu.beddit.alarm.*;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
+import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.web.BedditConnectionException;
 
 public class MainActivity extends Activity implements AlarmTimeChangedListener
@@ -367,24 +365,12 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 finish();
                 break;
             case (AuthActivity.RESULT_FAILED) :
-                createClosingDialog("Login or authorisation failed.");
+                DialogUtils.createActivityClosingDialog(this, getString(R.string.login_or_authorisation_failed), getString(R.string.button_text_close));
                 break;
             case (AuthActivity.RESULT_CANCELLED) :
-                createClosingDialog("This app can not be used without connecting to your beddit account");
+                DialogUtils.createActivityClosingDialog(this, getString(R.string.must_connect_to_beddit_account), getString(R.string.button_text_close));
                 break;
         }
     }
 
-    private void createClosingDialog(String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message);
-        builder.setCancelable(false);
-        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                MainActivity.this.finish();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
 }

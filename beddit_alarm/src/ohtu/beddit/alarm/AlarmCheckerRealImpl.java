@@ -5,7 +5,7 @@ import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
-import ohtu.beddit.utils.Utils;
+import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;
 
 import java.util.Calendar;
@@ -20,7 +20,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
         ApiController api = new ApiControllerClassImpl();
         int minutes = 2;
         long atMostMillisOld = 1000 * 60 * minutes;
-        String dateString = Utils.getTodayAsQueryDateString();
+        String dateString = TimeUtils.getTodayAsQueryDateString();
 
         try{
             api.updateQueueInfo(context);

@@ -2,6 +2,7 @@ package ohtu.beddit.web;
 
 import android.content.Context;
 import android.util.Log;
+import com.google.gson.JsonParser;
 import ohtu.beddit.io.PreferenceService;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 public class BedditWebConnector implements BedditConnector {
 
     private static final String TAG = "BedditWebConnector";
+
 
     public String getUserJson(Context context) throws BedditConnectionException {
         return getSomeJson(context, "", false);
@@ -46,9 +48,7 @@ public class BedditWebConnector implements BedditConnector {
         try {
             connection = connect(context, query, connection,do_post);
             inputStream = connection.getInputStream();
-            Scanner scanner = new Scanner(inputStream);
-            while(scanner.hasNext())
-                response += scanner.nextLine();
+            response = readFromStream(inputStream);
         }
         catch (Throwable e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -64,8 +64,41 @@ public class BedditWebConnector implements BedditConnector {
         return response;
     }
 
+    @Override
+    public String getAccessToken(String url) throws BedditConnectionException {
+        Log.v(TAG, "Trying to get access token from " + url);
+        String token = null;
+        HttpsURLConnection connection = null;
+        InputStream inputStream = null;
+        try {
+            URL address = new URL(url);
+            Log.v(TAG,"url: "+address);
+
+            System.setProperty("http.keepAlive", "false");
+            connection = (HttpsURLConnection) address.openConnection();
+
+            connection.connect();
+            Log.v(TAG, "responseCode: " + connection.getResponseCode());
+
+            inputStream = connection.getInputStream();
+            String stash = readFromStream(inputStream);
+            Log.v(TAG,"stash: "+stash);
+
+            token = new JsonParser().parse(stash).getAsJsonObject().get("access_token").getAsString();
+            Log.v(TAG,"AccessToken = \""+token+"\"");
+
+        } catch (Throwable e) {
+            Log.e(TAG, Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
+            throw new BedditConnectionException();
+        }
+        finally {
+            closeConnections(connection, inputStream);
+        }
+        return token;
+    }
+
     private HttpsURLConnection connect(Context context, String query, HttpsURLConnection connection, boolean do_post) throws IOException {
-            String token = PreferenceService.getToken(context);
+        String token = PreferenceService.getToken(context);
         URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
         Log.v(TAG, "GET Token: " + url);
         connection = (HttpsURLConnection) url.openConnection();
@@ -78,6 +111,14 @@ public class BedditWebConnector implements BedditConnector {
         }
         connection.connect();
         return connection;
+    }
+
+    private String readFromStream(InputStream inputStream){
+        String response = "";
+        Scanner scanner = new Scanner(inputStream);
+        while(scanner.hasNext())
+            response += scanner.nextLine();
+        return response;
     }
 
     private void closeConnections(HttpsURLConnection connection, InputStream inputStream) {
