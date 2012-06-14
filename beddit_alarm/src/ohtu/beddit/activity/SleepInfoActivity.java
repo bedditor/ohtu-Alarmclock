@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
+import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.api.ApiController;
@@ -41,12 +42,17 @@ public class SleepInfoActivity extends Activity {
             updateText();
         } catch (BedditConnectionException e) {
             //we could show a dialog or toast here
+            Log.v(TAG, "Connection to beddit failed");
+            this.finish();
+        } catch (InvalidJsonException e) {
+            //we could show a dialog or toast here
+            Log.v(TAG, "Parsing json failed");
             this.finish();
         }
 
     }
 
-    private void updateNightInfo() throws BedditConnectionException {
+    private void updateNightInfo() throws BedditConnectionException, InvalidJsonException {
         //BedditWebConnector connectori = new BedditWebConnector();
         ApiController apiController = new ApiControllerClassImpl();
 

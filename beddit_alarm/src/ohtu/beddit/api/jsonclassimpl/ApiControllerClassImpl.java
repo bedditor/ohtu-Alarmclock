@@ -53,81 +53,81 @@ public class ApiControllerClassImpl implements ApiController {
 
 
     @Override
-    public String getUsername(Context context, int userIndex) throws BedditConnectionException {
+    public String getUsername(Context context, int userIndex) throws BedditConnectionException, InvalidJsonException {
         String json = getUserjson(context);
         return jsonParser.getUsers(json).getUsername(userIndex);
     }
 
     @Override
-    public String getFirstName(Context context, int userIndex) throws BedditConnectionException {
+    public String getFirstName(Context context, int userIndex) throws BedditConnectionException, InvalidJsonException {
         String json = getUserjson(context);
         return jsonParser.getUsers(json).getFirstName(userIndex);
     }
 
     @Override
-    public String getLastName(Context context, int userIndex) throws BedditConnectionException {
+    public String getLastName(Context context, int userIndex) throws BedditConnectionException, InvalidJsonException {
         String json = getUserjson(context);
         return jsonParser.getUsers(json).getLastName(userIndex);
     }
 
     @Override
-    public char getLastSleepStage(Context context) throws BedditConnectionException {
+    public char getLastSleepStage(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getSleepjson(context);
         return jsonParser.getNight(json).getLastSleepStage();
     }
 
 
     @Override
-    public String getSleepAnalysisStatus(Context context) throws BedditConnectionException {
+    public String getSleepAnalysisStatus(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getQueuejson(context);
         return jsonParser.getQueueData(json).getSleepAnalysisStatus();
     }
 
 
     @Override
-    public Calendar getSleepAnalysisResultsUpTo(Context context) throws BedditConnectionException {
+    public Calendar getSleepAnalysisResultsUpTo(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getQueuejson(context);
         return jsonParser.getQueueData(json).getResults_available_up_to();
     }
 
     @Override
-    public Calendar getSleepAnalysisWhenAnalyzed(Context context) throws BedditConnectionException {
+    public Calendar getSleepAnalysisWhenAnalyzed(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getQueuejson(context);
         return jsonParser.getQueueData(json).getWhen_sleep_analyzed();
     }
 
     @Override
-    public Calendar getSleepAnalysisWhenQueued(Context context) throws BedditConnectionException {
+    public Calendar getSleepAnalysisWhenQueued(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getQueuejson(context);
         return jsonParser.getQueueData(json).getWhen_queued_for_sleep_analysis();
     }
 
     @Override
-    public Calendar getTimeOfLastSleepStage(Context context) throws BedditConnectionException {
+    public Calendar getTimeOfLastSleepStage(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getSleepjson(context);
         return jsonParser.getNight(json).getLastSleepStageTime();
     }
 
     @Override
-    public int getTimeSleeping(Context context) throws BedditConnectionException {
+    public int getTimeSleeping(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getSleepjson(context);
         return jsonParser.getNight(json).getTimeSleeping();
     }
 
     @Override
-    public int getTimeDeepSleep(Context context) throws BedditConnectionException {
+    public int getTimeDeepSleep(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getSleepjson(context);
         return jsonParser.getNight(json).getTimeDeepSleep();
     }
 
     @Override
-    public String getLocalAnalyzedUpToTime(Context context) throws BedditConnectionException {
+    public String getLocalAnalyzedUpToTime(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getSleepjson(context);
         return jsonParser.getNight(json).getLocal_analyzed_up_to_time();
     }
 
     @Override
-    public boolean getIsAnalysisUpToDate(Context context) throws BedditConnectionException {
+    public boolean getIsAnalysisUpToDate(Context context) throws BedditConnectionException, InvalidJsonException {
         String json = getSleepjson(context);
         return jsonParser.getNight(json).getIsAnalysisUpToDate();
     }

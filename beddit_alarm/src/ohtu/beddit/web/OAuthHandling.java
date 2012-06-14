@@ -53,7 +53,9 @@ public class OAuthHandling {
             token = "error";
         }
         finally {
-            connect.disconnect();
+            if (connect != null){
+                connect.disconnect();
+            }
             if (inputStream != null) {
                 try {
                     inputStream.close();
