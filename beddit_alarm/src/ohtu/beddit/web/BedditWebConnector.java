@@ -13,6 +13,9 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class BedditWebConnector implements BedditConnector {
+
+    private static final String TAG = "BedditWebConnector";
+
     public String getUserJson(Context context) throws MalformedBedditJsonException {
         return getSomeJson(context, "", false);
     }
@@ -50,12 +53,15 @@ public class BedditWebConnector implements BedditConnector {
                 response += scanner.nextLine();
         }
         catch (Throwable e) {
-            Log.e("WebConnector", Log.getStackTraceString(e));
+            Log.e(TAG, Log.getStackTraceString(e));
             throw new MalformedBedditJsonException();
         }
         finally {
             closeConnections(connection, inputStream);
-            if(response.equals("")) throw new MalformedBedditJsonException();
+            if(response.equals("")) {
+                Log.v(TAG, "Empty response");
+                throw new MalformedBedditJsonException();
+            }
         }
         return response;
     }
@@ -63,7 +69,7 @@ public class BedditWebConnector implements BedditConnector {
     private HttpsURLConnection connect(Context context, String query, HttpsURLConnection connection, boolean do_post) throws IOException {
             String token = PreferenceService.getToken(context);
         URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
-        Log.v("GET", "Token: " + url);
+        Log.v(TAG, "GET Token: " + url);
         connection = (HttpsURLConnection) url.openConnection();
         if(do_post){
             connection.setRequestMethod("POST");
@@ -82,7 +88,7 @@ public class BedditWebConnector implements BedditConnector {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                Log.e("WebConnector", Log.getStackTraceString(e));
+                Log.e(TAG, Log.getStackTraceString(e));
             }
         }
     }

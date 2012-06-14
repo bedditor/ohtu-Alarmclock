@@ -66,7 +66,47 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     @Override
+    public void onAttachedToWindow() {
+        Log.v(TAG, "onAttachedToWindow");
+        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        Log.v(TAG, "onWindowFocusChanged to "+hasFocus);
+        super.onWindowFocusChanged(hasFocus);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    private void setKeyGuard(boolean keyGuard) {
+        Log.v(TAG,"SETTING KEYGUARD "+(keyGuard ? "ON" : "OFF"));
+        if (keyGuard) {
+            this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
+        } else {
+            this.getWindow().setType(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_HOME) {
+            Log.v(TAG, "HOME PRESSED");
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.v(TAG, "BACK PRESSED");
+        }
+
+
+        if (keyCode == KeyEvent.KEYCODE_POWER) {
+            Log.v(TAG, "POWER PRESSED");
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public void onResume(){
+        //setKeyGuard(true);
+
         super.onResume();
         updateButtons();
         updateColours();
@@ -77,13 +117,16 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     @Override
     protected void onPause() {
+        //setKeyGuard(false);
+
         Log.v(TAG, "onPause");
+
         super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
     protected void onRestart() {
-        Log.v(TAG, "onResume");
+        Log.v(TAG, "onRestart");
         super.onRestart();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
@@ -142,10 +185,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         Intent myIntent = new Intent(this, AuthActivity.class);
         startActivityForResult(myIntent, 2);
     }
-
-
-
-
 
     private void setUI() {
         //Set clock, buttons and listeners
