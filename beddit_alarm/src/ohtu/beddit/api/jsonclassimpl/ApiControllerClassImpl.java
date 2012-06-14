@@ -18,6 +18,7 @@ public class ApiControllerClassImpl implements ApiController {
     private static String userjson = null;
     private static String sleepjson = null;
     private static String queuejson = null;
+    private static Calendar lastSleepUpdateTime = null;
 
     public ApiControllerClassImpl(){
         bedditConnector = new BedditWebConnector();
@@ -36,6 +37,7 @@ public class ApiControllerClassImpl implements ApiController {
     public void updateSleepInfo(Context context) throws BedditConnectionException {
         String date = Utils.getTodayAsQueryDateString();
         sleepjson = bedditConnector.getWakeUpJson(context,date);
+        lastSleepUpdateTime = Calendar.getInstance();
         Log.v("apidapi", "update: "+sleepjson);
     }
 
@@ -132,7 +134,16 @@ public class ApiControllerClassImpl implements ApiController {
         return jsonParser.getNight(json).getIsAnalysisUpToDate();
     }
 
+    public Calendar getLastSleepUpdateTime() throws BedditConnectionException{
+        return lastSleepUpdateTime;
+    }
 
+    public boolean isSleepInfoFuckingOld(){
+        if(lastSleepUpdateTime == null || Utils.isDifferenceGreaterThanXMinutes(Calendar.getInstance(), lastSleepUpdateTime,1)){
+            return true;
+        }
+        return false;
+    }
 
     private String getUserjson(Context context) throws BedditConnectionException {
         if(userjson==null) updateUserInfo(context);

@@ -67,4 +67,16 @@ public class Utils {
         alert.show();
     }
 
+    public static boolean isDifferenceGreaterThanXMinutes(Calendar a, Calendar b, int minutes){
+        long timeA = a.getTimeInMillis();
+        long timeB = b.getTimeInMillis();
+        long difference = (Math.abs(timeA - timeB))/1000/60;
+        if(difference > minutes){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 }

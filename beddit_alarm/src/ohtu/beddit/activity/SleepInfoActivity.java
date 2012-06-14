@@ -55,8 +55,10 @@ public class SleepInfoActivity extends Activity {
     private void updateNightInfo() throws BedditConnectionException, InvalidJsonException {
         //BedditWebConnector connectori = new BedditWebConnector();
         ApiController apiController = new ApiControllerClassImpl();
-
-        apiController.updateSleepInfo(this);
+        if(apiController.isSleepInfoFuckingOld()){
+            Log.v("sleepinfoupdate", "Is fucking old");
+            apiController.updateSleepInfo(this);
+        }
         timeSleeping = apiController.getTimeSleeping(this);
         timeDeepSleep = apiController.getTimeDeepSleep(this);
         localAnalyzedUpToTime = apiController.getLocalAnalyzedUpToTime(this);

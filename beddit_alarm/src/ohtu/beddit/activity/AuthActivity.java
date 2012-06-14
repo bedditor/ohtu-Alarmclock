@@ -134,6 +134,7 @@ public class AuthActivity extends Activity implements TokenListener {
         fail(true);
     }
 
+
     @Override
     public void finish() {
         Log.v(TAG, "finishing");

@@ -44,7 +44,11 @@ public interface ApiController {
 
     int getTimeDeepSleep(Context context) throws BedditConnectionException, InvalidJsonException;
 
+
     String getLocalAnalyzedUpToTime(Context context) throws BedditConnectionException, InvalidJsonException;
+
+    boolean isSleepInfoFuckingOld();
+
 
     boolean getIsAnalysisUpToDate(Context context) throws BedditConnectionException, InvalidJsonException;
 }
