@@ -40,8 +40,13 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     private static final int LIGHT_THEME_FOREGROUND = Color.BLACK;
     private static final int BEDDIT_ORANGE = Color.argb(255,255,89,0);
 
-    public static final int FROM_SETTINGS = 3;
     public static final int FROM_AUTHENTICATION = 2;
+    public static final int FROM_SETTINGS = 3;
+    public static final int FROM_SLEEP_INFO = 4;
+    public static final int FROM_HELP = 5;
+
+    public static final int RESULT_HOME_BUTTON_KILL = 9001;
+    public static final int RESULT_CALL_BUTTON_KILL = 9002;
 
     /** Called when the alarm is first created. */
     @Override
@@ -88,11 +93,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.v(TAG, "HOME PRESSED");
-            Intent homeIntent= new Intent(Intent.ACTION_MAIN);
-            homeIntent.addCategory(Intent.CATEGORY_HOME);
-            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(homeIntent);
-            finish();
+            killOnHomeButton();
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -101,17 +102,27 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
         if (keyCode == KeyEvent.KEYCODE_CALL) {
             Log.v(TAG, "CALL PRESSED");
-            startActivity(new Intent(Intent.ACTION_CALL_BUTTON));
-            finish();
+            killOnCallButton();
         }
 
         return super.onKeyDown(keyCode, event);
     }
 
+    public void killOnHomeButton() {
+        Intent homeIntent= new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory(Intent.CATEGORY_HOME);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(homeIntent);
+        finish();
+    }
+
+    public void killOnCallButton() {
+        startActivity(new Intent(Intent.ACTION_CALL_BUTTON));
+        finish();
+    }
+
     @Override
     public void onResume(){
-        //setKeyGuard(true);
-
         super.onResume();
         updateButtons();
         updateColours();
@@ -266,7 +277,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         }
     }
 
-
     public class AlarmDeleteButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
@@ -313,10 +323,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 startActivityForResult(item.getIntent(), FROM_SETTINGS);
                 break;
             case R.id.help_menu_button:
-                startActivity(item.getIntent());
+                startActivityForResult(item.getIntent(), FROM_HELP);
                 break;
             case R.id.sleep_info_button:
-                startActivity(item.getIntent());
+                startActivityForResult(item.getIntent(), FROM_SLEEP_INFO);
                 break;
         }
         return true;
@@ -327,15 +337,19 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (FROM_AUTHENTICATION) :
-                handleAuthResult(resultCode);
+                handleActivityResult(resultCode);
+                handleAuthActivityResult(resultCode);
                 break;
             case (FROM_SETTINGS) :
+            case (FROM_HELP) :
+            case (FROM_SLEEP_INFO) :
             default :
+                handleActivityResult(resultCode);
                 break;
         }
     }
 
-    private void handleAuthResult(int resultCode){
+    private void handleAuthActivityResult(int resultCode){
         switch(resultCode) {
             case (AuthActivity.RESULT_FAILED) :
                 createClosingDialog("Login or authorisation failed.");
@@ -346,7 +360,18 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         }
     }
 
-    public void createClosingDialog(String message){
+    private void handleActivityResult(int resultCode) {
+        switch(resultCode) {
+            case (RESULT_CALL_BUTTON_KILL) :
+                killOnCallButton();
+                break;
+            case (RESULT_HOME_BUTTON_KILL) :
+                killOnHomeButton();
+                break;
+        }
+    }
+
+    private void createClosingDialog(String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
         builder.setCancelable(false);

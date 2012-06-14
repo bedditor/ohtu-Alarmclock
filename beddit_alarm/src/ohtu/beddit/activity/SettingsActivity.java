@@ -187,7 +187,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.v(TAG, "HOME PRESSED");
+            setResult(MainActivity.RESULT_HOME_BUTTON_KILL);
             finish();
+            return true;
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -196,17 +198,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
         if (keyCode == KeyEvent.KEYCODE_CALL) {
             Log.v(TAG, "CALL PRESSED");
-            handleCallButton();
+            setResult(MainActivity.RESULT_CALL_BUTTON_KILL);
             finish();
+            return true;
         }
 
         return super.onKeyDown(keyCode, event);
-    }
-
-    private void handleCallButton() {
-        Log.v(TAG, "HANDLING CALL BUTTON");
-        Intent exitIntent = new Intent(this, ExitActivity.class);
-        exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(exitIntent);
     }
 }
