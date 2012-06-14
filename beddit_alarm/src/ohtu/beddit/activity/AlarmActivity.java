@@ -113,38 +113,79 @@ public class AlarmActivity extends Activity {
         Log.v(TAG, "Vibrator says:" + vibrator.toString());
     }
 
+    private void dismiss() {
+        if (PreferenceService.getShowSleepData(AlarmActivity.this)){
+            Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
+            AlarmActivity.this.startActivity(myIntent);
+        }
+        AlarmActivity.this.finish();
+    }
+
+    private void snooze() {
+        //get snooze length from preferences
+        int snoozeLength = PreferenceService.getSnoozeLength(AlarmActivity.this);
+
+        Calendar snoozeTime = Calendar.getInstance();
+        snoozeTime.add(Calendar.MINUTE, snoozeLength);
+
+        //set alarm
+        Context context = AlarmActivity.this;
+        AlarmService alarmService = new AlarmServiceImpl(context);
+        alarmService.addAlarm(snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
+
+        finish();
+    }
+
     private void makeButtons() {
-        ((Button)findViewById(R.id.alarmActivity_button_dismiss)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (PreferenceService.getShowSleepData(AlarmActivity.this)){
-                    Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
-                    AlarmActivity.this.startActivity(myIntent);
-                }
-                AlarmActivity.this.finish();
-            }
-        });
-        ((Button)findViewById(R.id.alarmActivity_button_snooze)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                //get snooze length from preferences
-                int snoozeLength = PreferenceService.getSnoozeLength(AlarmActivity.this);
-
-                Calendar snoozeTime = Calendar.getInstance();
-                snoozeTime.add(Calendar.MINUTE, snoozeLength);
-
-                //set alarm
-                Context context = AlarmActivity.this;
-                AlarmService alarmService = new AlarmServiceImpl(context);
-                alarmService.addAlarm(snoozeTime.get(Calendar.HOUR_OF_DAY), snoozeTime.get(Calendar.MINUTE), 0);
-
-                AlarmActivity.this.finish();
-            }
-        });
+        ((Button)findViewById(R.id.alarmActivity_button_dismiss))
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlarmActivity.this.dismiss();
+                    }
+                });
+        ((Button)findViewById(R.id.alarmActivity_button_snooze))
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view){
+                        AlarmActivity.this.snooze();
+                    }
+                });
 
     }
 
     private void removeAlarm() {
         new AlarmServiceImpl(this).deleteAlarm();
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        Log.v(TAG,"SETTING KEYGUARD ON");
+        Log.v(TAG, "onAttachedToWindow");
+        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
+        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_HOME) {
+            //Log.v(TAG, "HOME PRESSED");
+            //setResult(MainActivity.RESULT_HOME_BUTTON_KILL);
+            //finish();
+            return true;
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.v(TAG, "BACK PRESSED");
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_CALL) {
+            //Log.v(TAG, "CALL PRESSED");
+            //setResult(MainActivity.RESULT_CALL_BUTTON_KILL);
+            //finish();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }
