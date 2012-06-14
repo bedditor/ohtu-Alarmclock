@@ -1,22 +1,16 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.location.GpsStatus;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.gson.JsonParser;
 import ohtu.beddit.R;
-import ohtu.beddit.alarm.AlarmCheckerRealImpl;
+import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.web.MalformedBedditJsonException;
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -52,7 +46,7 @@ public class SleepInfoActivity extends Activity {
     private boolean getNightInfo() {
         BedditWebConnector connectori = new BedditWebConnector();
         nightInfo = "";
-        String date = AlarmCheckerRealImpl.getQueryDateString();
+        String date = Utils.getTodayAsQueryDateString();
         try {
             nightInfo = connectori.getWakeUpJson(this, date);
             return true;

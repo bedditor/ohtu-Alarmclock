@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.*;
 import ohtu.beddit.R;
-import ohtu.beddit.alarm.AlarmCheckerRealImpl;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.*;
 
 import java.util.regex.Matcher;
@@ -65,19 +65,7 @@ public class AuthActivity extends Activity implements TokenListener {
                 PreferenceService.setToken(this, result);
                 Log.v("Toukenizer:", PreferenceService.getToken(this));
                 saveUserData();
-
-                //what follows are tests, for actual program need to uncomment the line below:
-
                 finish();
-                /*BedditWebConnector blob = new BedditWebConnector();
-                try{
-                    Log.v("derp", "tila on: "+blob.getQueueStateJson(AuthActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
-                    Log.v("derp", "post: "+blob.requestDataAnalysis(AuthActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
-                    Log.v("derp", "und uudestaan tila: "+blob.getQueueStateJson(AuthActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
-                }catch (Exception e){
-                    Log.v("fail", Log.getStackTraceString(e));
-                }
-                */
             }
         }
         // If user doesn't allow the program to access, we simply terminate the program.
@@ -95,7 +83,7 @@ public class AuthActivity extends Activity implements TokenListener {
             public void onClick(DialogInterface dialog, int id) {
                 BedditWebConnector blob = new BedditWebConnector();
                 try{
-                    Log.v("derp", "tila on: "+blob.getQueueStateJson(AuthActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
+                    Log.v("derp", "tila on: "+blob.getQueueStateJson(AuthActivity.this, Utils.getTodayAsQueryDateString()));
                 }catch (Exception e){
 
                 }

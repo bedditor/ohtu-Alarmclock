@@ -31,4 +31,11 @@ public class Utils {
         return calendar;
     }
 
+    public static String getTodayAsQueryDateString(){
+        Calendar kalenteri = Calendar.getInstance();
+        int year = kalenteri.get(Calendar.YEAR);
+        int month = kalenteri.get(Calendar.MONTH);
+        int day = kalenteri.get(Calendar.DAY_OF_MONTH);
+        return year+"/"+(month+1)+"/"+day; //because the fucking months start from 0
+    }
 }
