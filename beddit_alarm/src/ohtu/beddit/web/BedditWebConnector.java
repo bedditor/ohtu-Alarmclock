@@ -2,11 +2,9 @@ package ohtu.beddit.web;
 
 import android.content.Context;
 import android.util.Log;
-import ohtu.beddit.R;
 import ohtu.beddit.io.PreferenceService;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -16,31 +14,31 @@ public class BedditWebConnector implements BedditConnector {
 
     private static final String TAG = "BedditWebConnector";
 
-    public String getUserJson(Context context) throws MalformedBedditJsonException {
+    public String getUserJson(Context context) throws BedditConnectionException {
         return getSomeJson(context, "", false);
     }
 
 
-    public String getWakeUpJson(Context context,String date) throws MalformedBedditJsonException {
+    public String getWakeUpJson(Context context,String date) throws BedditConnectionException {
         String username = PreferenceService.getUsername(context);
         String query = username+"/"+date+"/sleep";
         return getSomeJson(context, query, false); //add
     }
 
-    public String getQueueStateJson(Context context, String date) throws MalformedBedditJsonException{
+    public String getQueueStateJson(Context context, String date) throws BedditConnectionException {
         String username = PreferenceService.getUsername(context);
         String query = username+"/"+date+"/sleep/queue_for_analysis";
         return getSomeJson(context, query, false); //add
     }
 
     //need to check if POSTing actually works as it is:
-    public String requestDataAnalysis(Context context, String date) throws MalformedBedditJsonException{
+    public String requestDataAnalysis(Context context, String date) throws BedditConnectionException {
         String username = PreferenceService.getUsername(context);
         String query = username+"/"+date+"/sleep/queue_for_analysis";
         return getSomeJson(context, query, true); //add
     }
 
-    public String getSomeJson(Context context, String query, boolean do_post) throws MalformedBedditJsonException {
+    public String getSomeJson(Context context, String query, boolean do_post) throws BedditConnectionException {
         String response = "";
 
         HttpsURLConnection connection = null;
@@ -54,13 +52,13 @@ public class BedditWebConnector implements BedditConnector {
         }
         catch (Throwable e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            throw new MalformedBedditJsonException();
+            throw new BedditConnectionException();
         }
         finally {
             closeConnections(connection, inputStream);
             if(response.equals("")) {
                 Log.v(TAG, "Empty response");
-                throw new MalformedBedditJsonException();
+                throw new BedditConnectionException();
             }
         }
         return response;

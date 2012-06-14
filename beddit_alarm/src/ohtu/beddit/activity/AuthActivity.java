@@ -116,11 +116,11 @@ public class AuthActivity extends Activity implements TokenListener {
     private void saveUserData() {
         Log.v(TAG, "saving user data");
         try{
-            ApiController apiController = new ApiControllerClassImpl(new BedditWebConnector());
+            ApiController apiController = new ApiControllerClassImpl();
             apiController.updateUserInfo(this); //updates the info in apicontroller for lines below:
-            PreferenceService.setUsername(this, apiController.getUsername(0));
-            PreferenceService.setFirstName(this, apiController.getFirstName(0));
-            PreferenceService.setLastName(this, apiController.getLastName(0));
+            PreferenceService.setUsername(this, apiController.getUsername(this, 0));
+            PreferenceService.setFirstName(this, apiController.getFirstName(this, 0));
+            PreferenceService.setLastName(this, apiController.getLastName(this, 0));
         }
         catch (Exception e){
             Log.v(TAG, "saving user data failed");
