@@ -30,6 +30,8 @@ public class AmazingWebClient extends WebViewClient {
     Dialog dialog;
     String[] blacklist = {"http://www.beddit.com/","https://www.beddit.com/login", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/", "https://api.beddit.com/newbeddit/", "https://api.beddit.com/login"};
 
+    private static final String TAG = "AmazingWebClient";
+
     public AmazingWebClient(Context context) {
         dialog = new Dialog(context, R.style.CustomDialogTheme);
         dialog.setContentView(R.layout.loading_dialog);
@@ -43,7 +45,7 @@ public class AmazingWebClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        Log.v("AmazingWebClient", "shouldOverrideUrlLoading: " + url);
+        Log.v(TAG, "shouldOverrideUrlLoading: " + url);
         for (String filter: blacklist) {
             if (url.equalsIgnoreCase(filter)) {
                 for (TokenListener l : listeners)

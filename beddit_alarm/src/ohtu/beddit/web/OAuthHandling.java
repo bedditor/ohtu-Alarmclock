@@ -17,20 +17,23 @@ import java.util.Scanner;
 
 public class OAuthHandling {
 
+    private static final String TAG = "OAuthHandling";
+
     public static String getAccessToken(Context context, String url){
+        Log.v("OAuthHandling", "Trying to get access token from " + url);
         String token = "error";
         HttpsURLConnection connect = null;
         InputStream inputStream = null;
         Scanner scanscan = null;
         try {
             URL address = new URL(url);
-            Log.v("OAuth","url: "+address);
+            Log.v(TAG,"url: "+address);
 
             System.setProperty("http.keepAlive", "false");
             connect = (HttpsURLConnection) address.openConnection();
 
             connect.connect();
-            Log.v("OAuth","responseCode: "+connect.getResponseCode());
+            Log.v(TAG,"responseCode: "+connect.getResponseCode());
 
             inputStream = connect.getInputStream();
             scanscan = new Scanner(inputStream);
@@ -39,14 +42,14 @@ public class OAuthHandling {
             while(scanscan.hasNext()) {
                 stash += scanscan.next();
             }
-            Log.v("OAuth","stash: "+stash);
+            Log.v(TAG,"stash: "+stash);
 
             String token1 = new JsonParser().parse(stash).getAsJsonObject().get("access_token").getAsString();
-            Log.v("AccessToken" ,"AccessToken = \""+token1+"\"");
+            Log.v(TAG,"AccessToken = \""+token1+"\"");
 
             token = token1;
         } catch (Throwable e) {
-            Log.e("AccessToken", Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
+            Log.e(TAG, Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
             token = "error";
         }
         finally {
@@ -55,7 +58,7 @@ public class OAuthHandling {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    Log.e(TAG, Log.getStackTraceString(e));
                     return "error";
                 }
             }
