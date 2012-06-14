@@ -20,6 +20,7 @@ public class OAuthHandling {
     private static final String TAG = "OAuthHandling";
 
     public static String getAccessToken(Context context, String url){
+        Log.v("OAuthHandling", "Trying to get access token from " + url);
         String token = "error";
         HttpsURLConnection connect = null;
         InputStream inputStream = null;

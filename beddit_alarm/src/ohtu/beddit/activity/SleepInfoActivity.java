@@ -1,25 +1,19 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.GpsStatus;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.gson.JsonParser;
 import ohtu.beddit.R;
-import ohtu.beddit.alarm.AlarmCheckerRealImpl;
+import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.web.MalformedBedditJsonException;
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -55,7 +49,7 @@ public class SleepInfoActivity extends Activity {
     private boolean getNightInfo() {
         BedditWebConnector connectori = new BedditWebConnector();
         nightInfo = "";
-        String date = AlarmCheckerRealImpl.getQueryDateString();
+        String date = Utils.getTodayAsQueryDateString();
         try {
             nightInfo = connectori.getWakeUpJson(this, date);
             return true;
@@ -76,7 +70,7 @@ public class SleepInfoActivity extends Activity {
         if (getValueOfKeyFromJson(nightInfo, "is_analysis_up_to_date").equalsIgnoreCase("true"))
             ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is up to date");
         else
-            ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is " + getTimeDifference(dataDate) + " old.");
+            ((TextView) findViewById(R.id.sleep_info_delay)).setText(getTimeDifference(dataDate));
     }
 
     private void setButtons() {
@@ -118,11 +112,16 @@ public class SleepInfoActivity extends Activity {
         int minutes = Integer.parseInt(parsed.substring(3, 5));
         int diffhours = Calendar.getInstance().getTime().getHours() - hours;
         int diffminutes = Calendar.getInstance().getTime().getMinutes() - minutes;
-        if (diffhours < 0 || diffminutes < 0) {
-            Log.v("fazias", data + " is odd compared to " + Calendar.getInstance().getTime().toLocaleString() +
-                    "\nhours = " + hours + "\nminutes = " + minutes + "\ndiffhours = " + diffhours + "\ndiffminutes = " +diffminutes);
+        if (diffminutes < 0) {
+            diffhours -= 1;
+            diffminutes = 60+diffminutes;
         }
-        return diffhours + "h " + diffminutes + "min";
+        if (diffhours < 0) {
+            Log.v("fazias", data + " is odd compared to " + Calendar.getInstance().getTime().toLocaleString() +
+                    "\nhours = " + hours + ", minutes = " + minutes + ", diffhours = " + diffhours + ", diffminutes = " +diffminutes);
+            return "(error 101) How did you get in the future!?";
+        }
+        return "Data is " +diffhours + "h " + diffminutes + "min old.";
     }
 
     @Override

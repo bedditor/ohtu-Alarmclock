@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.BedditWebConnector;
 import ohtu.beddit.web.MalformedBedditJsonException;
 
@@ -24,7 +25,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
         ApiController api = new ApiControllerClassImpl(new BedditWebConnector());
         int minutes = 2;
         long atMostMillisOld = 1000 * 60 * minutes;
-        String dateString = getQueryDateString();
+        String dateString = Utils.getTodayAsQueryDateString();
         try{
             api.updateQueueInfo(context, dateString);
             Calendar nao = Calendar.getInstance();
@@ -65,14 +66,6 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
             Log.v("apidapi", "fug");
             return false;
         }
-    }
-
-    public static String getQueryDateString(){
-        Calendar kalenteri = Calendar.getInstance();
-        int year = kalenteri.get(Calendar.YEAR);
-        int month = kalenteri.get(Calendar.MONTH);
-        int day = kalenteri.get(Calendar.DAY_OF_MONTH);
-        return year+"/"+(month+1)+"/"+day; //because the fucking months start from 0
     }
 
     @Override
