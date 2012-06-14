@@ -39,8 +39,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     private static final int LIGHT_THEME_BACKGROUND = Color.WHITE;
     private static final int LIGHT_THEME_FOREGROUND = Color.BLACK;
     private static final int BEDDIT_ORANGE = Color.argb(255,255,89,0);
-    public static final int RESULT_AUTH_CANCELLED = 101;
-    public static final int RESULT_AUTH_FAILED = 102;
+
+    public static final int FROM_SETTINGS = 3;
+    public static final int FROM_AUTHENTICATION = 2;
 
     /** Called when the alarm is first created. */
     @Override
@@ -87,6 +88,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.v(TAG, "HOME PRESSED");
+            Intent homeIntent= new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(homeIntent);
             finish();
         }
 
@@ -96,6 +101,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
         if (keyCode == KeyEvent.KEYCODE_CALL) {
             Log.v(TAG, "CALL PRESSED");
+            startActivity(new Intent(Intent.ACTION_CALL_BUTTON));
             finish();
         }
 
@@ -116,8 +122,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     @Override
     protected void onPause() {
-        //setKeyGuard(false);
-
         Log.v(TAG, "onPause");
 
         super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
@@ -182,7 +186,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     private void startAuthActivity() {
         Log.v(TAG,"Starting authActivity");
         Intent myIntent = new Intent(this, AuthActivity.class);
-        startActivityForResult(myIntent, 2);
+        startActivityForResult(myIntent, FROM_AUTHENTICATION);
     }
 
     private void setUI() {
@@ -306,7 +310,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu_button:
-                startActivityForResult(item.getIntent(), 3);
+                startActivityForResult(item.getIntent(), FROM_SETTINGS);
                 break;
             case R.id.help_menu_button:
                 startActivity(item.getIntent());
@@ -322,23 +326,23 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case (2) : {
-                handleResult(resultCode);
+            case (FROM_AUTHENTICATION) :
+                handleAuthResult(resultCode);
                 break;
-            }
-            case (3) : {
-                handleResult(resultCode);
+            case (FROM_SETTINGS) :
+            default :
                 break;
-            }
         }
     }
 
-    private void handleResult(int resultCode){
-        if (resultCode == RESULT_AUTH_FAILED) {
-            createClosingDialog("Login or authorisation failed.");
-        }
-        else if (resultCode == RESULT_AUTH_CANCELLED) {
-            createClosingDialog("This app can not be used without connecting to your beddit account");
+    private void handleAuthResult(int resultCode){
+        switch(resultCode) {
+            case (AuthActivity.RESULT_FAILED) :
+                createClosingDialog("Login or authorisation failed.");
+                break;
+            case (AuthActivity.RESULT_CANCELLED) :
+                createClosingDialog("This app can not be used without connecting to your beddit account");
+                break;
         }
     }
 
@@ -354,27 +358,4 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-    public void testDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Spam api requests:");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes I will", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                BedditWebConnector blob = new BedditWebConnector();
-                /*try{
-                    Log.v("derp", "tila on: "+blob.getQueueStateJson(MainActivity.this, AlarmCheckerRealImpl.getCurrentDateQueryString()));
-                    Log.v("derp", "post: " + blob.requestDataAnalysis(MainActivity.this, AlarmCheckerRealImpl.getCurrentDateQueryString()));
-                }catch(BedditConnectionException m){
-                    Log.v("derp", "D: virhe");
-                }*/
-                AlarmChecker check = new AlarmCheckerRealImpl();
-                check.wakeUpNow(MainActivity.this, 'M');
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-    }
-
 }

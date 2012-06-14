@@ -25,7 +25,8 @@ public class AuthActivity extends Activity implements TokenListener {
     private final String TAG = "AuthActivity";
     private FileHandler fileHandler;
 
-
+    public static final int RESULT_CANCELLED = 101;
+    public static final int RESULT_FAILED = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,6 @@ public class AuthActivity extends Activity implements TokenListener {
         setSettings();
         openAuthBrowser();
     }
-
-
 
     @Override
     public void onTokenReceived(String token) {
@@ -103,10 +102,10 @@ public class AuthActivity extends Activity implements TokenListener {
         Log.v(TAG, "fail called");
         Intent resultIntent = new Intent((String) null);
         if(cancelledByUser){
-            setResult(MainActivity.RESULT_AUTH_CANCELLED, resultIntent);
+            setResult(RESULT_CANCELLED, resultIntent);
         }
         else {
-            setResult(MainActivity.RESULT_AUTH_FAILED, resultIntent);
+            setResult(RESULT_FAILED, resultIntent);
         }
         PreferenceService.setUsername(this, "");
         PreferenceService.setToken(this, "");

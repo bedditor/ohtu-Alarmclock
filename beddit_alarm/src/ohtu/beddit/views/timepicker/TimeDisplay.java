@@ -26,6 +26,7 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     }
 
     public void draw(Canvas c) {
+
         String time = timeToString(hours, minutes);
         float textLength = p.measureText(time);
         c.drawText(time, x - textLength / 2, y, p);
