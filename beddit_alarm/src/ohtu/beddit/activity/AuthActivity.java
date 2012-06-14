@@ -97,7 +97,6 @@ public class AuthActivity extends Activity implements TokenListener {
 
     }
 
-
     private void fail(boolean cancelledByUser){
         Log.v(TAG, "fail called");
         Intent resultIntent = new Intent((String) null);
@@ -111,8 +110,6 @@ public class AuthActivity extends Activity implements TokenListener {
         PreferenceService.setToken(this, "");
         finish();
     }
-
-
 
     private void saveUserData() {
         Log.v(TAG, "saving user data");

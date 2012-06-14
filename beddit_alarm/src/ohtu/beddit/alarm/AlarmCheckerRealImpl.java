@@ -41,7 +41,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
             Log.v("apidapi", "Time difference from update? (minutes): "+updatedifference/60/1000);
             Log.v("apidapi", "Time difference from analysis (minutes): "+analysisdifference/60/1000);
             Log.v("apidapi", "Time difference from queued (minutes): "+queuedifference/60/1000);
-            if(analysisdifference < atMostMillisOld){
+            if(analysisdifference < atMostMillisOld || queuedifference < atMostMillisOld){
                 api.updateSleepInfo(context);
                 Log.v("apidapi", "sleepstage: "+api.getLastSleepStage(context));
                 if(api.getLastSleepStage(context) == sleepstage){
