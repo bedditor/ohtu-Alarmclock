@@ -23,7 +23,7 @@ import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.BedditWebConnector;
-import ohtu.beddit.web.MalformedBedditJsonException;
+import ohtu.beddit.web.BedditConnectionException;
 
 public class MainActivity extends Activity implements AlarmTimeChangedListener
 {
@@ -161,12 +161,12 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             return false;
         }
 
-        ApiController apiController = new ApiControllerClassImpl(new BedditWebConnector());
+        ApiController apiController = new ApiControllerClassImpl();
         String username;
         try {
             apiController.updateUserInfo(this);
-            username = apiController.getUsername(0);
-        } catch (MalformedBedditJsonException e) {
+            username = apiController.getUsername(this, 0);
+        } catch (BedditConnectionException e) {
             Log.v(TAG,"Got malformed json while trying to get username and validate token");
             return false;
         }
@@ -363,9 +363,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             public void onClick(DialogInterface dialog, int id) {
                 BedditWebConnector blob = new BedditWebConnector();
                 /*try{
-                    Log.v("derp", "tila on: "+blob.getQueueStateJson(MainActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
-                    Log.v("derp", "post: " + blob.requestDataAnalysis(MainActivity.this, AlarmCheckerRealImpl.getQueryDateString()));
-                }catch(MalformedBedditJsonException m){
+                    Log.v("derp", "tila on: "+blob.getQueueStateJson(MainActivity.this, AlarmCheckerRealImpl.getCurrentDateQueryString()));
+                    Log.v("derp", "post: " + blob.requestDataAnalysis(MainActivity.this, AlarmCheckerRealImpl.getCurrentDateQueryString()));
+                }catch(BedditConnectionException m){
                     Log.v("derp", "D: virhe");
                 }*/
                 AlarmChecker check = new AlarmCheckerRealImpl();

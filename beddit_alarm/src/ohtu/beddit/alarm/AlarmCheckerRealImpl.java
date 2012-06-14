@@ -5,36 +5,29 @@ import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.utils.Utils;
-import ohtu.beddit.web.BedditWebConnector;
-import ohtu.beddit.web.MalformedBedditJsonException;
+import ohtu.beddit.web.BedditConnectionException;
 
 import java.util.Calendar;
 
-/**
- * Created with IntelliJ IDEA.
- * User: lagvare
- * Date: 5.6.2012
- * Time: 13:54
- * To change this template use File | Settings | File Templates.
- */
 public class AlarmCheckerRealImpl implements AlarmChecker{
 
     @Override
     public boolean wakeUpNow(Context context,char sleepstage) {
 
-        ApiController api = new ApiControllerClassImpl(new BedditWebConnector());
+        ApiController api = new ApiControllerClassImpl();
         int minutes = 2;
         long atMostMillisOld = 1000 * 60 * minutes;
         String dateString = Utils.getTodayAsQueryDateString();
+
         try{
-            api.updateQueueInfo(context, dateString);
+            api.updateQueueInfo(context);
             Calendar nao = Calendar.getInstance();
             //
-            Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed();
-            Calendar updateUpTo = api.getSleepAnalysisResultsUpTo();
+            Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed(context);
+            Calendar updateUpTo = api.getSleepAnalysisResultsUpTo(context);
             long queuedifference = 0;
             try{
-                Calendar updateUpToWhenQueued = api.getSleepAnalysisWhenQueued();
+                Calendar updateUpToWhenQueued = api.getSleepAnalysisWhenQueued(context);
                 queuedifference = nao.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
             }catch(NullPointerException n){
                 queuedifference = nao.getTimeInMillis() - 999*60*1000;
@@ -46,22 +39,22 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
             Log.v("apidapi", "Time difference from analysis (minutes): "+analysisdifference/60/1000);
             Log.v("apidapi", "Time difference from queued (minutes): "+queuedifference/60/1000);
             if(analysisdifference < atMostMillisOld){
-                api.updateSleepInfo(context,dateString);
-                Log.v("apidapi", "sleepstage: "+api.getLastSleepStage());
-                if(api.getLastSleepStage() == sleepstage){
+                api.updateSleepInfo(context);
+                Log.v("apidapi", "sleepstage: "+api.getLastSleepStage(context));
+                if(api.getLastSleepStage(context) == sleepstage){
                     return true;
                 }else{
                     return false;
                 }
             }
-            if(api.getSleepAnalysisStatus().equals("can_be_queued_for_analysis")){
+            if(api.getSleepAnalysisStatus(context).equals("can_be_queued_for_analysis")){
                 Log.v("apidapi", "update request");
                 api.requestInfoUpdate(context,dateString);
             }else{
                 Log.v("apidapi", "was ist das");
             }
             return false;
-        }catch(MalformedBedditJsonException e){
+        }catch(BedditConnectionException e){
             Log.v("apidapi", Log.getStackTraceString(e));
             Log.v("apidapi", "fug");
             return false;

@@ -1,7 +1,7 @@
 package ohtu.beddit.api;
 
 import android.content.Context;
-import ohtu.beddit.web.MalformedBedditJsonException;
+import ohtu.beddit.web.BedditConnectionException;
 
 import java.util.Calendar;
 
@@ -13,29 +13,37 @@ import java.util.Calendar;
  * To change this template use File | Settings | File Templates.
  */
 public interface ApiController {
-    void updateUserInfo(Context context) throws MalformedBedditJsonException;
+    void updateUserInfo(Context context) throws BedditConnectionException;
 
-    void updateSleepInfo(Context context, String date) throws MalformedBedditJsonException;
+    void updateSleepInfo(Context context) throws BedditConnectionException;
 
-    void updateQueueInfo(Context context, String date) throws MalformedBedditJsonException;
+    void updateQueueInfo(Context context) throws BedditConnectionException;
 
-    void requestInfoUpdate(Context context, String date) throws MalformedBedditJsonException;
+    void requestInfoUpdate(Context context, String date) throws BedditConnectionException;
 
-    String getUsername(int userIndex) throws MalformedBedditJsonException;
+    String getUsername(Context context, int userIndex) throws BedditConnectionException;
 
-    String getFirstName(int userIndex) throws MalformedBedditJsonException;
+    String getFirstName(Context context, int userIndex) throws BedditConnectionException;
 
-    String getLastName(int userIndex) throws MalformedBedditJsonException;
+    String getLastName(Context context, int userIndex) throws BedditConnectionException;
 
-    char getLastSleepStage() throws MalformedBedditJsonException;
+    char getLastSleepStage(Context context) throws BedditConnectionException;
 
-    String getSleepAnalysisStatus() throws MalformedBedditJsonException;
+    String getSleepAnalysisStatus(Context context) throws BedditConnectionException;
 
-    Calendar getTimeOfLastSleepStage() throws MalformedBedditJsonException;
+    Calendar getSleepAnalysisResultsUpTo(Context context) throws BedditConnectionException;
 
-    Calendar getSleepAnalysisResultsUpTo() throws MalformedBedditJsonException;
+    Calendar getSleepAnalysisWhenAnalyzed(Context context) throws BedditConnectionException;
 
-    Calendar getSleepAnalysisWhenAnalyzed() throws MalformedBedditJsonException;
+    Calendar getSleepAnalysisWhenQueued(Context context) throws BedditConnectionException;
 
-    Calendar getSleepAnalysisWhenQueued() throws  MalformedBedditJsonException;
+    Calendar getTimeOfLastSleepStage(Context context) throws BedditConnectionException;
+
+    int getTimeSleeping(Context context) throws BedditConnectionException;
+
+    int getTimeDeepSleep(Context context) throws BedditConnectionException;
+
+    String getLocalAnalyzedUpToTime(Context context) throws BedditConnectionException;
+
+    boolean getIsAnalysisUpToDate(Context context) throws BedditConnectionException;
 }
