@@ -20,6 +20,7 @@ import ohtu.beddit.alarm.*;
 
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.BedditWebConnector;
@@ -72,7 +73,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        Log.v(TAG, "onWindowFocusChanged to "+hasFocus);
+        Log.v(TAG, "onWindowFocusChanged to " + hasFocus);
         super.onWindowFocusChanged(hasFocus);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
@@ -170,7 +171,12 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         try {
             apiController.updateUserInfo(this);
             username = apiController.getUsername(this, 0);
-        } catch (BedditConnectionException e) {
+        }
+        catch (BedditConnectionException e) {
+            Log.v(TAG,"Connection failed while trying to get username and validate token");
+            return false;
+        }
+        catch (InvalidJsonException e) {
             Log.v(TAG,"Got malformed json while trying to get username and validate token");
             return false;
         }
@@ -182,6 +188,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         Log.v(TAG,"Token was valid");
         return true;
     }
+
+
 
     private void startAuthActivity() {
         Log.v(TAG,"Starting authActivity");

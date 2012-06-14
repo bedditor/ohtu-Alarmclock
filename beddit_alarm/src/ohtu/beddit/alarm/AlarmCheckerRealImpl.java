@@ -4,12 +4,15 @@ import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.utils.Utils;
 import ohtu.beddit.web.BedditConnectionException;
 
 import java.util.Calendar;
 
 public class AlarmCheckerRealImpl implements AlarmChecker{
+
+    private static final String TAG = "AlarmChecker";
 
     @Override
     public boolean wakeUpNow(Context context,char sleepstage) {
@@ -54,9 +57,13 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
                 Log.v("apidapi", "was ist das");
             }
             return false;
-        }catch(BedditConnectionException e){
-            Log.v("apidapi", Log.getStackTraceString(e));
-            Log.v("apidapi", "fug");
+        }
+        catch(BedditConnectionException e){
+            Log.v(TAG, Log.getStackTraceString(e));
+            return false;
+        }
+        catch(InvalidJsonException e){
+            Log.v(TAG, Log.getStackTraceString(e));
             return false;
         }
     }
