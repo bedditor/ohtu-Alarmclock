@@ -73,7 +73,7 @@ public class SleepInfoActivity extends Activity {
         if (getValueOfKeyFromJson(nightInfo, "is_analysis_up_to_date").equalsIgnoreCase("true"))
             ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is up to date");
         else
-            ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is " + getTimeDifference(dataDate) + " old.");
+            ((TextView) findViewById(R.id.sleep_info_delay)).setText(getTimeDifference(dataDate));
     }
 
     private void setButtons() {
@@ -115,10 +115,15 @@ public class SleepInfoActivity extends Activity {
         int minutes = Integer.parseInt(parsed.substring(3, 5));
         int diffhours = Calendar.getInstance().getTime().getHours() - hours;
         int diffminutes = Calendar.getInstance().getTime().getMinutes() - minutes;
-        if (diffhours < 0 || diffminutes < 0) {
-            Log.v("fazias", data + " is odd compared to " + Calendar.getInstance().getTime().toLocaleString() +
-                    "\nhours = " + hours + "\nminutes = " + minutes + "\ndiffhours = " + diffhours + "\ndiffminutes = " +diffminutes);
+        if (diffminutes < 0) {
+            diffhours -= 1;
+            diffminutes = 60+diffminutes;
         }
-        return diffhours + "h " + diffminutes + "min";
+        if (diffhours < 0) {
+            Log.v("fazias", data + " is odd compared to " + Calendar.getInstance().getTime().toLocaleString() +
+                    "\nhours = " + hours + ", minutes = " + minutes + ", diffhours = " + diffhours + ", diffminutes = " +diffminutes);
+            return "(error 101) How did you get in the future!?";
+        }
+        return "Data is " +diffhours + "h " + diffminutes + "min old.";
     }
 }
