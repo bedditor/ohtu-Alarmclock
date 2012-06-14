@@ -203,6 +203,6 @@ public class AuthActivity extends Activity implements TokenListener {
         Intent exitIntent = new Intent(this, ExitActivity.class);
         exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(exitIntent);
-        finish();
+        fail(true);
     }
 }
