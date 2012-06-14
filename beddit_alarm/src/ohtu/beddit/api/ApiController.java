@@ -32,4 +32,10 @@ public interface ApiController {
     String getSleepAnalysisStatus() throws MalformedBedditJsonException;
 
     Calendar getTimeOfLastSleepStage() throws MalformedBedditJsonException;
+
+    Calendar getSleepAnalysisResultsUpTo() throws MalformedBedditJsonException;
+
+    Calendar getSleepAnalysisWhenAnalyzed() throws MalformedBedditJsonException;
+
+    Calendar getSleepAnalysisWhenQueued() throws  MalformedBedditJsonException;
 }

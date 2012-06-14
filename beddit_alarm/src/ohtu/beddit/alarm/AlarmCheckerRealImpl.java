@@ -21,34 +21,45 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
     @Override
     public boolean wakeUpNow(Context context,char sleepstage) {
 
-        int atMostMillisOld = 1000 * 60 * 5;
         ApiController api = new ApiControllerClassImpl(new BedditWebConnector());
+        int minutes = 2;
+        long atMostMillisOld = 1000 * 60 * minutes;
         String dateString = getQueryDateString();
         try{
-            api.updateSleepInfo(context,dateString);
-            Calendar lastSleepTime = api.getTimeOfLastSleepStage();
+            api.updateQueueInfo(context, dateString);
             Calendar nao = Calendar.getInstance();
-            long difference = nao.getTimeInMillis() - lastSleepTime.getTimeInMillis();
-            Log.v("apidapi", "Time difference (minutes): "+difference/60/1000);
-            if (difference > atMostMillisOld){ //jos uni-info liian vanhaa //derp, ei näin
-                api.updateQueueInfo(context, dateString);
-                String queueStatus = api.getSleepAnalysisStatus();
-                if(queueStatus.equals("analysis_up_to_date")){ //jos ???
-                    Log.v("apidapi", "up to date");
-                }else if(queueStatus.equals("can_be_queued_for_analysis")){
-                    api.requestInfoUpdate(context, dateString);
-                    Log.v("apidapi", "update request");
-                }else{
-                    Log.v("apidapi", "was ist das");
-                }
-                return false;
-            }else{ //eli on tarpeeksi uusi
+            //
+            Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed();
+            Calendar updateUpTo = api.getSleepAnalysisResultsUpTo();
+            long queuedifference = 0;
+            try{
+                Calendar updateUpToWhenQueued = api.getSleepAnalysisWhenQueued();
+                queuedifference = nao.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
+            }catch(NullPointerException n){
+                queuedifference = nao.getTimeInMillis() - 999*60*1000;
+            }
+            //Calendar.getTimeInMillis() am / pm problem?
+            long updatedifference = nao.getTimeInMillis() - updateUpTo.getTimeInMillis();
+            long analysisdifference = nao.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
+            Log.v("apidapi", "Time difference from update? (minutes): "+updatedifference/60/1000);
+            Log.v("apidapi", "Time difference from analysis (minutes): "+analysisdifference/60/1000);
+            Log.v("apidapi", "Time difference from queued (minutes): "+queuedifference/60/1000);
+            if(analysisdifference < atMostMillisOld){
+                api.updateSleepInfo(context,dateString);
                 Log.v("apidapi", "sleepstage: "+api.getLastSleepStage());
                 if(api.getLastSleepStage() == sleepstage){
                     return true;
+                }else{
+                    return false;
                 }
-                return false;
             }
+            if(api.getSleepAnalysisStatus().equals("can_be_queued_for_analysis")){
+                Log.v("apidapi", "update request");
+                api.requestInfoUpdate(context,dateString);
+            }else{
+                Log.v("apidapi", "was ist das");
+            }
+            return false;
         }catch(MalformedBedditJsonException e){
             Log.v("apidapi", Log.getStackTraceString(e));
             Log.v("apidapi", "fug");
