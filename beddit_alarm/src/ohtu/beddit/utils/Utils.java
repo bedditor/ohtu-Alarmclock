@@ -1,5 +1,7 @@
 package ohtu.beddit.utils;
 
+import android.content.Context;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,5 +32,22 @@ public class Utils {
         int month = kalenteri.get(Calendar.MONTH);
         int day = kalenteri.get(Calendar.DAY_OF_MONTH);
         return year+"/"+(month+1)+"/"+day; //because the fucking months start from 0
+    }
+
+
+    public static String timeAsString(int hour, int minute, Context context){
+        Date date = new Date();
+        date.setHours(hour);
+        date.setMinutes(minute);
+
+        SimpleDateFormat dateFormat;
+        if(android.text.format.DateFormat.is24HourFormat(context)){
+            dateFormat = new SimpleDateFormat("HH:mm");
+        }
+        else{
+            dateFormat = new SimpleDateFormat("h:mm a");
+        }
+
+        return dateFormat.format(date);
     }
 }

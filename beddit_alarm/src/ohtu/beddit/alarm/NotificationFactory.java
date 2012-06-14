@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.text.format.DateFormat;
 import ohtu.beddit.R;
 import ohtu.beddit.activity.MainActivity;
+import ohtu.beddit.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,9 +33,9 @@ public class NotificationFactory {
         Notification notification = new Notification(R.drawable.alarm_notification,"",0);
         notification.flags = Notification.FLAG_NO_CLEAR;
 
-        String print = timeAsString(startHours, startMinutes);
+        String print = Utils.timeAsString(startHours, startMinutes, context);
         if (startHours != endHours || startMinutes != endMinutes){
-            print += " - " + timeAsString(endHours, endMinutes);;
+            print += " - " + Utils.timeAsString(endHours, endMinutes, context);;
         }
         
         Intent intent = new Intent(context, MainActivity.class);
@@ -48,19 +49,4 @@ public class NotificationFactory {
     }
 
 
-    public String timeAsString(int hour, int minute){
-        Date date = new Date();
-        date.setHours(hour);
-        date.setMinutes(minute);
-
-        SimpleDateFormat dateFormat;
-        if(DateFormat.is24HourFormat(context)){
-            dateFormat = new SimpleDateFormat("HH:mm");
-        }
-        else{
-            dateFormat = new SimpleDateFormat("h:mm a");
-        }
-
-        return dateFormat.format(date);
-    }
 }
