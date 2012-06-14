@@ -34,20 +34,20 @@ public class SleepInfoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sleep_info);
 
         try {
             updateNightInfo();
+            setContentView(R.layout.sleep_info);
             setButtons();
             updateText();
         } catch (BedditConnectionException e) {
-            //we could show a dialog or toast here
+            Utils.createOkDialog(this, "Could not connect to beddit");
             Log.v(TAG, "Connection to beddit failed");
-            this.finish();
+            //this.finish();
         } catch (InvalidJsonException e) {
-            //we could show a dialog or toast here
+            Utils.createOkDialog(this, "Could not get sleep data from beddit");
             Log.v(TAG, "Parsing json failed");
-            this.finish();
+            //this.finish();
         }
 
     }
