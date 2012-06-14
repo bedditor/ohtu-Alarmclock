@@ -83,4 +83,8 @@ public class PreferenceService {
     public static char getWakeUpSleepStage(Context context){
         return getSettingString(context, R.string.pref_key_wake_up_sleep_stage).charAt(0);
     }
+
+    public static boolean getShowSleepData(Context context){
+        return getSettingBoolean(context, R.string.pref_key_show_sleep_data_checkbox);
+    }
 }

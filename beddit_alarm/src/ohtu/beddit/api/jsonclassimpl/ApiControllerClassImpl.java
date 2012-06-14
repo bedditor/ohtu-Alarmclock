@@ -25,7 +25,6 @@ public class ApiControllerClassImpl implements ApiController {
         this.bedditConnector = bedditConnector;
     }
 
-    @Override
     public void updateUserInfo(Context context) throws MalformedBedditJsonException{
         userjson = bedditConnector.getUserJson(context);
         Log.v("apidapi", "update: "+userjson);
@@ -45,7 +44,7 @@ public class ApiControllerClassImpl implements ApiController {
 
     @Override
     public void requestInfoUpdate(Context context, String date) throws MalformedBedditJsonException{
-        bedditConnector.requestDataAnalysis(context, date);
+        Log.v("apidapi", "postattu: "+bedditConnector.requestDataAnalysis(context, date));
     }
 
 
@@ -75,7 +74,19 @@ public class ApiControllerClassImpl implements ApiController {
         return jsonParser.getQueueData(queuejson).getSleepAnalysisStatus();
     }
 
-    @Override
+
+    public Calendar getSleepAnalysisResultsUpTo() throws MalformedBedditJsonException{
+        return jsonParser.getQueueData(queuejson).getResults_available_up_to();
+    }
+
+    public Calendar getSleepAnalysisWhenAnalyzed() throws MalformedBedditJsonException{
+        return jsonParser.getQueueData(queuejson).getWhen_sleep_analyzed();
+    }
+
+    public Calendar getSleepAnalysisWhenQueued() throws  MalformedBedditJsonException{
+        return jsonParser.getQueueData(queuejson).getWhen_queued_for_sleep_analysis();
+    }
+
     public Calendar getTimeOfLastSleepStage() throws MalformedBedditJsonException {
         return jsonParser.getNight(sleepjson).getLastSleepStageTime();
     }

@@ -62,7 +62,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         if(!isTokenValid()){
             startAuthActivity();
         }
-        // leave britney alone! testDialog();
+        /*testDialog();
+        testDialog();
+        testDialog();
+        testDialog();
+        testDialog();*/
     }
 
     @Override

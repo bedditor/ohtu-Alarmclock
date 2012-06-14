@@ -35,48 +35,53 @@ public class SleepInfoActivity extends Activity {
     private final String TAG = "SleepInfoActivity";
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
 
-        getNightInfo();
-        setButtons();
-        updateText();
+        if (getNightInfo()){
+            setButtons();
+            updateText();
+        } else {
+            this.finish();
+        }
+
 
     }
 
-    private void getNightInfo() {
+    private boolean getNightInfo() {
         BedditWebConnector connectori = new BedditWebConnector();
         nightInfo = "";
         String date = AlarmCheckerRealImpl.getQueryDateString();
         try {
             nightInfo = connectori.getWakeUpJson(this, date);
+            return true;
         } catch (MalformedBedditJsonException e) {
             Log.v(TAG, "failed to get wake up info");
             e.printStackTrace();
+            return false;
         }
     }
 
     private void updateText() {
-        ((TextView)findViewById(R.id.sleep_info_overall_text)).setText(getHoursAndMinutesFromSeconds(getValueOfKeyFromJson(nightInfo, "time_sleeping")));
-        ((TextView)findViewById(R.id.sleep_info_deep_text)).setText(getHoursAndMinutesFromSeconds(getValueOfKeyFromJson(nightInfo, "time_deep_sleep")));
+        ((TextView) findViewById(R.id.sleep_info_overall_text)).setText(getHoursAndMinutesFromSeconds(getValueOfKeyFromJson(nightInfo, "time_sleeping")));
+        ((TextView) findViewById(R.id.sleep_info_deep_text)).setText(getHoursAndMinutesFromSeconds(getValueOfKeyFromJson(nightInfo, "time_deep_sleep")));
 
         String dataDate = getValueOfKeyFromJson(nightInfo, "local_analyzed_up_to_time");
 
+        Log.v(TAG, "Local analyzed up to time: " + getValueOfKeyFromJson(nightInfo, "local_analyzed_up_to_time") + ", Device time is (LocaleString (+3gmt)) " + Calendar.getInstance().getTime().toLocaleString());
         if (getValueOfKeyFromJson(nightInfo, "is_analysis_up_to_date").equalsIgnoreCase("true"))
-            ((TextView)findViewById(R.id.sleep_info_delay)).setText("Data is up to date");
+            ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is up to date");
         else
-            ((TextView)findViewById(R.id.sleep_info_delay)).setText("Data is " + getTimeDifference(dataDate) + " old.");
+            ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is " + getTimeDifference(dataDate) + " old.");
     }
 
     private void setButtons() {
-        feelGoodMan = (Button)findViewById(R.id.SleptWellButton);
+        feelGoodMan = (Button) findViewById(R.id.SleptWellButton);
         feelGoodMan.setOnClickListener(new SleepInfoActivity.FeelsGoodButtonClickListener());
         feelBatMan = (Button) findViewById(R.id.SleptBadlyButton);
         feelBatMan.setOnClickListener(new SleepInfoActivity.FeelsBadManButtonClickListener());
     }
-
 
 
     public class FeelsBadManButtonClickListener implements View.OnClickListener {
@@ -94,24 +99,26 @@ public class SleepInfoActivity extends Activity {
     }
 
 
-    private String getValueOfKeyFromJson(String json, String key)
-    {
+    private String getValueOfKeyFromJson(String json, String key) {
         return new JsonParser().parse(json).getAsJsonObject().get(key).getAsString();
     }
 
     private String getHoursAndMinutesFromSeconds(String rawdata) {
         int lol = Integer.parseInt(rawdata);
-        return lol/3600 + "h " + (lol/60)%60 + "min";
+        return lol / 3600 + "h " + (lol / 60) % 60 + "min";
     }
 
     //expects format like this 2012-06-13T08:38:11 Please don't break it :)
-    private String getTimeDifference(String data)
-    {
+    private String getTimeDifference(String data) {
         String parsed = data.substring(11);
         int hours = Integer.parseInt(parsed.substring(0, 2));
-        int minutes = Integer.parseInt(parsed.substring(3,5));
+        int minutes = Integer.parseInt(parsed.substring(3, 5));
         int diffhours = Calendar.getInstance().getTime().getHours() - hours;
         int diffminutes = Calendar.getInstance().getTime().getMinutes() - minutes;
+        if (diffhours < 0 || diffminutes < 0) {
+            Log.v("fazias", data + " is odd compared to " + Calendar.getInstance().getTime().toLocaleString() +
+                    "\nhours = " + hours + "\nminutes = " + minutes + "\ndiffhours = " + diffhours + "\ndiffminutes = " +diffminutes);
+        }
         return diffhours + "h " + diffminutes + "min";
     }
 }
