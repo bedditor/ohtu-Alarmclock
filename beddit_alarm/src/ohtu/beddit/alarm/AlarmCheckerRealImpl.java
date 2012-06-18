@@ -18,6 +18,8 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
     private static final char REM_SLEEP_STAGE = 'R';
     private static final char LIGHT_SLEEP_STAGE = 'L';
 
+    private static final char DIS_BE_TESTING = 'M';
+
     @Override
     public boolean wakeUpNow(Context context) {
 
@@ -67,7 +69,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
 
     private char[] getWakeUpSleepStages(Context context){
         char sleepStage = PreferenceService.getWakeUpSleepStage(context);
-        char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE};
+        char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE, DIS_BE_TESTING};
         if(sleepStage != BOTH_SLEEP_STAGES){
             sleepStages = new char[1];
             sleepStages[0] = sleepStage;
@@ -77,7 +79,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
 
     @Override
     public int getWakeUpAttemptInterval() {
-        return 300;
+        return 30;
     }
 
     @Override

@@ -20,11 +20,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent)
     {
         alarmService = new AlarmServiceImpl(context);
-        AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
-        //AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
+        //AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
+        AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
         checkTime = alarmChecker.getCheckTime();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
-        char sleepstage = 'L'; //the sleep stage you want to wake up from
 
         Log.v(TAG, "Received alarm");
         Log.v(TAG, "second until last wake up "+ getSecondsUntilLastWakeUpTime(context));

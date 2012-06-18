@@ -54,6 +54,9 @@
     <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
     <string name="sleep_info_title">Sleep Info</string>
     <string name="sleep_info_well_button">Feeling good</string>
+    <string name="sleep_info_overall_age_pref">Data is </string>
+    <string name="sleep_info_overall_age_post"> old</string>
+    <string name="sleep_info_up_to_date">Data is up to date</string>
     <string name="sleep_info_overall_total">1h30min01sec</string>
     <string name="sleep_info_overall_minitotal">Total amount of sleep</string>
     <string name="sleep_info_deep_total">30min00sec</string>

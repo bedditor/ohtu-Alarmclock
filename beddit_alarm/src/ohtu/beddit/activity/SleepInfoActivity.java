@@ -65,9 +65,9 @@ public class SleepInfoActivity extends Activity {
 
         Log.v(TAG, "Local analyzed up to time: " + localAnalyzedUpToTime + ", Device time is (LocaleString (+3gmt)) " + Calendar.getInstance().getTime().toLocaleString());
         if (isAnalysisUpToDate)
-            ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is up to date");
+            ((TextView) findViewById(R.id.sleep_info_delay)).setText(this.getString(R.string.sleep_info_up_to_date));
         else
-            ((TextView) findViewById(R.id.sleep_info_delay)).setText("Data is " + getTimeDifference(localAnalyzedUpToTime) + " old.");
+            ((TextView) findViewById(R.id.sleep_info_delay)).setText(this.getString(R.string.sleep_info_overall_age_pref) + " " + getTimeDifference(localAnalyzedUpToTime) + " " + this.getString(R.string.sleep_info_overall_age_post));
     }
 
     private void setButtons() {

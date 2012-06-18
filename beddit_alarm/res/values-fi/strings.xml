@@ -50,6 +50,9 @@
     <string name="pref_title_wake_up_sleep_stage">Herätys univaiheesta:</string>
     <string name="sleep_info_title">Uni-tiedot</string>
     <string name="sleep_info_well_button">Hyvä olo</string>
+    <string name="sleep_info_overall_age_pref">Tiedot ovat </string>
+    <string name="sleep_info_overall_age_post"> vanhoja</string>
+    <string name="sleep_info_up_to_date">Tiedot ovat ajan tasalla</string>
     <string name="sleep_info_overall_minitotal">Unen kokonaismäärä</string>
     <string name="sleep_info_deep_minitotal">Syvän unen kokonaismäärä</string>
     <string name="sleep_info_badly_button">Väsyttää</string>

@@ -52,6 +52,7 @@ public class BedditWebConnector implements BedditConnector {
         }
         catch (Throwable e) {
             Log.e(TAG, Log.getStackTraceString(e));
+            Log.v("testi22", "jee");
             throw new BedditConnectionException();
         }
         finally {
