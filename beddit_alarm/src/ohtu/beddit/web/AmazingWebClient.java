@@ -1,15 +1,10 @@
 package ohtu.beddit.web;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.TextView;
 import ohtu.beddit.R;
 
 import java.util.LinkedList;
@@ -26,20 +21,20 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class AmazingWebClient extends WebViewClient {
-    List<TokenListener> listeners = new LinkedList<TokenListener>();
-    Dialog dialog;
+    List<UrlListener> listeners = new LinkedList<UrlListener>();
+    LoadingDialog dialog;
     String[] blacklist = {"http://www.beddit.com/","https://www.beddit.com/login", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/", "https://api.beddit.com/newbeddit/", "https://api.beddit.com/login"};
 
     private static final String TAG = "AmazingWebClient";
 
     public AmazingWebClient(Context context) {
-        dialog = new Dialog(context, R.style.CustomDialogTheme);
+        dialog = new LoadingDialog(context, R.style.CustomDialogTheme);
         dialog.setContentView(R.layout.loading_dialog);
         dialog.show();
 
     }
 
-    public void addTokenListener(TokenListener l) {
+    public void addUrlListener(UrlListener l) {
         listeners.add(l);
     }
 
@@ -48,8 +43,8 @@ public class AmazingWebClient extends WebViewClient {
         Log.v(TAG, "shouldOverrideUrlLoading: " + url);
         for (String filter: blacklist) {
             if (url.equalsIgnoreCase(filter)) {
-                for (TokenListener l : listeners)
-                    l.onTokenReceived("Not Supported");
+                for (UrlListener l : listeners)
+                    l.onUrlReceived("Not Supported");
                 return true;
             }
         }
@@ -57,8 +52,8 @@ public class AmazingWebClient extends WebViewClient {
         Matcher match = S.matcher(url);
         if (match.matches())
             return true;
-        for (TokenListener l : listeners)
-            l.onTokenReceived(url);
+        for (UrlListener l : listeners)
+            l.onUrlReceived(url);
         return false;
     }
 
