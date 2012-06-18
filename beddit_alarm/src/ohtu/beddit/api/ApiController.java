@@ -20,7 +20,7 @@ public interface ApiController {
 
     void updateQueueInfo(Context context) throws BedditConnectionException;
 
-    void requestInfoUpdate(Context context, String date) throws BedditConnectionException;
+    void requestInfoUpdate(Context context) throws BedditConnectionException;
 
     String getUsername(Context context, int userIndex) throws BedditConnectionException, InvalidJsonException;
 
@@ -37,8 +37,6 @@ public interface ApiController {
     Calendar getSleepAnalysisWhenAnalyzed(Context context) throws BedditConnectionException, InvalidJsonException;
 
     Calendar getSleepAnalysisWhenQueued(Context context) throws BedditConnectionException, InvalidJsonException;
-
-    Calendar getTimeOfLastSleepStage(Context context) throws BedditConnectionException, InvalidJsonException;
 
     int getTimeSleeping(Context context) throws BedditConnectionException, InvalidJsonException;
 

@@ -58,8 +58,8 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
-    public void requestInfoUpdate(Context context, String date) throws BedditConnectionException {
-        Log.v("apidapi", "postattu: " + bedditConnector.requestDataAnalysis(context, date));
+    public void requestInfoUpdate(Context context) throws BedditConnectionException {
+        Log.v("apidapi", "postattu: " + bedditConnector.requestDataAnalysis(context, TimeUtils.getTodayAsQueryDateString()));
     }
 
 
@@ -113,11 +113,6 @@ public class ApiControllerClassImpl implements ApiController {
         return jsonParser.getQueueData(json).getWhen_queued_for_sleep_analysis();
     }
 
-    @Override
-    public Calendar getTimeOfLastSleepStage(Context context) throws BedditConnectionException, InvalidJsonException {
-        String json = getSleepjson(context);
-        return jsonParser.getNight(json).getLastSleepStageTime();
-    }
 
     @Override
     public int getTimeSleeping(Context context) throws BedditConnectionException, InvalidJsonException {
@@ -143,9 +138,6 @@ public class ApiControllerClassImpl implements ApiController {
         return jsonParser.getNight(json).getIsAnalysisUpToDate();
     }
 
-    public Calendar getLastSleepUpdateTime() throws BedditConnectionException{
-        return lastSleepUpdateTime;
-    }
 
     private String getUserjson(Context context) throws BedditConnectionException {
         if(userjson==null) updateUserInfo(context);

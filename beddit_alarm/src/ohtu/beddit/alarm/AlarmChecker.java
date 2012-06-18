@@ -10,7 +10,7 @@ import android.content.Context;
  * To change this template use File | Settings | File Templates.
  */
 public interface AlarmChecker {
-    public boolean wakeUpNow(Context context,char sleepstage);
+    public boolean wakeUpNow(Context context);
     public int getWakeUpAttemptInterval(); //how often (seconds) we should try to wake up
     public int getCheckTime(); //how long (seconds) it may take to do the checking
 

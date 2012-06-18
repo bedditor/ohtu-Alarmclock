@@ -11,7 +11,7 @@ public class AlarmCheckerRandomImpl implements AlarmChecker{
     }
 
     @Override
-    public boolean wakeUpNow(Context context, char sleepstage) {
+    public boolean wakeUpNow(Context context) {
         double random = Math.random();
 
         Log.v("AlarmChecker:", "Random must be < " + wakeUpChance);

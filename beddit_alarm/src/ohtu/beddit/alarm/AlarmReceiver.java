@@ -21,9 +21,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     {
         alarmService = new AlarmServiceImpl(context);
         AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
+        //AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
         checkTime = alarmChecker.getCheckTime();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
-        char sleepstage = 'A'; //the sleep stage you want to wake up from
+        char sleepstage = 'L'; //the sleep stage you want to wake up from
 
         Log.v(TAG, "Received alarm");
         Log.v(TAG, "second until last wake up "+ getSecondsUntilLastWakeUpTime(context));
@@ -35,7 +36,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.v(TAG, "No time to check anymore, schedule wake up");
             alarmService.addWakeUpAttempt(getLastWakeUpTime(context));
         }
-        else if(alarmChecker.wakeUpNow(context, sleepstage)){ //check if we should wake up now
+        else if(alarmChecker.wakeUpNow(context)){ //check if we should wake up now
             Log.v(TAG, "Alarm checker gave permission to wake up, starting alarm");
             startAlarm(context);
         }
@@ -65,7 +66,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         wakeUpTime.set(Calendar.SECOND, 0);
         wakeUpTime.set(Calendar.MILLISECOND, 0);
 
-        if (wakeUpTime.getTimeInMillis() + 5000 < System.currentTimeMillis()){
+        if (wakeUpTime.getTimeInMillis() + 10000 < System.currentTimeMillis()){
             wakeUpTime.add(Calendar.DAY_OF_YEAR, 1);
         }
         return wakeUpTime;

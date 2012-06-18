@@ -31,11 +31,13 @@
     <string-array name="sleepStageArrayTitles">
         <item>Light sleep</item>
         <item>REM sleep</item>
+        <item>Light or REM sleep</item>
     </string-array>
 
     <string-array name="sleepStageArrayValues">
         <item>L</item>
         <item>R</item>
+        <item>b</item>
     </string-array>
 
 

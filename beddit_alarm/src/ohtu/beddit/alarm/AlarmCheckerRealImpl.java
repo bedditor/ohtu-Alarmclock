@@ -5,6 +5,7 @@ import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
+import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;
 
@@ -13,19 +14,19 @@ import java.util.Calendar;
 public class AlarmCheckerRealImpl implements AlarmChecker{
 
     private static final String TAG = "AlarmChecker";
+    private static final char BOTH_SLEEP_STAGES = 'b';
+    private static final char REM_SLEEP_STAGE = 'R';
+    private static final char LIGHT_SLEEP_STAGE = 'L';
 
     @Override
-    public boolean wakeUpNow(Context context,char sleepstage) {
+    public boolean wakeUpNow(Context context) {
 
         ApiController api = new ApiControllerClassImpl();
         int minutes = 2;
         long atMostMillisOld = 1000 * 60 * minutes;
-        String dateString = TimeUtils.getTodayAsQueryDateString();
-
         try{
             api.updateQueueInfo(context);
             Calendar nao = Calendar.getInstance();
-            //
             Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed(context);
             Calendar updateUpTo = api.getSleepAnalysisResultsUpTo(context);
             long queuedifference = 0;
@@ -44,15 +45,15 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
             if(analysisdifference < atMostMillisOld || queuedifference < atMostMillisOld){
                 api.updateSleepInfo(context);
                 Log.v("apidapi", "sleepstage: "+api.getLastSleepStage(context));
-                if(api.getLastSleepStage(context) == sleepstage){
-                    return true;
-                }else{
-                    return false;
+                char[] sleepStages = getWakeUpSleepStages(context);
+                for (int i = 0; i< sleepStages.length; i++){
+                    if(api.getLastSleepStage(context) == sleepStages[i]){
+                        return true;
+                    }
                 }
-            }
-            if(api.getSleepAnalysisStatus(context).equals("can_be_queued_for_analysis")){
+            }else if(api.getSleepAnalysisStatus(context).equals("can_be_queued_for_analysis")){
                 Log.v("apidapi", "update request");
-                api.requestInfoUpdate(context,dateString);
+                api.requestInfoUpdate(context);
             }else{
                 Log.v("apidapi", "was ist das");
             }
@@ -68,9 +69,19 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
         }
     }
 
+    private char[] getWakeUpSleepStages(Context context){
+        char sleepStage = PreferenceService.getWakeUpSleepStage(context);
+        char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE};
+        if(sleepStage != BOTH_SLEEP_STAGES){
+            sleepStages = new char[1];
+            sleepStages[0] = sleepStage;
+        }
+        return sleepStages;
+    }
+
     @Override
     public int getWakeUpAttemptInterval() {
-        return 180;
+        return 300;
     }
 
     @Override

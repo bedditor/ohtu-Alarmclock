@@ -1,6 +1,8 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -64,11 +66,13 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         if(!isTokenValid()){
             startAuthActivity();
         }
-        /*testDialog();
+        /*
         testDialog();
         testDialog();
         testDialog();
-        testDialog();*/
+        testDialog();
+        testDialog();
+        */
     }
 
     @Override
@@ -319,4 +323,22 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 break;
         }
     }
+
+    /*public void testDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Spam api requests:");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes I will", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //BedditWebConnector blob = new BedditWebConnector();
+                /*try{
+                AlarmChecker check = new AlarmCheckerRealImpl();
+                check.wakeUpNow(MainActivity.this);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }*/
+
 }
