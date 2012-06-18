@@ -17,14 +17,13 @@ import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.BedditConnectionException;
+import ohtu.beddit.web.LoadingDialog;
 
 import java.util.Calendar;
 
 
 public class SleepInfoActivity extends Activity {
 
-    private Button feelGoodMan;
-    private Button feelBatMan;
     private int timeSleeping;
     private int timeDeepSleep;
     private String localAnalyzedUpToTime;
@@ -35,6 +34,7 @@ public class SleepInfoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
+
         try {
             updateNightInfo();
             setButtons();
@@ -46,7 +46,6 @@ public class SleepInfoActivity extends Activity {
             DialogUtils.createActivityClosingDialog(this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
             Log.v(TAG, "Parsing json failed");
         }
-
     }
 
     private void updateNightInfo() throws BedditConnectionException, InvalidJsonException {
@@ -73,25 +72,18 @@ public class SleepInfoActivity extends Activity {
     }
 
     private void setButtons() {
-        feelGoodMan = (Button) findViewById(R.id.SleptWellButton);
-        feelGoodMan.setOnClickListener(new SleepInfoActivity.FeelsGoodButtonClickListener());
-        feelBatMan = (Button) findViewById(R.id.SleptBadlyButton);
-        feelBatMan.setOnClickListener(new SleepInfoActivity.FeelsBadManButtonClickListener());
-    }
-
-
-    public class FeelsBadManButtonClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            finish();
-        }
-    }
-
-    public class FeelsGoodButtonClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            finish();
-        }
+        ((Button) findViewById(R.id.SleptWellButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SleepInfoActivity.this.finish();
+            }
+        });
+        ((Button) findViewById(R.id.SleptBadlyButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SleepInfoActivity.this.finish();
+            }
+        });
     }
 
     private String getHoursAndMinutesFromSeconds(int seconds) {

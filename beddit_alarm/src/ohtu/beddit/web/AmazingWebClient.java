@@ -31,7 +31,6 @@ public class AmazingWebClient extends WebViewClient {
         dialog = new LoadingDialog(context, R.style.CustomDialogTheme);
         dialog.setContentView(R.layout.loading_dialog);
         dialog.show();
-
     }
 
     public void addUrlListener(UrlListener l) {

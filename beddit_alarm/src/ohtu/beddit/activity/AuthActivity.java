@@ -25,6 +25,8 @@ public class AuthActivity extends Activity implements UrlListener {
 
     public static final String REDIRECT_URI = "https://peach-app.appspot.com";
 
+    private LoadingDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
