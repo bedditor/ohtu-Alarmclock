@@ -44,10 +44,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public static final int FROM_SLEEP_INFO = 4;
     public static final int FROM_HELP = 5;
 
-    public static final int RESULT_HOME_BUTTON_KILL = 9001;
-    public static final int RESULT_CALL_BUTTON_KILL = 9002;
-    public static final int RESULT_KILL = 9003;
-
     /** Called when the alarm is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -79,46 +75,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.v(TAG, "onWindowFocusChanged to " + hasFocus);
         super.onWindowFocusChanged(hasFocus);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        Log.v(TAG, "onAttachedToWindow");
-        Log.v(TAG,"SETTING KEYGUARD ON");
-        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
-        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_HOME) {
-            Log.v(TAG, "HOME PRESSED");
-            killOnHomeButton();
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.v(TAG, "BACK PRESSED");
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_CALL) {
-            Log.v(TAG, "CALL PRESSED");
-            killOnCallButton();
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void killOnHomeButton() {
-        Intent homeIntent= new Intent(Intent.ACTION_MAIN);
-        homeIntent.addCategory(Intent.CATEGORY_HOME);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(homeIntent);
-        finish();
-    }
-
-    public void killOnCallButton() {
-        startActivity(new Intent(Intent.ACTION_CALL_BUTTON));
-        finish();
     }
 
     @Override
@@ -355,15 +311,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
 
     private void handleActivityResult(int resultCode) {
         switch(resultCode) {
-            case (RESULT_CALL_BUTTON_KILL) :
-                killOnCallButton();
-                break;
-            case (RESULT_HOME_BUTTON_KILL) :
-                killOnHomeButton();
-                break;
-            case (RESULT_KILL) :
-                finish();
-                break;
             case (AuthActivity.RESULT_FAILED) :
                 DialogUtils.createActivityClosingDialog(this, getString(R.string.login_or_authorisation_failed), getString(R.string.button_text_close));
                 break;
@@ -372,5 +319,4 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 break;
         }
     }
-
 }

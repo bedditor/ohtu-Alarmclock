@@ -25,7 +25,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private final String TAG = "SettingsActivity";
 
-    private static final int FROM_ADVANCED = 6;
     private static final int FROM_AUTHENTICATION = 7;
 
     @Override
@@ -38,8 +37,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private void initPrefVars() {
         snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
         sleepStagePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_wake_up_sleep_stage));
-        forgetButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
-        advancedButton = (Preference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
+        forgetButton = getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
+        advancedButton = getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
     }
 
     @Override
@@ -120,7 +119,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private void startAdvancedSettingsActivity() {
         Intent myIntent = new Intent(this, AdvancedSettingsActivity.class);
-        this.startActivityForResult(myIntent, FROM_ADVANCED);
+        startActivity(myIntent);
     }
 
     private void forgetMe(){
@@ -136,19 +135,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         switch(requestCode) {
             case (FROM_AUTHENTICATION) :
                 handleAuthActivityResult(resultCode);
-            case (FROM_ADVANCED) :
-                handleActivityResult(resultCode);
-                break;
-        }
-    }
-
-    private void handleActivityResult(int resultCode) {
-        switch (resultCode) {
-            case (MainActivity.RESULT_CALL_BUTTON_KILL) :
-            case (MainActivity.RESULT_HOME_BUTTON_KILL) :
-            case (MainActivity.RESULT_KILL) :
-                setResult(resultCode);
-                finish();
                 break;
         }
     }
@@ -188,36 +174,5 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         forgetMe();
         updateLoginDataToSummary();
         startAuthActivity();
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        Log.v(TAG, "onAttachedToWindow");
-        Log.v(TAG,"SETTING KEYGUARD ON");
-        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
-        super.onAttachedToWindow();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_HOME) {
-            Log.v(TAG, "HOME PRESSED");
-            setResult(MainActivity.RESULT_HOME_BUTTON_KILL);
-            finish();
-            return true;
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.v(TAG, "BACK PRESSED");
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_CALL) {
-            Log.v(TAG, "CALL PRESSED");
-            setResult(MainActivity.RESULT_CALL_BUTTON_KILL);
-            finish();
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
     }
 }
