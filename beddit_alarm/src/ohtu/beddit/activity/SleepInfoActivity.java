@@ -1,13 +1,9 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
@@ -17,7 +13,7 @@ import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.BedditConnectionException;
-import ohtu.beddit.web.LoadingDialog;
+import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
 
@@ -39,16 +35,19 @@ public class SleepInfoActivity extends Activity {
             updateNightInfo();
             setButtons();
             updateText();
-        } catch (BedditConnectionException e) {
-            DialogUtils.createActivityClosingDialog(this, getString(R.string.could_not_connect), getString(R.string.button_text_ok));
-            Log.v(TAG, "Connection to beddit failed");
-        } catch (InvalidJsonException e) {
-            DialogUtils.createActivityClosingDialog(this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
-            Log.v(TAG, "Parsing json failed");
+        } catch (BedditException e) {
+            Log.v(TAG, e.getMessage());
+            if(e instanceof BedditConnectionException){
+                DialogUtils.createActivityClosingDialog(this, getString(R.string.could_not_connect), getString(R.string.button_text_ok));
+            }
+            else if(e instanceof InvalidJsonException){
+                DialogUtils.createActivityClosingDialog(this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
+            }
+            else this.finish();
         }
     }
 
-    private void updateNightInfo() throws BedditConnectionException, InvalidJsonException {
+    private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();
         if(apiController.isSleepInfoFuckingOld()){
             Log.v("sleepinfoupdate", "Is fucking old");

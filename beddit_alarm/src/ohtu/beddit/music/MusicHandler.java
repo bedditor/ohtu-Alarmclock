@@ -2,8 +2,10 @@ package ohtu.beddit.music;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import ohtu.beddit.R;
+import ohtu.beddit.io.PreferenceService;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +19,7 @@ public class MusicHandler {
     private final String TAG = "MusicHandler";
     private MediaPlayer player;
     private boolean released;
+    private static final float IN_CALL_VOLUME = 0.125f;
 
 
     public MusicHandler() {
@@ -29,9 +32,16 @@ public class MusicHandler {
      */
     public void setMusic(Context context) {
         //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        player = MediaPlayer.create(context, R.raw.alarm);
+        if (PreferenceService.getAwesome(context)){
+            Log.v(TAG, "IT'S AWESOME TIME!");
+            player = MediaPlayer.create(context, R.raw.awesome);
+        }
+        if (player == null){
+            player = MediaPlayer.create(context, R.raw.alarm);
+        }
+
         released = false;
-        player.setVolume(1f, 1f);
+        setReasonableVolume(context);
 
         Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
     }
@@ -104,5 +114,17 @@ public class MusicHandler {
         }
         Log.v(TAG, "Released the music.");
         released = true;
+    }
+
+    private void setReasonableVolume(Context context){
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
+            Log.v(TAG, "Customer on the phone, let's change volume");
+            player.setVolume(IN_CALL_VOLUME, IN_CALL_VOLUME);
+            //mMediaPlayer, R.raw.in_call_alarm);           NEED IN CALL ALARM SOUND??
+        } else {
+            player.setVolume(1f, 1f);
+        }
     }
 }
