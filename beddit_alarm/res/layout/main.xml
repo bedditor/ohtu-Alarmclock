@@ -37,6 +37,7 @@
                 android:layout_weight="1"
                 android:layout_height="fill_parent"
                 android:text="@string/main_act_set_alarm_button"
+                android:background="@drawable/button_set_alarm"
                 />
         <Button
                 android:id="@+id/deleteAlarmButton"
@@ -44,6 +45,7 @@
                 android:layout_weight="1"
                 android:layout_height="fill_parent"
                 android:text="@string/main_act_delete_alarm_button"
+                android:background="@drawable/button_cancel_alarm"
                 />
     </LinearLayout>
 </LinearLayout>
