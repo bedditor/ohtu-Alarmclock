@@ -25,6 +25,7 @@ import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.BedditConnectionException;
+import ohtu.beddit.web.BedditException;
 
 public class MainActivity extends Activity implements AlarmTimeChangedListener
 {
@@ -129,7 +130,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     private boolean isTokenValid() {
-        Log.v(TAG,"Validating token");
+        Log.v(TAG, "Validating token");
         String token = PreferenceService.getToken(this);
         if (token == null || token.equals("")) {
             Log.v(TAG,"Token was empty");
@@ -142,12 +143,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             apiController.updateUserInfo(this);
             username = apiController.getUsername(this, 0);
         }
-        catch (BedditConnectionException e) {
-            Log.v(TAG,"Connection failed while trying to get username and validate token");
-            return false;
-        }
-        catch (InvalidJsonException e) {
-            Log.v(TAG,"Got malformed json while trying to get username and validate token");
+        catch (BedditException e) {
+            Log.v(TAG, e.getMessage());
             return false;
         }
 

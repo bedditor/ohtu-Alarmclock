@@ -6,8 +6,8 @@ import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;
+import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
 
@@ -59,11 +59,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
             }
             return false;
         }
-        catch(BedditConnectionException e){
-            Log.v(TAG, Log.getStackTraceString(e));
-            return false;
-        }
-        catch(InvalidJsonException e){
+        catch(BedditException e){
             Log.v(TAG, Log.getStackTraceString(e));
             return false;
         }

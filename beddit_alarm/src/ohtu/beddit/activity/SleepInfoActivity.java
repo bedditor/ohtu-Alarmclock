@@ -17,6 +17,7 @@ import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.BedditConnectionException;
+import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
 
@@ -39,17 +40,19 @@ public class SleepInfoActivity extends Activity {
             updateNightInfo();
             setButtons();
             updateText();
-        } catch (BedditConnectionException e) {
-            DialogUtils.createActivityClosingDialog(this, getString(R.string.could_not_connect), getString(R.string.button_text_ok));
-            Log.v(TAG, "Connection to beddit failed");
-        } catch (InvalidJsonException e) {
-            DialogUtils.createActivityClosingDialog(this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
-            Log.v(TAG, "Parsing json failed");
+        } catch (BedditException e) {
+            Log.v(TAG, e.getMessage());
+            if(e instanceof BedditConnectionException){
+                DialogUtils.createActivityClosingDialog(this, getString(R.string.could_not_connect), getString(R.string.button_text_ok));
+            }
+            else if(e instanceof InvalidJsonException){
+                DialogUtils.createActivityClosingDialog(this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
+            }
+            else this.finish();
         }
-
     }
 
-    private void updateNightInfo() throws BedditConnectionException, InvalidJsonException {
+    private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();
         if(apiController.isSleepInfoFuckingOld()){
             Log.v("sleepinfoupdate", "Is fucking old");

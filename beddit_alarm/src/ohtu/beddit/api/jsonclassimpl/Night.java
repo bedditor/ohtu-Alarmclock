@@ -3,6 +3,7 @@ package ohtu.beddit.api.jsonclassimpl;
 import ohtu.beddit.utils.TimeUtils;
 
 import ohtu.beddit.web.BedditConnectionException;
+import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
 
@@ -25,11 +26,11 @@ class Night extends JsonObject{
         return date;
     }
 
-    public char getLastSleepStage()throws BedditConnectionException {
+    public char getLastSleepStage() throws BedditException {
         try{
             return sleep_stages[sleep_stages.length-1][1].charAt(0);
         }catch(NullPointerException n){
-            throw new BedditConnectionException();
+            throw new InvalidJsonException();
         }
     }
 
