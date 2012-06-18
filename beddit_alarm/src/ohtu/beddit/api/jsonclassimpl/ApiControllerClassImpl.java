@@ -3,6 +3,7 @@ package ohtu.beddit.api.jsonclassimpl;
 import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
+import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.*;
 
@@ -17,6 +18,7 @@ public class ApiControllerClassImpl implements ApiController {
     private static String sleepjson = null;
     private static String queuejson = null;
     private static Calendar lastSleepUpdateTime = null;
+    private static String lastUser = null;
 
     public ApiControllerClassImpl(){
         bedditConnector = new BedditWebConnector();
@@ -37,6 +39,7 @@ public class ApiControllerClassImpl implements ApiController {
         String date = TimeUtils.getTodayAsQueryDateString();
         sleepjson = bedditConnector.getWakeUpJson(context,date);
         lastSleepUpdateTime = Calendar.getInstance();
+        lastUser = PreferenceService.getUsername(context);
         Log.v("apidapi", "update: "+sleepjson);
     }
 
@@ -46,6 +49,14 @@ public class ApiControllerClassImpl implements ApiController {
             return true;
         }
         return false;
+    }
+
+    public boolean hasUserChanged(Context context){
+        if(lastUser.equals(PreferenceService.getUsername(context))){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override
@@ -151,6 +162,7 @@ public class ApiControllerClassImpl implements ApiController {
         if(queuejson==null) updateQueueInfo(context);
         return queuejson;
     }
+
 
 
 

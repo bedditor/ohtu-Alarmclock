@@ -21,16 +21,16 @@
     <string name="pref_title_other_settings">Other settings</string>
 
     <string name="pref_title_awesome">Make this app awesome</string>
+    <string name="pref_toggle_info_summary">Show summary of sleep data on wake up</string>
     <string name="pref_summary_awesome">This setting is completely useless.</string>
 
     <string name="pref_title_alarm_settings">Alarm settings</string>
     <string name="pref_title_snooze_length">Snooze time length</string>
+    <string name="pref_summary_snooze_length">Snooze time is set to</string>
 
     <string name="alarmActivity_dismiss">Dismiss</string>
     <string name="alarmActivity_snooze">Snooze</string>
     <string name="alarmActivity_title">Alarm</string>
-
-    <string name="pref_summary_snooze_length">Snooze time is set to</string>
 
 
     <string name="help_text_1">Set alarm time by turning the clock pointers and use the interval slider
@@ -58,7 +58,7 @@
     <string name="sleep_info_overall_minitotal">Total amount of sleep</string>
     <string name="sleep_info_deep_total">30min00sec</string>
     <string name="sleep_info_deep_minitotal">Total amount of quiet sleep</string>
-    <string name="sleep_info_badly_button">Im tired</string>
+    <string name="sleep_info_badly_button">I\'m tired</string>
     <string name="sleep_info_overall_title">Last night</string>
     <string name="sleep_info_delay">0 minutes old</string>
 

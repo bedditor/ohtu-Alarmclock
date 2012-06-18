@@ -44,6 +44,8 @@ public interface ApiController {
 
     int getTimeDeepSleep(Context context) throws BedditException;
 
+    boolean hasUserChanged(Context context);
+
 
     String getLocalAnalyzedUpToTime(Context context) throws BedditException;
 

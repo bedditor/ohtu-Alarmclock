@@ -9,6 +9,7 @@
     <string-array name="sleepStageArrayTitles">
         <item>Kevyt uni</item>
         <item>REM-uni</item>
+        <item>Kevyt tai REM-uni</item>
     </string-array>
 
 </resources>

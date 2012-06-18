@@ -54,8 +54,8 @@ public class SleepInfoActivity extends Activity {
 
     private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();
-        if(apiController.isSleepInfoFuckingOld()){
-            Log.v("sleepinfoupdate", "Is fucking old");
+        if(apiController.isSleepInfoFuckingOld() || apiController.hasUserChanged(this)){
+            Log.v("sleepinfoupdate", "Is fucking old/user has changed");
             apiController.updateSleepInfo(this);
         }
         timeSleeping = apiController.getTimeSleeping(this);

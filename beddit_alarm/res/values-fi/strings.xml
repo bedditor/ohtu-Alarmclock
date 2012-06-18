@@ -13,7 +13,6 @@
     <string name="main_act_delete_alarm_button">Poista herätys</string>
 
     <string name="pref_title_beddit_settings">Beddit-kirjautumisasetukset</string>
-    <string name="pref_summary_beddit_settings">Yhdistä beddit-tiliisi</string>
     <string name="pref_title_forget">Unohda minut</string>
     <string name="pref_logged_in_as">Olet kirjautunut nimellä</string>
     <string name="pref_not_logged_in">Et ole kirjautunut sisään</string>
@@ -21,16 +20,17 @@
 
     <string name="pref_title_other_settings">Muut asetukset</string>
 
-
     <string name="pref_title_awesome">Tee ohjelmasta SUPER</string>
     <string name="pref_summary_awesome">Tämä asetus on hyödytön.</string>
+    <string name="pref_toggle_info_summary">Näytetään kooste unitiedoista herätyksen jälkeen</string>
 
     <string name="pref_title_alarm_settings">Herätysasetukset</string>
     <string name="pref_title_snooze_length">Torkkuherätyksen viive</string>
-    <string name="pref_summary_snooze_length">Torkkuherätyksen viive</string>
+    <string name="pref_summary_snooze_length">Torkkuherätyksen viive on:</string>
 
-    <string name="alarm_stopAlarm">Lopeta herätys</string>
-    <string name="alarm_Snooze">Torkku</string>
+    <string name="alarmActivity_dismiss">Lopeta herätys</string>
+    <string name="alarmActivity_snooze">Torkku</string>
+    <string name="alarmActivity_title">Herätys</string>
 
     <string name="help_text_1">Aseta herätysaika kääntämällä kellon viisareita ja käytä aikavälisäädintä.</string>
     <string name="help_text_2">Sinut pyritään herättämään tällä välillä ollessasi kevyessä univaiheessa.</string>
@@ -44,16 +44,27 @@
     <string name="pref_summary_colour_theme">Väriteemaksesi on asetettu </string>
     <string name="pref_title_advanced">Edistyneet asetukset</string>
     <string name="notification_text">Herätys asetettu</string>
-    <string name="pref_title_user_index">Choose user</string>
-    <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
-    <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?
+    <string name="pref_title_user_index">Valitse käyttäjä</string>
+
+    <string name="loading_dialog_text">Yhdistetään, ole hyvä ja odota...</string>
+    <string name="pref_title_wake_up_sleep_stage">Herätys univaiheesta:</string>
+    <string name="sleep_info_title">Uni-tiedot</string>
+    <string name="sleep_info_well_button">Hyvä olo</string>
+    <string name="sleep_info_overall_minitotal">Unen kokonaismäärä</string>
+    <string name="sleep_info_deep_minitotal">Syvän unen kokonaismäärä</string>
+    <string name="sleep_info_badly_button">Väsyttää</string>
+    <string name="sleep_info_overall_title">Viime yö:</string>
+
+
+
+    <string name="disconnect_dialog_message">Jos kirjaudut ulos herätys poistetaan. Haluatko varmasti kirjautua ulos?
     </string>
-    <string name="button_text_close">Close</string>
-    <string name="login_or_authorisation_failed">Login or authorisation failed.</string>
-    <string name="must_connect_to_beddit_account">This app can not be used without connecting to your beddit account
+    <string name="button_text_close">Sulje</string>
+    <string name="login_or_authorisation_failed">Sisäänkirjautuminen epäonnistui</string>
+    <string name="must_connect_to_beddit_account">Tätä sovellusta ei voi käyttää ilman sovelluksen yhdistämistä Beddit-tiliin.
     </string>
     <string name="button_text_ok">Ok</string>
-    <string name="sleep_data_fail">Could not get sleep data from beddit</string>
-    <string name="could_not_connect">Could not connect to beddit</string>
+    <string name="sleep_data_fail">Ei saatu unitietoja Beddit</string>
+    <string name="could_not_connect">Ei saatu yhteyttä Beddit-tiliin</string>
 
 </resources>
