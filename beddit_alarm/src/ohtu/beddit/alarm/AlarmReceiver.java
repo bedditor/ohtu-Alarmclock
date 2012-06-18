@@ -34,7 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         else if(getSecondsUntilLastWakeUpTime(context) <= checkTime){ //no time to do any more checking, schedule final wake up
             Log.v(TAG, "No time to check anymore, schedule wake up");
-            alarmService.addWakeUpAttempt(getLastWakeUpTime(context));
+            alarmService.addWakeUpAttempt(getLastWakeUpTime());
         }
         else if(alarmChecker.wakeUpNow(context)){ //check if we should wake up now
             Log.v(TAG, "Alarm checker gave permission to wake up, starting alarm");
@@ -54,29 +54,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private int getSecondsUntilLastWakeUpTime(Context context){
         Calendar currentTime = Calendar.getInstance();
-        Calendar wakeUpTime = getLastWakeUpTime(context);
+        Calendar wakeUpTime = getLastWakeUpTime();
         long timeDifference = wakeUpTime.getTimeInMillis() - currentTime.getTimeInMillis();
         return (int)(timeDifference/1000);
     }
 
-    private Calendar getLastWakeUpTime(Context context){
-        Calendar wakeUpTime = Calendar.getInstance();
-        wakeUpTime.set(Calendar.HOUR_OF_DAY, alarmService.getAlarmHours());
-        wakeUpTime.set(Calendar.MINUTE, alarmService.getAlarmMinutes());
-        wakeUpTime.set(Calendar.SECOND, 0);
-        wakeUpTime.set(Calendar.MILLISECOND, 0);
-
-        if (wakeUpTime.getTimeInMillis() + 10000 < System.currentTimeMillis()){
-            wakeUpTime.add(Calendar.DAY_OF_YEAR, 1);
-        }
-        return wakeUpTime;
+    private Calendar getLastWakeUpTime(){
+        return alarmService.getAlarm().getTimeInCalendar();
     }
 
     private void scheduleNextTry(Context context){
         Calendar timeForNextTry = Calendar.getInstance();
         timeForNextTry.add(Calendar.SECOND, wakeUpAttemptInterval);
 
-        Calendar lastWakeUpTime = getLastWakeUpTime(context);
+        Calendar lastWakeUpTime = getLastWakeUpTime();
 
         if(timeForNextTry.before(lastWakeUpTime)){ //still time for another interval
             Log.v(TAG, "next try scheduled to "+timeForNextTry.get(Calendar.HOUR_OF_DAY)+":"+timeForNextTry.get(Calendar.MINUTE)+":"+timeForNextTry.get(Calendar.SECOND));

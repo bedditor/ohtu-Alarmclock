@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import ohtu.beddit.io.FileHandler;
+import ohtu.beddit.utils.TimeUtils;
 
 import java.util.Calendar;
 
@@ -18,14 +19,14 @@ public class AlarmServiceImpl implements AlarmService {
     private FileHandler fileHandler;
     private Context context;
     private NotificationFactory notfFactory;
-    private static boolean alarmIsSet = false;
+    private Alarm alarm;
 
     public AlarmServiceImpl(Context context){
         this.context = context.getApplicationContext();
         this.alarmManager = (AlarmManager) this.context.getSystemService(context.ALARM_SERVICE);
         this.fileHandler = new FileHandler(this.context);
         this.notfFactory = new NotificationFactory(this.context);
-        alarmIsSet = checkAlarmFromFile();
+        this.alarm = getAlarmFromFile();
     }
 
     public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler, NotificationFactory notfFactory) {
@@ -33,27 +34,26 @@ public class AlarmServiceImpl implements AlarmService {
         this.alarmManager = alarmManager;
         this.fileHandler = filehandler;
         this.notfFactory = notfFactory;
-        alarmIsSet = checkAlarmFromFile();
-
+        this.alarm = getAlarmFromFile();
     }
 
     //this method saves a new alarm with an interval
     @Override
-    public void addAlarm(int hours, int minutes, int interval){
-        fileHandler.saveAlarm(hours, minutes, interval, true);
-
-        // Calculate first wake up try
-        Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
-
-        notfFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), hours, minutes);
-        addWakeUpAttempt(calendar);
-        alarmIsSet = true;
+    public Alarm addAlarm(int hours, int minutes, int interval){
+        alarm = fileHandler.saveAlarm(hours, minutes, interval, true);
+        if(alarm.isEnabled()){ //write succeeded
+            Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
+            notfFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), hours, minutes);
+            addWakeUpAttempt(calendar);
+            Log.v(TAG, "Adding alarm failed");
+        }
+        return alarm;
     }
 
     @Override
     public void changeAlarm(int hours, int minutes, int interval){
-        if (alarmIsSet){
-            addAlarm(hours, minutes, interval);
+        if (alarm.isEnabled()){
+            alarm = addAlarm(hours, minutes, interval);
         }
     }
 
@@ -68,17 +68,8 @@ public class AlarmServiceImpl implements AlarmService {
 
     //this method calculates time for the first try to wake up
     private Calendar calculateFirstWakeUpAttempt(int hour, int minute, int interval) {
-        Calendar alarmTime = Calendar.getInstance();
-        alarmTime.set(Calendar.HOUR_OF_DAY, hour);
-        alarmTime.set(Calendar.MINUTE, minute);
-        alarmTime.set(Calendar.SECOND, 0);
-        alarmTime.set(Calendar.MILLISECOND, 0);
-        if(alarmTime.before(Calendar.getInstance())){
-            alarmTime.add(Calendar.DAY_OF_YEAR, 1);
-        }
-
+        Calendar alarmTime = TimeUtils.timeToCalendar(hour, minute);
         alarmTime.add(Calendar.MINUTE, -interval);
-
 
         Calendar currentTime = Calendar.getInstance();
         if(alarmTime.after(currentTime)){
@@ -97,39 +88,35 @@ public class AlarmServiceImpl implements AlarmService {
         fileHandler.disableAlarm();
 
         notfFactory.resetNotification();
-        alarmIsSet = false;
-
+        alarm.setEnabled(false);
     }
 
     public boolean isAlarmSet(){
-        return alarmIsSet;
-    }
-
-    private boolean checkAlarmFromFile(){
-        int [] alarms = getAlarm();
-        if (alarms[0] < 1){
-            return false;
-        }
-        return true;
-    }
-
-    private int[] getAlarm(){
-        return fileHandler.getAlarm();
+        return alarm.isEnabled();
     }
 
     @Override
     public int getAlarmHours() {
-        return getAlarm()[1];
+        return alarm.getHours();
     }
 
     @Override
     public int getAlarmMinutes() {
-        return getAlarm()[2];
+        return alarm.getMinutes();
     }
 
     @Override
     public int getAlarmInterval() {
-        return getAlarm()[3];
+        return alarm.getInterval();
+    }
+
+    @Override
+    public Alarm getAlarm() {
+        return alarm;
+    }
+
+    private Alarm getAlarmFromFile(){
+        return fileHandler.getAlarm();
     }
 
 

@@ -66,5 +66,16 @@ public class TimeUtils {
 
     }
 
+    public static Calendar timeToCalendar(int hours, int minutes){
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR_OF_DAY, hours);
+        time.set(Calendar.MINUTE, minutes);
+        time.set(Calendar.SECOND, 0);
+        time.set(Calendar.MILLISECOND, 0);
+        Calendar currentTime = Calendar.getInstance();
+        if(time.before(currentTime)) time.add(Calendar.DAY_OF_YEAR, 1);
+        return time;
+    }
+
 
 }

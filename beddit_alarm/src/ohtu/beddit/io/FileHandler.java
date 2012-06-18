@@ -4,6 +4,8 @@ import android.content.*;
 import android.util.Log;
 import com.google.gson.JsonParser;
 import ohtu.beddit.R;
+import ohtu.beddit.alarm.Alarm;
+import ohtu.beddit.utils.TimeUtils;
 
 import java.io.*;
 import java.util.Scanner;
@@ -44,44 +46,46 @@ public class FileHandler {
         }
     }
 
-    public boolean saveAlarm(int hour, int minute, int interval, boolean enabled){
+    public Alarm saveAlarm(int hours, int minutes, int interval, boolean enabled){
         int alarmSet = enabled ? 1 : -1;
-        String towrite = ""+alarmSet+'#'+hour+'#'+minute+'#'+interval;
-        return writeToFile(ALARMS_FILENAME, towrite);
+        long millis = TimeUtils.timeToCalendar(hours, minutes).getTimeInMillis();
+        String toWrite = ""+alarmSet+'#'+millis+'#'+interval;
+        if(writeToFile(ALARMS_FILENAME, toWrite)){
+            return new Alarm(hours, minutes, interval, enabled);
+        }
+        else{
+            return saveDefaultAlarm();
+        }
     }
-
 
     // Disables alarm, but keeps the wake up time in memory
-    public boolean disableAlarm(){
-        int[] oldData = getAlarm();
-        return saveAlarm(oldData[1], oldData[2], oldData[3], false);
+    public void disableAlarm(){
+        Alarm alarm = getAlarm();
+        saveAlarm(alarm.getHours(), alarm.getMinutes(), alarm.getInterval(), false);
     }
 
-    /*
-        returns int[4] in the form of   0: if alarm exists
-                                        1: hours
-                                        2: minutes
-                                        3: interval
-     */
-    public int[] getAlarm(){
+    public Alarm getAlarm(){
         String[] alarmData = readStringFromFile(ALARMS_FILENAME).split("#");
+        Alarm alarm = new Alarm();
 
-        int[] alarmValues = new int[4];
         try{
-            alarmValues[0] = Integer.parseInt(alarmData[0]);
-            alarmValues[1] = Integer.parseInt(alarmData[1]);
-            alarmValues[2] = Integer.parseInt(alarmData[2]);
-            alarmValues[3] = Integer.parseInt(alarmData[3]);
-        }catch (Exception e){
-            Log.v("Exception", e.getMessage());
-            //  Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
-            alarmValues[0] = -1;
-            for (int i = 1; i < alarmValues.length; i++){
-                alarmValues[i] = 0;
+            if(Integer.parseInt(alarmData[0]) > 0){
+                alarm.setEnabled(true);
             }
-            saveAlarm(0, 0, 0, false);
+            else alarm.setEnabled(false);
+            alarm.setTimeInMillis(Long.parseLong(alarmData[1]));
+            alarm.setInterval(Integer.parseInt(alarmData[2]));
         }
-        return alarmValues;
+        catch (Exception e){ //Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
+            Log.v("Exception", e.getMessage());
+            saveDefaultAlarm();
+        }
+        return alarm;
+    }
+
+    private Alarm saveDefaultAlarm(){
+        saveAlarm(8, 0, 0, false); //overwrite corrupted alarm data with default time 8:00 AM
+        return new Alarm(8, 0, 0, false);
     }
 
     public String getClientInfo(String request) {
@@ -97,4 +101,5 @@ public class FileHandler {
         String clientid=new JsonParser().parse(json).getAsJsonObject().get(request).getAsString();
         return clientid;
     }
+
 }

@@ -12,11 +12,13 @@ import java.util.Calendar;
  * To change this template use File | Settings | File Templates.
  */
 public interface AlarmService {
-    void addAlarm(int hours, int minutes, int interval);
+    Alarm addAlarm(int hours, int minutes, int interval);
 
     void addWakeUpAttempt(Calendar time);
 
     void deleteAlarm();
+
+    public Alarm getAlarm();
 
     public boolean isAlarmSet();
 
