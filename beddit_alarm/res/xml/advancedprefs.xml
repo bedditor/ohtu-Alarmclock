@@ -16,5 +16,13 @@
                 android:summary="@string/pref_summary_awesome"
                 android:title="@string/pref_title_awesome"
                 android:key="@string/pref_key_awesome"/>
+
+        <ListPreference
+                android:title="@string/pref_alarm_length"
+                android:key="@string/pref_key_alarm_length"
+                android:summary="@string/pref_summary_alarm_length"
+                android:defaultValue="2"
+                android:entries="@array/alarm_lengthArrayTitles"
+                android:entryValues="@array/alarm_lengthArrayValues"/>
     </PreferenceCategory>
 </PreferenceScreen>

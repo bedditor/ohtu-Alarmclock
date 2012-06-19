@@ -26,7 +26,17 @@
         <item>light</item>
     </string-array>
 
+    <string-array name="alarm_lengthArrayTitles">
+        <item>1 min</item>
+        <item>2 min</item>
+        <item>5 min</item>
+    </string-array>
 
+    <string-array name="alarm_lengthArrayValues">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+    </string-array>
 
     <string-array name="sleepStageArrayTitles">
         <item>Light sleep</item>
