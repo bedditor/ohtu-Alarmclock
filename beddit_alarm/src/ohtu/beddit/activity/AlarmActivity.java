@@ -99,7 +99,7 @@ public class AlarmActivity extends Activity {
     }
 
     private void playMusic() {
-        music = new MusicHandler();
+        music = new MusicHandler(vibrator);
         music.setMusic(this);
         music.play(true);
     }
