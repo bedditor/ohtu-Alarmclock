@@ -1,6 +1,7 @@
 package ohtu.beddit.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +21,6 @@ import ohtu.beddit.io.PreferenceService;
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
     private ListPreference snoozeTimePref;
     private ListPreference sleepStagePref;
-    private ListPreference alarmSoundLenghtPref;
     private Preference forgetButton;
     private Preference advancedButton;
 
@@ -40,6 +40,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         sleepStagePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_wake_up_sleep_stage));
         forgetButton = getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
         advancedButton = getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
+        updateSleepStageSummary();
     }
 
     @Override
@@ -170,6 +171,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         AlertDialog alert = builder.create();
         alert.show();
     }
+
 
     private void disconnect() {
         forgetMe();
