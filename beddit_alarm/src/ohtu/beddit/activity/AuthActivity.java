@@ -87,8 +87,6 @@ public class AuthActivity extends Activity implements UrlListener {
         else {
             setResult(RESULT_FAILED, resultIntent);
         }
-        PreferenceService.setUsername(this, "");
-        PreferenceService.setToken(this, "");
         finish();
     }
 

@@ -47,7 +47,12 @@ public class BedditWebConnector implements BedditConnector {
         InputStream inputStream = null;
         try {
             connection = connect(context, query, connection,do_post);
-            inputStream = connection.getInputStream();
+            if(connection.getResponseCode() < 400){
+                inputStream = connection.getInputStream();
+            }
+            else {
+                inputStream = connection.getErrorStream();
+            }
             response = readFromStream(inputStream);
         }
         catch (Throwable e) {

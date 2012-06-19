@@ -26,6 +26,7 @@ import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
+import ohtu.beddit.web.UnauthorizedException;
 
 public class MainActivity extends Activity implements AlarmTimeChangedListener
 {
@@ -137,26 +138,25 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             return false;
         }
 
-        ApiController apiController = new ApiControllerClassImpl();
-        String username;
         try {
+            ApiController apiController = new ApiControllerClassImpl();
             apiController.updateUserInfo(this);
-            username = apiController.getUsername(this, 0);
+            String username = apiController.getUsername(this, 0);
+            PreferenceService.setUsername(this, username);
+        }
+        catch (UnauthorizedException e){
+            Log.v(TAG, "Unauthrorized!");
+            if(alarmService.isAlarmSet()){
+                alarmService.deleteAlarm();
+                showMeTheToast("Alarm was removed because your authorization is not valid.");
+            }
+            return false;
         }
         catch (BedditException e) {
-            Log.v(TAG, e.getMessage());
-            return false;
+            Log.v(TAG, "Problem with connection");
         }
-
-        if (username == null || username.equals("")) {
-            Log.v(TAG,"Username was empty while validating token");
-            return false;
-        }
-        Log.v(TAG,"Token was valid");
         return true;
     }
-
-
 
     private void startAuthActivity() {
         Log.v(TAG,"Starting authActivity");
