@@ -15,8 +15,8 @@ import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
+import ohtu.beddit.web.LoadingDialog;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -27,13 +27,18 @@ public class SleepInfoActivity extends Activity {
     private String localAnalyzedUpToTime;
     private boolean isAnalysisUpToDate;
     private final String TAG = "SleepInfoActivity";
+    private LoadingDialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
-        setButtons();
 
+        dialog = new LoadingDialog(this, R.style.CustomDialogTheme);
+        dialog.setContentView(R.layout.loading_dialog);
+        dialog.show();
+
+        setEventHandlers();
         new SleepInfoLoader().execute();
     }
 
@@ -76,7 +81,7 @@ public class SleepInfoActivity extends Activity {
                     SleepInfoActivity.this.finish();
                     break;
             }
-
+            SleepInfoActivity.this.dialog.dismiss();
         }
     }
 
@@ -103,7 +108,7 @@ public class SleepInfoActivity extends Activity {
             ((TextView) findViewById(R.id.sleep_info_delay)).setText(this.getString(R.string.sleep_info_overall_age_pref) + " " + getTimeDifference(localAnalyzedUpToTime) + " " + this.getString(R.string.sleep_info_overall_age_post));
     }
 
-    private void setButtons() {
+    private void setEventHandlers() {
         ((Button) findViewById(R.id.SleptWellButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
