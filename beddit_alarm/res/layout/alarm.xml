@@ -14,6 +14,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_dismiss"
+            android:background="@drawable/beddit_button"
         />
 
         <ohtu.beddit.views.TextScalingButton
@@ -23,6 +24,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_snooze"
+            android:background="@drawable/beddit_button"
         />
 
 ></LinearLayout>
