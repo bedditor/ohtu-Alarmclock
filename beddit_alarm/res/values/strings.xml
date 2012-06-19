@@ -73,4 +73,16 @@
     <string name="button_text_ok">Ok</string>
     <string name="sleep_data_fail">Could not get sleep data from beddit</string>
     <string name="could_not_connect">Could not connect to beddit</string>
+
+    <style name="ButtonText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 </resources>
+
+
