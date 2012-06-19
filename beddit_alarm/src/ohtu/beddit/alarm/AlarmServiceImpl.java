@@ -19,7 +19,7 @@ public class AlarmServiceImpl implements AlarmService {
     private FileHandler fileHandler;
     private Context context;
     private NotificationFactory notfFactory;
-    private Alarm alarm;
+    private static Alarm alarm;
 
     public AlarmServiceImpl(Context context){
         this.context = context.getApplicationContext();

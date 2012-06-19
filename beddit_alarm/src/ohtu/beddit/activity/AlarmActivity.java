@@ -101,7 +101,6 @@ public class AlarmActivity extends Activity {
     private void playMusic() {
         music = new MusicHandler();
         music.setMusic(this);
-        music.setLooping(true);
         music.play(true);
     }
 
