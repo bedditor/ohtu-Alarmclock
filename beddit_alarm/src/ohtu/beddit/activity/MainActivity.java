@@ -62,20 +62,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         setUI();
 
-        // Update buttons and clock handles
-        updateButtons();
-        setClockHands();
         if(!isTokenValid()){
             startAuthActivity();
         }
-
-        /*testDialog();
-        testDialog();
-        testDialog();
-        testDialog();
-        testDialog();
-        */
-
     }
 
     @Override
@@ -90,7 +79,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         updateButtons();
         updateColours();
         update24HourMode();
-        setClockHands();
+
+        if (alarmService.isAlarmSet())
+            setClockHands();
+
         Log.v(TAG, "onResume");
     }
 

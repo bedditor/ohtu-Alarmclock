@@ -3,6 +3,8 @@ package ohtu.beddit.views.timepicker;
 import android.content.Context;
 import android.graphics.*;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -317,6 +319,28 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     @Override
     public void addAlarmTimeChangedListener(AlarmTimeChangedListener l) {
         alarmTimeChangedListeners.add(l);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state != null && state instanceof Bundle) {
+            Bundle bundle = (Bundle)state;
+            setMinutes(bundle.getInt("minutes"));
+            setHours(bundle.getInt("hours"));
+            setInterval(bundle.getInt("interval"));
+            super.onRestoreInstanceState(bundle.getParcelable("state"));
+        }
+        super.onRestoreInstanceState(state);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("minutes", getMinutes());
+        bundle.putInt("hours", getHours());
+        bundle.putInt("interval", getInterval());
+        bundle.putParcelable("state", super.onSaveInstanceState());
+        return bundle;
     }
 
     //</editor-fold>
