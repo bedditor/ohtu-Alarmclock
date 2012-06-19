@@ -68,13 +68,14 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         if(!isTokenValid()){
             startAuthActivity();
         }
-        /*
-        testDialog();
+
+        /*testDialog();
         testDialog();
         testDialog();
         testDialog();
         testDialog();
         */
+
     }
 
     @Override
@@ -321,14 +322,14 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         }
     }
 
-    /*public void testDialog(){
+    public void testDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Spam api requests:");
         builder.setCancelable(false);
         builder.setPositiveButton("Yes I will", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //BedditWebConnector blob = new BedditWebConnector();
-                /*try{
+                //try{
                 AlarmChecker check = new AlarmCheckerRealImpl();
                 check.wakeUpNow(MainActivity.this);
             }
@@ -336,6 +337,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         AlertDialog alert = builder.create();
         alert.show();
 
-    }*/
+    }
 
 }

@@ -2,10 +2,12 @@ package ohtu.beddit.web;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import ohtu.beddit.R;
+import ohtu.beddit.activity.AuthActivity;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +32,6 @@ public class AmazingWebClient extends WebViewClient {
     public AmazingWebClient(Context context) {
         dialog = new LoadingDialog(context, R.style.CustomDialogTheme);
         dialog.setContentView(R.layout.loading_dialog);
-        dialog.show();
     }
 
     public void addUrlListener(UrlListener l) {
@@ -47,18 +48,38 @@ public class AmazingWebClient extends WebViewClient {
                 return true;
             }
         }
-        Pattern S = Pattern.compile("\\Qhttps://api.beddit.com/api/oauth/access_token?client_id=\\E.*\\Q&redirect_uri=https://peach-app.appspot.com/oauth&client_secret=\\E.*\\Q&grant_type=code&code=\\E.*");
-        Matcher match = S.matcher(url);
+        Pattern p = Pattern.compile("\\Qhttps://api.beddit.com/api/oauth/access_token?client_id=\\E.*\\Q&redirect_uri="+ AuthActivity.REDIRECT_URI +"/oauth&client_secret=\\E.*\\Q&grant_type=code&code=\\E.*");
+        Matcher match = p.matcher(url);
         if (match.matches())
             return true;
         for (UrlListener l : listeners)
             l.onUrlReceived(url);
+
+        Pattern isRedirect = Pattern.compile("^\\Q"+AuthActivity.REDIRECT_URI+"\\E.+");
+        if (isRedirect.matcher(url).matches())
+            return true;
+
         return false;
     }
 
     @Override
+    public void onLoadResource(WebView view, String url) {
+
+        Log.v(TAG, "onLoadResource "+url);
+        super.onLoadResource(view, url);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        dialog.show();
+        Log.v(TAG, "onPageStarted "+url);
+        super.onPageStarted(view, url, favicon);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void onPageFinished(WebView view, String url) {
-        super.onPageFinished(view, url);    //To change body of overridden methods use File | Settings | File Templates.
         dialog.dismiss();
+        super.onPageFinished(view, url);    //To change body of overridden methods use File | Settings | File Templates.
+
     }
 }

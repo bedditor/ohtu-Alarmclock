@@ -1,7 +1,10 @@
 package ohtu.beddit.music;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import ohtu.beddit.R;
@@ -14,16 +17,22 @@ import ohtu.beddit.io.PreferenceService;
  * Time: 10:44
  * To change this template use File | Settings | File Templates.
  */
-public class MusicHandler {
+public class MusicHandler implements MediaPlayer.OnCompletionListener {
 
     private final String TAG = "MusicHandler";
     private MediaPlayer player;
+    private Vibrator vibrator;
     private boolean released;
-    private static final float IN_CALL_VOLUME = 0.125f;
+    private long loopStartedAt;
+
+    private static final float VOLUME_OFF = 0.0f;
+    private static final float RINGING_VOLUME = 0.125f;
+    private static final int PLAY_MINUTES = 1;
 
 
-    public MusicHandler() {
-        player = null;
+    public MusicHandler(Vibrator vibra) {
+        player = new MediaPlayer();
+        vibrator = vibra;
         released = true;
     }
 
@@ -31,24 +40,30 @@ public class MusicHandler {
     Needs the Context of the Activity to create mediaplayer for the spesific Activity.
      */
     public void setMusic(Context context) {
-        //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        AssetFileDescriptor afd;
         if (PreferenceService.getAwesome(context)){
-            Log.v(TAG, "IT'S AWESOME TIME!");
-            player = MediaPlayer.create(context, R.raw.awesome);
-        }
-        if (player == null){
-            player = MediaPlayer.create(context, R.raw.alarm);
+            afd = context.getResources().openRawResourceFd(R.raw.awesome);
+        } else {
+            afd = context.getResources().openRawResourceFd(R.raw.alarm);
         }
 
-        released = false;
-        setReasonableVolume(context);
+        try {
+            player.reset();
+            player.setAudioStreamType(AudioManager.STREAM_ALARM);
+            player.setLooping(false);
+            player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            setReasonableVolume(context);
+            player.setOnCompletionListener(this);
+            player.prepare();
+            released = false;
+            Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
+        } catch (Exception e){
+            Log.v(TAG, "something crashed");
+        }
 
-        Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
     }
 
-    public void setLooping(boolean loop) {
-        player.setLooping(loop);
-    }
+
     /*
    Returns true if everythings ok.
     */
@@ -73,9 +88,11 @@ public class MusicHandler {
                 player.start();
                 success = true;
             }
-        if (success)
+        if (success){
             Log.v(TAG, "Started playing alarm music!");
-        else
+            loopStartedAt = System.currentTimeMillis();
+
+        }else
             Log.v(TAG, "Did not start playing music. Maybe you haven't initialized player.");
     }
 
@@ -116,15 +133,29 @@ public class MusicHandler {
         released = true;
     }
 
+    //Check if customer is on the phone or the phone is ringing
     private void setReasonableVolume(Context context){
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
-        if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
+        int callState = tm.getCallState();
+        if (callState == TelephonyManager.CALL_STATE_OFFHOOK) {
             Log.v(TAG, "Customer on the phone, let's change volume");
-            player.setVolume(IN_CALL_VOLUME, IN_CALL_VOLUME);
-            //mMediaPlayer, R.raw.in_call_alarm);           NEED IN CALL ALARM SOUND??
-        } else {
+            player.setVolume(VOLUME_OFF, VOLUME_OFF);
+        } else if (callState == TelephonyManager.CALL_STATE_RINGING){
+            player.setVolume(RINGING_VOLUME, RINGING_VOLUME);
+        }else {
             player.setVolume(1f, 1f);
+        }
+    }
+
+    //@Override
+    public void onCompletion(MediaPlayer mediaplayer){
+        if(System.currentTimeMillis() < loopStartedAt + (60*1000*PLAY_MINUTES)){
+            mediaplayer.seekTo(0);
+            mediaplayer.start();
+            Log.v("Playah", "looping");
+        }else{
+            vibrator.cancel();
+            Log.v("Playah", "un-looping");
         }
     }
 }
