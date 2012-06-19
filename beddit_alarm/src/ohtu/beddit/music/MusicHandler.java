@@ -1,6 +1,8 @@
 package ohtu.beddit.music;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -19,11 +21,12 @@ public class MusicHandler {
     private final String TAG = "MusicHandler";
     private MediaPlayer player;
     private boolean released;
-    private static final float IN_CALL_VOLUME = 0.125f;
+    private static final float VOLUME_OFF = 0.0f;
+    private static final float RINGING_VOLUME = 0.125f;
 
 
     public MusicHandler() {
-        player = null;
+        player = new MediaPlayer();
         released = true;
     }
 
@@ -31,24 +34,28 @@ public class MusicHandler {
     Needs the Context of the Activity to create mediaplayer for the spesific Activity.
      */
     public void setMusic(Context context) {
-        //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        AssetFileDescriptor afd;
         if (PreferenceService.getAwesome(context)){
-            Log.v(TAG, "IT'S AWESOME TIME!");
-            player = MediaPlayer.create(context, R.raw.awesome);
-        }
-        if (player == null){
-            player = MediaPlayer.create(context, R.raw.alarm);
+            afd = context.getResources().openRawResourceFd(R.raw.awesome);
+        } else {
+            afd = context.getResources().openRawResourceFd(R.raw.alarm);
         }
 
-        released = false;
-        setReasonableVolume(context);
+        try {
+            player.reset();
+            player.setAudioStreamType(AudioManager.STREAM_ALARM);
+            player.setLooping(true);
+            player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            setReasonableVolume(context);
+            player.prepare();
+            released = false;
+            Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
+        } catch (Exception e){
+            Log.v(TAG, "something crashed");
+        }
 
-        Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
     }
 
-    public void setLooping(boolean loop) {
-        player.setLooping(loop);
-    }
     /*
    Returns true if everythings ok.
     */
@@ -116,14 +123,16 @@ public class MusicHandler {
         released = true;
     }
 
+    //Check if customer is on the phone or the phone is ringing
     private void setReasonableVolume(Context context){
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
-        if (tm.getCallState() != TelephonyManager.CALL_STATE_IDLE) {
+        int callState = tm.getCallState();
+        if (callState == TelephonyManager.CALL_STATE_OFFHOOK) {
             Log.v(TAG, "Customer on the phone, let's change volume");
-            player.setVolume(IN_CALL_VOLUME, IN_CALL_VOLUME);
-            //mMediaPlayer, R.raw.in_call_alarm);           NEED IN CALL ALARM SOUND??
-        } else {
+            player.setVolume(VOLUME_OFF, VOLUME_OFF);
+        } else if (callState == TelephonyManager.CALL_STATE_RINGING){
+            player.setVolume(RINGING_VOLUME, RINGING_VOLUME);
+        }else {
             player.setVolume(1f, 1f);
         }
     }
