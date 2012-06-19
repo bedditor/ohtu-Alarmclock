@@ -51,6 +51,7 @@
 
     <string name="pref_alarm_length">Alarm length</string>
     <string name="pref_summary_alarm_length">The alarm will play and vibrate for </string>
+    <string name="pref_summary_sleep_stage"></string>
 
 
     <string name="loading_dialog_text">Connecting, please wait...</string>

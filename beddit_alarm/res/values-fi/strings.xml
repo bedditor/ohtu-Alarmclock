@@ -40,14 +40,17 @@
     <string name="main_act_interval_title">Aikaväli herätykselle</string>
     <string name="help_title">Käyttöohjeet</string>
     <string name="pref_title_graphics">Teema asetukset</string>
-    <string name="pref_title_colour_theme">Väriteemä</string>
+    <string name="pref_title_colour_theme">Väriteema</string>
     <string name="pref_summary_colour_theme">Väriteemaksesi on asetettu </string>
     <string name="pref_title_advanced">Edistyneet asetukset</string>
     <string name="notification_text">Herätys asetettu</string>
     <string name="pref_title_user_index">Valitse käyttäjä</string>
 
+    <string name="pref_alarm_length">Hälytyksen pituus</string>
+    <string name="pref_summary_alarm_length">Hälytys soi ja värisee </string>
+
     <string name="loading_dialog_text">Yhdistetään, ole hyvä ja odota...</string>
-    <string name="pref_title_wake_up_sleep_stage">Herätys univaiheesta:</string>
+    <string name="pref_title_wake_up_sleep_stage">Herätys univaiheesta</string>
     <string name="sleep_info_title">Uni-tiedot</string>
     <string name="sleep_info_well_button">Hyvä olo</string>
     <string name="sleep_info_overall_age_pref">Tiedot ovat </string>
