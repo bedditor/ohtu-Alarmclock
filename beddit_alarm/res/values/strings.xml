@@ -49,6 +49,9 @@
     <string name="notification_text">Alarm set at</string>
     <string name="pref_title_user_index">Choose user</string>
 
+    <string name="pref_alarm_length">Alarm length</string>
+    <string name="pref_summary_alarm_length">The alarm will play and vibrate for </string>
+
 
     <string name="loading_dialog_text">Connecting, please wait...</string>
     <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
