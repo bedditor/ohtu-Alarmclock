@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
@@ -20,11 +21,9 @@ import ohtu.beddit.alarm.*;
 
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
-import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.UnauthorizedException;
 
@@ -60,11 +59,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         //initialize default values for settings if called for the first time
         PreferenceManager.setDefaultValues(this, R.xml.prefs, true);
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
-        setUI();
+        initializeUI();
 
-        if(!isTokenValid()){
-            startAuthActivity();
-        }
+        checkToken();
     }
 
     @Override
@@ -76,7 +73,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     @Override
     public void onResume(){
         super.onResume();
-        updateButtons();
+        toggleButtonStates();
         updateColours();
         update24HourMode();
 
@@ -123,14 +120,48 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         super.finish();
     }
 
-    private boolean isTokenValid() {
-        Log.v(TAG, "Validating token");
+    private void checkToken() {
         String token = PreferenceService.getToken(this);
-        if (token == null || token.equals("")) {
+        if (token == null || token.equals(""))  {
             Log.v(TAG,"Token was empty");
-            return false;
+            startAuthActivity();
+        } else {
+            Log.v(TAG, "Starting token validation");
+            new TokenChecker().execute();
+        }
+    }
+
+    private class TokenChecker extends AsyncTask<Void,Void,Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return MainActivity.this.isTokenValid();
         }
 
+        @Override
+        protected void onPostExecute(Boolean isValid) {
+            Log.v(TAG, "Token was "+(isValid?"valid":"invalid"));
+            if (!isValid) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage(getString(R.string.mainActivity_tokenExpiredDialog_text))
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.mainActivity_tokenExpiredDialog_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                MainActivity.this.startAuthActivity();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.mainActivity_tokenExpiredDialog_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                MainActivity.this.finish();
+                            }
+                        });
+                AlertDialog tokenExpiredDialog = builder.create();
+                tokenExpiredDialog.show();
+            }
+        }
+    }
+
+    private boolean isTokenValid() {
+        Log.v(TAG, "Validating token");
         try {
             ApiController apiController = new ApiControllerClassImpl();
             apiController.updateUserInfo(this);
@@ -138,10 +169,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
             PreferenceService.setUsername(this, username);
         }
         catch (UnauthorizedException e){
-            Log.v(TAG, "Unauthrorized!");
+            Log.v(TAG, "Unauthorized!");
+            PreferenceService.setToken(this, "");
             if(alarmService.isAlarmSet()){
                 alarmService.deleteAlarm();
-                showMeTheToast("Alarm was removed because your authorization is not valid.");
+                showMeTheToast(getString(R.string.toast_alarmremoved));
             }
             return false;
         }
@@ -157,7 +189,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         startActivityForResult(myIntent, FROM_AUTHENTICATION);
     }
 
-    private void setUI() {
+    private void initializeUI() {
         //Set clock, buttons and listeners
         alarmTimePicker = (CustomTimePicker)this.findViewById(R.id.alarmTimePicker);
         alarmTimePicker.addAlarmTimeChangedListener(this);
@@ -204,14 +236,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     @Override
     public void onAlarmTimeChanged(int hours, int minutes, int interval) {
         alarmService.changeAlarm(hours, minutes, interval);
-
         if (alarmService.isAlarmSet())
             showMeTheToast(getString(R.string.toast_alarmupdated));
-
     }
 
     private void showMeTheToast(final String message) {
-
         runOnUiThread(new Runnable() {
 
             @Override
@@ -224,11 +253,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     public class AlarmSetButtonClickListener implements OnClickListener {
-
         @Override
         public void onClick(View view) {
             alarmService.addAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
-            MainActivity.this.updateButtons();
+            MainActivity.this.toggleButtonStates();
             // Tell the user about what we did.
             showMeTheToast(getString(R.string.toast_alarmset));
         }
@@ -238,23 +266,15 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         @Override
         public void onClick(View view) {
             alarmService.deleteAlarm();
-            MainActivity.this.updateButtons();
+            MainActivity.this.toggleButtonStates();
             showMeTheToast(getString(R.string.toast_alarmremoved));
-
         }
     }
 
-    // Set buttons to on/off
-    public void updateButtons(){
-        if (alarmService.isAlarmSet()){
-            addAlarmButton.setEnabled(false);
-            deleteAlarmButton.setEnabled(true);
-        } else {
-            addAlarmButton.setEnabled(true);
-            deleteAlarmButton.setEnabled(false);
-        }
-        Log.v(TAG, "Buttons updated");
-
+    public void toggleButtonStates(){
+        Log.v(TAG, "Buttons toggled");
+        addAlarmButton.setEnabled(!alarmService.isAlarmSet());
+        deleteAlarmButton.setEnabled(alarmService.isAlarmSet());
     }
 
     @Override
@@ -313,22 +333,4 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 break;
         }
     }
-
-    public void testDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Spam api requests:");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes I will", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //BedditWebConnector blob = new BedditWebConnector();
-                //try{
-                AlarmChecker check = new AlarmCheckerRealImpl();
-                check.wakeUpNow(MainActivity.this);
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-
-    }
-
 }

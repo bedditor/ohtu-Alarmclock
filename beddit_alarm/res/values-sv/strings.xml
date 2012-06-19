@@ -26,9 +26,6 @@
     <string name="pref_title_snooze_length">Torkkuherätyksen viive</string>
     <string name="pref_summary_snooze_length">Torkkuherätyksen viive</string>
 
-    <string name="alarm_stopAlarm">Lopeta herätys</string>
-    <string name="alarm_Snooze">Torkku</string>
-
     <string name="help_text_1">Set alarm time by turning the clock pointers and use the interval slider
         to set the earliest time you would like to wake up.</string>
     <string name="help_text_2">This app will try to wake you up on that timespan while you are at
