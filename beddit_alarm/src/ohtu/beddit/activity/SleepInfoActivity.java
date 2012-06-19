@@ -1,6 +1,7 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -30,26 +32,57 @@ public class SleepInfoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
+        setButtons();
 
-        try {
-            updateNightInfo();
-            setButtons();
-            updateText();
-        } catch (BedditException e) {
-            Log.v(TAG, e.getMessage());
-            if(e instanceof BedditConnectionException){
-                DialogUtils.createActivityClosingDialog(this, getString(R.string.could_not_connect), getString(R.string.button_text_ok));
+        new SleepInfoLoader().execute();
+    }
+
+    private class SleepInfoLoader extends AsyncTask<Void,Void,Integer> {
+        private static final int RESULT_SUCCESS = 1;
+        private static final int RESULT_CONNECTION_FAIL = 2;
+        private static final int RESULT_BAD_DATA = 3;
+        private static final int RESULT_FAILURE = 4;
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            try {
+                updateNightInfo();
+            } catch (BedditException e) {
+                Log.v(TAG, e.getMessage());
+                if(e instanceof BedditConnectionException)
+                    return RESULT_CONNECTION_FAIL;
+                else if(e instanceof InvalidJsonException)
+                    return RESULT_BAD_DATA;
+                else
+                    return RESULT_FAILURE;
             }
-            else if(e instanceof InvalidJsonException){
-                DialogUtils.createActivityClosingDialog(this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
+            return RESULT_SUCCESS;
+        }
+
+        @Override
+        protected void onPostExecute(Integer resultCode) {
+            switch (resultCode) {
+                case (RESULT_SUCCESS):
+                    updateText();
+                    break;
+                case (RESULT_BAD_DATA):
+                    DialogUtils.createActivityClosingDialog(SleepInfoActivity.this, getString(R.string.sleep_data_fail), getString(R.string.button_text_ok));
+                    break;
+                case (RESULT_CONNECTION_FAIL):
+                    DialogUtils.createActivityClosingDialog(SleepInfoActivity.this, getString(R.string.could_not_connect), getString(R.string.button_text_ok));
+                    break;
+                case (RESULT_FAILURE):
+                    Log.v(TAG, "Unknown failure loading sleep information");
+                    SleepInfoActivity.this.finish();
+                    break;
             }
-            else this.finish();
+
         }
     }
 
     private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();
-        if(apiController.isSleepInfoFuckingOld() || apiController.hasUserChanged(this)){
+        if(apiController.sleepInfoOutdated() || apiController.hasUserChanged(this)){
             Log.v("sleepinfoupdate", "Is fucking old/user has changed");
             apiController.updateSleepInfo(this);
         }

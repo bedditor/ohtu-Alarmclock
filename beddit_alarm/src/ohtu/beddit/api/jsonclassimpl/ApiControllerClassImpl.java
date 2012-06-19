@@ -44,8 +44,8 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
-    public boolean isSleepInfoFuckingOld(){
-        if(lastSleepUpdateTime == null || TimeUtils.isDifferenceGreaterThanXMinutes(Calendar.getInstance(), lastSleepUpdateTime, 1)){
+    public boolean sleepInfoOutdated(){
+        if(lastSleepUpdateTime == null || TimeUtils.differenceInMinutes(Calendar.getInstance(), lastSleepUpdateTime) > 1){
             return true;
         }
         return false;

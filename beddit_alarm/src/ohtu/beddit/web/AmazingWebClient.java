@@ -80,6 +80,5 @@ public class AmazingWebClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         dialog.dismiss();
         super.onPageFinished(view, url);    //To change body of overridden methods use File | Settings | File Templates.
-
     }
 }

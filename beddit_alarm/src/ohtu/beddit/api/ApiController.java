@@ -49,7 +49,7 @@ public interface ApiController {
 
     String getLocalAnalyzedUpToTime(Context context) throws BedditException;
 
-    boolean isSleepInfoFuckingOld();
+    boolean sleepInfoOutdated();
 
 
     boolean getIsAnalysisUpToDate(Context context) throws BedditException;
