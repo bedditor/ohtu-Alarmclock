@@ -17,6 +17,7 @@ import ohtu.beddit.io.PreferenceService;
 public class AdvancedSettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private ListPreference colourThemePref;
+    private ListPreference alarmSoundLenghtPref;
 
     private static final String TAG = "AdvancedSettingsActivity";
 
@@ -30,6 +31,7 @@ public class AdvancedSettingsActivity extends PreferenceActivity implements Shar
 
     private void initPrefVars() {
         colourThemePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_colour_theme));
+        alarmSoundLenghtPref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_alarm_length));
     }
 
     @Override
@@ -38,6 +40,7 @@ public class AdvancedSettingsActivity extends PreferenceActivity implements Shar
 
         // Setup the initial values
         setColourThemeSummary();
+        setAlarmSoundLenghtSummary();
 
         // Set up a listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -54,10 +57,16 @@ public class AdvancedSettingsActivity extends PreferenceActivity implements Shar
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_colour_theme))) {
             setColourThemeSummary();
+        }else if(key.equals(this.getString(R.string.pref_key_alarm_length))){
+            setAlarmSoundLenghtSummary();
         }
     }
 
     private void setColourThemeSummary(){
         colourThemePref.setSummary(getString(R.string.pref_summary_colour_theme) + " " + colourThemePref.getEntry());
+    }
+
+    private void setAlarmSoundLenghtSummary(){
+        alarmSoundLenghtPref.setSummary(getString(R.string.pref_summary_alarm_length) + " "+alarmSoundLenghtPref.getEntry());
     }
 }

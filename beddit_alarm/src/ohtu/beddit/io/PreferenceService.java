@@ -3,7 +3,10 @@ package ohtu.beddit.io;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import ohtu.beddit.R;
+
+import java.io.IOException;
 
 public class PreferenceService {
 
@@ -45,6 +48,11 @@ public class PreferenceService {
 
     public static String getLastName(Context context){
             return getSettingString(context, R.string.pref_key_last_name);
+    }
+
+    public static int getAlarmLength(Context context){
+        Log.v("integersysteemi", "dis: " + getSettingString(context, R.string.pref_key_alarm_length));
+        return Integer.parseInt(getSettingString(context, R.string.pref_key_alarm_length));
     }
 
     public static String getFullName(Context context){

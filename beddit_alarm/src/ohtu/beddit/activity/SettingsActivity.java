@@ -20,6 +20,7 @@ import ohtu.beddit.io.PreferenceService;
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
     private ListPreference snoozeTimePref;
     private ListPreference sleepStagePref;
+    private ListPreference alarmSoundLenghtPref;
     private Preference forgetButton;
     private Preference advancedButton;
 

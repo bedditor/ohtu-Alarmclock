@@ -49,6 +49,9 @@
     <string name="notification_text">Alarm set at</string>
     <string name="pref_title_user_index">Choose user</string>
 
+    <string name="pref_alarm_length">Alarm length</string>
+    <string name="pref_summary_alarm_length">The alarm will play and vibrate for </string>
+
 
     <string name="loading_dialog_text">Connecting, please wait...</string>
     <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
@@ -73,4 +76,16 @@
     <string name="button_text_ok">Ok</string>
     <string name="sleep_data_fail">Could not get sleep data from beddit</string>
     <string name="could_not_connect">Could not connect to beddit</string>
+
+    <style name="ButtonText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 </resources>
+
+

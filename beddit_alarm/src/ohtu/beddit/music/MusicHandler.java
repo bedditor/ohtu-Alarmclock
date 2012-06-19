@@ -17,23 +17,24 @@ import ohtu.beddit.io.PreferenceService;
  * Time: 10:44
  * To change this template use File | Settings | File Templates.
  */
-public class MusicHandler implements MediaPlayer.OnCompletionListener {
+public class MusicHandler{
 
     private final String TAG = "MusicHandler";
     private MediaPlayer player;
     private Vibrator vibrator;
     private boolean released;
     private long loopStartedAt;
+    private Context context;
 
     private static final float VOLUME_OFF = 0.0f;
     private static final float RINGING_VOLUME = 0.125f;
-    private static final int PLAY_MINUTES = 1;
 
 
-    public MusicHandler(Vibrator vibra) {
+    public MusicHandler(Vibrator vibra, Context cont) {
         player = new MediaPlayer();
         vibrator = vibra;
         released = true;
+        context = cont;
     }
 
     /*
@@ -50,10 +51,9 @@ public class MusicHandler implements MediaPlayer.OnCompletionListener {
         try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_ALARM);
-            player.setLooping(false);
+            player.setLooping(true);
             player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             setReasonableVolume(context);
-            player.setOnCompletionListener(this);
             player.prepare();
             released = false;
             Log.v(TAG, "Initialized MusicPlayer and set music infernally high");
@@ -62,7 +62,6 @@ public class MusicHandler implements MediaPlayer.OnCompletionListener {
         }
 
     }
-
 
     /*
    Returns true if everythings ok.
@@ -147,15 +146,4 @@ public class MusicHandler implements MediaPlayer.OnCompletionListener {
         }
     }
 
-    //@Override
-    public void onCompletion(MediaPlayer mediaplayer){
-        if(System.currentTimeMillis() < loopStartedAt + (60*1000*PLAY_MINUTES)){
-            mediaplayer.seekTo(0);
-            mediaplayer.start();
-            Log.v("Playah", "looping");
-        }else{
-            vibrator.cancel();
-            Log.v("Playah", "un-looping");
-        }
-    }
 }

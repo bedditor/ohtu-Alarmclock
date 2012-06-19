@@ -31,7 +31,8 @@
                   android:layout_height="0dp"
                   android:layout_weight="2"
             >
-        <Button
+        <ohtu.beddit.views.TextScalingButton
+                style="@style/ButtonText"
                 android:id="@+id/setAlarmButton"
                 android:layout_width="0dip"
                 android:layout_weight="1"
@@ -39,7 +40,8 @@
                 android:text="@string/main_act_set_alarm_button"
                 android:background="@drawable/button_set_alarm"
                 />
-        <Button
+        <ohtu.beddit.views.TextScalingButton
+                style="@style/ButtonText"
                 android:id="@+id/deleteAlarmButton"
                 android:layout_width="0dip"
                 android:layout_weight="1"
