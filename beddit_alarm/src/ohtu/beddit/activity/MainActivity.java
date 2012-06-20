@@ -31,8 +31,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private AlarmService alarmService;
     private Toast myToast;
     private AlarmTimePicker alarmTimePicker;
-    private Button addAlarmButton;
-    private Button deleteAlarmButton;
+    private View addAlarmButton;
+    private View deleteAlarmButton;
 
     private static final int DARK_THEME_BACKGROUND = Color.BLACK;
     private static final int DARK_THEME_FOREGROUND = Color.WHITE;
@@ -201,9 +201,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         alarmTimePicker = (CustomTimePicker) this.findViewById(R.id.alarmTimePicker);
         alarmTimePicker.addAlarmTimeChangedListener(this);
 
-        addAlarmButton = (Button) findViewById(R.id.setAlarmButton);
+        addAlarmButton = findViewById(R.id.setAlarmButton);
         addAlarmButton.setOnClickListener(new AlarmSetButtonClickListener());
-        deleteAlarmButton = (Button) findViewById(R.id.deleteAlarmButton);
+        deleteAlarmButton = findViewById(R.id.deleteAlarmButton);
         deleteAlarmButton.setOnClickListener(new AlarmDeleteButtonClickListener());
 
         myToast = Toast.makeText(getBaseContext(), "", Toast.LENGTH_SHORT);
