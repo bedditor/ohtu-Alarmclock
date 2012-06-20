@@ -19,9 +19,7 @@ class BedditJsonParserImpl implements BedditJsonParser {
 
     @Override
     public UserData getUserData(String json) throws BedditException {
-        String editedJson = "{\"users\": " + json + "}";
-        Log.v("JsonParser", editedJson);
-        return getObject(editedJson, UserData.class);
+        return getObject(json, UserData.class);
     }
 
     @Override
@@ -31,6 +29,9 @@ class BedditJsonParserImpl implements BedditJsonParser {
 
     private <T> T getObject(String json, Class<T> type) throws BedditException {
         checkForError(json);
+        if(UserData.class.isAssignableFrom(type)){
+            json = nameTable(json);
+        }
         JsonReader jsonReader = getNewJsonReader(json);
         try{
             Gson gson = new Gson();
@@ -60,6 +61,10 @@ class BedditJsonParserImpl implements BedditJsonParser {
         catch (JsonParseException e){
             throw new InvalidJsonException(e.getMessage());
         }
+    }
+
+    private String nameTable(String json){
+        return "{\"users\": " + json + "}";
     }
 
     private JsonReader getNewJsonReader(String json) {

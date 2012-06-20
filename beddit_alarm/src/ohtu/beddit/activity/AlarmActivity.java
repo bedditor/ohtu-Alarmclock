@@ -101,6 +101,7 @@ public class AlarmActivity extends Activity {
         ShowStopper stopper = new ShowStopper(PreferenceService.getAlarmLength(this), music, vibrator);
         Thread thread = new Thread(stopper);
         thread.start();
+
     }
 
     private void vibratePhone() {
