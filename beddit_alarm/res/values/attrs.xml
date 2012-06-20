@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="MyTextView">
-        <attr name="minSize" format="integer"></attr>
+    <declare-styleable name="TextScaling">
+        <attr name="text_scale_ref" format="string"></attr>
     </declare-styleable>
 </resources>

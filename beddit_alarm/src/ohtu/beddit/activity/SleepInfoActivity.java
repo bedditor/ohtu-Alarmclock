@@ -27,6 +27,7 @@ public class SleepInfoActivity extends Activity {
     private boolean isAnalysisUpToDate;
     private final String TAG = "SleepInfoActivity";
     private LoadingDialog dialog;
+    private SleepInfoLoader sleepInfoLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,14 @@ public class SleepInfoActivity extends Activity {
         dialog.show();
 
         setEventHandlers();
-        new SleepInfoLoader().execute();
+        sleepInfoLoader = new SleepInfoLoader();
+        sleepInfoLoader.execute();
+    }
+
+    @Override
+    public void finish() {
+        if (sleepInfoLoader != null) sleepInfoLoader.cancel(true);
+        super.finish();
     }
 
     private class SleepInfoLoader extends AsyncTask<Void, Void, Integer> {

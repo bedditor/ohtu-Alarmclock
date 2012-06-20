@@ -9,7 +9,7 @@
     <string name="toast_alarmremoved">Alarm removed</string>
     <string name="toast_alarmupdated">Alarm updated</string>
 
-       <string name="main_act_set_alarm_button">&#x1680;&#x1680;&#x1680;&#x1680;Set Alarm&#x1680;&#x1680;</string>
+       <string name="main_act_set_alarm_button">Set Alarm</string>
     <string name="main_act_delete_alarm_button">Unset Alarm</string>
 
     <string name="mainActivity_tokenExpiredDialog_text">Beddit connection expired. Reconnect to Beddit?</string>

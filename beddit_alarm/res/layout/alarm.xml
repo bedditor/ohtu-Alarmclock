@@ -2,6 +2,7 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res/ohtu.beddit"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical"
@@ -15,6 +16,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_dismiss"
+            app:text_scale_ref="@string/alarmActivity_snooze"
             android:background="@drawable/beddit_button"
             />
 
@@ -26,6 +28,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_snooze"
+            app:text_scale_ref="@string/alarmActivity_dismiss"
             android:background="@drawable/beddit_button"
             />
 </LinearLayout>
