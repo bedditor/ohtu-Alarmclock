@@ -29,8 +29,6 @@ class BedditJsonParserImpl implements BedditJsonParser {
         return getObject(json, QueueData.class);
     }
 
-
-
     private <T extends Object> T getObject(String json, Class<T> type) throws BedditException {
         JsonReader jsonReader = getNewJsonReader(json);
         try{
@@ -56,18 +54,14 @@ class BedditJsonParserImpl implements BedditJsonParser {
             }
         } //no error message
         catch (JsonParseException e){
-            throw new InvalidJsonException();
+            throw new InvalidJsonException(e.getMessage());
         }
     }
 
-
     private JsonReader getNewJsonReader(String json){
-
         JsonReader jsonReader = new JsonReader(new StringReader(json));
         jsonReader.setLenient(true);
         return jsonReader;
     }
-
-
 }
 

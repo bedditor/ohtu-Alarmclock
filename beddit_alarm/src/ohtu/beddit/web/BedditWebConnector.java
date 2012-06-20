@@ -57,14 +57,13 @@ public class BedditWebConnector implements BedditConnector {
         }
         catch (Throwable e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            Log.v("testi22", "jee");
-            throw new BedditConnectionException();
+            throw new BedditConnectionException(e.getMessage());
         }
         finally {
             closeConnections(connection, inputStream);
             if(response.equals("")) {
                 Log.v(TAG, "Empty response");
-                throw new BedditConnectionException();
+                throw new BedditConnectionException("Empty response from Beddit");
             }
         }
         return response;
@@ -95,7 +94,7 @@ public class BedditWebConnector implements BedditConnector {
 
         } catch (Throwable e) {
             Log.e(TAG, Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
-            throw new BedditConnectionException();
+            throw new BedditConnectionException(e.getMessage());
         }
         finally {
             closeConnections(connection, inputStream);

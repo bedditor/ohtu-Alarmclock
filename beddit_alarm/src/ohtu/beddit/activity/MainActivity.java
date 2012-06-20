@@ -21,9 +21,11 @@ import ohtu.beddit.alarm.*;
 
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
+import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.UnauthorizedException;
 
@@ -61,12 +63,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         initializeUI();
         checkToken();
-
-        /*testDialog();
-        testDialog();
-        testDialog();
-        testDialog();
-        testDialog();*/
     }
 
     @Override
