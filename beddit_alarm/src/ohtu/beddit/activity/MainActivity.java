@@ -76,16 +76,15 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-        toggleButtonStates();
+    public void onStart(){
+        Log.v(TAG, "onStart");
+        super.onStart();
+
+        updateButtonStates();
         updateColours();
         update24HourMode();
 
-        if (alarmService.isAlarmSet())
-            setClockHands();
-
-        Log.v(TAG, "onResume");
+        setClockHands();
     }
 
     @Override
@@ -93,12 +92,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         Log.v(TAG, "onPause");
 
         super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected void onRestart() {
-        Log.v(TAG, "onRestart");
-        super.onRestart();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
@@ -114,8 +107,14 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
     }
 
     @Override
-    protected void onStart() {
-        Log.v(TAG, "onStart");
+    protected void onRestart() {
+        Log.v(TAG, "onRestart");
+        super.onRestart();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onResume() {
+        Log.v(TAG, "onResume");
         super.onStart();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
@@ -261,7 +260,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         @Override
         public void onClick(View view) {
             alarmService.addAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
-            MainActivity.this.toggleButtonStates();
+            MainActivity.this.updateButtonStates();
             // Tell the user about what we did.
             showMeTheToast(getString(R.string.toast_alarmset));
         }
@@ -271,13 +270,13 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         @Override
         public void onClick(View view) {
             alarmService.deleteAlarm();
-            MainActivity.this.toggleButtonStates();
+            MainActivity.this.updateButtonStates();
             showMeTheToast(getString(R.string.toast_alarmremoved));
         }
     }
 
-    public void toggleButtonStates(){
-        Log.v(TAG, "Buttons toggled");
+    public void updateButtonStates(){
+        Log.v(TAG, "Buttons updates");
         addAlarmButton.setEnabled(!alarmService.isAlarmSet());
         deleteAlarmButton.setEnabled(alarmService.isAlarmSet());
     }
@@ -337,6 +336,26 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
                 DialogUtils.createActivityClosingDialog(this, getString(R.string.must_connect_to_beddit_account), getString(R.string.button_text_close));
                 break;
         }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle bundle) {
+        Log.v(TAG, "onRestoreInstanceState");
+        if (!alarmService.isAlarmSet()) {
+            alarmTimePicker.setMinutes(bundle.getInt("minutes"));
+            alarmTimePicker.setHours(bundle.getInt("hours"));
+            alarmTimePicker.setInterval(bundle.getInt("interval"));
+        }
+        super.onRestoreInstanceState(bundle);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.v(TAG, "onSaveInstanceState");
+        outState.putInt("minutes", alarmTimePicker.getMinutes());
+        outState.putInt("hours", alarmTimePicker.getHours());
+        outState.putInt("interval", alarmTimePicker.getInterval());
+        super.onSaveInstanceState(outState);
     }
 
     //älä poista vielä

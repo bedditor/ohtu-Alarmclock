@@ -11,7 +11,9 @@ import ohtu.beddit.web.BedditException;
  */
 public class InvalidJsonException extends BedditException {
 
-    public InvalidJsonException(){}
+    public InvalidJsonException(){
+        super();
+    }
 
     public InvalidJsonException(String error) {
         super(error);

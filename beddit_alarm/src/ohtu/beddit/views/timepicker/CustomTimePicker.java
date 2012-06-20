@@ -5,6 +5,7 @@ import android.graphics.*;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -23,7 +24,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class CustomTimePicker extends View implements AlarmTimePicker, AnimationFinishedListener {
-    int minSize;
+    private static final String TAG = "CustomTimePicker";
 
     // sizes as a fraction of the clock's radius
     private final static float GRAB_POINT_SIZE = 0.1f;
@@ -39,6 +40,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     private final static double HOUR_INCREMENT = Math.PI / 6.0;
 
     private final static int MAX_INTERVAL = 45;
+    private final static int MINIMUM_SIZE = 100;
 
     private int initialMinutes = 0;
     private int initialHours = 0;
@@ -59,7 +61,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
 
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.minSize = Integer.parseInt(attrs.getAttributeValue("http://schemas.android.com/apk/res/ohtu.beddit", "minSize"));
         initializePaints();
     }
 
@@ -188,7 +189,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
         } else {
-            result = minSize;
+            result = MINIMUM_SIZE;
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
             }
@@ -205,7 +206,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
         } else {
-            result = minSize;
+            result = MINIMUM_SIZE;
             if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
             }
@@ -319,28 +320,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     @Override
     public void addAlarmTimeChangedListener(AlarmTimeChangedListener l) {
         alarmTimeChangedListeners.add(l);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        if (state != null && state instanceof Bundle) {
-            Bundle bundle = (Bundle)state;
-            setMinutes(bundle.getInt("minutes"));
-            setHours(bundle.getInt("hours"));
-            setInterval(bundle.getInt("interval"));
-            super.onRestoreInstanceState(bundle.getParcelable("state"));
-        }
-        super.onRestoreInstanceState(state);
-    }
-
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putInt("minutes", getMinutes());
-        bundle.putInt("hours", getHours());
-        bundle.putInt("interval", getInterval());
-        bundle.putParcelable("state", super.onSaveInstanceState());
-        return bundle;
     }
 
     //</editor-fold>

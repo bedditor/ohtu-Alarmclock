@@ -13,7 +13,6 @@ import java.util.Calendar;
  */
 public class Alarm {
 
-    private long timeInMillis;
     private int interval;
     private boolean enabled;
     private Calendar calendar = Calendar.getInstance();
@@ -24,19 +23,13 @@ public class Alarm {
         this.interval = interval;
         this.enabled = enabled;
         this.calendar = TimeUtils.timeToCalendar(hours, minutes);
-       // this.timeInMillis = calendar.getTimeInMillis();
     }
 
     public Alarm(long timeInMillis, int interval, boolean enabled) {
-        //this.timeInMillis = timeInMillis;
         calendar.setTimeInMillis(timeInMillis);
         this.interval = interval;
         this.enabled = enabled;
     }
-
-    /*private void updateCalendar(){
-        calendar.setTimeInMillis(timeInMillis);
-    }*/
 
     public boolean isEnabled() {
         return enabled;
@@ -59,17 +52,11 @@ public class Alarm {
     }
 
     public void setTimeInMillis(long timeInMillis) {
-        //this.timeInMillis = timeInMillis;
         calendar.setTimeInMillis(timeInMillis);
     }
 
     public Calendar getTimeInCalendar() {
         return calendar;
-    }
-
-    public void setTimeInCalendar(Calendar calendar) {
-        this.calendar = calendar;
-        //this.timeInMillis = calendar.getTimeInMillis();
     }
 
     public int getHours(){

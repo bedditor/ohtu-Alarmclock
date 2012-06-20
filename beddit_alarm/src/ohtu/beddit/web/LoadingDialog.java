@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import ohtu.beddit.R;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,10 +19,12 @@ public class LoadingDialog extends Dialog {
 
     public LoadingDialog(Context context) {
         super(context);
+        setContentView(R.layout.loading_dialog);
     }
 
     public LoadingDialog(Context context, int theme) {
         super(context, theme);
+        setContentView(R.layout.loading_dialog);
     }
 
     protected LoadingDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {

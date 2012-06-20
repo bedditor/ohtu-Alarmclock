@@ -35,7 +35,6 @@ public class SleepInfoActivity extends Activity {
         setContentView(R.layout.sleep_info);
 
         dialog = new LoadingDialog(this, R.style.CustomDialogTheme);
-        dialog.setContentView(R.layout.loading_dialog);
         dialog.show();
 
         setEventHandlers();
