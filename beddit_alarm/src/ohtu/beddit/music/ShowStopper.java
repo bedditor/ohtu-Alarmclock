@@ -25,11 +25,10 @@ public class ShowStopper implements Runnable {
     public void run() {
         try {
             Thread.sleep(1000 * 60 * this.minutes, 0);
-        } catch (InterruptedException i) {
-            Log.v("ShowStopperCrash", Log.getStackTraceString(i));
-        } finally {
             this.musicHandler.release();
             this.vibrator.cancel();
+        } catch (InterruptedException i) {
+            Log.v("ShowStopper", "thread was interrupted");
         }
     }
 }

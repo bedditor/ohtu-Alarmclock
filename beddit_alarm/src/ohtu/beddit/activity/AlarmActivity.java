@@ -30,6 +30,7 @@ public class AlarmActivity extends Activity {
     private final String TAG = "AlarmActivity";
     private MusicHandler music = null;
     private Vibrator vibrator;
+    private Thread showStopperThread;
 
     private static final float DIALOG_HEIGHT = 0.7f;
     private static final float DIALOG_WIDTH = 0.9f;
@@ -60,7 +61,7 @@ public class AlarmActivity extends Activity {
     @Override
     public void finish() {
         Log.v(TAG, "finish");
-
+        showStopperThread.interrupt();
         music.release();          // Alarm has rung and we have closed the dialog. Music is released.
         vibrator.cancel();        // Also no need to vibrate anymore.
         WakeUpLock.release();     // And no need to keep device open.
@@ -99,9 +100,8 @@ public class AlarmActivity extends Activity {
         music.setMusic(this);
         music.play(true);
         ShowStopper stopper = new ShowStopper(PreferenceService.getAlarmLength(this), music, vibrator);
-        Thread thread = new Thread(stopper);
-        thread.start();
-
+        showStopperThread = new Thread(stopper);
+        showStopperThread.start();
     }
 
     private void vibratePhone() {
