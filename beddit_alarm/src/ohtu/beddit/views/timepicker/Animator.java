@@ -13,14 +13,11 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class Animator implements Runnable {
-
-    private static final String TAG = "Animator";
-
-    private View parent;
-    private int sleepTime;
+    private final View parent;
+    private final int sleepTime;
     int target;
-    Movable movable;
-    private List<AnimationFinishedListener> animationFinishedListeners = new LinkedList<AnimationFinishedListener>();
+    final Movable movable;
+    private final List<AnimationFinishedListener> animationFinishedListeners = new LinkedList<AnimationFinishedListener>();
 
     public Animator(View parent, int sleepTime, int target, Movable movable) {
         this.parent = parent;

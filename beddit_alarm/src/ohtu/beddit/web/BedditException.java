@@ -2,7 +2,7 @@ package ohtu.beddit.web;
 
 public class BedditException extends Exception {
 
-    public BedditException() {
+    protected BedditException() {
         super();
     }
 

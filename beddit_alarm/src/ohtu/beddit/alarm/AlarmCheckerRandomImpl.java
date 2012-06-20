@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 public class AlarmCheckerRandomImpl implements AlarmChecker {
-    private double wakeUpChance;
+    private final double wakeUpChance;
 
     public AlarmCheckerRandomImpl(double wakeUpChance) {
         this.wakeUpChance = wakeUpChance;

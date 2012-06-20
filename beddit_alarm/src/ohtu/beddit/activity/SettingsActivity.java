@@ -144,7 +144,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         }
     }
 
-    public void showDisconnectDialog() {
+    void showDisconnectDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.disconnect_dialog_message));
         builder.setCancelable(true);

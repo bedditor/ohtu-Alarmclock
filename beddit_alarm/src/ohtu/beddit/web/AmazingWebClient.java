@@ -21,9 +21,9 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class AmazingWebClient extends WebViewClient {
-    private List<UrlListener> listeners = new LinkedList<UrlListener>();
-    private LoadingDialog dialog;
-    private String[] blacklist = {"http://www.beddit.com/",
+    private final List<UrlListener> listeners = new LinkedList<UrlListener>();
+    private final LoadingDialog dialog;
+    private final String[] blacklist = {"http://www.beddit.com/",
             "https://www.beddit.com/login",
             "http://www.beddit.com/sleep",
             "https://api.beddit.com/reset_password",
@@ -62,10 +62,8 @@ public class AmazingWebClient extends WebViewClient {
             l.onUrlReceived(url);
 
         Pattern isRedirect = Pattern.compile("^\\Q" + AuthActivity.REDIRECT_URI + "\\E.+");
-        if (isRedirect.matcher(url).matches())
-            return true;
+        return isRedirect.matcher(url).matches();
 
-        return false;
     }
 
     @Override

@@ -14,8 +14,8 @@ import java.util.Calendar;
 public class ApiControllerClassImpl implements ApiController {
     private static final String TAG = "ApiController";
 
-    private static BedditJsonParser jsonParser = new BedditJsonParserImpl();
-    private BedditConnector bedditConnector;
+    private static final BedditJsonParser jsonParser = new BedditJsonParserImpl();
+    private final BedditConnector bedditConnector;
     private static String userJson = null;
     private static String sleepJson = null;
     private static String queueJson = null;

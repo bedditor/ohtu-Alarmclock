@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AuthActivity extends Activity implements UrlListener {
-    WebView webview;
+    private WebView webview;
     private final String TAG = "AuthActivity";
     private FileHandler fileHandler;
 

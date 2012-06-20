@@ -14,13 +14,15 @@ import android.graphics.RectF;
  */
 public class AnalogClock implements ValueChangedListener {
 
-    private float x;
-    private float y;
-    private float radius;
-    private ClockHand minuteHand;
-    private ClockHand hourHand;
+    private final float x;
+    private final float y;
+    private final float radius;
+    private final ClockHand minuteHand;
+    private final ClockHand hourHand;
     private int interval;
-    Paint intervalArcPaint, backgroundPaint, linePaint;
+    private final Paint intervalArcPaint;
+    private final Paint backgroundPaint;
+    private final Paint linePaint;
 
 
     public AnalogClock(float x, float y, float radius,

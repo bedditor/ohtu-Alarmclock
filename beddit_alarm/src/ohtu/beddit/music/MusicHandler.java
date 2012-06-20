@@ -19,7 +19,7 @@ import ohtu.beddit.io.PreferenceService;
 public class MusicHandler {
 
     private final String TAG = "MusicHandler";
-    private MediaPlayer player;
+    private final MediaPlayer player;
     private boolean released;
 
     private static final float VOLUME_OFF = 0.0f;
@@ -61,7 +61,7 @@ public class MusicHandler {
    Returns true if everything is ok.
     */
     //TODO: Make this more sane (do actual check if the music we are playing can be found (memory card) and basic null check)
-    public boolean insanityCheck() {
+    boolean insanityCheck() {
         return !released;
     }
 

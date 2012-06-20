@@ -16,16 +16,16 @@ public class FileHandler {
 
     private static final String TAG = "FileHandler";
 
-    public static final String ALARMS_FILENAME = "beddit_alarms";
+    private static final String ALARMS_FILENAME = "beddit_alarms";
     public static final String CLIENT_ID = "client_id";
     public static final String CLIENT_SECRET = "client_secret";
-    private Context context;
+    private final Context context;
 
     public FileHandler(Context context) {
         this.context = context.getApplicationContext();
     }
 
-    public boolean writeToFile(String filename, String writable) {
+    boolean writeToFile(String filename, String writable) {
         try {
             FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
             fos.write(writable.getBytes());
@@ -37,7 +37,7 @@ public class FileHandler {
         return true;
     }
 
-    public String readStringFromFile(String filename) {
+    String readStringFromFile(String filename) {
         try {
             Scanner scanner = new Scanner(context.openFileInput(filename));
             return scanner.nextLine();
@@ -75,7 +75,7 @@ public class FileHandler {
             alarm.setTimeInMillis(Long.parseLong(alarmData[1]));
             alarm.setInterval(Integer.parseInt(alarmData[2]));
         } catch (Exception e) { //Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
-            Log.v("Exception", e.getMessage());
+            Log.v(TAG, e.getMessage());
             saveDefaultAlarm();
         }
         return alarm;
@@ -95,7 +95,7 @@ public class FileHandler {
                 json += scanner.next();
             }
         } catch (Exception e) {
-            Log.v("Filehandler", "File not found");
+            Log.v(TAG, "File not found");
             return "";
         }
         return new JsonParser().parse(json).getAsJsonObject().get(request).getAsString();

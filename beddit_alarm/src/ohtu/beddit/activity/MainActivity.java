@@ -40,10 +40,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private static final int LIGHT_THEME_FOREGROUND = Color.BLACK;
     private static final int BEDDIT_ORANGE = Color.argb(255, 255, 89, 0);
 
-    public static final int FROM_AUTHENTICATION = 2;
-    public static final int FROM_SETTINGS = 3;
-    public static final int FROM_SLEEP_INFO = 4;
-    public static final int FROM_HELP = 5;
+    private static final int FROM_AUTHENTICATION = 2;
+    private static final int FROM_SETTINGS = 3;
+    private static final int FROM_SLEEP_INFO = 4;
+    private static final int FROM_HELP = 5;
 
     /**
      * Called when the alarm is first created.
@@ -246,7 +246,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         });
     }
 
-    public class AlarmSetButtonClickListener implements OnClickListener {
+    private class AlarmSetButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
             alarmService.addAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
@@ -256,7 +256,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         }
     }
 
-    public class AlarmDeleteButtonClickListener implements OnClickListener {
+    private class AlarmDeleteButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
             alarmService.deleteAlarm();
@@ -265,7 +265,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         }
     }
 
-    public void updateButtonStates() {
+    void updateButtonStates() {
         Log.v(TAG, "Buttons updates");
         addAlarmButton.setEnabled(!alarmService.isAlarmSet());
         deleteAlarmButton.setEnabled(alarmService.isAlarmSet());

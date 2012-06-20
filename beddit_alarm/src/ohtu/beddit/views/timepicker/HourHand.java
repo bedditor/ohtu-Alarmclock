@@ -17,7 +17,7 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
 
     private static final int DEFAULT_MOVE_SPEED = 20;
     private int minuteValue = 0;
-    List<HourChangedListener> listeners = new LinkedList<HourChangedListener>();
+    private final List<HourChangedListener> listeners = new LinkedList<HourChangedListener>();
 
     public HourHand(float x, float y, int value, double incrementSize, float length, Paint p,
                     float grabPointSize, View parent) {

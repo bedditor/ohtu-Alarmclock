@@ -9,17 +9,17 @@ import android.view.View;
  * Time: 9:42
  * To change this template use File | Settings | File Templates.
  */
-public abstract class Movable {
+abstract class Movable {
 
-    protected View parent;
+    final View parent;
 
-    public Movable(View parent) {
+    Movable(View parent) {
         this.parent = parent;
     }
 
     public abstract int getValue();
 
-    public abstract void incrementValue(int inc);
+    protected abstract void incrementValue(int inc);
 
     public abstract boolean grab(float x, float y);
 

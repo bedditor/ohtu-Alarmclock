@@ -16,7 +16,7 @@ import java.util.List;
 public class MinuteHand extends ClockHand {
 
     private static final int DEFAULT_MOVE_SPEED = 20;
-    private ClockHand hourHand;
+    private final ClockHand hourHand;
 
     public MinuteHand(float x, float y, int value, double incrementSize, float length, Paint p,
                       float grabPointSize, View parent, ClockHand hourHand) {
@@ -24,7 +24,7 @@ public class MinuteHand extends ClockHand {
         this.hourHand = hourHand;
     }
 
-    List<MinuteChangedListener> listeners = new LinkedList<MinuteChangedListener>();
+    private final List<MinuteChangedListener> listeners = new LinkedList<MinuteChangedListener>();
 
     public void addListener(MinuteChangedListener listener) {
         listeners.add(listener);

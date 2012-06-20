@@ -44,15 +44,15 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     private boolean enabled = true;
     private boolean is24Hour = true;
 
-    private List<AlarmTimeChangedListener> alarmTimeChangedListeners = new LinkedList<AlarmTimeChangedListener>();
+    private final List<AlarmTimeChangedListener> alarmTimeChangedListeners = new LinkedList<AlarmTimeChangedListener>();
 
-    Slider intervalSlider;
-    AnalogClock analogClock;
-    TimeDisplay timeDisplay;
-    MinuteHand minuteHand;
-    HourHand hourHand;
+    private Slider intervalSlider;
+    private AnalogClock analogClock;
+    private TimeDisplay timeDisplay;
+    private MinuteHand minuteHand;
+    private HourHand hourHand;
 
-    List<Movable> movables = new LinkedList<Movable>();
+    private final List<Movable> movables = new LinkedList<Movable>();
 
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -105,11 +105,11 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         }
     }
 
-    Paint linePaint = new Paint();
-    Paint timePaint = new Paint();
-    Paint clockFaceLinePaint = new Paint();
-    Paint backgroundPaint = new Paint();
-    Paint intervalArcPaint = new Paint();
+    private final Paint linePaint = new Paint();
+    private final Paint timePaint = new Paint();
+    private final Paint clockFaceLinePaint = new Paint();
+    private final Paint backgroundPaint = new Paint();
+    private final Paint intervalArcPaint = new Paint();
 
     private void initializePaints() {
 

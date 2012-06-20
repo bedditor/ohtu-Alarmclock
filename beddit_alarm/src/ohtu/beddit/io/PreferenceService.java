@@ -7,6 +7,7 @@ import android.util.Log;
 import ohtu.beddit.R;
 
 public class PreferenceService {
+    private static final String TAG = "PreferenceService";
 
     private static boolean getSettingBoolean(Context context, int settingId) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -33,16 +34,16 @@ public class PreferenceService {
         return getSettingString(context, R.string.pref_key_username);
     }
 
-    public static String getFirstName(Context context) {
+    private static String getFirstName(Context context) {
         return getSettingString(context, R.string.pref_key_first_name);
     }
 
-    public static String getLastName(Context context) {
+    private static String getLastName(Context context) {
         return getSettingString(context, R.string.pref_key_last_name);
     }
 
     public static int getAlarmLength(Context context) {
-        Log.v("integersysteemi", "dis: " + getSettingString(context, R.string.pref_key_alarm_length));
+        Log.v(TAG, "dis: " + getSettingString(context, R.string.pref_key_alarm_length));
         return Integer.parseInt(getSettingString(context, R.string.pref_key_alarm_length));
     }
 

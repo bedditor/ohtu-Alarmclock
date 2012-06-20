@@ -18,7 +18,7 @@ public class MultiLineCheckBox extends CheckBoxPreference {
         makeMultiLine(view);
     }
 
-    protected void makeMultiLine(View view) {
+    void makeMultiLine(View view) {
         if (view instanceof ViewGroup) {
             ViewGroup grp = (ViewGroup) view;
             for (int index = 0; index < grp.getChildCount(); index++) {

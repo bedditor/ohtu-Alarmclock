@@ -12,8 +12,6 @@ public class AdvancedSettingsActivity extends PreferenceActivity implements Shar
     private ListPreference colourThemePref;
     private ListPreference alarmSoundLengthPref;
 
-    private static final String TAG = "AdvancedSettingsActivity";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -14,10 +14,10 @@ import java.util.Calendar;
 public class AlarmServiceImpl implements AlarmService {
 
     private final String TAG = "Alarm Service";
-    private AlarmManager alarmManager;
-    private FileHandler fileHandler;
-    private Context context;
-    private NotificationFactory notificationFactory;
+    private final AlarmManager alarmManager;
+    private final FileHandler fileHandler;
+    private final Context context;
+    private final NotificationFactory notificationFactory;
     private static Alarm alarm;
 
     public AlarmServiceImpl(Context context) {

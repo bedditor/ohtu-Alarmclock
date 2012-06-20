@@ -12,17 +12,17 @@ import android.view.View;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class ClockHand extends Movable {
-    protected float x;
-    protected float y;
-    protected float length;
-    protected Paint p;
-    protected GrabPoint gp;
-    protected double incrementSize;
-    protected int value;
+    private final float x;
+    private final float y;
+    private final float length;
+    private final Paint p;
+    private final GrabPoint gp;
+    final double incrementSize;
+    int value;
 
-    public ClockHand(float x, float y,
-                     int value, double incrementSize,
-                     float length, Paint p, float grabPointSize, View parent) {
+    ClockHand(float x, float y,
+              int value, double incrementSize,
+              float length, Paint p, float grabPointSize, View parent) {
         super(parent);
         this.x = x;
         this.y = y;
@@ -53,8 +53,8 @@ public abstract class ClockHand extends Movable {
         p.setStyle(Paint.Style.STROKE);
     }
 
-    boolean grabbed = false;
-    boolean clicked = false;
+    private boolean grabbed = false;
+    private boolean clicked = false;
 
     @Override
     public boolean grab(float x, float y) {
@@ -103,7 +103,7 @@ public abstract class ClockHand extends Movable {
 
     public abstract double getAngle();
 
-    public abstract void setAngle(double angle);
+    protected abstract void setAngle(double angle);
 
     public abstract void incrementValue(int increment);
 
@@ -111,20 +111,20 @@ public abstract class ClockHand extends Movable {
         this.value = newValue;
     }
 
-    public double getAngleToMidpoint(float x_, float y_) {
+    double getAngleToMidpoint(float x_, float y_) {
         double angle = Math.atan((y_ - y) / (x_ - x)) + Math.PI / 2;
         if (x_ - x < 0) angle += Math.PI;
         return angle;
     }
 
-    public static double angleDiff(double a1, double a2) {
+    static double angleDiff(double a1, double a2) {
         double diff = a2 - a1;
         if (diff < -Math.PI) diff += Math.PI * 2;
         else if (diff > Math.PI) diff -= Math.PI * 2;
         return diff;
     }
 
-    public static double dist(float x1, float y1, float x2, float y2) {
+    private static double dist(float x1, float y1, float x2, float y2) {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 

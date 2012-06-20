@@ -11,11 +11,11 @@ import android.graphics.Paint;
  * To change this template use File | Settings | File Templates.
  */
 public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
-    private float x;
-    private float y;
+    private final float x;
+    private final float y;
     private int hours;
     private int minutes;
-    private Paint p;
+    private final Paint p;
     private boolean is24Hour;
 
     public TimeDisplay(float x, float y, Paint p, boolean is24Hour) {

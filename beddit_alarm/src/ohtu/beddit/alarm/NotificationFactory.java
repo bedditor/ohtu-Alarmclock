@@ -11,8 +11,8 @@ import ohtu.beddit.utils.TimeUtils;
 
 public class NotificationFactory {
 
-    private Context context;
-    private NotificationManager notificationManager;
+    private final Context context;
+    private final NotificationManager notificationManager;
     private static final int ID = 1;
 
     public NotificationFactory(Context context) {

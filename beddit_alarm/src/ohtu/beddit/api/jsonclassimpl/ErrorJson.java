@@ -7,7 +7,7 @@ package ohtu.beddit.api.jsonclassimpl;
  * Time: 12:49
  * To change this template use File | Settings | File Templates.
  */
-public class ErrorJson {
+class ErrorJson {
     private String error_message;
     private String error;
 

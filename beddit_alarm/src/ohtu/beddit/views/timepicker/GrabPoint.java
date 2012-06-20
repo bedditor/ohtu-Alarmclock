@@ -13,8 +13,8 @@ import android.graphics.Paint;
 public class GrabPoint {
     private float x;
     private float y;
-    private float radius;
-    private Paint p;
+    private final float radius;
+    private final Paint p;
     private static final int COLOR_ALPHA = 64;
 
     public GrabPoint(float x, float y, float radius, Paint p) {

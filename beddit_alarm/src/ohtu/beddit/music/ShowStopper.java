@@ -11,9 +11,9 @@ import android.util.Log;
  * To change this template use File | Settings | File Templates.
  */
 public class ShowStopper implements Runnable {
-    private int minutes;
-    private MusicHandler musicHandler;
-    private Vibrator vibrator;
+    private final int minutes;
+    private final MusicHandler musicHandler;
+    private final Vibrator vibrator;
 
     public ShowStopper(int min, MusicHandler music, Vibrator vibrator) {
         this.minutes = min;

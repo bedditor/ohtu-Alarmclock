@@ -19,15 +19,15 @@ public class Slider extends Movable {
 
     private static final int DEFAULT_MOVE_SPEED = 5;
 
-    private float x;
-    private float y;
-    private float w;
-    private float h;
-    private int maxValue;
+    private final float x;
+    private final float y;
+    private final float w;
+    private final float h;
+    private final int maxValue;
     private int currentValue;
 
-    private Paint p;
-    private GrabPoint gp;
+    private final Paint p;
+    private final GrabPoint gp;
 
 
     public Slider(float x, float y, float width, float height,
@@ -45,13 +45,13 @@ public class Slider extends Movable {
                 getRectF().centerY(), grabPointSize, p);
     }
 
-    List<ValueChangedListener> listeners = new LinkedList<ValueChangedListener>();
+    private final List<ValueChangedListener> listeners = new LinkedList<ValueChangedListener>();
 
     public void addListener(ValueChangedListener listener) {
         listeners.add(listener);
     }
 
-    public RectF getRectF() {
+    RectF getRectF() {
         return new RectF(x, y, x + w, y + h);
     }
 
