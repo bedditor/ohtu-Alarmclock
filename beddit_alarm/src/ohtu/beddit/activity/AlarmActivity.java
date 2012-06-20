@@ -18,6 +18,7 @@ import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.WakeUpLock;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.music.MusicHandler;
+import ohtu.beddit.music.ShowStopper;
 //import ohtu.beddit.music.ShowStopper;
 
 import java.util.Calendar;
@@ -103,9 +104,9 @@ public class AlarmActivity extends Activity {
         music = new MusicHandler(vibrator, this);
         music.setMusic(this);
         music.play(true);
-        //ShowStopper stopper = new ShowStopper(PreferenceService.getAlarmLength(this),music, vibrator );
-        //Thread thread = new Thread(stopper);
-        //thread.start();
+        ShowStopper stopper = new ShowStopper(PreferenceService.getAlarmLength(this),music, vibrator );
+        Thread thread = new Thread(stopper);
+        thread.start();
     }
 
     private void vibratePhone() {
