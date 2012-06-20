@@ -164,7 +164,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         Log.v(TAG, "Validating token");
         try {
             ApiController apiController = new ApiControllerClassImpl();
-            apiController.updateUserInfo(this);
+            apiController.updateUserData(this);
             String username = apiController.getUsername(this, 0);
             PreferenceService.setUsername(this, username);
         }

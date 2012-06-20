@@ -94,7 +94,7 @@ public class AuthActivity extends Activity implements UrlListener {
         Log.v(TAG, "saving user data");
         try{
             ApiController apiController = new ApiControllerClassImpl();
-            apiController.updateUserInfo(this); //updates the info in apicontroller for lines below:
+            apiController.updateUserData(this); //updates the info in apicontroller for lines below:
             PreferenceService.setUsername(this, apiController.getUsername(this, 0));
             PreferenceService.setFirstName(this, apiController.getFirstName(this, 0));
             PreferenceService.setLastName(this, apiController.getLastName(this, 0));

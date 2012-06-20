@@ -7,7 +7,7 @@ package ohtu.beddit.api.jsonclassimpl;
  * Time: 10:47
  * To change this template use File | Settings | File Templates.
  */
-class Users extends JsonObject {
+class UserData {
     private User[] users;
 
     public int getUsercount(){

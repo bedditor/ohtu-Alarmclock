@@ -13,15 +13,15 @@ class BedditJsonParserImpl implements BedditJsonParser {
     private static final String TAG = "BedditJsonParser";
 
     @Override
-    public Night getNight(String json) throws BedditException {
-        return getObject(json, Night.class);
+    public SleepData getSleepData(String json) throws BedditException {
+        return getObject(json, SleepData.class);
     }
 
     @Override
-    public Users getUsers(String json) throws BedditException {
+    public UserData getUserData(String json) throws BedditException {
         String editedJson = "{\"users\": "+json+"}";
         Log.v("JsonParser",editedJson);
-        return getObject(editedJson, Users.class);
+        return getObject(editedJson, UserData.class);
     }
 
     @Override
@@ -31,7 +31,7 @@ class BedditJsonParserImpl implements BedditJsonParser {
 
 
 
-    private <T extends JsonObject> T getObject(String json, Class<T> type) throws BedditException {
+    private <T extends Object> T getObject(String json, Class<T> type) throws BedditException {
         JsonReader jsonReader = getNewJsonReader(json);
         try{
             Gson gson = new Gson();
@@ -67,6 +67,7 @@ class BedditJsonParserImpl implements BedditJsonParser {
         jsonReader.setLenient(true);
         return jsonReader;
     }
+
 
 }
 

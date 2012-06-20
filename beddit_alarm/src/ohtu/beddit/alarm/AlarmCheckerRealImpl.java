@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
-import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
@@ -27,7 +25,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
         int minutes = 2;
         long atMostMillisOld = 1000 * 60 * minutes;
         try{
-            api.updateQueueInfo(context);
+            api.updateQueueData(context);
             Calendar nao = Calendar.getInstance();
             Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed(context);
             Calendar updateUpTo = api.getSleepAnalysisResultsUpTo(context);
@@ -45,7 +43,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
             Log.v("apidapi", "Time difference from analysis (minutes): "+analysisdifference/60/1000);
             Log.v("apidapi", "Time difference from queued (minutes): "+queuedifference/60/1000);
             if(analysisdifference < atMostMillisOld || queuedifference < atMostMillisOld){//should only use analysisdifference in final version
-                api.updateSleepInfo(context);
+                api.updateSleepData(context);
                 Log.v("apidapi", "sleepstage: "+api.getLastSleepStage(context));
                 char[] sleepStages = getWakeUpSleepStages(context);
                 for (int i = 0; i< sleepStages.length; i++){

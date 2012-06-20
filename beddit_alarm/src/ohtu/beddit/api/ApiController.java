@@ -16,11 +16,11 @@ import java.util.Calendar;
  * To change this template use File | Settings | File Templates.
  */
 public interface ApiController {
-    void updateUserInfo(Context context) throws BedditException;
+    void updateUserData(Context context) throws BedditException;
 
-    void updateSleepInfo(Context context) throws BedditException;
+    void updateSleepData(Context context) throws BedditException;
 
-    void updateQueueInfo(Context context) throws BedditException;
+    void updateQueueData(Context context) throws BedditException;
 
     void requestInfoUpdate(Context context) throws BedditException;
 
@@ -49,7 +49,7 @@ public interface ApiController {
 
     String getLocalAnalyzedUpToTime(Context context) throws BedditException;
 
-    boolean sleepInfoOutdated();
+    boolean isSleepInfoOutdated();
 
 
     boolean getIsAnalysisUpToDate(Context context) throws BedditException;

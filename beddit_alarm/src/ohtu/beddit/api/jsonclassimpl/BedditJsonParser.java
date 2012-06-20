@@ -5,9 +5,9 @@ import ohtu.beddit.web.UnauthorizedException;
 
 interface BedditJsonParser {
 
-    Night getNight(String json) throws BedditException, UnauthorizedException;
+    SleepData getSleepData(String json) throws BedditException, UnauthorizedException;
 
-    Users getUsers(String json) throws BedditException, UnauthorizedException;
+    UserData getUserData(String json) throws BedditException, UnauthorizedException;
 
     QueueData getQueueData(String json) throws BedditException, UnauthorizedException;
 }

@@ -14,7 +14,7 @@ import java.util.Calendar;
  * Time: 13:43
  * To change this template use File | Settings | File Templates.
  */
-class Night extends JsonObject{
+class SleepData {
     private String date;
     private int time_sleeping;
     private int time_deep_sleep;

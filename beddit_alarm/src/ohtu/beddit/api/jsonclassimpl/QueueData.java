@@ -11,7 +11,7 @@ import java.util.Calendar;
  * Time: 11:02
  * To change this template use File | Settings | File Templates.
  */
-class QueueData extends JsonObject {
+class QueueData {
     private String results_available_up_to;
     private String sleep_analysis_status;
     private String results_available_up_to_when_sleep_analyzed;
