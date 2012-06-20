@@ -60,6 +60,13 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         initializeUI();
         checkToken();
+
+
+        /*testDialog();
+        testDialog();
+        testDialog();
+        testDialog();*/
+
     }
 
     @Override
@@ -348,6 +355,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         super.onSaveInstanceState(outState);
     }
 
+
+    //älä poista vielä
     public void testDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Spam api requests:");
