@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.*;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import ohtu.beddit.R;
-import ohtu.beddit.io.FileHandler;
-import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.io.FileHandler;
+import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.*;
 
 import java.util.regex.Matcher;
@@ -42,47 +45,46 @@ public class AuthActivity extends Activity implements UrlListener {
     @Override
     public void onUrlReceived(String url) {
         // Seeing if we got the right url
-        Matcher code = Pattern.compile("\\Q"+REDIRECT_URI+"/oauth?code=\\E(.+)").matcher(url);
-        Matcher error = Pattern.compile("\\Q"+REDIRECT_URI+"/oauth?error=\\E(.+)").matcher(url);
+        Matcher code = Pattern.compile("\\Q" + REDIRECT_URI + "/oauth?code=\\E(.+)").matcher(url);
+        Matcher error = Pattern.compile("\\Q" + REDIRECT_URI + "/oauth?error=\\E(.+)").matcher(url);
 
         Log.v(TAG, "Trying to match url: " + url);
         if (code.matches()) {
-            Log.v(TAG, "Code: "+code.group(1));
+            Log.v(TAG, "Code: " + code.group(1));
             // We got the right url so we construct our https get url and give it to BedditConnector which will get the access token by https connection
             url = "https://api.beddit.com/api/oauth/access_token?client_id=" +
                     fileHandler.getClientInfo(FileHandler.CLIENT_ID) +
-                    "&redirect_uri="+REDIRECT_URI+"/oauth&client_secret=" +
+                    "&redirect_uri=" + REDIRECT_URI + "/oauth&client_secret=" +
                     fileHandler.getClientInfo(FileHandler.CLIENT_SECRET) +
-                    "&grant_type=code&code="+code.group(1);
+                    "&grant_type=code&code=" + code.group(1);
 
             // If we get error, well you shouldn't. We close the program because we won't get correct access_token. Breaks other code?
-            try{
+            try {
                 BedditConnector bedditConnector = new BedditWebConnector();
                 String token = bedditConnector.getAccessToken(url);
-                Log.v(TAG, "result: "+token);
+                Log.v(TAG, "result: " + token);
                 // We put the correct access token to safe and be happy. User is allowed to use the program now.
                 PreferenceService.setToken(this, token);
                 saveUserData();
                 finish();
-            } catch (BedditConnectionException e){
+            } catch (BedditConnectionException e) {
                 Log.v(TAG, "BedditConnectionException in onUrlReceived");
                 fail(false);
             }
         }
         // If user doesn't allow the program to access, we simply terminate the program.
         else if (error.matches()) {
-            Log.v(TAG, "Error: "+error.group(1));
+            Log.v(TAG, "Error: " + error.group(1));
             fail(true);
         }
     }
 
-    private void fail(boolean cancelledByUser){
+    private void fail(boolean cancelledByUser) {
         Log.v(TAG, "fail called");
         Intent resultIntent = new Intent((String) null);
-        if(cancelledByUser){
+        if (cancelledByUser) {
             setResult(RESULT_CANCELLED, resultIntent);
-        }
-        else {
+        } else {
             setResult(RESULT_FAILED, resultIntent);
         }
         finish();
@@ -90,14 +92,13 @@ public class AuthActivity extends Activity implements UrlListener {
 
     private void saveUserData() {
         Log.v(TAG, "saving user data");
-        try{
+        try {
             ApiController apiController = new ApiControllerClassImpl();
-            apiController.updateUserData(this); //updates the info in apicontroller for lines below:
+            apiController.updateUserData(this); //updates the info in api controller for lines below:
             PreferenceService.setUsername(this, apiController.getUsername(this));
             PreferenceService.setFirstName(this, apiController.getFirstName(this));
             PreferenceService.setLastName(this, apiController.getLastName(this));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.v(TAG, "saving user data failed");
             fail(false);
         }
@@ -125,14 +126,14 @@ public class AuthActivity extends Activity implements UrlListener {
     }
 
     private void openAuthBrowser() {
-        // Initialize the webclient and open it to this webview.
+        // Initialize the webClient
         AmazingWebClient client = new AmazingWebClient(this);
         client.addUrlListener(this);
         webview.setWebViewClient(client);
         Log.v(TAG, fileHandler.getClientInfo(FileHandler.CLIENT_ID) + " secret: " + fileHandler.getClientInfo(FileHandler.CLIENT_SECRET));
         webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id=" +
                 fileHandler.getClientInfo(FileHandler.CLIENT_ID) +
-                "&redirect_uri="+REDIRECT_URI+"/oauth&response_type=code");
+                "&redirect_uri=" + REDIRECT_URI + "/oauth&response_type=code");
     }
 
     private void removeCookies() {

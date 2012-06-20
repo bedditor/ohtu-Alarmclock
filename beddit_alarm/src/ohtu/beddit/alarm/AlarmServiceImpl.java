@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.utils.TimeUtils;
 
@@ -18,32 +17,32 @@ public class AlarmServiceImpl implements AlarmService {
     private AlarmManager alarmManager;
     private FileHandler fileHandler;
     private Context context;
-    private NotificationFactory notfFactory;
+    private NotificationFactory notificationFactory;
     private static Alarm alarm;
 
-    public AlarmServiceImpl(Context context){
+    public AlarmServiceImpl(Context context) {
         this.context = context.getApplicationContext();
-        this.alarmManager = (AlarmManager) this.context.getSystemService(context.ALARM_SERVICE);
+        this.alarmManager = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
         this.fileHandler = new FileHandler(this.context);
-        this.notfFactory = new NotificationFactory(this.context);
-        this.alarm = getAlarmFromFile();
+        this.notificationFactory = new NotificationFactory(this.context);
+        alarm = getAlarmFromFile();
     }
 
-    public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler, NotificationFactory notfFactory) {
+    public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler, NotificationFactory notificationFactory) {
         this.context = context.getApplicationContext();
         this.alarmManager = alarmManager;
         this.fileHandler = filehandler;
-        this.notfFactory = notfFactory;
-        this.alarm = getAlarmFromFile();
+        this.notificationFactory = notificationFactory;
+        alarm = getAlarmFromFile();
     }
 
     //this method saves a new alarm with an interval
     @Override
-    public Alarm addAlarm(int hours, int minutes, int interval){
+    public Alarm addAlarm(int hours, int minutes, int interval) {
         alarm = fileHandler.saveAlarm(hours, minutes, interval, true);
-        if(alarm.isEnabled()){ //write succeeded
+        if (alarm.isEnabled()) { //write succeeded
             Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
-            notfFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), hours, minutes);
+            notificationFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), hours, minutes);
             addWakeUpAttempt(calendar);
             Log.v(TAG, "Adding alarm failed");
         }
@@ -51,18 +50,18 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public void changeAlarm(int hours, int minutes, int interval){
-        if (alarm.isEnabled()){
+    public void changeAlarm(int hours, int minutes, int interval) {
+        if (alarm.isEnabled()) {
             alarm = addAlarm(hours, minutes, interval);
         }
     }
 
     //this method sets alarm manager to try wake up on given time
-    public void addWakeUpAttempt(Calendar time){
+    public void addWakeUpAttempt(Calendar time) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
         String timeString = time.get(Calendar.HOUR_OF_DAY) + ":" + time.get(Calendar.MINUTE) + ":" + time.get(Calendar.SECOND);
-        Log.v(TAG, "next wake up try set to "+timeString);
+        Log.v(TAG, "next wake up try set to " + timeString);
         alarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), sender);
     }
 
@@ -72,14 +71,13 @@ public class AlarmServiceImpl implements AlarmService {
         alarmTime.add(Calendar.MINUTE, -interval);
 
         Calendar currentTime = Calendar.getInstance();
-        if(alarmTime.after(currentTime)){
+        if (alarmTime.after(currentTime)) {
             return alarmTime;
-        }
-        else return currentTime;
+        } else return currentTime;
     }
 
     @Override
-    public void deleteAlarm(){
+    public void deleteAlarm() {
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
@@ -87,11 +85,11 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.cancel(sender);
         fileHandler.disableAlarm();
 
-        notfFactory.resetNotification();
+        notificationFactory.resetNotification();
         alarm.setEnabled(false);
     }
 
-    public boolean isAlarmSet(){
+    public boolean isAlarmSet() {
         return alarm.isEnabled();
     }
 
@@ -115,7 +113,7 @@ public class AlarmServiceImpl implements AlarmService {
         return alarm;
     }
 
-    private Alarm getAlarmFromFile(){
+    private Alarm getAlarmFromFile() {
         return fileHandler.getAlarm();
     }
 

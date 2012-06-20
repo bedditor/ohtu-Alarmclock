@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_horizontal"
-                android:background="#F1F4F3">
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_centerHorizontal="true"
+              android:gravity="center_horizontal"
+              android:background="#F1F4F3">
     <TextView android:id="@+id/sleep_info_title"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
               android:textSize="46sp"
               android:textStyle="bold"
               android:textColor="#4D665C"
-              />
+            />
 
     <RelativeLayout
             android:id="@+id/sleep_info_box"

@@ -13,19 +13,19 @@
                 android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="@string/pref_title_alarm_settings">
+            android:title="@string/pref_title_alarm_settings">
         <ListPreference
                 android:title="@string/pref_title_snooze_length"
                 android:key="@string/pref_key_snooze"
                 android:defaultValue="5"
                 android:entries="@array/snoozeArrayTitles"
-                android:entryValues="@array/snoozeArrayValues" />
+                android:entryValues="@array/snoozeArrayValues"/>
         <ListPreference
                 android:title="@string/pref_title_wake_up_sleep_stage"
                 android:key="@string/pref_key_wake_up_sleep_stage"
                 android:defaultValue="L"
                 android:entries="@array/sleepStageArrayTitles"
-                android:entryValues="@array/sleepStageArrayValues" />
+                android:entryValues="@array/sleepStageArrayValues"/>
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/pref_title_advanced">

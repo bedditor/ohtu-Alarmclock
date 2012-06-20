@@ -2,16 +2,8 @@ package ohtu.beddit.activity;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.provider.Settings;
 import android.test.AndroidTestCase;
-import android.text.format.DateFormat;
-import android.util.DisplayMetrics;
-import junit.framework.Assert;
 import ohtu.beddit.alarm.NotificationFactory;
-
-import java.util.Locale;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -35,7 +27,7 @@ public class NotificationFactoryTest extends AndroidTestCase {
 
 
     public void testSetNotification() throws Exception {
-        ntf.setNotification(2,4,2,4);
+        ntf.setNotification(2, 4, 2, 4);
         verify(mockManager).notify(eq(1), any(Notification.class));
     }
 
@@ -53,18 +45,18 @@ public class NotificationFactoryTest extends AndroidTestCase {
 
     }
 
-  /*  public void testTimeAsStringAMPM() throws Exception {
-        android.provider.Settings.System.putInt(getContext().getContentResolver(),
-                Settings.System.TIME_12_24,24);
-        Assert.assertEquals("15:50", ntf.timeAsString(15,50));
+    /*  public void testTimeAsStringAMPM() throws Exception {
+    android.provider.Settings.System.putInt(getContext().getContentResolver(),
+            Settings.System.TIME_12_24,24);
+    Assert.assertEquals("15:50", ntf.timeAsString(15,50));
 
-    }
+}
 
-    public void testTimeAsString() throws Exception {
-        android.provider.Settings.System.putInt(getContext().getContentResolver(),
-                Settings.System.TIME_12_24,12);
+public void testTimeAsString() throws Exception {
+    android.provider.Settings.System.putInt(getContext().getContentResolver(),
+            Settings.System.TIME_12_24,12);
 
-        *//*Resources res = getContext().getResources();
+    *//*Resources res = getContext().getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();

@@ -9,10 +9,6 @@ package ohtu.beddit.web;
  */
 public class UnauthorizedException extends BedditException {
 
-    public UnauthorizedException(){
-        super();
-    }
-
     public UnauthorizedException(String error) {
         super(error);
     }

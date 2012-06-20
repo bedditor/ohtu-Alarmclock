@@ -10,22 +10,17 @@ package ohtu.beddit.api.jsonclassimpl;
 class UserData {
     private User[] users;
 
-    public int getUsercount(){
-        return users.length;
+    public String getUsername() {
+        return users[0].getUsername();
     }
 
-    public String getUsername(int userIndex){
-        return users[userIndex].getUsername();
+    public String getFirstName() {
+        return users[0].getFirst_name();
     }
 
-    public String getFirstName(int userIndex){
-        return users[userIndex].getFirst_name();
+    public String getLastName() {
+        return users[0].getLast_name();
     }
-
-    public String getLastName(int userIndex){
-        return users[userIndex].getLast_name();
-    }
-
 
 
 }

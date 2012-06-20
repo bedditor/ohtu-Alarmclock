@@ -38,9 +38,11 @@
 
 
     <string name="help_text_1">Set alarm time by turning the clock pointers and use the interval slider
-    to set the earliest time you would like to wake up.</string>
+        to set the earliest time you would like to wake up.
+    </string>
     <string name="help_text_2">This app will try to wake you up on that timespan while you are at
-        a light sleep stage.</string>
+        a light sleep stage.
+    </string>
     <string name="help_text_3">Finally press \'add alarm\' to set the alarm.</string>
     <string name="help_text_4">You can unset the alarm by pressing \'delete alarm\'.</string>
 
@@ -54,7 +56,7 @@
     <string name="pref_title_user_index">Choose user</string>
 
     <string name="pref_alarm_length">Alarm length</string>
-    <string name="pref_summary_alarm_length">The alarm will play and vibrate for </string>
+    <string name="pref_summary_alarm_length">The alarm will play and vibrate for</string>
     <string name="pref_summary_sleep_stage"></string>
 
 
@@ -62,8 +64,8 @@
     <string name="pref_title_wake_up_sleep_stage">Sleep stage to wake up</string>
     <string name="sleep_info_title">Sleep Info</string>
     <string name="sleep_info_well_button">Feeling good</string>
-    <string name="sleep_info_overall_age_pref">Data is </string>
-    <string name="sleep_info_overall_age_post"> old</string>
+    <string name="sleep_info_overall_age_pref">Data is</string>
+    <string name="sleep_info_overall_age_post">old</string>
     <string name="sleep_info_up_to_date">Data is up to date</string>
     <string name="sleep_info_overall_total">1h30min01sec</string>
     <string name="sleep_info_overall_minitotal">Total amount of sleep</string>
@@ -73,7 +75,8 @@
     <string name="sleep_info_overall_title">Last night</string>
     <string name="sleep_info_delay">0 minutes old</string>
 
-    <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?</string>
+    <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?
+    </string>
     <string name="button_text_close">Close</string>
     <string name="login_or_authorisation_failed">Login or authorisation failed.</string>
     <string name="must_connect_to_beddit_account">This app can not be used without connecting to your beddit account

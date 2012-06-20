@@ -1,7 +1,6 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -24,7 +23,6 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
                     float grabPointSize, View parent) {
         super(x, y, value, incrementSize, length, p, grabPointSize, parent);
     }
-
 
 
     public void addListener(HourChangedListener listener) {
@@ -74,13 +72,13 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
             @Override
             public void animate() {
                 int hours = movable.getValue();
-                if ((hours%12) < target)  {
-                    if (Math.abs((hours%12) - target) > 6)
+                if ((hours % 12) < target) {
+                    if (Math.abs((hours % 12) - target) > 6)
                         movable.incrementValue(-1);
                     else
                         movable.incrementValue(1);
                 } else {
-                    if (Math.abs((hours%12) - target) > 6)
+                    if (Math.abs((hours % 12) - target) > 6)
                         movable.incrementValue(1);
                     else
                         movable.incrementValue(-1);
@@ -89,7 +87,7 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
 
             @Override
             public boolean running() {
-                return (movable.getValue()%12) == target;
+                return (movable.getValue() % 12) == target;
             }
         };
     }

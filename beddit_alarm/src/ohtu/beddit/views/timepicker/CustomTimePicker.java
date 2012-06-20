@@ -1,13 +1,10 @@
 package ohtu.beddit.views.timepicker;
 
 import android.content.Context;
-import android.graphics.*;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.Html;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import ohtu.beddit.alarm.AlarmTimeChangedListener;
@@ -24,8 +21,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class CustomTimePicker extends View implements AlarmTimePicker, AnimationFinishedListener {
-    private static final String TAG = "CustomTimePicker";
-
     // sizes as a fraction of the clock's radius
     private final static float GRAB_POINT_SIZE = 0.1f;
     private final static float HAND_WIDTH = 0.02f;
@@ -128,7 +123,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         clockFaceLinePaint.setColor(Color.BLACK - (70 << 24));
         clockFaceLinePaint.setAntiAlias(true);
 
-        intervalArcPaint.setColor(Color.argb(255,255,89,0));
+        intervalArcPaint.setColor(Color.argb(255, 255, 89, 0));
         backgroundPaint.setColor(Color.WHITE);
 
         intervalArcPaint.setAntiAlias(true);
@@ -136,11 +131,11 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     }
 
     private void createComponents() {
-        float radius = (getHeight() / 2) * (1-BAR_HEIGHT);
-        if (radius*2 > getWidth())
+        float radius = (getHeight() / 2) * (1 - BAR_HEIGHT);
+        if (radius * 2 > getWidth())
             radius = getWidth() / 2;
 
-        float barHeight = (radius * BAR_HEIGHT)*(1-SPACER_SIZE);
+        float barHeight = (radius * BAR_HEIGHT) * (1 - SPACER_SIZE);
         float barSpacer = barHeight * SPACER_SIZE;
         float midX = getWidth() / 2f;
         float midY = getHeight() / 2f;
@@ -182,7 +177,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     }
 
     private int measureWidth(int measureSpec) {
-        int result = 0;
+        int result;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
@@ -199,7 +194,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     }
 
     private int measureHeight(int measureSpec) {
-        int result = 0;
+        int result;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 

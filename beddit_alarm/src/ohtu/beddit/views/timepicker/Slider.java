@@ -30,7 +30,6 @@ public class Slider extends Movable {
     private GrabPoint gp;
 
 
-
     public Slider(float x, float y, float width, float height,
                   int maxValue, int initValue, Paint p,
                   float grabPointSize, View parent) {
@@ -42,8 +41,8 @@ public class Slider extends Movable {
         this.maxValue = maxValue;
         this.currentValue = initValue;
         this.p = p;
-        this.gp = new GrabPoint(getRectF().left + ((float)currentValue)/((float)maxValue) * w,
-                                getRectF().centerY(), grabPointSize, p);
+        this.gp = new GrabPoint(getRectF().left + ((float) currentValue) / ((float) maxValue) * w,
+                getRectF().centerY(), grabPointSize, p);
     }
 
     List<ValueChangedListener> listeners = new LinkedList<ValueChangedListener>();
@@ -53,7 +52,7 @@ public class Slider extends Movable {
     }
 
     public RectF getRectF() {
-        return new RectF(x,y,x+w,y+h);
+        return new RectF(x, y, x + w, y + h);
     }
 
     public void draw(Canvas c) {
@@ -63,7 +62,7 @@ public class Slider extends Movable {
                 getRectF().centerY(),
                 p);
 
-        gp.setX(getRectF().left + ((float)currentValue)/((float)maxValue) * w);
+        gp.setX(getRectF().left + ((float) currentValue) / ((float) maxValue) * w);
         gp.setY(getRectF().centerY());
         gp.draw(c);
     }
@@ -99,7 +98,7 @@ public class Slider extends Movable {
 
     @Override
     public boolean click(float x, float y) {
-        return clicked = getRectF().contains(x,y);
+        return clicked = getRectF().contains(x, y);
     }
 
     @Override
@@ -117,24 +116,16 @@ public class Slider extends Movable {
         int newValue;
         if (newX < x)
             newValue = 0;
-        else if (newX > x+w)
+        else if (newX > x + w)
             newValue = maxValue;
         else
-            newValue = (int)(((newX - x)/w)*(float)maxValue);
+            newValue = (int) (((newX - x) / w) * (float) maxValue);
         setValue(newValue);
     }
 
     public void setValue(int newValue) {
         this.currentValue = newValue;
-        for(ValueChangedListener sl : listeners) sl.onValueChanged(currentValue);
-    }
-
-    public int getMaxValue() {
-        return maxValue;
-    }
-
-    public void setMaxValue(int maxValue) {
-        this.maxValue = maxValue;
+        for (ValueChangedListener sl : listeners) sl.onValueChanged(currentValue);
     }
 
     @Override

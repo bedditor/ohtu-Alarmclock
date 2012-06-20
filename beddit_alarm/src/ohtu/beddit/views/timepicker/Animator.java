@@ -14,6 +14,8 @@ import java.util.List;
  */
 public abstract class Animator implements Runnable {
 
+    private static final String TAG = "Animator";
+
     private View parent;
     private int sleepTime;
     int target;
@@ -47,7 +49,10 @@ public abstract class Animator implements Runnable {
                 }
             });
 
-            try { Thread.sleep(sleepTime); } catch (InterruptedException ie) {}
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException ignored) {
+            }
         }
 
         for (AnimationFinishedListener l : animationFinishedListeners)

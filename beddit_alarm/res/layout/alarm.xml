@@ -7,7 +7,7 @@
               android:orientation="vertical"
               android:id="@+id/alarmActivity_layout">
 
-        <ohtu.beddit.views.TextScalingButton
+    <ohtu.beddit.views.TextScalingButton
             style="@style/ButtonText"
             android:id="@+id/alarmActivity_button_dismiss"
             android:layout_width="fill_parent"
@@ -16,9 +16,9 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_dismiss"
             android:background="@drawable/beddit_button"
-        />
+            />
 
-        <ohtu.beddit.views.TextScalingButton
+    <ohtu.beddit.views.TextScalingButton
             style="@style/ButtonText"
             android:id="@+id/alarmActivity_button_snooze"
             android:layout_width="fill_parent"
@@ -27,5 +27,5 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_snooze"
             android:background="@drawable/beddit_button"
-        />
+            />
 </LinearLayout>

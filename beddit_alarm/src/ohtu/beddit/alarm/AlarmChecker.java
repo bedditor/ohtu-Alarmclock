@@ -11,7 +11,9 @@ import android.content.Context;
  */
 public interface AlarmChecker {
     public boolean wakeUpNow(Context context);
+
     public int getWakeUpAttemptInterval(); //how often (seconds) we should try to wake up
+
     public int getCheckTime(); //how long (seconds) it may take to do the checking
 
 }

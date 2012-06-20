@@ -1,10 +1,7 @@
 package ohtu.beddit.api;
 
 import android.content.Context;
-import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
-import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
-import ohtu.beddit.web.UnauthorizedException;
 
 import java.util.Calendar;
 

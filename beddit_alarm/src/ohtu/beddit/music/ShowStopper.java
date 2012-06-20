@@ -1,10 +1,7 @@
 package ohtu.beddit.music;
 
-import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.util.Log;
-import ohtu.beddit.io.PreferenceService;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,19 +15,19 @@ public class ShowStopper implements Runnable {
     private MusicHandler musicHandler;
     private Vibrator vibrator;
 
-    public ShowStopper(int min, MusicHandler music, Vibrator vibra){
+    public ShowStopper(int min, MusicHandler music, Vibrator vibrator) {
         this.minutes = min;
         this.musicHandler = music;
-        this.vibrator = vibra;
+        this.vibrator = vibrator;
     }
 
     @Override
-    public void run(){
-        try{
-            Thread.sleep(1000*60*this.minutes, 0);
-        }catch(InterruptedException i){
+    public void run() {
+        try {
+            Thread.sleep(1000 * 60 * this.minutes, 0);
+        } catch (InterruptedException i) {
             Log.v("ShowStopperCrash", Log.getStackTraceString(i));
-        }finally {
+        } finally {
             this.musicHandler.release();
             this.vibrator.cancel();
         }

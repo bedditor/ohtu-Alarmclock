@@ -1,7 +1,6 @@
 package ohtu.beddit.activity;
 
 import android.test.ActivityInstrumentationTestCase2;
-import ohtu.beddit.activity.MainActivity;
 
 /**
  * This is a simple framework for a test of an Application.  See

@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 
 public class DialogUtils {
 
-    public static void createActivityClosingDialog(final Activity activity, String message, String buttonText){
+    public static void createActivityClosingDialog(final Activity activity, String message, String buttonText) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(message);
         builder.setCancelable(false);

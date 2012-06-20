@@ -1,7 +1,5 @@
 package ohtu.beddit.alarm;
 
-import android.content.Context;
-
 import java.util.Calendar;
 
 /**

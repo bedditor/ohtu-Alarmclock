@@ -4,14 +4,14 @@
           android:versionCode="7"
           android:versionName="0.2001a">
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8"/>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.SET_ORIENTATION" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.SET_TIME" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.SET_ORIENTATION"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.SET_TIME"/>
 
     <uses-feature android:name="android.hardware.touchscreen"
                   android:required="true"/>
@@ -35,18 +35,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.AdvancedSettingsActivity"
-                  android:screenOrientation="portrait" />
+                  android:screenOrientation="portrait"/>
         <activity android:name=".activity.SettingsActivity"
-                  android:screenOrientation="portrait" />
+                  android:screenOrientation="portrait"/>
         <activity android:name=".activity.AuthActivity"
-                  android:screenOrientation="portrait" />
+                  android:screenOrientation="portrait"/>
         <activity android:name=".activity.HelpActivity"
-                  android:screenOrientation="portrait" />
+                  android:screenOrientation="portrait"/>
         <activity android:name=".activity.SleepInfoActivity"
                   android:screenOrientation="portrait"
                   android:launchMode="singleInstance"/>/>
 
-        <receiver android:name=".alarm.AlarmReceiver" android:process=":remote" />
+        <receiver android:name=".alarm.AlarmReceiver" android:process=":remote"/>
         <receiver android:name=".alarm.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

@@ -2,7 +2,6 @@ package ohtu.beddit.web;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import ohtu.beddit.R;
 
@@ -18,17 +17,8 @@ public class LoadingDialog extends Dialog {
     private static final String TAG = "LoadingDialog";
 
     public LoadingDialog(Context context) {
-        super(context);
+        super(context, R.style.CustomDialogTheme);
         setContentView(R.layout.loading_dialog);
-    }
-
-    public LoadingDialog(Context context, int theme) {
-        super(context, theme);
-        setContentView(R.layout.loading_dialog);
-    }
-
-    protected LoadingDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
     }
 
     @Override

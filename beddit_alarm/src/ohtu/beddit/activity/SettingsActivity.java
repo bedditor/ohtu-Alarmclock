@@ -1,7 +1,6 @@
 package ohtu.beddit.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,15 +9,13 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.WindowManager;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.io.PreferenceService;
 
 
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener{
+public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
     private ListPreference snoozeTimePref;
     private ListPreference sleepStagePref;
     private Preference forgetButton;
@@ -36,8 +33,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void initPrefVars() {
-        snoozeTimePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
-        sleepStagePref = (ListPreference)getPreferenceScreen().findPreference(this.getString(R.string.pref_key_wake_up_sleep_stage));
+        snoozeTimePref = (ListPreference) getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
+        sleepStagePref = (ListPreference) getPreferenceScreen().findPreference(this.getString(R.string.pref_key_wake_up_sleep_stage));
         forgetButton = getPreferenceScreen().findPreference(this.getString(R.string.pref_key_forget));
         advancedButton = getPreferenceScreen().findPreference(this.getString(R.string.pref_key_advanced));
         updateSleepStageSummary();
@@ -70,43 +67,39 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_snooze))) {
             updateSnoozeSummary();
-        }
-        else if (key.equals(this.getString(R.string.pref_key_wake_up_sleep_stage))) {
+        } else if (key.equals(this.getString(R.string.pref_key_wake_up_sleep_stage))) {
             updateSleepStageSummary();
         }
     }
 
-    private void updateSnoozeSummary(){
+    private void updateSnoozeSummary() {
         snoozeTimePref.setSummary(getString(R.string.pref_summary_snooze_length) + " " + snoozeTimePref.getEntry());
     }
 
-    private void updateSleepStageSummary(){
+    private void updateSleepStageSummary() {
         sleepStagePref.setSummary(sleepStagePref.getEntry());
     }
 
-    private void updateLoginDataToSummary(){
-        String fullName = PreferenceService.getFullName(this) ;
+    private void updateLoginDataToSummary() {
+        String fullName = PreferenceService.getFullName(this);
         String username = PreferenceService.getUsername(this);
         String token = PreferenceService.getToken(this);
 
-        if(token.equals("") || username.equals("")){
+        if (token.equals("") || username.equals("")) {
             forgetButton.setSummary(getString(R.string.pref_not_logged_in));
-        }
-        else{ //joko token tai username löytyy
+        } else {
             forgetButton.setSummary(getString(R.string.pref_logged_in_as) + " " + fullName);
         }
     }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if(preference.getKey().equals(this.getString(R.string.pref_key_forget))){
+        if (preference.getKey().equals(this.getString(R.string.pref_key_forget))) {
             AlarmService alarmService = new AlarmServiceImpl(this);
-            if(alarmService.isAlarmSet()){
+            if (alarmService.isAlarmSet()) {
                 showDisconnectDialog();
-            }
-            else disconnect();
-        }
-        else if(preference.getKey().equals(this.getString(R.string.pref_key_advanced))){
+            } else disconnect();
+        } else if (preference.getKey().equals(this.getString(R.string.pref_key_advanced))) {
             startAdvancedSettingsActivity();
         }
 
@@ -124,7 +117,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         startActivity(myIntent);
     }
 
-    private void forgetMe(){
+    private void forgetMe() {
         PreferenceService.setUsername(this, "");
         PreferenceService.setFirstName(this, "");
         PreferenceService.setLastName(this, "");
@@ -134,8 +127,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (FROM_AUTHENTICATION) :
+        switch (requestCode) {
+            case (FROM_AUTHENTICATION):
                 handleAuthActivityResult(resultCode);
                 break;
         }
@@ -143,15 +136,15 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private void handleAuthActivityResult(int resultCode) {
         switch (resultCode) {
-            case (AuthActivity.RESULT_CANCELLED) :
-            case (AuthActivity.RESULT_FAILED) :
+            case (AuthActivity.RESULT_CANCELLED):
+            case (AuthActivity.RESULT_FAILED):
                 setResult(resultCode);
                 finish();
                 break;
         }
     }
 
-    public void showDisconnectDialog(){
+    public void showDisconnectDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.disconnect_dialog_message));
         builder.setCancelable(true);

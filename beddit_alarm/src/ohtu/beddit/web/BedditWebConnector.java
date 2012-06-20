@@ -21,47 +21,44 @@ public class BedditWebConnector implements BedditConnector {
     }
 
 
-    public String getWakeUpJson(Context context,String date) throws BedditConnectionException {
+    public String getWakeUpJson(Context context, String date) throws BedditConnectionException {
         String username = PreferenceService.getUsername(context);
-        String query = username+"/"+date+"/sleep";
+        String query = username + "/" + date + "/sleep";
         return getSomeJson(context, query, false); //add
     }
 
     public String getQueueStateJson(Context context, String date) throws BedditConnectionException {
         String username = PreferenceService.getUsername(context);
-        String query = username+"/"+date+"/sleep/queue_for_analysis";
+        String query = username + "/" + date + "/sleep/queue_for_analysis";
         return getSomeJson(context, query, false); //add
     }
 
     //need to check if POSTing actually works as it is:
     public String requestDataAnalysis(Context context, String date) throws BedditConnectionException {
         String username = PreferenceService.getUsername(context);
-        String query = username+"/"+date+"/sleep/queue_for_analysis";
+        String query = username + "/" + date + "/sleep/queue_for_analysis";
         return getSomeJson(context, query, true); //add
     }
 
-    public String getSomeJson(Context context, String query, boolean do_post) throws BedditConnectionException {
+    private String getSomeJson(Context context, String query, boolean do_post) throws BedditConnectionException {
         String response = "";
 
         HttpsURLConnection connection = null;
         InputStream inputStream = null;
         try {
-            connection = connect(context, query, connection,do_post);
-            if(connection.getResponseCode() < 400){
+            connection = connect(context, query, connection, do_post);
+            if (connection.getResponseCode() < 400) {
                 inputStream = connection.getInputStream();
-            }
-            else {
+            } else {
                 inputStream = connection.getErrorStream();
             }
             response = readFromStream(inputStream);
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw new BedditConnectionException(e.getMessage());
-        }
-        finally {
+        } finally {
             closeConnections(connection, inputStream);
-            if(response.equals("")) {
+            if (response.equals("")) {
                 Log.v(TAG, "Empty response");
                 throw new BedditConnectionException("Empty response from Beddit");
             }
@@ -77,7 +74,7 @@ public class BedditWebConnector implements BedditConnector {
         InputStream inputStream = null;
         try {
             URL address = new URL(url);
-            Log.v(TAG,"url: "+address);
+            Log.v(TAG, "url: " + address);
 
             System.setProperty("http.keepAlive", "false");
             connection = (HttpsURLConnection) address.openConnection();
@@ -87,16 +84,15 @@ public class BedditWebConnector implements BedditConnector {
 
             inputStream = connection.getInputStream();
             String stash = readFromStream(inputStream);
-            Log.v(TAG,"stash: "+stash);
+            Log.v(TAG, "stash: " + stash);
 
             token = new JsonParser().parse(stash).getAsJsonObject().get("access_token").getAsString();
-            Log.v(TAG,"AccessToken = \""+token+"\"");
+            Log.v(TAG, "AccessToken = \"" + token + "\"");
 
         } catch (Throwable e) {
             Log.e(TAG, Log.getStackTraceString(e));  //To change body of catch statement use File | Settings | File Templates.
             throw new BedditConnectionException(e.getMessage());
-        }
-        finally {
+        } finally {
             closeConnections(connection, inputStream);
         }
         return token;
@@ -104,13 +100,13 @@ public class BedditWebConnector implements BedditConnector {
 
     private HttpsURLConnection connect(Context context, String query, HttpsURLConnection connection, boolean do_post) throws IOException {
         String token = PreferenceService.getToken(context);
-        URL url = new URL("https://api.beddit.com/api2/user/"+query+"?access_token="+token);
+        URL url = new URL("https://api.beddit.com/api2/user/" + query + "?access_token=" + token);
         Log.v(TAG, "GET Token: " + url);
         connection = (HttpsURLConnection) url.openConnection();
-        if(do_post){
+        if (do_post) {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
-        }else{
+        } else {
             connection.setRequestMethod("GET");
             connection.setDoOutput(false);
         }
@@ -118,16 +114,16 @@ public class BedditWebConnector implements BedditConnector {
         return connection;
     }
 
-    private String readFromStream(InputStream inputStream){
+    private String readFromStream(InputStream inputStream) {
         String response = "";
         Scanner scanner = new Scanner(inputStream);
-        while(scanner.hasNext())
+        while (scanner.hasNext())
             response += scanner.nextLine();
         return response;
     }
 
     private void closeConnections(HttpsURLConnection connection, InputStream inputStream) {
-        if (connection != null){
+        if (connection != null) {
             connection.disconnect();
         }
         if (inputStream != null) {

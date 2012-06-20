@@ -12,36 +12,36 @@ import ohtu.beddit.utils.TimeUtils;
 public class NotificationFactory {
 
     private Context context;
-    private NotificationManager notfManager;
+    private NotificationManager notificationManager;
     private static final int ID = 1;
 
-    public NotificationFactory(Context context){
+    public NotificationFactory(Context context) {
         this.context = context.getApplicationContext();
-        this.notfManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    public NotificationFactory(Context context, NotificationManager notfManager){
+    public NotificationFactory(Context context, NotificationManager notificationManager) {
         this.context = context.getApplicationContext();
-        this.notfManager = notfManager;
+        this.notificationManager = notificationManager;
     }
 
-    public void setNotification(int startHours, int startMinutes, int endHours, int endMinutes){
-        Notification notification = new Notification(R.drawable.alarm_notification,"",0);
+    public void setNotification(int startHours, int startMinutes, int endHours, int endMinutes) {
+        Notification notification = new Notification(R.drawable.alarm_notification, "", 0);
         notification.flags = Notification.FLAG_NO_CLEAR;
 
         String print = TimeUtils.timeAsString(startHours, startMinutes, context);
-        if (startHours != endHours || startMinutes != endMinutes){
+        if (startHours != endHours || startMinutes != endMinutes) {
             print += " - " + TimeUtils.timeAsString(endHours, endMinutes, context);
         }
-        
+
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        notification.setLatestEventInfo(context, context.getString(R.string.notification_text),print,pendIntent);
-        notfManager.notify(ID, notification);
+        notification.setLatestEventInfo(context, context.getString(R.string.notification_text), print, pendIntent);
+        notificationManager.notify(ID, notification);
     }
 
-    public void resetNotification(){
-        notfManager.cancel(ID);
+    public void resetNotification() {
+        notificationManager.cancel(ID);
     }
 
 

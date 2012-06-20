@@ -25,11 +25,11 @@ class QueueData {
         return TimeUtils.bedditTimeStringToCalendar(results_available_up_to);
     }
 
-    public Calendar getWhen_sleep_analyzed(){
+    public Calendar getWhen_sleep_analyzed() {
         return TimeUtils.bedditTimeStringToCalendar(results_available_up_to_when_sleep_analyzed);
     }
 
-    public Calendar getWhen_queued_for_sleep_analysis(){
+    public Calendar getWhen_queued_for_sleep_analysis() {
         return TimeUtils.bedditTimeStringToCalendar(results_available_up_to_when_queued_for_sleep_analysis);
     }
 }

@@ -2,11 +2,7 @@ package ohtu.beddit.views.timepicker;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,9 +30,9 @@ public abstract class ClockHand extends Movable {
         this.length = length;
         this.p = p;
         this.incrementSize = incrementSize;
-        this.gp = new GrabPoint(x + (float)Math.cos(getAngle()- Math.PI / 2) * (length-2*grabPointSize),
-                                y + (float)Math.sin(getAngle()- Math.PI / 2) * (length-2*grabPointSize),
-                                grabPointSize, p);
+        this.gp = new GrabPoint(x + (float) Math.cos(getAngle() - Math.PI / 2) * (length - 2 * grabPointSize),
+                y + (float) Math.sin(getAngle() - Math.PI / 2) * (length - 2 * grabPointSize),
+                grabPointSize, p);
     }
 
     public void draw(Canvas c) {
@@ -46,14 +42,14 @@ public abstract class ClockHand extends Movable {
         float endX = (float) xDir * length;
         float endY = (float) yDir * length;
 
-        gp.setX(x + (float) xDir * (length-2*gp.getRadius()));
-        gp.setY(y + (float) yDir * (length-2*gp.getRadius()));
+        gp.setX(x + (float) xDir * (length - 2 * gp.getRadius()));
+        gp.setY(y + (float) yDir * (length - 2 * gp.getRadius()));
 
         gp.draw(c);
         c.drawLine(x, y, x + endX, y + endY, p);
 
         p.setStyle(Paint.Style.FILL);
-        c.drawCircle(x,y,p.getStrokeWidth()/2,p);
+        c.drawCircle(x, y, p.getStrokeWidth() / 2, p);
         p.setStyle(Paint.Style.STROKE);
     }
 
@@ -87,8 +83,8 @@ public abstract class ClockHand extends Movable {
 
     @Override
     public boolean click(float x, float y) {
-        double distanceFromCenter = dist(x,y,this.x,this.y);
-        return clicked = distanceFromCenter < length && distanceFromCenter > length - 4*gp.getRadius();
+        double distanceFromCenter = dist(x, y, this.x, this.y);
+        return clicked = distanceFromCenter < length && distanceFromCenter > length - 4 * gp.getRadius();
     }
 
     @Override
@@ -98,7 +94,7 @@ public abstract class ClockHand extends Movable {
 
     @Override
     public void updatePositionFromClick(float x, float y) {
-        setAngle(getAngleToMidpoint(x,y));
+        setAngle(getAngleToMidpoint(x, y));
     }
 
     public float getLength() {
@@ -123,17 +119,17 @@ public abstract class ClockHand extends Movable {
 
     public static double angleDiff(double a1, double a2) {
         double diff = a2 - a1;
-        if (diff < -Math.PI) diff += Math.PI*2;
-        else if (diff > Math.PI) diff -= Math.PI*2;
+        if (diff < -Math.PI) diff += Math.PI * 2;
+        else if (diff > Math.PI) diff -= Math.PI * 2;
         return diff;
     }
 
     public static double dist(float x1, float y1, float x2, float y2) {
-        return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 
     @Override
     public int createTargetFromClick(float x, float y) {
-        return (int)(getAngleToMidpoint(x, y) / incrementSize);
+        return (int) (getAngleToMidpoint(x, y) / incrementSize);
     }
 }

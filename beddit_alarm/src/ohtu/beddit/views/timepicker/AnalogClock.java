@@ -1,6 +1,9 @@
 package ohtu.beddit.views.timepicker;
 
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +37,7 @@ public class AnalogClock implements ValueChangedListener {
     }
 
     public void draw(Canvas c) {
-        c.drawArc(new RectF(x-radius, y-radius, x+radius, y+radius),
+        c.drawArc(new RectF(x - radius, y - radius, x + radius, y + radius),
                 (float) Math.toDegrees(minuteHand.getAngle() - Math.PI / 2),
                 (float) Math.toDegrees(-(Math.PI / 30.0) * interval),
                 true,
@@ -43,8 +46,8 @@ public class AnalogClock implements ValueChangedListener {
         linePaint.setStrokeWidth(1);
         linePaint.setStyle(Paint.Style.STROKE);
 
-        c.drawCircle(x,y, radius * 0.95f, backgroundPaint);
-        c.drawCircle(x,y, hourHand.getLength(), linePaint);
+        c.drawCircle(x, y, radius * 0.95f, backgroundPaint);
+        c.drawCircle(x, y, hourHand.getLength(), linePaint);
 
         linePaint.setStrokeWidth(2);
         linePaint.setStyle(Paint.Style.FILL);
@@ -67,7 +70,7 @@ public class AnalogClock implements ValueChangedListener {
             float xDir = (float) Math.cos(angle);
             float yDir = (float) Math.sin(angle);
             String text = Integer.toString((int) h);
-            Rect textSize = new Rect(0,0,0,0);
+            Rect textSize = new Rect(0, 0, 0, 0);
             linePaint.getTextBounds(text, 0, text.length(), textSize);
             c.drawText(text,
                     x + xDir * radius * 0.7f - textSize.width() / 2,

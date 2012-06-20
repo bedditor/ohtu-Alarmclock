@@ -15,8 +15,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private AlarmService alarmService;
 
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
+    public void onReceive(Context context, Intent intent) {
         alarmService = new AlarmServiceImpl(context);
         //AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
         AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
@@ -24,22 +23,19 @@ public class AlarmReceiver extends BroadcastReceiver {
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
 
         Log.v(TAG, "Received alarm");
-        Log.v(TAG, "second until last wake up "+ getSecondsUntilLastWakeUpTime(context));
-        if(getSecondsUntilLastWakeUpTime(context) < 3){ //last time reached, wake up
+        Log.v(TAG, "second until last wake up " + getSecondsUntilLastWakeUpTime());
+        if (getSecondsUntilLastWakeUpTime() < 3) { //last time reached, wake up
             Log.v(TAG, "Wake up time reached, starting alarm");
             startAlarm(context);
-        }
-        else if(getSecondsUntilLastWakeUpTime(context) <= checkTime){ //no time to do any more checking, schedule final wake up
+        } else if (getSecondsUntilLastWakeUpTime() <= checkTime) { //no time to do any more checking, schedule final wake up
             Log.v(TAG, "No time to check anymore, schedule wake up");
             alarmService.addWakeUpAttempt(getLastWakeUpTime());
-        }
-        else if(alarmChecker.wakeUpNow(context)){ //check if we should wake up now
+        } else if (alarmChecker.wakeUpNow(context)) { //check if we should wake up now
             Log.v(TAG, "Alarm checker gave permission to wake up, starting alarm");
             startAlarm(context);
-        }
-        else{ // schedule next try
+        } else { // schedule next try
             Log.v(TAG, "Scheduling next try");
-            scheduleNextTry(context);
+            scheduleNextTry();
         }
     }
 
@@ -49,33 +45,31 @@ public class AlarmReceiver extends BroadcastReceiver {
         context.startActivity(newIntent);
     }
 
-    private int getSecondsUntilLastWakeUpTime(Context context){
+    private int getSecondsUntilLastWakeUpTime() {
         Calendar currentTime = Calendar.getInstance();
         Calendar wakeUpTime = getLastWakeUpTime();
         long timeDifference = wakeUpTime.getTimeInMillis() - currentTime.getTimeInMillis();
-        return (int)(timeDifference/1000);
+        return (int) (timeDifference / 1000);
     }
 
-    private Calendar getLastWakeUpTime(){
+    private Calendar getLastWakeUpTime() {
         return alarmService.getAlarm().getTimeInCalendar();
     }
 
-    private void scheduleNextTry(Context context){
+    private void scheduleNextTry() {
         Calendar timeForNextTry = Calendar.getInstance();
         timeForNextTry.add(Calendar.SECOND, wakeUpAttemptInterval);
 
         Calendar lastWakeUpTime = getLastWakeUpTime();
 
-        if(timeForNextTry.before(lastWakeUpTime)){ //still time for another interval
-            Log.v(TAG, "next try scheduled to "+timeForNextTry.get(Calendar.HOUR_OF_DAY)+":"+timeForNextTry.get(Calendar.MINUTE)+":"+timeForNextTry.get(Calendar.SECOND));
+        if (timeForNextTry.before(lastWakeUpTime)) { //still time for another interval
+            Log.v(TAG, "next try scheduled to " + timeForNextTry.get(Calendar.HOUR_OF_DAY) + ":" + timeForNextTry.get(Calendar.MINUTE) + ":" + timeForNextTry.get(Calendar.SECOND));
             alarmService.addWakeUpAttempt(timeForNextTry);
-        }
-        else{ //no more time, schedule final wake up
-            Log.v(TAG, "next try scheduled to last wake up time "+lastWakeUpTime.get(Calendar.HOUR_OF_DAY)+":"+lastWakeUpTime.get(Calendar.MINUTE)+":"+lastWakeUpTime.get(Calendar.SECOND));
+        } else { //no more time, schedule final wake up
+            Log.v(TAG, "next try scheduled to last wake up time " + lastWakeUpTime.get(Calendar.HOUR_OF_DAY) + ":" + lastWakeUpTime.get(Calendar.MINUTE) + ":" + lastWakeUpTime.get(Calendar.SECOND));
             alarmService.addWakeUpAttempt(lastWakeUpTime);
         }
     }
-
 
 
 }

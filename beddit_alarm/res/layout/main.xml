@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/ohtu.beddit"
-    android:id="@+id/mainLayout"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+              xmlns:app="http://schemas.android.com/apk/res/ohtu.beddit"
+              android:id="@+id/mainLayout"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
     <ohtu.beddit.views.timepicker.CustomTimePicker
             android:id="@+id/alarmTimePicker"
             android:layout_width="fill_parent"
@@ -14,14 +14,14 @@
             app:minSize="200"
             />
 
-        <TextView
-                android:id="@+id/interval_title"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/main_act_interval_title"
-                android:layout_gravity="top|center_horizontal"
-                android:textColor="#FFFFFF"/>
+    <TextView
+            android:id="@+id/interval_title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/main_act_interval_title"
+            android:layout_gravity="top|center_horizontal"
+            android:textColor="#FFFFFF"/>
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

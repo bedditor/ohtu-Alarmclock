@@ -1,8 +1,6 @@
 package ohtu.beddit.api.jsonclassimpl;
 
 import ohtu.beddit.utils.TimeUtils;
-
-import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
@@ -27,15 +25,15 @@ class SleepData {
     }
 
     public char getLastSleepStage() throws BedditException {
-        try{
-            return sleep_stages[sleep_stages.length-1][1].charAt(0);
-        }catch(NullPointerException n){
+        try {
+            return sleep_stages[sleep_stages.length - 1][1].charAt(0);
+        } catch (NullPointerException n) {
             throw new InvalidJsonException();
         }
     }
 
-    public Calendar getLastSleepStageTime(){
-        String timeString = sleep_stages[sleep_stages.length-1][0];
+    public Calendar getLastSleepStageTime() {
+        String timeString = sleep_stages[sleep_stages.length - 1][0];
         return TimeUtils.bedditTimeStringToCalendar(timeString);
     }
 

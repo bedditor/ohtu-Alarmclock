@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.Display;
+import android.view.View;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
@@ -15,7 +15,6 @@ import ohtu.beddit.alarm.WakeUpLock;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.music.MusicHandler;
 import ohtu.beddit.music.ShowStopper;
-//import ohtu.beddit.music.ShowStopper;
 
 import java.util.Calendar;
 
@@ -35,19 +34,20 @@ public class AlarmActivity extends Activity {
     private static final float DIALOG_HEIGHT = 0.7f;
     private static final float DIALOG_WIDTH = 0.9f;
 
-    /** Called when the alarm is first created. */
+    /**
+     * Called when the alarm is first created.
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm);
 
         Display display = getWindowManager().getDefaultDisplay();
 
-        getWindow().setLayout((int)(display.getWidth() * DIALOG_WIDTH),
-                              (int)(display.getHeight() * DIALOG_HEIGHT));
+        getWindow().setLayout((int) (display.getWidth() * DIALOG_WIDTH),
+                (int) (display.getHeight() * DIALOG_HEIGHT));
 
-        Log.v(TAG, "Recieved alarm at " + Calendar.getInstance().getTime());
+        Log.v(TAG, "Received alarm at " + Calendar.getInstance().getTime());
 
         WakeUpLock.acquire(this);
         removeAlarm();
@@ -57,10 +57,8 @@ public class AlarmActivity extends Activity {
     }
 
 
-
-
     @Override
-    public void finish(){
+    public void finish() {
         Log.v(TAG, "finish");
 
         music.release();          // Alarm has rung and we have closed the dialog. Music is released.
@@ -70,8 +68,8 @@ public class AlarmActivity extends Activity {
     }
 
     @Override
-    public void onPause(){ //We really don't want to go onPause. Rather forcibly keep the activity on top of everything.
-                           //TODO: What about when user is on call?
+    public void onPause() { //We really don't want to go onPause. Rather forcibly keep the activity on top of everything.
+        //TODO: What about when user is on call?
         Log.v(TAG, "onPause");
 
         finish(); // NEVER leave AlarmActivity ringing in the background, kill on any event that tries to suppress it
@@ -80,7 +78,7 @@ public class AlarmActivity extends Activity {
     }
 
     @Override
-    public void onStop(){ //We call this when we stop the activity.
+    public void onStop() { //We call this when we stop the activity.
         Log.v(TAG, "onStop");
         super.onStop();
     }
@@ -100,7 +98,7 @@ public class AlarmActivity extends Activity {
         music = new MusicHandler();
         music.setMusic(this);
         music.play(true);
-        ShowStopper stopper = new ShowStopper(PreferenceService.getAlarmLength(this),music, vibrator );
+        ShowStopper stopper = new ShowStopper(PreferenceService.getAlarmLength(this), music, vibrator);
         Thread thread = new Thread(stopper);
         thread.start();
     }
@@ -108,13 +106,13 @@ public class AlarmActivity extends Activity {
     private void vibratePhone() {
         Log.v(TAG, "I want to Vibrate 8==D");
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = { 0, 200, 500 };
+        long[] pattern = {0, 200, 500};
         vibrator.vibrate(pattern, 0);
         Log.v(TAG, "Vibrator says:" + vibrator.toString());
     }
 
     private void dismiss() {
-        if (PreferenceService.getShowSleepData(AlarmActivity.this)){
+        if (PreferenceService.getShowSleepData(AlarmActivity.this)) {
             Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
             AlarmActivity.this.startActivity(myIntent);
         }
@@ -137,17 +135,17 @@ public class AlarmActivity extends Activity {
     }
 
     private void makeButtons() {
-        ((Button)findViewById(R.id.alarmActivity_button_dismiss))
+        findViewById(R.id.alarmActivity_button_dismiss)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         AlarmActivity.this.dismiss();
                     }
                 });
-        ((Button)findViewById(R.id.alarmActivity_button_snooze))
+        findViewById(R.id.alarmActivity_button_snooze)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view){
+                    public void onClick(View view) {
                         AlarmActivity.this.snooze();
                     }
                 });

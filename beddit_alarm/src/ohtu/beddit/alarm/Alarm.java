@@ -10,7 +10,8 @@ public class Alarm {
     private boolean enabled;
     private Calendar calendar = Calendar.getInstance();
 
-    public Alarm() {}
+    public Alarm() {
+    }
 
     public Alarm(int hours, int minutes, int interval, boolean enabled) {
         this.interval = interval;
@@ -46,11 +47,11 @@ public class Alarm {
         return calendar;
     }
 
-    public int getHours(){
+    public int getHours() {
         return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
-    public int getMinutes(){
+    public int getMinutes() {
         return calendar.get(Calendar.MINUTE);
     }
 

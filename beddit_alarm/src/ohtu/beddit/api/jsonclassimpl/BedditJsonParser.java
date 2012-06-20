@@ -1,7 +1,6 @@
 package ohtu.beddit.api.jsonclassimpl;
 
 import ohtu.beddit.web.BedditException;
-import ohtu.beddit.web.UnauthorizedException;
 
 interface BedditJsonParser {
 

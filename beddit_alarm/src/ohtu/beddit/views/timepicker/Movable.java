@@ -1,6 +1,5 @@
 package ohtu.beddit.views.timepicker;
 
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -19,18 +18,24 @@ public abstract class Movable {
     }
 
     public abstract int getValue();
+
     public abstract void incrementValue(int inc);
 
     public abstract boolean grab(float x, float y);
+
     public abstract void releaseGrab();
+
     public abstract boolean isGrabbed();
 
     public abstract boolean click(float x, float y);
+
     public abstract boolean wasClicked();
+
     public abstract void releaseClick();
 
 
     public abstract int createTargetFromClick(float x, float y);
+
     public abstract void updatePositionFromClick(float x, float y);
 
     private Thread t;
@@ -46,10 +51,6 @@ public abstract class Movable {
 
         if (t == null || !t.isAlive())
             (t = new Thread(a)).start();
-    }
-
-    public boolean isAnimating() {
-        return t != null && t.isAlive();
     }
 
     protected abstract Animator createAnimator(int target);

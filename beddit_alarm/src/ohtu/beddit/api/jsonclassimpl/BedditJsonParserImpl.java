@@ -19,8 +19,8 @@ class BedditJsonParserImpl implements BedditJsonParser {
 
     @Override
     public UserData getUserData(String json) throws BedditException {
-        String editedJson = "{\"users\": "+json+"}";
-        Log.v("JsonParser",editedJson);
+        String editedJson = "{\"users\": " + json + "}";
+        Log.v("JsonParser", editedJson);
         return getObject(editedJson, UserData.class);
     }
 
@@ -31,11 +31,10 @@ class BedditJsonParserImpl implements BedditJsonParser {
 
     private <T> T getObject(String json, Class<T> type) throws BedditException {
         JsonReader jsonReader = getNewJsonReader(json);
-        try{
+        try {
             Gson gson = new Gson();
             return gson.fromJson(jsonReader, type);
-        }
-        catch (JsonParseException e){
+        } catch (JsonParseException e) {
             checkForError(jsonReader);
             return null;
         }
@@ -43,22 +42,21 @@ class BedditJsonParserImpl implements BedditJsonParser {
 
     private void checkForError(JsonReader jsonReader) throws BedditException {
         Gson gson = new Gson();
-        try{ //got error message
+        try { //got error message
             ErrorJson error = gson.fromJson(jsonReader, ErrorJson.class);
-            Log.v(TAG, error.getError()+": "+error.getErrorMessage());
-            if(error.getError().equals("unauthorized")){
+            Log.v(TAG, error.getError() + ": " + error.getErrorMessage());
+            if (error.getError().equals("unauthorized")) {
                 throw new UnauthorizedException(error.getErrorMessage());
-            }
-            else{
+            } else {
                 throw new BedditException(error.getErrorMessage());
             }
         } //no error message
-        catch (JsonParseException e){
+        catch (JsonParseException e) {
             throw new InvalidJsonException(e.getMessage());
         }
     }
 
-    private JsonReader getNewJsonReader(String json){
+    private JsonReader getNewJsonReader(String json) {
         JsonReader jsonReader = new JsonReader(new StringReader(json));
         jsonReader.setLenient(true);
         return jsonReader;

@@ -8,7 +8,7 @@
                 android:key="@string/pref_key_colour_theme"
                 android:defaultValue="dark"
                 android:entries="@array/themeArrayTitles"
-                android:entryValues="@array/themeArrayValues" />
+                android:entryValues="@array/themeArrayValues"/>
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/pref_title_other_settings">

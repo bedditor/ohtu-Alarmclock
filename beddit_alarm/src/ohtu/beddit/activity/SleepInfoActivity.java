@@ -5,14 +5,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
+import ohtu.beddit.api.ApiController;
+import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.utils.TimeUtils;
-import ohtu.beddit.api.ApiController;
-import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.LoadingDialog;
@@ -34,14 +33,14 @@ public class SleepInfoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
 
-        dialog = new LoadingDialog(this, R.style.CustomDialogTheme);
+        dialog = new LoadingDialog(this);
         dialog.show();
 
         setEventHandlers();
         new SleepInfoLoader().execute();
     }
 
-    private class SleepInfoLoader extends AsyncTask<Void,Void,Integer> {
+    private class SleepInfoLoader extends AsyncTask<Void, Void, Integer> {
         private static final int RESULT_SUCCESS = 1;
         private static final int RESULT_CONNECTION_FAIL = 2;
         private static final int RESULT_BAD_DATA = 3;
@@ -53,9 +52,9 @@ public class SleepInfoActivity extends Activity {
                 updateNightInfo();
             } catch (BedditException e) {
                 Log.v(TAG, e.getMessage());
-                if(e instanceof BedditConnectionException)
+                if (e instanceof BedditConnectionException)
                     return RESULT_CONNECTION_FAIL;
-                else if(e instanceof InvalidJsonException)
+                else if (e instanceof InvalidJsonException)
                     return RESULT_BAD_DATA;
                 else
                     return RESULT_FAILURE;
@@ -86,8 +85,8 @@ public class SleepInfoActivity extends Activity {
 
     private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();
-        if(apiController.isSleepInfoOutdated() || apiController.hasUserChanged(this)){
-            Log.v("sleepinfoupdate", "Is fucking old/user has changed");
+        if (apiController.isSleepInfoOutdated() || apiController.hasUserChanged(this)) {
+            Log.v(TAG, "Sleep info outdated");
             apiController.updateSleepData(this);
         }
         timeSleeping = apiController.getTimeSleeping(this);
@@ -108,13 +107,13 @@ public class SleepInfoActivity extends Activity {
     }
 
     private void setEventHandlers() {
-        ((Button) findViewById(R.id.SleptWellButton)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.SleptWellButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SleepInfoActivity.this.finish();
             }
         });
-        ((Button) findViewById(R.id.SleptBadlyButton)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.SleptBadlyButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SleepInfoActivity.this.finish();
@@ -129,7 +128,7 @@ public class SleepInfoActivity extends Activity {
     //expects format like this 2012-06-13T08:38:11 Please don't break it :)
     private String getTimeDifference(String data) {
         Calendar time = TimeUtils.bedditTimeStringToCalendar(data);
-        int differenceInSeconds = (int) ((Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis())/1000);
+        int differenceInSeconds = (int) ((Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis()) / 1000);
         return getHoursAndMinutesFromSeconds(differenceInSeconds);
     }
 }

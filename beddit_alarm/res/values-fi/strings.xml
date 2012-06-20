@@ -41,20 +41,20 @@
     <string name="help_title">Käyttöohjeet</string>
     <string name="pref_title_graphics">Teema asetukset</string>
     <string name="pref_title_colour_theme">Väriteema</string>
-    <string name="pref_summary_colour_theme">Väriteemaksesi on asetettu </string>
+    <string name="pref_summary_colour_theme">Väriteemaksesi on asetettu</string>
     <string name="pref_title_advanced">Edistyneet asetukset</string>
     <string name="notification_text">Herätys asetettu</string>
     <string name="pref_title_user_index">Valitse käyttäjä</string>
 
     <string name="pref_alarm_length">Hälytyksen pituus</string>
-    <string name="pref_summary_alarm_length">Hälytys soi ja värisee </string>
+    <string name="pref_summary_alarm_length">Hälytys soi ja värisee</string>
 
     <string name="loading_dialog_text">Yhdistetään, ole hyvä ja odota...</string>
     <string name="pref_title_wake_up_sleep_stage">Herätys univaiheesta</string>
     <string name="sleep_info_title">Uni-tiedot</string>
     <string name="sleep_info_well_button">Hyvä olo</string>
-    <string name="sleep_info_overall_age_pref">Tiedot ovat </string>
-    <string name="sleep_info_overall_age_post"> vanhoja</string>
+    <string name="sleep_info_overall_age_pref">Tiedot ovat</string>
+    <string name="sleep_info_overall_age_post">vanhoja</string>
     <string name="sleep_info_up_to_date">Tiedot ovat ajan tasalla</string>
     <string name="sleep_info_overall_minitotal">Unen kokonaismäärä</string>
     <string name="sleep_info_deep_minitotal">Syvän unen kokonaismäärä</string>
@@ -62,12 +62,12 @@
     <string name="sleep_info_overall_title">Viime yö:</string>
 
 
-
     <string name="disconnect_dialog_message">Jos kirjaudut ulos herätys poistetaan. Haluatko varmasti kirjautua ulos?
     </string>
     <string name="button_text_close">Sulje</string>
     <string name="login_or_authorisation_failed">Sisäänkirjautuminen epäonnistui</string>
-    <string name="must_connect_to_beddit_account">Tätä sovellusta ei voi käyttää ilman sovelluksen yhdistämistä Beddit-tiliin.
+    <string name="must_connect_to_beddit_account">Tätä sovellusta ei voi käyttää ilman sovelluksen yhdistämistä
+        Beddit-tiliin.
     </string>
     <string name="button_text_ok">Ok</string>
     <string name="sleep_data_fail">Ei saatu unitietoja Beddit</string>

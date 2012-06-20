@@ -5,12 +5,14 @@ import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
-import ohtu.beddit.web.*;
+import ohtu.beddit.web.BedditConnector;
+import ohtu.beddit.web.BedditException;
+import ohtu.beddit.web.BedditWebConnector;
 
 import java.util.Calendar;
 
 public class ApiControllerClassImpl implements ApiController {
-
+    private static final String TAG = "ApiController";
 
     private static BedditJsonParser jsonParser = new BedditJsonParserImpl();
     private BedditConnector bedditConnector;
@@ -20,7 +22,7 @@ public class ApiControllerClassImpl implements ApiController {
     private static Calendar lastSleepUpdateTime = null;
     private static String lastUser = null;
 
-    public ApiControllerClassImpl(){
+    public ApiControllerClassImpl() {
         bedditConnector = new BedditWebConnector();
     }
 
@@ -31,35 +33,35 @@ public class ApiControllerClassImpl implements ApiController {
     @Override
     public void updateUserData(Context context) throws BedditException {
         userJson = bedditConnector.getUserJson(context);
-        Log.v("apidapi", "update: "+ userJson);
+        Log.v(TAG, "update: " + userJson);
     }
 
     @Override
-    public void updateSleepData(Context context) throws BedditException{
+    public void updateSleepData(Context context) throws BedditException {
         String date = TimeUtils.getTodayAsQueryDateString();
-        sleepJson = bedditConnector.getWakeUpJson(context,date);
+        sleepJson = bedditConnector.getWakeUpJson(context, date);
         lastSleepUpdateTime = Calendar.getInstance();
         lastUser = PreferenceService.getUsername(context);
-        Log.v("apidapi", "update: "+ sleepJson);
+        Log.v(TAG, "update: " + sleepJson);
     }
 
     @Override
-    public void updateQueueData(Context context) throws BedditException{
+    public void updateQueueData(Context context) throws BedditException {
         String date = TimeUtils.getTodayAsQueryDateString();
-        queueJson = bedditConnector.getQueueStateJson(context,date);
-        Log.v("apidapi", "update: "+ queueJson);
+        queueJson = bedditConnector.getQueueStateJson(context, date);
+        Log.v(TAG, "update: " + queueJson);
     }
 
     @Override
-    public boolean isSleepInfoOutdated(){
+    public boolean isSleepInfoOutdated() {
         return lastSleepUpdateTime == null || TimeUtils.differenceInMinutes(Calendar.getInstance(), lastSleepUpdateTime) > 1;
     }
 
     @Override
-    public boolean hasUserChanged(Context context){
-        if(lastUser.equals(PreferenceService.getUsername(context))){
+    public boolean hasUserChanged(Context context) {
+        if (lastUser.equals(PreferenceService.getUsername(context))) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -67,26 +69,26 @@ public class ApiControllerClassImpl implements ApiController {
 
     @Override
     public void requestInfoUpdate(Context context) throws BedditException {
-        Log.v("apidapi", "postattu: " + bedditConnector.requestDataAnalysis(context, TimeUtils.getTodayAsQueryDateString()));
+        Log.v(TAG, "posted: " + bedditConnector.requestDataAnalysis(context, TimeUtils.getTodayAsQueryDateString()));
     }
 
 
     @Override
     public String getUsername(Context context) throws BedditException {
         String json = getUserJson(context);
-        return jsonParser.getUserData(json).getUsername(userIndex);
+        return jsonParser.getUserData(json).getUsername();
     }
 
     @Override
     public String getFirstName(Context context) throws BedditException {
         String json = getUserJson(context);
-        return jsonParser.getUserData(json).getFirstName(userIndex);
+        return jsonParser.getUserData(json).getFirstName();
     }
 
     @Override
     public String getLastName(Context context) throws BedditException {
         String json = getUserJson(context);
-        return jsonParser.getUserData(json).getLastName(userIndex);
+        return jsonParser.getUserData(json).getLastName();
     }
 
     @Override
@@ -148,21 +150,19 @@ public class ApiControllerClassImpl implements ApiController {
 
 
     private String getUserJson(Context context) throws BedditException {
-        if(userJson ==null) updateUserData(context);
+        if (userJson == null) updateUserData(context);
         return userJson;
     }
 
     private String getSleepJson(Context context) throws BedditException {
-        if(sleepJson ==null) updateSleepData(context);
+        if (sleepJson == null) updateSleepData(context);
         return sleepJson;
     }
 
     private String getQueueJson(Context context) throws BedditException {
-        if(queueJson ==null) updateQueueData(context);
+        if (queueJson == null) updateQueueData(context);
         return queueJson;
     }
-
-
 
 
 }

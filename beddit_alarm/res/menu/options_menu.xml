@@ -2,12 +2,12 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/settings_menu_button"
-        android:title="@string/settings_button_title" />
+            android:id="@+id/settings_menu_button"
+            android:title="@string/settings_button_title"/>
     <item
-        android:id="@+id/help_menu_button"
-        android:title="@string/help_button_title" />
+            android:id="@+id/help_menu_button"
+            android:title="@string/help_button_title"/>
     <item
-        android:id="@+id/sleep_info_button"
-        android:title="@string/sleep_info_title" />
+            android:id="@+id/sleep_info_button"
+            android:title="@string/sleep_info_title"/>
 </menu>

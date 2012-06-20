@@ -3,7 +3,7 @@ package ohtu.beddit.alarm;
 import android.content.Context;
 import android.util.Log;
 
-public class AlarmCheckerRandomImpl implements AlarmChecker{
+public class AlarmCheckerRandomImpl implements AlarmChecker {
     private double wakeUpChance;
 
     public AlarmCheckerRandomImpl(double wakeUpChance) {
@@ -15,7 +15,7 @@ public class AlarmCheckerRandomImpl implements AlarmChecker{
         double random = Math.random();
 
         Log.v("AlarmChecker:", "Random must be < " + wakeUpChance);
-        Log.v("AlarmChecker:", "Random was "+ random);
+        Log.v("AlarmChecker:", "Random was " + random);
 
         return random <= wakeUpChance;
     }

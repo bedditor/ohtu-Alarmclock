@@ -9,7 +9,7 @@ import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
 
-public class AlarmCheckerRealImpl implements AlarmChecker{
+public class AlarmCheckerRealImpl implements AlarmChecker {
 
     private static final String TAG = "AlarmChecker";
     private static final char BOTH_SLEEP_STAGES = 'b';
@@ -26,53 +26,52 @@ public class AlarmCheckerRealImpl implements AlarmChecker{
 
         ApiController api = new ApiControllerClassImpl();
         long atMostMillisOld = 1000 * 60 * AT_MOST_MINUTES_OLD;
-        try{
+        try {
             api.updateQueueData(context);
             Calendar nao = Calendar.getInstance();
             Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed(context);
 
-        //<for tests>
+            //<for tests>
             Calendar updateUpTo = api.getSleepAnalysisResultsUpTo(context);
-            long queuedifference = 0;
-            try{
+            long queueDifference;
+            try {
                 Calendar updateUpToWhenQueued = api.getSleepAnalysisWhenQueued(context);
-                queuedifference = nao.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
-            }catch(NullPointerException n){
-                queuedifference = nao.getTimeInMillis() - 999*60*1000;
+                queueDifference = nao.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
+            } catch (NullPointerException n) {
+                queueDifference = nao.getTimeInMillis() - 999 * 60 * 1000;
             }
-            long updatedifference = nao.getTimeInMillis() - updateUpTo.getTimeInMillis();
-        //</for tests>
-            long analysisdifference = nao.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
-            Log.v("apidapi", "Time difference from update? (minutes): "+updatedifference/60/1000);
-            Log.v("apidapi", "Time difference from analysis (minutes): "+analysisdifference/60/1000);
-            Log.v("apidapi", "Time difference from queued (minutes): "+queuedifference/60/1000);
-            if(analysisdifference < atMostMillisOld || queuedifference < atMostMillisOld){//should only use analysisdifference in final version
+            long updateDifference = nao.getTimeInMillis() - updateUpTo.getTimeInMillis();
+            //</for tests>
+            long analysisDifference = nao.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
+            Log.v(TAG, "Time difference from update? (minutes): " + updateDifference / 60 / 1000);
+            Log.v(TAG, "Time difference from analysis (minutes): " + analysisDifference / 60 / 1000);
+            Log.v(TAG, "Time difference from queued (minutes): " + queueDifference / 60 / 1000);
+            if (analysisDifference < atMostMillisOld || queueDifference < atMostMillisOld) {//should only use analysisDifference in final version
                 api.updateSleepData(context);
-                Log.v("apidapi", "sleepstage: "+api.getLastSleepStage(context));
+                Log.v(TAG, "sleep stage: " + api.getLastSleepStage(context));
                 char[] sleepStages = getWakeUpSleepStages(context);
-                for (int i = 0; i< sleepStages.length; i++){
-                    if(api.getLastSleepStage(context) == sleepStages[i]){
+                for (char sleepStage : sleepStages) {
+                    if (api.getLastSleepStage(context) == sleepStage) {
                         return true;
                     }
                 }
-            }else if(api.getSleepAnalysisStatus(context).equals("can_be_queued_for_analysis")){
-                Log.v("apidapi", "update request");
+            } else if (api.getSleepAnalysisStatus(context).equals("can_be_queued_for_analysis")) {
+                Log.v(TAG, "update request");
                 api.requestInfoUpdate(context);
-            }else{
-                Log.v("apidapi", "was ist das");
+            } else {
+                Log.v(TAG, "was ist das");
             }
             return false;
-        }
-        catch(BedditException e){
+        } catch (BedditException e) {
             Log.v(TAG, Log.getStackTraceString(e));
             return false;
         }
     }
 
-    private char[] getWakeUpSleepStages(Context context){
+    private char[] getWakeUpSleepStages(Context context) {
         char sleepStage = PreferenceService.getWakeUpSleepStage(context);
         char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE, AWAKE, AWAY, DIS_BE_TESTING};
-        if(sleepStage != BOTH_SLEEP_STAGES){
+        if (sleepStage != BOTH_SLEEP_STAGES) {
             sleepStages = new char[3];
             sleepStages[0] = sleepStage;
             sleepStages[1] = AWAKE;

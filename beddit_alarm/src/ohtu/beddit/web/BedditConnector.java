@@ -16,8 +16,6 @@ public interface BedditConnector {
 
     String getQueueStateJson(Context context, String date) throws BedditConnectionException;
 
-    String getSomeJson(Context context, String query, boolean do_post) throws BedditConnectionException;
-
     String requestDataAnalysis(Context context, String date) throws BedditConnectionException;
 
     String getAccessToken(String url) throws BedditConnectionException;
