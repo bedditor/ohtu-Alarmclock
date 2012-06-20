@@ -45,6 +45,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private static final int FROM_SLEEP_INFO = 4;
     private static final int FROM_HELP = 5;
 
+    private TokenChecker tokenChecker;
+
     /**
      * Called when the alarm is first created.
      */
@@ -114,6 +116,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     public void finish() {
         Log.v(TAG, "Finishing");
+        if (tokenChecker != null)
+            tokenChecker.cancel(true);
         super.finish();
     }
 
@@ -124,7 +128,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
             startAuthActivity();
         } else {
             Log.v(TAG, "Starting token validation");
-            new TokenChecker().execute();
+            tokenChecker = new TokenChecker();
+            tokenChecker.execute();
         }
     }
 
