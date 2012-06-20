@@ -26,6 +26,8 @@ import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.UnauthorizedException;
 
+import java.util.Calendar;
+
 public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private static final String TAG = "MainActivity";
     private AlarmService alarmService;
@@ -33,6 +35,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private AlarmTimePicker alarmTimePicker;
     private View addAlarmButton;
     private View deleteAlarmButton;
+    private Calendar lastTokenCheck;
 
     private static final int DARK_THEME_BACKGROUND = Color.BLACK;
     private static final int DARK_THEME_FOREGROUND = Color.WHITE;
@@ -61,14 +64,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         PreferenceManager.setDefaultValues(this, R.xml.prefs, true);
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         initializeUI();
-        checkToken();
-
 
         /*testDialog();
         testDialog();
         testDialog();
         testDialog();*/
-
     }
 
     @Override
@@ -92,7 +92,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     protected void onPause() {
         Log.v(TAG, "onPause");
-
+        if (tokenChecker != null)
+            tokenChecker.cancel(true);
         super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
@@ -117,14 +118,19 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     protected void onResume() {
         Log.v(TAG, "onResume");
+
+        Calendar expiresAt = Calendar.getInstance();
+        expiresAt.add(Calendar.MINUTE, -5);
+        if (lastTokenCheck == null ||
+            expiresAt.after(lastTokenCheck)) {
+            checkToken();
+        }
         super.onStart();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
     public void finish() {
         Log.v(TAG, "Finishing");
-        if (tokenChecker != null)
-            tokenChecker.cancel(true);
         super.finish();
     }
 
@@ -165,6 +171,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
                         });
                 AlertDialog tokenExpiredDialog = builder.create();
                 tokenExpiredDialog.show();
+            } else {
+                lastTokenCheck = Calendar.getInstance();
             }
         }
     }
@@ -348,6 +356,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
             alarmTimePicker.setHours(bundle.getInt("hours"));
             alarmTimePicker.setInterval(bundle.getInt("interval"));
         }
+        lastTokenCheck = (Calendar)bundle.getSerializable("tokenCheck");
         super.onRestoreInstanceState(bundle);
     }
 
@@ -357,6 +366,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         outState.putInt("minutes", alarmTimePicker.getMinutes());
         outState.putInt("hours", alarmTimePicker.getHours());
         outState.putInt("interval", alarmTimePicker.getInterval());
+        outState.putSerializable("tokenCheck", Calendar.getInstance());
         super.onSaveInstanceState(outState);
     }
 
