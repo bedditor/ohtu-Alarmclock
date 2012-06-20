@@ -19,20 +19,20 @@ public class ShowStopper implements Runnable {
     private Vibrator vibrator;
 
     public ShowStopper(int min, MusicHandler music, Vibrator vibra){
-        minutes = min;
+        this.minutes = min;
         this.musicHandler = music;
-        vibrator = vibra;
+        this.vibrator = vibra;
     }
 
     @Override
     public void run(){
         try{
-            Thread.sleep(1000*60*minutes, 0);
+            Thread.sleep(1000*60*this.minutes, 0);
         }catch(InterruptedException i){
             Log.v("ShowStopperCrash", Log.getStackTraceString(i));
         }finally {
-            musicHandler.release();
-            vibrator.cancel();
+            this.musicHandler.release();
+            this.vibrator.cancel();
         }
     }
 }

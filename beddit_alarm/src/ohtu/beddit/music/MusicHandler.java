@@ -21,38 +21,33 @@ public class MusicHandler{
 
     private final String TAG = "MusicHandler";
     private MediaPlayer player;
-    private Vibrator vibrator;
     private boolean released;
-    private long loopStartedAt;
-    private Context context;
 
     private static final float VOLUME_OFF = 0.0f;
     private static final float RINGING_VOLUME = 0.125f;
 
 
-    public MusicHandler(Vibrator vibra, Context cont) {
+    public MusicHandler() {
         player = new MediaPlayer();
-        vibrator = vibra;
         released = true;
-        context = cont;
     }
 
     /*
     Needs the Context of the Activity to create mediaplayer for the spesific Activity.
      */
     public void setMusic(Context context) {
-        AssetFileDescriptor afd;
+        AssetFileDescriptor alarmTone;
         if (PreferenceService.getAwesome(context)){
-            afd = context.getResources().openRawResourceFd(R.raw.awesome);
+            alarmTone = context.getResources().openRawResourceFd(R.raw.awesome);
         } else {
-            afd = context.getResources().openRawResourceFd(R.raw.alarm);
+            alarmTone = context.getResources().openRawResourceFd(R.raw.alarm);
         }
 
         try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_ALARM);
             player.setLooping(true);
-            player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            player.setDataSource(alarmTone.getFileDescriptor(), alarmTone.getStartOffset(), alarmTone.getLength());
             setReasonableVolume(context);
             player.prepare();
             released = false;
@@ -89,10 +84,10 @@ public class MusicHandler{
             }
         if (success){
             Log.v(TAG, "Started playing alarm music!");
-            loopStartedAt = System.currentTimeMillis();
-
-        }else
+        } else {
             Log.v(TAG, "Did not start playing music. Maybe you haven't initialized player.");
+        }
+
     }
 
     //Can be called regardless we have valid music, It just won't do anything.
@@ -140,6 +135,7 @@ public class MusicHandler{
             Log.v(TAG, "Customer on the phone, let's change volume");
             player.setVolume(VOLUME_OFF, VOLUME_OFF);
         } else if (callState == TelephonyManager.CALL_STATE_RINGING){
+            Log.v(TAG, "Someone is calling! Let's decrease volume.");
             player.setVolume(RINGING_VOLUME, RINGING_VOLUME);
         }else {
             player.setVolume(1f, 1f);

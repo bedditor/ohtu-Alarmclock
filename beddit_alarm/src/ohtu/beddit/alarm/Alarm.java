@@ -24,18 +24,19 @@ public class Alarm {
         this.interval = interval;
         this.enabled = enabled;
         this.calendar = TimeUtils.timeToCalendar(hours, minutes);
-        this.timeInMillis = calendar.getTimeInMillis();
+       // this.timeInMillis = calendar.getTimeInMillis();
     }
 
     public Alarm(long timeInMillis, int interval, boolean enabled) {
-        this.timeInMillis = timeInMillis;
+        //this.timeInMillis = timeInMillis;
+        calendar.setTimeInMillis(timeInMillis);
         this.interval = interval;
         this.enabled = enabled;
     }
 
-    private void updateCalendar(){
+    /*private void updateCalendar(){
         calendar.setTimeInMillis(timeInMillis);
-    }
+    }*/
 
     public boolean isEnabled() {
         return enabled;
@@ -54,12 +55,12 @@ public class Alarm {
     }
 
     public long getTimeInMillis() {
-        return timeInMillis;
+        return calendar.getTimeInMillis();
     }
 
     public void setTimeInMillis(long timeInMillis) {
-        this.timeInMillis = timeInMillis;
-        updateCalendar();
+        //this.timeInMillis = timeInMillis;
+        calendar.setTimeInMillis(timeInMillis);
     }
 
     public Calendar getTimeInCalendar() {
@@ -68,7 +69,7 @@ public class Alarm {
 
     public void setTimeInCalendar(Calendar calendar) {
         this.calendar = calendar;
-        this.timeInMillis = calendar.getTimeInMillis();
+        //this.timeInMillis = calendar.getTimeInMillis();
     }
 
     public int getHours(){

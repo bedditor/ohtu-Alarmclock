@@ -1,12 +1,8 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -101,7 +97,7 @@ public class AlarmActivity extends Activity {
     }
 
     private void playMusic() {
-        music = new MusicHandler(vibrator, this);
+        music = new MusicHandler();
         music.setMusic(this);
         music.play(true);
         ShowStopper stopper = new ShowStopper(PreferenceService.getAlarmLength(this),music, vibrator );

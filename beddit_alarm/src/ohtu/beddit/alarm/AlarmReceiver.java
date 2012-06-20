@@ -21,7 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     {
         alarmService = new AlarmServiceImpl(context);
         //AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
-        AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.5);
+        AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
         checkTime = alarmChecker.getCheckTime();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
 
