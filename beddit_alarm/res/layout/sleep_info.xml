@@ -15,7 +15,7 @@
               android:textSize="46sp"
               android:textStyle="bold"
               android:textColor="#4D665C"
-              android:layout_centerHorizontal="true"/>
+              />
 
     <RelativeLayout
             android:id="@+id/sleep_info_box"
@@ -23,8 +23,7 @@
             android:layout_height="230dp"
             android:layout_margin="20dp"
             android:background="#FFFFFF"
-            android:layout_below="@+id/sleep_info_title"
-            android:layout_centerHorizontal="true">
+            >
 
         <TextView android:id="@+id/sleep_info_overall_text"
                   android:layout_width="wrap_content"

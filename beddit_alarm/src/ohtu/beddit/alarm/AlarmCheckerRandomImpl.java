@@ -17,10 +17,7 @@ public class AlarmCheckerRandomImpl implements AlarmChecker{
         Log.v("AlarmChecker:", "Random must be < " + wakeUpChance);
         Log.v("AlarmChecker:", "Random was "+ random);
 
-        if(random <= wakeUpChance){
-            return true;
-        }
-        return false;
+        return random <= wakeUpChance;
     }
 
     @Override

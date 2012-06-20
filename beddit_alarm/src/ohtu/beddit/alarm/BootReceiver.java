@@ -15,7 +15,6 @@ public class BootReceiver extends BroadcastReceiver {
         if (alarmService.isAlarmSet()){
             addAlarm(context);
         }
-
     }
 
     private void addAlarm(Context context){

@@ -12,9 +12,7 @@ import java.util.Calendar;
 public class AlarmReceiver extends BroadcastReceiver {
     private final String TAG = "Alarm Receiver";
     private int wakeUpAttemptInterval; //how often (seconds) we try to wake up
-    private int checkTime; //how long (seconds) it may take to do the checking
     private AlarmService alarmService;
-
 
     @Override
     public void onReceive(Context context, Intent intent)
@@ -22,7 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmService = new AlarmServiceImpl(context);
         //AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
         AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
-        checkTime = alarmChecker.getCheckTime();
+        int checkTime = alarmChecker.getCheckTime();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
 
         Log.v(TAG, "Received alarm");

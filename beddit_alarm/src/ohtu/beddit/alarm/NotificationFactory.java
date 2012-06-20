@@ -31,7 +31,7 @@ public class NotificationFactory {
 
         String print = TimeUtils.timeAsString(startHours, startMinutes, context);
         if (startHours != endHours || startMinutes != endMinutes){
-            print += " - " + TimeUtils.timeAsString(endHours, endMinutes, context);;
+            print += " - " + TimeUtils.timeAsString(endHours, endMinutes, context);
         }
         
         Intent intent = new Intent(context, MainActivity.class);

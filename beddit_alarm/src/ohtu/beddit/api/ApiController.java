@@ -24,11 +24,11 @@ public interface ApiController {
 
     void requestInfoUpdate(Context context) throws BedditException;
 
-    String getUsername(Context context, int userIndex) throws BedditException;
+    String getUsername(Context context) throws BedditException;
 
-    String getFirstName(Context context, int userIndex) throws BedditException;
+    String getFirstName(Context context) throws BedditException;
 
-    String getLastName(Context context, int userIndex) throws BedditException;
+    String getLastName(Context context) throws BedditException;
 
     char getLastSleepStage(Context context) throws BedditException;
 

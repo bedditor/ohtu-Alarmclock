@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class AmazingWebClient extends WebViewClient {
-    List<UrlListener> listeners = new LinkedList<UrlListener>();
-    LoadingDialog dialog;
-    String[] blacklist = {"http://www.beddit.com/","https://www.beddit.com/login", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/", "https://api.beddit.com/newbeddit/", "https://api.beddit.com/login"};
+    private List<UrlListener> listeners = new LinkedList<UrlListener>();
+    private LoadingDialog dialog;
+    private String[] blacklist = {"http://www.beddit.com/","https://www.beddit.com/login", "http://www.beddit.com/sleep", "https://api.beddit.com/reset_password", "mailto:support@beddit.com", "https://api.beddit.com/signup", "http://www.cs.helsinki.fi/","http://www.cs.helsinki.fi/home/", "https://api.beddit.com/newbeddit/", "https://api.beddit.com/login"};
 
     private static final String TAG = "AmazingWebClient";
 

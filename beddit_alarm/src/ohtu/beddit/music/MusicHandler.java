@@ -63,9 +63,7 @@ public class MusicHandler{
     */
     //TODO: Make this more sane (do actual check if the music we are playing can be found (memorycard) and basic null check)
     public boolean insanityCheck() {
-        if (released)
-            return false;
-        return true;
+        return !released;
     }
 
     //Can be called regardless we have valid music, It just won't do anything.

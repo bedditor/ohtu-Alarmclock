@@ -52,10 +52,7 @@ public class ApiControllerClassImpl implements ApiController {
 
     @Override
     public boolean isSleepInfoOutdated(){
-        if(lastSleepUpdateTime == null || TimeUtils.differenceInMinutes(Calendar.getInstance(), lastSleepUpdateTime) > 1){
-            return true;
-        }
-        return false;
+        return lastSleepUpdateTime == null || TimeUtils.differenceInMinutes(Calendar.getInstance(), lastSleepUpdateTime) > 1;
     }
 
     @Override
@@ -75,19 +72,19 @@ public class ApiControllerClassImpl implements ApiController {
 
 
     @Override
-    public String getUsername(Context context, int userIndex) throws BedditException {
+    public String getUsername(Context context) throws BedditException {
         String json = getUserJson(context);
         return jsonParser.getUserData(json).getUsername(userIndex);
     }
 
     @Override
-    public String getFirstName(Context context, int userIndex) throws BedditException {
+    public String getFirstName(Context context) throws BedditException {
         String json = getUserJson(context);
         return jsonParser.getUserData(json).getFirstName(userIndex);
     }
 
     @Override
-    public String getLastName(Context context, int userIndex) throws BedditException {
+    public String getLastName(Context context) throws BedditException {
         String json = getUserJson(context);
         return jsonParser.getUserData(json).getLastName(userIndex);
     }

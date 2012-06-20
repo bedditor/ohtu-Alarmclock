@@ -25,8 +25,6 @@ public class AuthActivity extends Activity implements UrlListener {
 
     public static final String REDIRECT_URI = "https://peach-app.appspot.com";
 
-    private LoadingDialog dialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,9 +93,9 @@ public class AuthActivity extends Activity implements UrlListener {
         try{
             ApiController apiController = new ApiControllerClassImpl();
             apiController.updateUserData(this); //updates the info in apicontroller for lines below:
-            PreferenceService.setUsername(this, apiController.getUsername(this, 0));
-            PreferenceService.setFirstName(this, apiController.getFirstName(this, 0));
-            PreferenceService.setLastName(this, apiController.getLastName(this, 0));
+            PreferenceService.setUsername(this, apiController.getUsername(this));
+            PreferenceService.setFirstName(this, apiController.getFirstName(this));
+            PreferenceService.setLastName(this, apiController.getLastName(this));
         }
         catch (Exception e){
             Log.v(TAG, "saving user data failed");

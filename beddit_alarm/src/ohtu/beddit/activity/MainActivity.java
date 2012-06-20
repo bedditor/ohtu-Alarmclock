@@ -21,11 +21,9 @@ import ohtu.beddit.alarm.*;
 
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
-import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.views.timepicker.CustomTimePicker;
 import ohtu.beddit.io.PreferenceService;
-import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.UnauthorizedException;
 
@@ -165,7 +163,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener
         try {
             ApiController apiController = new ApiControllerClassImpl();
             apiController.updateUserData(this);
-            String username = apiController.getUsername(this, 0);
+            String username = apiController.getUsername(this);
             PreferenceService.setUsername(this, username);
         }
         catch (UnauthorizedException e){

@@ -38,8 +38,7 @@ public class FileHandler {
     public String readStringFromFile(String filename){
         try{
             Scanner scanner = new Scanner(context.openFileInput(filename));
-            String line = scanner.nextLine();
-            return line;
+            return scanner.nextLine();
         }catch(Exception e){
             Log.v("Filehandler", "File not found");
             return "";
@@ -98,8 +97,7 @@ public class FileHandler {
             Log.v("Filehandler", "File not found");
             return "";
         }
-        String clientid=new JsonParser().parse(json).getAsJsonObject().get(request).getAsString();
-        return clientid;
+        return new JsonParser().parse(json).getAsJsonObject().get(request).getAsString();
     }
 
 }

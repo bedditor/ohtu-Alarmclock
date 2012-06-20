@@ -28,5 +28,4 @@
             android:text="@string/alarmActivity_snooze"
             android:background="@drawable/beddit_button"
         />
-
-></LinearLayout>
+</LinearLayout>

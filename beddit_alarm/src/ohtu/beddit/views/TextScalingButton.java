@@ -25,8 +25,7 @@ public class TextScalingButton extends Button {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         float textLen = getPaint().measureText(getText().toString());
-        float width = w;
-        float scale = width / textLen * 0.8f; // scale text to fill 80% of button width
+        float scale = w / textLen * 0.8f; // scale text to fill 80% of button width
         setTextSize(TypedValue.COMPLEX_UNIT_PX, getTextSize() * scale);
         super.onSizeChanged(w, h, oldw, oldh);
     }

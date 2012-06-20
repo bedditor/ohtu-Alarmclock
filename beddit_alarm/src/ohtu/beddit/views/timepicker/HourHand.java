@@ -88,7 +88,7 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
             }
 
             @Override
-            public boolean finished() {
+            public boolean running() {
                 return (movable.getValue()%12) == target;
             }
         };

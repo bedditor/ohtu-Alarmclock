@@ -29,7 +29,7 @@ class BedditJsonParserImpl implements BedditJsonParser {
         return getObject(json, QueueData.class);
     }
 
-    private <T extends Object> T getObject(String json, Class<T> type) throws BedditException {
+    private <T> T getObject(String json, Class<T> type) throws BedditException {
         JsonReader jsonReader = getNewJsonReader(json);
         try{
             Gson gson = new Gson();
