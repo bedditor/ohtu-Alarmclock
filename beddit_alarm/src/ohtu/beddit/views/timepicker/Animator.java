@@ -1,5 +1,6 @@
 package ohtu.beddit.views.timepicker;
 
+import android.util.Log;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -32,12 +33,12 @@ public abstract class Animator implements Runnable {
 
     protected abstract void animate();
 
-    public boolean running() {
-        return movable.getValue() != target;
+    public boolean notFinished() {
+        return movable.getValue() != getTarget();
     }
 
     public void run() {
-        while (running()) {
+        while (notFinished()) {
             animate();
 
             parent.post(new Runnable() {

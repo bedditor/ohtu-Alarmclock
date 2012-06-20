@@ -1,6 +1,7 @@
 package ohtu.beddit.views.timepicker;
 
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -86,8 +87,8 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
             }
 
             @Override
-            public boolean running() {
-                return (movable.getValue() % 12) == target;
+            public boolean notFinished() {
+                return (movable.getValue() % 12) != getTarget();
             }
         };
     }

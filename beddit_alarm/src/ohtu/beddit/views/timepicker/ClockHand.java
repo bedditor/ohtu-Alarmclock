@@ -83,6 +83,7 @@ public abstract class ClockHand extends Movable {
 
     @Override
     public boolean click(float x, float y) {
+
         double distanceFromCenter = dist(x, y, this.x, this.y);
         return clicked = distanceFromCenter < length && distanceFromCenter > length - 4 * gp.getRadius();
     }
