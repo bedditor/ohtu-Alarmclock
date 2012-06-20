@@ -58,11 +58,14 @@ public class BedditWebConnector implements BedditConnector {
             throw new BedditConnectionException(e.getMessage());
         } finally {
             closeConnections(connection, inputStream);
-            if (response.equals("")) {
-                Log.v(TAG, "Empty response");
-                throw new BedditConnectionException("Empty response from Beddit");
-            }
+
         }
+
+        if (response.equals("")) {
+            Log.v(TAG, "Empty response");
+            throw new BedditConnectionException("Empty response from Beddit");
+        }
+
         return response;
     }
 
