@@ -28,7 +28,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
         long atMostMillisOld = 1000 * 60 * AT_MOST_MINUTES_OLD;
         try {
             api.updateQueueData(context);
-            Calendar nao = Calendar.getInstance();
+            Calendar now = Calendar.getInstance();
             Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed(context);
 
             //<for tests>
@@ -36,13 +36,13 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
             long queueDifference;
             try {
                 Calendar updateUpToWhenQueued = api.getSleepAnalysisWhenQueued(context);
-                queueDifference = nao.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
+                queueDifference = now.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
             } catch (NullPointerException n) {
-                queueDifference = nao.getTimeInMillis() - 999 * 60 * 1000;
+                queueDifference = now.getTimeInMillis() - 999 * 60 * 1000;
             }
-            long updateDifference = nao.getTimeInMillis() - updateUpTo.getTimeInMillis();
+            long updateDifference = now.getTimeInMillis() - updateUpTo.getTimeInMillis();
             //</for tests>
-            long analysisDifference = nao.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
+            long analysisDifference = now.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
             Log.v(TAG, "Time difference from update? (minutes): " + updateDifference / 60 / 1000);
             Log.v(TAG, "Time difference from analysis (minutes): " + analysisDifference / 60 / 1000);
             Log.v(TAG, "Time difference from queued (minutes): " + queueDifference / 60 / 1000);
