@@ -35,6 +35,8 @@ public class AlarmActivity extends Activity {
     private static final float DIALOG_HEIGHT = 0.7f;
     private static final float DIALOG_WIDTH = 0.9f;
 
+    private static final long[] vibratePattern = {0, 200, 500};
+
     /**
      * Called when the alarm is first created.
      */
@@ -107,8 +109,7 @@ public class AlarmActivity extends Activity {
     private void vibratePhone() {
         Log.v(TAG, "I want to Vibrate 8==D");
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = {0, 200, 500};
-        vibrator.vibrate(pattern, 0);
+        vibrator.vibrate(vibratePattern, 0);
         Log.v(TAG, "Vibrator says:" + vibrator.toString());
     }
 

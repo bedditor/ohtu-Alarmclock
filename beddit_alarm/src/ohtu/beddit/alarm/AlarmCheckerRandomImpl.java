@@ -6,6 +6,9 @@ import android.util.Log;
 public class AlarmCheckerRandomImpl implements AlarmChecker {
     private final double wakeUpChance;
 
+    private final static int wakeAttemptInterval = 180;
+    private final static int checkTime = 10;
+
     public AlarmCheckerRandomImpl(double wakeUpChance) {
         this.wakeUpChance = wakeUpChance;
     }
@@ -22,11 +25,11 @@ public class AlarmCheckerRandomImpl implements AlarmChecker {
 
     @Override
     public int getWakeUpAttemptInterval() {
-        return 180;
+        return wakeAttemptInterval;
     }
 
     @Override
     public int getCheckTime() {
-        return 10;
+        return checkTime;
     }
 }

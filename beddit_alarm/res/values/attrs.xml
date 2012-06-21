@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="TextScaling">
-        <attr name="text_scale_ref" format="string"></attr>
+        <attr name="text_scale_ref" format="string" />
+        <attr name="parent_width_percent" format="float" />
     </declare-styleable>
 </resources>
