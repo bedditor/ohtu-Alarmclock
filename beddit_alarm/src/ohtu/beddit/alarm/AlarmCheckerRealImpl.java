@@ -23,8 +23,6 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
     private static final char LIGHT_SLEEP_STAGE = 'L';
     private static final int AT_MOST_MINUTES_OLD = 5;
 
-    private static final char DIS_BE_TESTING = 'M';
-
     @Override
     public boolean wakeUpNow(Context context) {
 
@@ -36,23 +34,9 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
             Calendar now = Calendar.getInstance();
             Calendar updateUpToWhenAnalyzed = queueData.getWhenSleepAnalyzed();
 
-            //<for tests>
-            Calendar updateUpTo = queueData.getResults_available_up_to();
-            long queueDifference;
-            try {
-                Calendar updateUpToWhenQueued = queueData.getWhen_queued_for_sleep_analysis();
-                queueDifference = now.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
-            } catch (NullPointerException n) {
-                queueDifference = now.getTimeInMillis() - 999 * TimeUtils.MILLISECONDS_IN_MINUTE;
-            }
-            long updateDifference = now.getTimeInMillis() - updateUpTo.getTimeInMillis();
-            //</for tests>
-
             long analysisDifference = now.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
-            Log.v(TAG, "Time difference from update? (minutes): " + updateDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
-            Log.v(TAG, "Time difference from analysis (minutes): " + analysisDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
-            Log.v(TAG, "Time difference from queued (minutes): " + queueDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
-            if (analysisDifference < atMostMillisOld || queueDifference < atMostMillisOld) {//should only use analysisDifference in final version
+
+            if (analysisDifference < atMostMillisOld) {//should only use analysisDifference in final version
                 api.updateSleepData(context);
                 char lastSleepStage = api.getSleepData(context).getLastSleepStage();
                 Log.v(TAG, "sleep stage: " + lastSleepStage);
@@ -77,7 +61,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
 
     private char[] getWakeUpSleepStages(Context context) {
         char sleepStage = PreferenceService.getWakeUpSleepStage(context);
-        char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE, AWAKE, AWAY, DIS_BE_TESTING};
+        char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE, AWAKE, AWAY};
         if (sleepStage != BOTH_SLEEP_STAGES) {
             sleepStages = new char[3];
             sleepStages[0] = sleepStage;
@@ -89,7 +73,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
 
     @Override
     public int getWakeUpAttemptInterval() {
-        return 20;
+        return 3*60;
     }
 
     @Override
