@@ -84,7 +84,8 @@ public class SleepInfoActivity extends Activity {
                     break;
                 case (RESULT_FAILURE):
                     Log.v(TAG, "Unknown failure loading sleep information");
-                    SleepInfoActivity.this.finish();
+                    DialogUtils.createActivityClosingDialog(SleepInfoActivity.this,getString(R.string.no_beddit_data),getString(R.string.button_text_ok));
+                    //SleepInfoActivity.this.finish();
                     break;
             }
             SleepInfoActivity.this.dialog.dismiss();

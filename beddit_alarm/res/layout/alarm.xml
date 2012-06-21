@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res/ohtu.beddit"
               android:layout_width="fill_parent"
@@ -8,8 +7,8 @@
               android:orientation="vertical"
               android:id="@+id/alarmActivity_layout">
 
-    <ohtu.beddit.views.TextScalingButton
-            style="@style/ButtonText"
+    <ohtu.beddit.views.ScalingTextView
+            android:textColor="#FFFFFF"
             android:id="@+id/alarmActivity_button_dismiss"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
@@ -17,11 +16,12 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_dismiss"
             app:text_scale_ref="@string/alarmActivity_snooze"
+            app:parent_width_percent="0.8"
             android:background="@drawable/beddit_button"
             />
 
-    <ohtu.beddit.views.TextScalingButton
-            style="@style/ButtonText"
+    <ohtu.beddit.views.ScalingTextView
+            android:textColor="#FFFFFF"
             android:id="@+id/alarmActivity_button_snooze"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
@@ -29,6 +29,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/alarmActivity_snooze"
             app:text_scale_ref="@string/alarmActivity_dismiss"
+            app:parent_width_percent="0.8"
             android:background="@drawable/beddit_button"
             />
 </LinearLayout>

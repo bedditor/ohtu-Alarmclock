@@ -40,6 +40,7 @@
                     android:layout_height="fill_parent"
                     android:background="@drawable/alarm"
                     android:scaleType="fitXY"/>
+
                 <ohtu.beddit.views.ScalingTextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
@@ -48,7 +49,9 @@
                     android:layout_marginLeft="5dp"
                     android:text="@string/main_act_set_alarm_button"
                     app:text_scale_ref="@string/main_act_delete_alarm_button"
-                    style="@style/ButtonText"/>
+                    app:parent_width_percent="0.9"
+                    android:textColor="#FFFFFF"
+                    style="@android:style/Widget.TextView"/>
         </LinearLayout>
         <LinearLayout
                 android:layout_width="0dip"
@@ -65,7 +68,9 @@
                     android:layout_marginRight="5dp"
                     android:text="@string/main_act_delete_alarm_button"
                     app:text_scale_ref="@string/main_act_set_alarm_button"
-                    style="@style/ButtonText"/>
+                    app:parent_width_percent="0.9"
+                    android:textColor="#FFFFFF"
+                    style="@android:style/Widget.TextView"/>
             <ohtu.beddit.views.SquareImageView
                     android:layout_width="0dp"
                     android:layout_weight="1"

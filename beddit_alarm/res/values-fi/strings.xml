@@ -72,5 +72,6 @@
     <string name="button_text_ok">Ok</string>
     <string name="sleep_data_fail">Ei saatu unitietoja Beddit</string>
     <string name="could_not_connect">Ei saatu yhteyttä Beddit-tiliin</string>
+    <string name="no_beddit_data">Ei unitietoja viime yöltä</string>
 
 </resources>
