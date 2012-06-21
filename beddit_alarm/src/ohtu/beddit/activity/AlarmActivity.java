@@ -90,9 +90,6 @@ public class AlarmActivity extends Activity {
     @Override
     public void onStop() { //We call this when we stop the activity.
         Log.v(TAG, "onStop");
-        if (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState() == TelephonyManager.CALL_STATE_RINGING){
-            snooze();
-        }
         if (!wasDismissed)
             snooze();
         super.onStop();
@@ -134,8 +131,7 @@ public class AlarmActivity extends Activity {
             Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
             AlarmActivity.this.startActivity(myIntent);
         }
-        //AlarmActivity.this.finish();
-
+        AlarmActivity.this.finish();
     }
 
     private void snooze() {
