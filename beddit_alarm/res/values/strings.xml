@@ -67,13 +67,13 @@
     <string name="sleep_info_overall_age_pref">Data is</string>
     <string name="sleep_info_overall_age_post">old</string>
     <string name="sleep_info_up_to_date">Data is up to date</string>
-    <string name="sleep_info_overall_total">1h30min01sec</string>
+    <string name="sleep_info_overall_total">-- --</string>
     <string name="sleep_info_overall_minitotal">Total amount of sleep</string>
-    <string name="sleep_info_deep_total">30min00sec</string>
+    <string name="sleep_info_deep_total">-- --</string>
     <string name="sleep_info_deep_minitotal">Total amount of quiet sleep</string>
     <string name="sleep_info_badly_button">I\'m tired</string>
     <string name="sleep_info_overall_title">Last night</string>
-    <string name="sleep_info_delay">0 minutes old</string>
+    <string name="sleep_info_delay">-- --</string>
 
     <string name="disconnect_dialog_message">Alarm will be unset if you choose to disconnect. Disconnect anyway?
     </string>
@@ -84,6 +84,7 @@
     <string name="button_text_ok">OK</string>
     <string name="sleep_data_fail">Could not get sleep data from beddit</string>
     <string name="could_not_connect">Could not connect to beddit</string>
+    <string name="no_beddit_data">No sleep data available for last night</string>
 
     <style name="ButtonText">
         <item name="android:textColor">#ffffff</item>

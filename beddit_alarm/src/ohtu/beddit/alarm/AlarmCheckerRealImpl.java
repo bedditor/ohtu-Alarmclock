@@ -8,7 +8,9 @@ import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
-
+/*
+This class is used to check whether or not the alarm should go off at any given moment based on the sleep stages selected.
+ */
 public class AlarmCheckerRealImpl implements AlarmChecker {
 
     private static final String TAG = "AlarmChecker";
@@ -17,7 +19,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
     private static final char AWAY = 'A';
     private static final char REM_SLEEP_STAGE = 'R';
     private static final char LIGHT_SLEEP_STAGE = 'L';
-    private static final int AT_MOST_MINUTES_OLD = 2;
+    private static final int AT_MOST_MINUTES_OLD = 5;
 
     private static final char DIS_BE_TESTING = 'M';
 
@@ -82,7 +84,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
 
     @Override
     public int getWakeUpAttemptInterval() {
-        return 30;
+        return 20;
     }
 
     @Override
