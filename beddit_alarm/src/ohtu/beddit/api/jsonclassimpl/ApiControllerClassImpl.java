@@ -2,9 +2,11 @@ package ohtu.beddit.api.jsonclassimpl;
 
 import android.content.Context;
 import android.util.Log;
+import com.google.gson.JsonParser;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
+import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditConnector;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.BedditWebConnector;
@@ -37,6 +39,12 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
+    public UserData getUserData(Context context) throws BedditException {
+        String json = getUserJson(context);
+        return jsonParser.parseJsonToObject(json, UserData.class);
+    }
+
+    @Override
     public void updateSleepData(Context context) throws BedditException {
         String date = TimeUtils.getTodayAsQueryDateString();
         sleepJson = bedditConnector.getWakeUpJson(context, date);
@@ -46,10 +54,22 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
+    public SleepData getSleepData(Context context) throws BedditException {
+        String json = getSleepJson(context);
+        return jsonParser.parseJsonToObject(json, SleepData.class);
+    }
+
+    @Override
     public void updateQueueData(Context context) throws BedditException {
         String date = TimeUtils.getTodayAsQueryDateString();
         queueJson = bedditConnector.getQueueStateJson(context, date);
         Log.v(TAG, "update: " + queueJson);
+    }
+
+    @Override
+    public QueueData getQueueData(Context context) throws BedditException {
+        String json = getQueueJson(context);
+        return jsonParser.parseJsonToObject(json, QueueData.class);
     }
 
     @Override
@@ -62,88 +82,19 @@ public class ApiControllerClassImpl implements ApiController {
         return !lastUser.equals(PreferenceService.getUsername(context));
     }
 
-
     @Override
     public void requestInfoUpdate(Context context) throws BedditException {
         Log.v(TAG, "posted: " + bedditConnector.requestDataAnalysis(context, TimeUtils.getTodayAsQueryDateString()));
     }
 
-
     @Override
-    public String getUsername(Context context) throws BedditException {
-        String json = getUserJson(context);
-        return jsonParser.getUserData(json).getUsername();
+    public String getAccessToken(Context context, String url) throws BedditException {
+        Log.v(TAG, "Trying to get access token from " + url);
+        String json = bedditConnector.getJsonFromServer(context, url, false);
+        String token = jsonParser.parseJsonToObject(json, TokenData.class).getToken();
+        Log.v(TAG, "AccessToken = \"" + token + "\"");
+        return token;
     }
-
-    @Override
-    public String getFirstName(Context context) throws BedditException {
-        String json = getUserJson(context);
-        return jsonParser.getUserData(json).getFirstName();
-    }
-
-    @Override
-    public String getLastName(Context context) throws BedditException {
-        String json = getUserJson(context);
-        return jsonParser.getUserData(json).getLastName();
-    }
-
-    @Override
-    public char getLastSleepStage(Context context) throws BedditException {
-        String json = getSleepJson(context);
-        return jsonParser.getSleepData(json).getLastSleepStage();
-    }
-
-
-    @Override
-    public String getSleepAnalysisStatus(Context context) throws BedditException {
-        String json = getQueueJson(context);
-        return jsonParser.getQueueData(json).getSleepAnalysisStatus();
-    }
-
-
-    @Override
-    public Calendar getSleepAnalysisResultsUpTo(Context context) throws BedditException {
-        String json = getQueueJson(context);
-        return jsonParser.getQueueData(json).getResults_available_up_to();
-    }
-
-    @Override
-    public Calendar getSleepAnalysisWhenAnalyzed(Context context) throws BedditException {
-        String json = getQueueJson(context);
-        return jsonParser.getQueueData(json).getWhen_sleep_analyzed();
-    }
-
-    @Override
-    public Calendar getSleepAnalysisWhenQueued(Context context) throws BedditException {
-        String json = getQueueJson(context);
-        return jsonParser.getQueueData(json).getWhen_queued_for_sleep_analysis();
-    }
-
-
-    @Override
-    public int getTimeSleeping(Context context) throws BedditException {
-        String json = getSleepJson(context);
-        return jsonParser.getSleepData(json).getTimeSleeping();
-    }
-
-    @Override
-    public int getTimeDeepSleep(Context context) throws BedditException {
-        String json = getSleepJson(context);
-        return jsonParser.getSleepData(json).getTimeDeepSleep();
-    }
-
-    @Override
-    public String getLocalAnalyzedUpToTime(Context context) throws BedditException {
-        String json = getSleepJson(context);
-        return jsonParser.getSleepData(json).getLocal_analyzed_up_to_time();
-    }
-
-    @Override
-    public boolean getIsAnalysisUpToDate(Context context) throws BedditException {
-        String json = getSleepJson(context);
-        return jsonParser.getSleepData(json).getIsAnalysisUpToDate();
-    }
-
 
     private String getUserJson(Context context) throws BedditException {
         if (userJson == null) updateUserData(context);

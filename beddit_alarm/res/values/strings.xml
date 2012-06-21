@@ -85,6 +85,8 @@
     <string name="sleep_data_fail">Could not get sleep data from beddit</string>
     <string name="could_not_connect">Could not connect to beddit</string>
     <string name="no_beddit_data">No sleep data available for last night</string>
+    <string name="dialog_text_no_sleep_data">There is no sleep data available</string>
+    <string name="dialog_text_unknown_error">Unknown error</string>
 
     <style name="ButtonText">
         <item name="android:textColor">#ffffff</item>

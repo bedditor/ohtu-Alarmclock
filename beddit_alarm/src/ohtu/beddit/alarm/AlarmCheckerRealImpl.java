@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.api.jsonclassimpl.QueueData;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditException;
@@ -31,34 +32,37 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
         long atMostMillisOld = TimeUtils.MILLISECONDS_IN_MINUTE * AT_MOST_MINUTES_OLD;
         try {
             api.updateQueueData(context);
+            QueueData queueData = api.getQueueData(context);
             Calendar now = Calendar.getInstance();
-            Calendar updateUpToWhenAnalyzed = api.getSleepAnalysisWhenAnalyzed(context);
+            Calendar updateUpToWhenAnalyzed = queueData.getWhenSleepAnalyzed();
 
             //<for tests>
-            Calendar updateUpTo = api.getSleepAnalysisResultsUpTo(context);
+            Calendar updateUpTo = queueData.getResults_available_up_to();
             long queueDifference;
             try {
-                Calendar updateUpToWhenQueued = api.getSleepAnalysisWhenQueued(context);
+                Calendar updateUpToWhenQueued = queueData.getWhen_queued_for_sleep_analysis();
                 queueDifference = now.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
             } catch (NullPointerException n) {
                 queueDifference = now.getTimeInMillis() - 999 * TimeUtils.MILLISECONDS_IN_MINUTE;
             }
             long updateDifference = now.getTimeInMillis() - updateUpTo.getTimeInMillis();
             //</for tests>
+
             long analysisDifference = now.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
             Log.v(TAG, "Time difference from update? (minutes): " + updateDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
             Log.v(TAG, "Time difference from analysis (minutes): " + analysisDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
             Log.v(TAG, "Time difference from queued (minutes): " + queueDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
             if (analysisDifference < atMostMillisOld || queueDifference < atMostMillisOld) {//should only use analysisDifference in final version
                 api.updateSleepData(context);
-                Log.v(TAG, "sleep stage: " + api.getLastSleepStage(context));
+                char lastSleepStage = api.getSleepData(context).getLastSleepStage();
+                Log.v(TAG, "sleep stage: " + lastSleepStage);
                 char[] sleepStages = getWakeUpSleepStages(context);
-                for (char sleepStage : sleepStages) {
-                    if (api.getLastSleepStage(context) == sleepStage) {
+                for (char wakeUpSleepStage : sleepStages) {
+                    if (lastSleepStage == wakeUpSleepStage) {
                         return true;
                     }
                 }
-            } else if (api.getSleepAnalysisStatus(context).equals("can_be_queued_for_analysis")) {
+            } else if (api.getQueueData(context).getSleepAnalysisStatus().equals("can_be_queued_for_analysis")) {
                 Log.v(TAG, "update request");
                 api.requestInfoUpdate(context);
             } else {

@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.api.jsonclassimpl.UserData;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.web.*;
@@ -60,15 +61,15 @@ public class AuthActivity extends Activity implements UrlListener {
 
             // If we get error, well you shouldn't. We close the program because we won't get correct access_token. Breaks other code?
             try {
-                BedditConnector bedditConnector = new BedditWebConnector();
-                String token = bedditConnector.getAccessToken(url);
+                ApiController apiController = new ApiControllerClassImpl();
+                String token = apiController.getAccessToken(this, url);
                 Log.v(TAG, "result: " + token);
                 // We put the correct access token to safe and be happy. User is allowed to use the program now.
                 PreferenceService.setToken(this, token);
                 saveUserData();
                 finish();
-            } catch (BedditConnectionException e) {
-                Log.v(TAG, "BedditConnectionException in onUrlReceived");
+            } catch (BedditException e) {
+                Log.v(TAG, "BedditException in onUrlReceived");
                 fail(false);
             }
         }
@@ -95,9 +96,10 @@ public class AuthActivity extends Activity implements UrlListener {
         try {
             ApiController apiController = new ApiControllerClassImpl();
             apiController.updateUserData(this); //updates the info in api controller for lines below:
-            PreferenceService.setUsername(this, apiController.getUsername(this));
-            PreferenceService.setFirstName(this, apiController.getFirstName(this));
-            PreferenceService.setLastName(this, apiController.getLastName(this));
+            UserData userData = apiController.getUserData(this);
+            PreferenceService.setUsername(this, userData.getUsername());
+            PreferenceService.setFirstName(this, userData.getFirstName());
+            PreferenceService.setLastName(this, userData.getLastName());
         } catch (Exception e) {
             Log.v(TAG, "saving user data failed");
             fail(false);

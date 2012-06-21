@@ -10,11 +10,13 @@ import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
+import ohtu.beddit.api.jsonclassimpl.SleepData;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.LoadingDialog;
+import ohtu.beddit.web.NoSleepDataException;
 
 import java.util.Calendar;
 
@@ -53,6 +55,7 @@ public class SleepInfoActivity extends Activity {
         private static final int RESULT_CONNECTION_FAIL = 2;
         private static final int RESULT_BAD_DATA = 3;
         private static final int RESULT_FAILURE = 4;
+        private static final int RESULT_NO_DATA = 5;
 
         @Override
         protected Integer doInBackground(Void... voids) {
@@ -64,6 +67,8 @@ public class SleepInfoActivity extends Activity {
                     return RESULT_CONNECTION_FAIL;
                 else if (e instanceof InvalidJsonException)
                     return RESULT_BAD_DATA;
+                else if (e instanceof NoSleepDataException)
+                    return RESULT_NO_DATA;
                 else
                     return RESULT_FAILURE;
             }
@@ -84,7 +89,11 @@ public class SleepInfoActivity extends Activity {
                     break;
                 case (RESULT_FAILURE):
                     Log.v(TAG, "Unknown failure loading sleep information");
-                    DialogUtils.createActivityClosingDialog(SleepInfoActivity.this,getString(R.string.no_beddit_data),getString(R.string.button_text_ok));
+                    DialogUtils.createActivityClosingDialog(SleepInfoActivity.this, getString(R.string.dialog_text_unknown_error), getString(R.string.button_text_ok));
+                    SleepInfoActivity.this.finish();
+                    break;
+                case (RESULT_NO_DATA):
+                    DialogUtils.createActivityClosingDialog(SleepInfoActivity.this, getString(R.string.dialog_text_no_sleep_data), getString(R.string.button_text_ok));
                     break;
             }
             SleepInfoActivity.this.dialog.dismiss();
@@ -97,10 +106,11 @@ public class SleepInfoActivity extends Activity {
             Log.v(TAG, "Sleep info outdated");
             apiController.updateSleepData(this);
         }
-        timeSleeping = apiController.getTimeSleeping(this);
-        timeDeepSleep = apiController.getTimeDeepSleep(this);
-        localAnalyzedUpToTime = apiController.getLocalAnalyzedUpToTime(this);
-        isAnalysisUpToDate = apiController.getIsAnalysisUpToDate(this);
+        SleepData sleepData = apiController.getSleepData(this);
+        timeSleeping = sleepData.getTimeSleeping();
+        timeDeepSleep = sleepData.getTimeDeepSleep();
+        localAnalyzedUpToTime = sleepData.getLocal_analyzed_up_to_time();
+        isAnalysisUpToDate = sleepData.getIsAnalysisUpToDate();
     }
 
     private void updateText() {

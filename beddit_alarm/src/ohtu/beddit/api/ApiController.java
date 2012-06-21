@@ -1,6 +1,10 @@
 package ohtu.beddit.api;
 
 import android.content.Context;
+import ohtu.beddit.api.jsonclassimpl.QueueData;
+import ohtu.beddit.api.jsonclassimpl.SleepData;
+import ohtu.beddit.api.jsonclassimpl.UserData;
+import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
@@ -21,33 +25,16 @@ public interface ApiController {
 
     void requestInfoUpdate(Context context) throws BedditException;
 
-    String getUsername(Context context) throws BedditException;
+    String getAccessToken(Context context, String url) throws BedditException;
 
-    String getFirstName(Context context) throws BedditException;
+    QueueData getQueueData(Context context) throws BedditException;
 
-    String getLastName(Context context) throws BedditException;
+    UserData getUserData(Context context) throws BedditException;
 
-    char getLastSleepStage(Context context) throws BedditException;
-
-    String getSleepAnalysisStatus(Context context) throws BedditException;
-
-    Calendar getSleepAnalysisResultsUpTo(Context context) throws BedditException;
-
-    Calendar getSleepAnalysisWhenAnalyzed(Context context) throws BedditException;
-
-    Calendar getSleepAnalysisWhenQueued(Context context) throws BedditException;
-
-    int getTimeSleeping(Context context) throws BedditException;
-
-    int getTimeDeepSleep(Context context) throws BedditException;
+    SleepData getSleepData(Context context) throws BedditException;
 
     boolean hasUserChanged(Context context);
 
-
-    String getLocalAnalyzedUpToTime(Context context) throws BedditException;
-
     boolean isSleepInfoOutdated();
 
-
-    boolean getIsAnalysisUpToDate(Context context) throws BedditException;
 }

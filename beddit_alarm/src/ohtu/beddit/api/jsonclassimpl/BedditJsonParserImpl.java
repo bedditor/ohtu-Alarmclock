@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
 import ohtu.beddit.web.BedditException;
+import ohtu.beddit.web.NoSleepDataException;
 import ohtu.beddit.web.UnauthorizedException;
 
 import java.io.StringReader;
@@ -13,21 +14,7 @@ class BedditJsonParserImpl implements BedditJsonParser {
     private static final String TAG = "BedditJsonParser";
 
     @Override
-    public SleepData getSleepData(String json) throws BedditException {
-        return getObject(json, SleepData.class);
-    }
-
-    @Override
-    public UserData getUserData(String json) throws BedditException {
-        return getObject(json, UserData.class);
-    }
-
-    @Override
-    public QueueData getQueueData(String json) throws BedditException {
-        return getObject(json, QueueData.class);
-    }
-
-    private <T> T getObject(String json, Class<T> type) throws BedditException {
+    public  <T> T parseJsonToObject(String json, Class<T> type) throws BedditException {
         checkForError(json);
         if(UserData.class.isAssignableFrom(type)){
             json = nameTable(json);
@@ -53,6 +40,9 @@ class BedditJsonParserImpl implements BedditJsonParser {
             Log.v(TAG, error.getError()+": "+error.getErrorMessage());
             if(error.getError().equals("unauthorized")){
                 throw new UnauthorizedException(error.getErrorMessage());
+            }
+            else if(error.getError().equals("no_data")){
+                throw new NoSleepDataException(error.getErrorMessage());
             }
             else{
                 throw new BedditException(error.getErrorMessage());

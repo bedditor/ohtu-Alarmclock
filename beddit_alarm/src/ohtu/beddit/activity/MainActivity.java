@@ -189,7 +189,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         try {
             ApiController apiController = new ApiControllerClassImpl();
             apiController.updateUserData(this);
-            String username = apiController.getUsername(this);
+            String username = apiController.getUserData(this).getUsername();
             PreferenceService.setUsername(this, username);
         } catch (UnauthorizedException e) {
             Log.v(TAG, "Unauthorized!");

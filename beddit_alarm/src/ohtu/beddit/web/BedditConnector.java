@@ -2,6 +2,8 @@ package ohtu.beddit.web;
 
 import android.content.Context;
 
+import java.net.URL;
+
 /**
  * Created with IntelliJ IDEA.
  * User: joosakur
@@ -18,5 +20,5 @@ public interface BedditConnector {
 
     String requestDataAnalysis(Context context, String date) throws BedditConnectionException;
 
-    String getAccessToken(String url) throws BedditConnectionException;
+    String getJsonFromServer(Context context, String url, boolean doPost) throws BedditConnectionException;
 }
