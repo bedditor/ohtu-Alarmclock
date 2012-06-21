@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
      * Called when the alarm is first created.
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Log.v(TAG, "OnCreate");
@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
+    public void onWindowFocusChanged(final boolean hasFocus) {
         Log.v(TAG, "onWindowFocusChanged to " + hasFocus);
         super.onWindowFocusChanged(hasFocus);    //To change body of overridden methods use File | Settings | File Templates.
     }
@@ -112,20 +112,14 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     protected void onRestart() {
         Log.v(TAG, "onRestart");
-        super.onRestart();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onRestart();
     }
 
     @Override
     protected void onResume() {
         Log.v(TAG, "onResume");
-
-        Calendar expiresAt = Calendar.getInstance();
-        expiresAt.add(Calendar.MINUTE, -5);
-        if (lastTokenCheck == null ||
-            expiresAt.after(lastTokenCheck)) {
-            checkToken();
-        }
-        super.onStart();    //To change body of overridden methods use File | Settings | File Templates.
+        checkToken();
+        super.onStart();
     }
 
     @Override
@@ -139,11 +133,17 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         if (token == null || token.equals("")) {
             Log.v(TAG, "Token was empty");
             startAuthActivity();
-        } else {
+        } else if (shouldCheckToken()) {
             Log.v(TAG, "Starting token validation");
             tokenChecker = new TokenChecker();
             tokenChecker.execute();
         }
+    }
+
+    private boolean shouldCheckToken() {
+        Calendar expiresAt = Calendar.getInstance();
+        expiresAt.add(Calendar.MINUTE, -5);
+        return lastTokenCheck == null || expiresAt.after(lastTokenCheck);
     }
 
     private class TokenChecker extends AsyncTask<Void, Void, Boolean> {
@@ -153,18 +153,20 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         }
 
         @Override
-        protected void onPostExecute(Boolean isValid) {
+        protected void onPostExecute(final Boolean isValid) {
             Log.v(TAG, "Token was " + (isValid ? "valid" : "invalid"));
             if (!isValid) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage(getString(R.string.mainActivity_tokenExpiredDialog_text))
                         .setCancelable(false)
-                        .setPositiveButton(getString(R.string.mainActivity_tokenExpiredDialog_yes), new DialogInterface.OnClickListener() {
+                        .setPositiveButton(getString(R.string.mainActivity_tokenExpiredDialog_yes),
+                                new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 MainActivity.this.startAuthActivity();
                             }
                         })
-                        .setNegativeButton(getString(R.string.mainActivity_tokenExpiredDialog_no), new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.mainActivity_tokenExpiredDialog_no),
+                                new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 MainActivity.this.finish();
                             }

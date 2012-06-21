@@ -7,7 +7,8 @@ import android.preference.PreferenceActivity;
 import ohtu.beddit.R;
 
 
-public class AdvancedSettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AdvancedSettingsActivity extends PreferenceActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private ListPreference colourThemePref;
     private ListPreference alarmSoundLengthPref;
