@@ -33,6 +33,7 @@ public class AlarmActivity extends Activity {
     private MusicHandler music = null;
     private Vibrator vibrator;
     private Thread showStopperThread;
+    private boolean wasDismissed;
 
     private static final float DIALOG_HEIGHT = 0.7f;
     private static final float DIALOG_WIDTH = 0.9f;
@@ -46,6 +47,8 @@ public class AlarmActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WakeUpLock.acquire(this);
+
+        wasDismissed = false;
 
         setContentView(R.layout.alarm);
 
@@ -90,9 +93,10 @@ public class AlarmActivity extends Activity {
         if (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState() == TelephonyManager.CALL_STATE_RINGING){
             snooze();
         }
-
+        if (!wasDismissed)
+            snooze();
         super.onStop();
-        finish();
+        //finish();
     }
 
     @Override
@@ -124,6 +128,7 @@ public class AlarmActivity extends Activity {
 
     private void dismiss() {
         if (PreferenceService.getShowSleepData(AlarmActivity.this)) {
+            wasDismissed = true;
             Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
             AlarmActivity.this.startActivity(myIntent);
         }
