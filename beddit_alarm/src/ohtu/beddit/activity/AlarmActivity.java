@@ -121,9 +121,11 @@ public class AlarmActivity extends Activity {
 
     private void vibratePhone() {
         Log.v(TAG, "I want to Vibrate 8==D");
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(vibratePattern, 0);
-        Log.v(TAG, "Vibrator says:" + vibrator.toString());
+        if (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState() == TelephonyManager.CALL_STATE_IDLE){
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(vibratePattern, 0);
+            Log.v(TAG, "Vibrator says:" + vibrator.toString());
+        }
     }
 
     private void dismiss() {
