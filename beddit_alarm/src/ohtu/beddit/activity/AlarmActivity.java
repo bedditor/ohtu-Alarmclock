@@ -1,10 +1,12 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -41,6 +43,8 @@ public class AlarmActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WakeUpLock.acquire(this);
+
         setContentView(R.layout.alarm);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -50,7 +54,7 @@ public class AlarmActivity extends Activity {
 
         Log.v(TAG, "Received alarm at " + Calendar.getInstance().getTime());
 
-        WakeUpLock.acquire(this);
+
         removeAlarm();
         makeButtons();
         vibratePhone();
@@ -73,7 +77,7 @@ public class AlarmActivity extends Activity {
         //TODO: What about when user is on call?
         Log.v(TAG, "onPause");
 
-        finish(); // NEVER leave AlarmActivity ringing in the background, kill on any event that tries to suppress it
+        //finish(); // NEVER leave AlarmActivity ringing in the background, kill on any event that tries to suppress it
 
         super.onPause();
     }
@@ -81,7 +85,12 @@ public class AlarmActivity extends Activity {
     @Override
     public void onStop() { //We call this when we stop the activity.
         Log.v(TAG, "onStop");
+        if (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState() == TelephonyManager.CALL_STATE_RINGING){
+            snooze();
+        }
+
         super.onStop();
+        finish();
     }
 
     @Override
@@ -117,7 +126,8 @@ public class AlarmActivity extends Activity {
             Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
             AlarmActivity.this.startActivity(myIntent);
         }
-        AlarmActivity.this.finish();
+        //AlarmActivity.this.finish();
+
     }
 
     private void snooze() {
