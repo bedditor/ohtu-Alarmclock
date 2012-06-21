@@ -8,6 +8,7 @@ import ohtu.beddit.R;
 
 public class PreferenceService {
     private static final String TAG = "PreferenceService";
+    private static final int DEFAULT_SNOOZE_LENGTH = 5;
 
     private static boolean getSettingBoolean(Context context, int settingId) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -71,7 +72,7 @@ public class PreferenceService {
         try {
             return Integer.parseInt(getSettingString(context, R.string.pref_key_snooze));
         } catch (Exception e) {
-            return 5;
+            return DEFAULT_SNOOZE_LENGTH;
         }
     }
 

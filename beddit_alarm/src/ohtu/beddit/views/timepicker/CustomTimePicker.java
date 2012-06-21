@@ -177,39 +177,6 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         componentsCreated = true;
     }
 
-    private int measureWidth(int measureSpec) {
-        int result;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = MINIMUM_SIZE;
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-
-        return result;
-    }
-
-    private int measureHeight(int measureSpec) {
-        int result;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = MINIMUM_SIZE;
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
-
     @Override
     public void onAnimationFinished() {
         for (AlarmTimeChangedListener l : alarmTimeChangedListeners)
@@ -220,8 +187,25 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec),
-                measureHeight(heightMeasureSpec));
+        setMeasuredDimension(measureDimension(widthMeasureSpec),
+                             measureDimension(heightMeasureSpec));
+    }
+
+    private int measureDimension(int measureSpec) {
+        int result;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result = MINIMUM_SIZE;
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
+        }
+
+        return result;
     }
 
     @Override

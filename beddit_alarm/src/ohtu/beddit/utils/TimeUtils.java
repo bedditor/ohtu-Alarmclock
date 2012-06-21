@@ -10,6 +10,8 @@ import java.util.Date;
 
 public class TimeUtils {
 
+    public static final int MILLISECONDS_IN_MINUTE = 60000;
+
     public static Calendar bedditTimeStringToCalendar(String timeString) {
         timeString = timeString.replaceAll("T", " ");
         Date date;
@@ -51,9 +53,7 @@ public class TimeUtils {
     }
 
     public static long differenceInMinutes(Calendar a, Calendar b) {
-        long timeA = a.getTimeInMillis();
-        long timeB = b.getTimeInMillis();
-        return (Math.abs(timeA - timeB)) / 1000 / 60;
+        return (Math.abs(a.getTimeInMillis() - b.getTimeInMillis())) / MILLISECONDS_IN_MINUTE;
     }
 
     public static Calendar timeToCalendar(int hours, int minutes) {

@@ -5,6 +5,7 @@ import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.io.PreferenceService;
+import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
@@ -27,7 +28,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
     public boolean wakeUpNow(Context context) {
 
         ApiController api = new ApiControllerClassImpl();
-        long atMostMillisOld = 1000 * 60 * AT_MOST_MINUTES_OLD;
+        long atMostMillisOld = TimeUtils.MILLISECONDS_IN_MINUTE * AT_MOST_MINUTES_OLD;
         try {
             api.updateQueueData(context);
             Calendar now = Calendar.getInstance();
@@ -40,14 +41,14 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
                 Calendar updateUpToWhenQueued = api.getSleepAnalysisWhenQueued(context);
                 queueDifference = now.getTimeInMillis() - updateUpToWhenQueued.getTimeInMillis();
             } catch (NullPointerException n) {
-                queueDifference = now.getTimeInMillis() - 999 * 60 * 1000;
+                queueDifference = now.getTimeInMillis() - 999 * TimeUtils.MILLISECONDS_IN_MINUTE;
             }
             long updateDifference = now.getTimeInMillis() - updateUpTo.getTimeInMillis();
             //</for tests>
             long analysisDifference = now.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
-            Log.v(TAG, "Time difference from update? (minutes): " + updateDifference / 60 / 1000);
-            Log.v(TAG, "Time difference from analysis (minutes): " + analysisDifference / 60 / 1000);
-            Log.v(TAG, "Time difference from queued (minutes): " + queueDifference / 60 / 1000);
+            Log.v(TAG, "Time difference from update? (minutes): " + updateDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
+            Log.v(TAG, "Time difference from analysis (minutes): " + analysisDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
+            Log.v(TAG, "Time difference from queued (minutes): " + queueDifference / TimeUtils.MILLISECONDS_IN_MINUTE);
             if (analysisDifference < atMostMillisOld || queueDifference < atMostMillisOld) {//should only use analysisDifference in final version
                 api.updateSleepData(context);
                 Log.v(TAG, "sleep stage: " + api.getLastSleepStage(context));

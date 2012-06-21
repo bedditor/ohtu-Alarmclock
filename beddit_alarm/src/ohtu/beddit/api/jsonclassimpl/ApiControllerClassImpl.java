@@ -59,11 +59,7 @@ public class ApiControllerClassImpl implements ApiController {
 
     @Override
     public boolean hasUserChanged(Context context) {
-        if (lastUser.equals(PreferenceService.getUsername(context))) {
-            return false;
-        } else {
-            return true;
-        }
+        return !lastUser.equals(PreferenceService.getUsername(context));
     }
 
 

@@ -54,7 +54,6 @@ public class MusicHandler {
         } catch (Exception e) {
             Log.v(TAG, "something crashed");
         }
-
     }
 
     /*

@@ -48,6 +48,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private static final int FROM_SLEEP_INFO = 4;
     private static final int FROM_HELP = 5;
 
+    private static final int TOKEN_CHECK_INTERVAL = 5;
+
     private TokenChecker tokenChecker;
 
     /**
@@ -142,7 +144,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
 
     private boolean shouldCheckToken() {
         Calendar expiresAt = Calendar.getInstance();
-        expiresAt.add(Calendar.MINUTE, -5);
+        expiresAt.add(Calendar.MINUTE, -TOKEN_CHECK_INTERVAL);
         return lastTokenCheck == null || expiresAt.after(lastTokenCheck);
     }
 
@@ -156,26 +158,29 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         protected void onPostExecute(final Boolean isValid) {
             Log.v(TAG, "Token was " + (isValid ? "valid" : "invalid"));
             if (!isValid) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage(getString(R.string.mainActivity_tokenExpiredDialog_text))
-                        .setCancelable(false)
-                        .setPositiveButton(getString(R.string.mainActivity_tokenExpiredDialog_yes),
-                                new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                MainActivity.this.startAuthActivity();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.mainActivity_tokenExpiredDialog_no),
-                                new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                MainActivity.this.finish();
-                            }
-                        });
-                AlertDialog tokenExpiredDialog = builder.create();
-                tokenExpiredDialog.show();
+                createTokenExpiredDialog().show();
             } else {
                 lastTokenCheck = Calendar.getInstance();
             }
+        }
+
+        private AlertDialog createTokenExpiredDialog() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage(getString(R.string.mainActivity_tokenExpiredDialog_text))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.mainActivity_tokenExpiredDialog_yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    MainActivity.this.startAuthActivity();
+                                }
+                            })
+                    .setNegativeButton(getString(R.string.mainActivity_tokenExpiredDialog_no),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    MainActivity.this.finish();
+                                }
+                            });
+            return builder.create();
         }
     }
 

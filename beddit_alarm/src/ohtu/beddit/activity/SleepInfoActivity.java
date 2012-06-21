@@ -85,7 +85,6 @@ public class SleepInfoActivity extends Activity {
                 case (RESULT_FAILURE):
                     Log.v(TAG, "Unknown failure loading sleep information");
                     DialogUtils.createActivityClosingDialog(SleepInfoActivity.this,getString(R.string.no_beddit_data),getString(R.string.button_text_ok));
-                    //SleepInfoActivity.this.finish();
                     break;
             }
             SleepInfoActivity.this.dialog.dismiss();
@@ -136,6 +135,7 @@ public class SleepInfoActivity extends Activity {
 
     //expects format like this 2012-06-13T08:38:11 Please don't break it :)
     private String getTimeDifference(String data) {
+        if (data == null) return "--";
         Calendar time = TimeUtils.bedditTimeStringToCalendar(data);
         int differenceInSeconds = (int) ((Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis()) / 1000);
         return getHoursAndMinutesFromSeconds(differenceInSeconds);
