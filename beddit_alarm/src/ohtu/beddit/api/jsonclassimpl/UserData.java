@@ -1,12 +1,5 @@
 package ohtu.beddit.api.jsonclassimpl;
 
-/**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 5.6.2012
- * Time: 10:47
- * To change this template use File | Settings | File Templates.
- */
 public class UserData {
     private User[] users;
 

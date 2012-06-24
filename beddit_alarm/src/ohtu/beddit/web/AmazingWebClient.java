@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import ohtu.beddit.R;
 import ohtu.beddit.activity.AuthActivity;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;

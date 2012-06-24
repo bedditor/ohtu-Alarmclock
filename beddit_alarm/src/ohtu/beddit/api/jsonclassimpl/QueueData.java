@@ -1,16 +1,8 @@
 package ohtu.beddit.api.jsonclassimpl;
 
 import ohtu.beddit.utils.TimeUtils;
-
 import java.util.Calendar;
 
-/**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 12.6.2012
- * Time: 11:02
- * To change this template use File | Settings | File Templates.
- */
 public class QueueData {
     private String results_available_up_to;
     private String sleep_analysis_status;

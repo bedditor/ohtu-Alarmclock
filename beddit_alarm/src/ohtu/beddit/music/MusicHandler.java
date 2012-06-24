@@ -10,11 +10,8 @@ import ohtu.beddit.R;
 import ohtu.beddit.io.PreferenceService;
 
 /**
- * Created with IntelliJ IDEA.
- * User: juho
- * Date: 22.5.2012
- * Time: 10:44
- * To change this template use File | Settings | File Templates.
+ * This class will take care of playing the alarm tone and releasing media player after use. The class also has method
+ * for setting correct audio levels for certain situations.
  */
 public class MusicHandler {
 

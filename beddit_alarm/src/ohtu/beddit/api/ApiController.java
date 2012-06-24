@@ -4,18 +4,8 @@ import android.content.Context;
 import ohtu.beddit.api.jsonclassimpl.QueueData;
 import ohtu.beddit.api.jsonclassimpl.SleepData;
 import ohtu.beddit.api.jsonclassimpl.UserData;
-import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
-import java.util.Calendar;
-
-/**
- * Created with IntelliJ IDEA.
- * User: Joza
- * Date: 14.6.2012
- * Time: 8:34
- * To change this template use File | Settings | File Templates.
- */
 public interface ApiController {
     void updateUserData(Context context) throws BedditException;
 

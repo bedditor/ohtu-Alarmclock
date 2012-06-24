@@ -6,6 +6,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import ohtu.beddit.R;
 
+/**
+ * ??? Please, add a description for this class.
+ */
+
 public class PreferenceService {
     private static final String TAG = "PreferenceService";
     private static final int DEFAULT_SNOOZE_LENGTH = 5;

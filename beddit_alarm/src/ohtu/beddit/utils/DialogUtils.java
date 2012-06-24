@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+
 public class DialogUtils {
 
     public static void createActivityClosingDialog(final Activity activity, String message, String buttonText) {

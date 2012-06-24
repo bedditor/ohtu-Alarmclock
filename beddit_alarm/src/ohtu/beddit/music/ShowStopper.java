@@ -4,11 +4,8 @@ import android.os.Vibrator;
 import android.util.Log;
 
 /**
- * Created with IntelliJ IDEA.
- * User: lagvare
- * Date: 19.6.2012
- * Time: 14:20
- * To change this template use File | Settings | File Templates.
+ * This class will ensure that the alarm will not ring for eternity. It will make a thread that sleeps for
+ * a set time. After wake up, it will stop the music and vibration.
  */
 public class ShowStopper implements Runnable {
     private final int minutes;

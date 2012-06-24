@@ -6,10 +6,15 @@ import com.google.gson.JsonParser;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.Alarm;
 import ohtu.beddit.utils.TimeUtils;
-
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Scanner;
+
+/*
+ * This class handles the file I/O. Files are used for saving the client info (Application id and secret) and
+ * alarm. If the application is ever updated to support multiple alarms, it is recommended to save alarms
+ * into a database instead of a file.
+ */
 
 
 public class FileHandler {
@@ -58,7 +63,7 @@ public class FileHandler {
         }
     }
 
-    // Disables alarm, but keeps the wake up time in memory
+    // Disables alarm, but keeps the wake up time saved in file
     public void disableAlarm() {
         Alarm alarm = getAlarm();
         saveAlarm(alarm.getHours(), alarm.getMinutes(), alarm.getInterval(), false);

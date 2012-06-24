@@ -2,8 +2,6 @@ package ohtu.beddit.web;
 
 import android.content.Context;
 
-import java.net.URL;
-
 /**
  * ??? Please, add a description for this class.
  */

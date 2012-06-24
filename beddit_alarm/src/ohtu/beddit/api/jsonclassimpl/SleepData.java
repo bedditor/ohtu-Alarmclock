@@ -2,16 +2,8 @@ package ohtu.beddit.api.jsonclassimpl;
 
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditException;
-
 import java.util.Calendar;
 
-/**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 31.5.2012
- * Time: 13:43
- * To change this template use File | Settings | File Templates.
- */
 public class SleepData {
     private String date;
     private int time_sleeping;

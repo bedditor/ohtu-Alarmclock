@@ -6,13 +6,6 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.util.Log;
 
-/**
- * Created with IntelliJ IDEA.
- * User: juho
- * Date: 28.5.2012
- * Time: 13:53
- * To change this template use File | Settings | File Templates.
- */
 public class WakeUpLock {
     private static PowerManager.WakeLock sWakeLock;
     private static final String TAG = "WakeUpLock";

@@ -2,15 +2,12 @@ package ohtu.beddit.api.jsonclassimpl;
 
 import android.content.Context;
 import android.util.Log;
-import com.google.gson.JsonParser;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
-import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditConnector;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.BedditWebConnector;
-
 import java.util.Calendar;
 
 public class ApiControllerClassImpl implements ApiController {

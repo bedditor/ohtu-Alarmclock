@@ -1,12 +1,16 @@
 package ohtu.beddit.utils;
 
 import android.content.Context;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+/*
+ * Utility class for different time operations, i.e. displaying time in correct form or making
+ * a correct String for queries.
+ */
 
 public class TimeUtils {
 
@@ -33,7 +37,7 @@ public class TimeUtils {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        return year + "/" + (month + 1) + "/" + day; //because the fucking months start from 0
+        return year + "/" + (month + 1) + "/" + day; // January is 0 in Calendar, but 1 in query
     }
 
 
