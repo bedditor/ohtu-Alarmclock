@@ -5,11 +5,7 @@ import android.content.Context;
 import java.net.URL;
 
 /**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 7.6.2012
- * Time: 10:56
- * To change this template use File | Settings | File Templates.
+ * ??? Please, add a description for this class.
  */
 public interface BedditConnector {
     String getUserJson(Context context) throws BedditConnectionException;

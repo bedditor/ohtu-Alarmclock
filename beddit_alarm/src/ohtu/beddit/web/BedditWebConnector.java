@@ -3,15 +3,17 @@ package ohtu.beddit.web;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
-import com.google.gson.JsonParser;
 import ohtu.beddit.io.PreferenceService;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+
+/**
+ * ??? Please, add a description for this class.
+ */
 
 public class BedditWebConnector implements BedditConnector {
 

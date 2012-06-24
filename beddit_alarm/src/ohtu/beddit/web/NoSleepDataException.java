@@ -1,11 +1,7 @@
 package ohtu.beddit.web;
 
 /**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 21.6.2012
- * Time: 13:32
- * To change this template use File | Settings | File Templates.
+ * Exception to be thrown if Beddit sleep data was not found.
  */
 public class NoSleepDataException extends BedditException {
 

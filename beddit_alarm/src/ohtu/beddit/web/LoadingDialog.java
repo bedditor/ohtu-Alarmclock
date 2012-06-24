@@ -6,11 +6,8 @@ import android.util.Log;
 import ohtu.beddit.R;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Paul
- * Date: 6/18/12
- * Time: 12:11 PM
- * To change this template use File | Settings | File Templates.
+ *  This class represents the loading screen, which displays when fetching data from the internet.
+ *  It's an ordinary dialog with a few tweaks on context and added Log messages to ease bug catching.
  */
 public class LoadingDialog extends Dialog {
 
@@ -24,25 +21,25 @@ public class LoadingDialog extends Dialog {
     @Override
     protected void onStart() {
         Log.v(TAG, "onStart");
-        super.onStart();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onStart();
     }
 
     @Override
     protected void onStop() {
         Log.v(TAG, "onStop");
-        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onStop();
     }
 
     @Override
     public void show() {
         Log.v(TAG, "show");
-        super.show();    //To change body of overridden methods use File | Settings | File Templates.
+        super.show();
     }
 
     @Override
     public void dismiss() {
         Log.v(TAG, "dismiss");
-        super.dismiss();    //To change body of overridden methods use File | Settings | File Templates.
+        super.dismiss();
     }
 
 

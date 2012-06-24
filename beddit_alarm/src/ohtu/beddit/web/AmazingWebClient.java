@@ -14,11 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: juho
- * Date: 29.5.2012
- * Time: 13:56
- * To change this template use File | Settings | File Templates.
+ * ??? Please, add a description for this class.
  */
 public class AmazingWebClient extends WebViewClient {
     private final List<UrlListener> listeners = new LinkedList<UrlListener>();
@@ -76,19 +72,19 @@ public class AmazingWebClient extends WebViewClient {
     public void onLoadResource(WebView view, String url) {
 
         Log.v(TAG, "onLoadResource " + url);
-        super.onLoadResource(view, url);    //To change body of overridden methods use File | Settings | File Templates.
+        super.onLoadResource(view, url);
     }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         dialog.show();
         Log.v(TAG, "onPageStarted " + url);
-        super.onPageStarted(view, url, favicon);    //To change body of overridden methods use File | Settings | File Templates.
+        super.onPageStarted(view, url, favicon);
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
         dialog.dismiss();
-        super.onPageFinished(view, url);    //To change body of overridden methods use File | Settings | File Templates.
+        super.onPageFinished(view, url);
     }
 }

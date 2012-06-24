@@ -1,11 +1,7 @@
 package ohtu.beddit.web;
 
 /**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 18.6.2012
- * Time: 12:58
- * To change this template use File | Settings | File Templates.
+ * Exception to be thrown if API call was trying to fetch content without correct authorization.
  */
 public class UnauthorizedException extends BedditException {
 
