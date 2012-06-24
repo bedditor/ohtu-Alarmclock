@@ -22,7 +22,7 @@ class BedditJsonParserImpl implements BedditJsonParser {
         JsonReader jsonReader = getNewJsonReader(json);
         try{
             Gson gson = new Gson();
-            return gson.fromJson(jsonReader, type);
+            return (T) gson.fromJson(jsonReader, type);
         }
         catch (JsonParseException e){
             throw new InvalidJsonException("InvalidJsonException");

@@ -23,6 +23,9 @@ import java.util.regex.Pattern;
 public class AmazingWebClient extends WebViewClient {
     private final List<UrlListener> listeners = new LinkedList<UrlListener>();
     private final LoadingDialog dialog;
+
+    // Forbidden pages. Should be checked and update until
+    // the login page is stripped-down of forbidden links
     private final String[] blacklist = {"http://www.beddit.com/",
             "https://www.beddit.com/login",
             "http://www.beddit.com/sleep",
@@ -32,7 +35,8 @@ public class AmazingWebClient extends WebViewClient {
             "http://www.cs.helsinki.fi/",
             "http://www.cs.helsinki.fi/home/",
             "https://api.beddit.com/newbeddit/",
-            "https://api.beddit.com/login"};
+            "https://api.beddit.com/login",
+            "https://api.beddit.com/logout_login"};
 
     private static final String TAG = "AmazingWebClient";
 
@@ -44,6 +48,8 @@ public class AmazingWebClient extends WebViewClient {
         listeners.add(l);
     }
 
+
+    // This method will deny the access to any other pages than the login pages.
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Log.v(TAG, "shouldOverrideUrlLoading: " + url);
