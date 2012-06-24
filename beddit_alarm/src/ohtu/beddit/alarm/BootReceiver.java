@@ -4,6 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+/*
+ * This class will run on boot. If there was an alarm set before the phone was turned off, we must set it
+ * again after booting.
+ */
+
 public class BootReceiver extends BroadcastReceiver {
     private AlarmService alarmService;
 

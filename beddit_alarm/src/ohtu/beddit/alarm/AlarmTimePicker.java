@@ -1,11 +1,7 @@
 package ohtu.beddit.alarm;
 
 /**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 22.5.2012
- * Time: 10:18
- * To change this template use File | Settings | File Templates.
+ * Defines an interface for a time picker, if future developers ever want to change it.
  */
 public interface AlarmTimePicker {
     public int getHours();

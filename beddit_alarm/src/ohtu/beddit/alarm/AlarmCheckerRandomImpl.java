@@ -3,6 +3,9 @@ package ohtu.beddit.alarm;
 import android.content.Context;
 import android.util.Log;
 
+// This class is used for manual testing purposes. It will use simple random function to determine if
+// if the customer is in the correct sleep stage to wake him up.
+
 public class AlarmCheckerRandomImpl implements AlarmChecker {
     private final double wakeUpChance;
 

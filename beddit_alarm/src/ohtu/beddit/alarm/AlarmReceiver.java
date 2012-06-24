@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import ohtu.beddit.activity.AlarmActivity;
-
 import java.util.Calendar;
 
+/*
+ * ??? Add a description for this class.
+ *
+ */
 
 public class AlarmReceiver extends BroadcastReceiver {
     private final String TAG = "Alarm Receiver";
@@ -17,8 +20,13 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         alarmService = new AlarmServiceImpl(context);
+
+        // Switch the commented lines around if testing wake up without real sleep data from Beddit.
+
         //AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
         AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
+
+
         int checkTime = alarmChecker.getCheckTime();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
 
@@ -45,6 +53,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         context.startActivity(newIntent);
     }
 
+    // Move to TimeUtils?
     private int getSecondsUntilLastWakeUpTime() {
         Calendar currentTime = Calendar.getInstance();
         Calendar wakeUpTime = getLastWakeUpTime();
@@ -62,7 +71,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Calendar lastWakeUpTime = getLastWakeUpTime();
 
-        if (timeForNextTry.before(lastWakeUpTime)) { //still time for another interval
+        if (timeForNextTry.before(lastWakeUpTime)) { //still time for another check
             Log.v(TAG, "next try scheduled to " + timeForNextTry.get(Calendar.HOUR_OF_DAY) + ":" + timeForNextTry.get(Calendar.MINUTE) + ":" + timeForNextTry.get(Calendar.SECOND));
             alarmService.addWakeUpAttempt(timeForNextTry);
         } else { //no more time, schedule final wake up

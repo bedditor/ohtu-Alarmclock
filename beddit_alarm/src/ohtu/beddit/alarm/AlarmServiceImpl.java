@@ -8,8 +8,17 @@ import android.content.Intent;
 import android.util.Log;
 import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.utils.TimeUtils;
-
 import java.util.Calendar;
+
+/*
+ * Logic class for keeping track of the alarms. Alarm service ensures that new alarms are sent to the Android's
+ * alarm manager, saved in a file and a correct notification is displayed. It will also calculate correct times
+ * for the first wake up attempts, if the new alarm has an interval.
+ *
+ * POSSIBLE MODIFICATIONS:
+ * Make this class singleton to get rid of the static alarm.
+ *
+ */
 
 public class AlarmServiceImpl implements AlarmService {
 
@@ -18,6 +27,9 @@ public class AlarmServiceImpl implements AlarmService {
     private final FileHandler fileHandler;
     private final Context context;
     private final NotificationFactory notificationFactory;
+
+    // The alarm is static, so that deleting alarm from Alarm dialog will also show correct information
+    // to the alarm service in
     private static Alarm alarm;
 
     public AlarmServiceImpl(Context context) {
@@ -28,6 +40,7 @@ public class AlarmServiceImpl implements AlarmService {
         alarm = getAlarmFromFile();
     }
 
+    // Dependency injection for Unit testing.
     public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler, NotificationFactory notificationFactory) {
         this.context = context.getApplicationContext();
         this.alarmManager = alarmManager;
@@ -44,7 +57,7 @@ public class AlarmServiceImpl implements AlarmService {
             Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
             notificationFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), hours, minutes);
             addWakeUpAttempt(calendar);
-            Log.v(TAG, "Adding alarm failed");
+            Log.v(TAG, "Adding alarm was successful");
         }
         return alarm;
     }
@@ -81,10 +94,8 @@ public class AlarmServiceImpl implements AlarmService {
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        // Cancel the alarm!
         alarmManager.cancel(sender);
         fileHandler.disableAlarm();
-
         notificationFactory.resetNotification();
         alarm.setEnabled(false);
     }
@@ -113,6 +124,8 @@ public class AlarmServiceImpl implements AlarmService {
         return alarm;
     }
 
+    // When an object of this class is created, the alarm is checked from the file. After that, it is kept in memory
+    // to reduce the amount of file reading.
     private Alarm getAlarmFromFile() {
         return fileHandler.getAlarm();
     }

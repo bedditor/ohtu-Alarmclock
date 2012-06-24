@@ -3,11 +3,7 @@ package ohtu.beddit.alarm;
 import java.util.Calendar;
 
 /**
- * Created with IntelliJ IDEA.
- * User: joosakur
- * Date: 22.5.2012
- * Time: 10:16
- * To change this template use File | Settings | File Templates.
+ * Defines an interface for Alarm Service class
  */
 public interface AlarmService {
     Alarm addAlarm(int hours, int minutes, int interval);

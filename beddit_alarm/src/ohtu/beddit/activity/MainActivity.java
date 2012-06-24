@@ -12,7 +12,6 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,6 +120,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     protected void onResume() {
         Log.v(TAG, "onResume");
         checkToken();
+        updateButtonStates();
         super.onStart();
     }
 

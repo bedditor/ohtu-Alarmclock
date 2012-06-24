@@ -1,14 +1,18 @@
 package ohtu.beddit.alarm;
 
 import ohtu.beddit.utils.TimeUtils;
-
 import java.util.Calendar;
+
+
+// This class represents a single alarm. A single alarm has the wake up time and a length of the interval.
 
 public class Alarm {
 
     private int interval;
-    private boolean enabled;
     private Calendar calendar = Calendar.getInstance();
+
+    // Is alarm set or not?  Info about the last alarm will be in memory even if the alarm is not set.
+    private boolean enabled;
 
     public Alarm() {
     }

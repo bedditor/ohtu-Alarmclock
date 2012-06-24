@@ -1,7 +1,6 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,27 +16,21 @@ import ohtu.beddit.alarm.WakeUpLock;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.music.MusicHandler;
 import ohtu.beddit.music.ShowStopper;
-
 import java.util.Calendar;
 
-/**
- * Created with IntelliJ IDEA.
- * User: lagvare
- * Date: 22.5.2012
- * Time: 13:24
- * To change this template use File | Settings | File Templates.
- */
+
 public class AlarmActivity extends Activity {
 
     private final String TAG = "AlarmActivity";
     private MusicHandler music = null;
     private Vibrator vibrator;
     private Thread showStopperThread;
+
+    //The alarm will always snoozed if the activity is closed by any other means than pressing dismiss.
     private boolean wasDismissed;
 
     private static final float DIALOG_HEIGHT = 0.7f;
     private static final float DIALOG_WIDTH = 0.9f;
-
     private static final long[] vibratePattern = {0, 200, 500};
 
     /**
@@ -47,19 +40,14 @@ public class AlarmActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WakeUpLock.acquire(this);
-
-        wasDismissed = false;
-
         setContentView(R.layout.alarm);
-
         Display display = getWindowManager().getDefaultDisplay();
-
         getWindow().setLayout((int) (display.getWidth() * DIALOG_WIDTH),
                 (int) (display.getHeight() * DIALOG_HEIGHT));
 
         Log.v(TAG, "Received alarm at " + Calendar.getInstance().getTime());
 
-
+        wasDismissed = false;
         removeAlarm();
         makeButtons();
         vibratePhone();
@@ -79,11 +67,7 @@ public class AlarmActivity extends Activity {
 
     @Override
     public void onPause() { //We really don't want to go onPause. Rather forcibly keep the activity on top of everything.
-        //TODO: What about when user is on call?
         Log.v(TAG, "onPause");
-
-        //finish(); // NEVER leave AlarmActivity ringing in the background, kill on any event that tries to suppress it
-
         super.onPause();
     }
 
@@ -99,7 +83,7 @@ public class AlarmActivity extends Activity {
     @Override
     protected void onDestroy() {
         Log.v(TAG, "onDestroy");
-        super.onDestroy();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onDestroy();
     }
 
     @Override
@@ -118,6 +102,8 @@ public class AlarmActivity extends Activity {
 
     private void vibratePhone() {
         Log.v(TAG, "I want to Vibrate 8==D");
+
+        // Check that the phone wont vibrate if the user is on the phone
         if (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState() == TelephonyManager.CALL_STATE_IDLE){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(vibratePattern, 0);
@@ -126,8 +112,8 @@ public class AlarmActivity extends Activity {
     }
 
     private void dismiss() {
+        wasDismissed = true;
         if (PreferenceService.getShowSleepData(AlarmActivity.this)) {
-            wasDismissed = true;
             Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
             AlarmActivity.this.startActivity(myIntent);
         }
