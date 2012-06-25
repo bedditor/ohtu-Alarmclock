@@ -15,8 +15,6 @@ import java.util.Scanner;
  * alarm. If the application is ever updated to support multiple alarms, it is recommended to save alarms
  * into a database instead of a file.
  */
-
-
 public class FileHandler {
 
     private static final String TAG = "FileHandler";
@@ -30,7 +28,7 @@ public class FileHandler {
         this.context = context.getApplicationContext();
     }
 
-    boolean writeToFile(String filename, String writable) {
+    private boolean writeToFile(String filename, String writable) {
         try {
             FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
             fos.write(writable.getBytes());
@@ -42,7 +40,7 @@ public class FileHandler {
         return true;
     }
 
-    String readStringFromFile(String filename) {
+    private String readStringFromFile(String filename) {
         try {
             Scanner scanner = new Scanner(context.openFileInput(filename));
             return scanner.nextLine();
@@ -52,6 +50,14 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Saves the given alarm to file.
+     * @param hours alarm time hours (0-23)
+     * @param minutes alarm time minutes (0-59)
+     * @param interval alarm interval as minutes
+     * @param enabled is alarm enabled
+     * @return alarm as an object
+     */
     public Alarm saveAlarm(int hours, int minutes, int interval, boolean enabled) {
         int alarmSet = enabled ? 1 : -1;
         long millis = TimeUtils.timeToCalendar(hours, minutes).getTimeInMillis();
@@ -63,12 +69,18 @@ public class FileHandler {
         }
     }
 
-    // Disables alarm, but keeps the wake up time saved in file
+    /**
+     * Disables alarm, but keeps the wake up time saved in file
+     */
     public void disableAlarm() {
         Alarm alarm = getAlarm();
         saveAlarm(alarm.getHours(), alarm.getMinutes(), alarm.getInterval(), false);
     }
 
+    /**
+     * Reads alarm from file and returns it as an object
+     * @return saved alarm data
+     */
     public Alarm getAlarm() {
         String[] alarmData = readStringFromFile(ALARMS_FILENAME).split("#");
         Alarm alarm = new Alarm();
@@ -86,11 +98,19 @@ public class FileHandler {
         return alarm;
     }
 
+    /**
+     * initializes file with an default disabled alarm and return it's object representation
+     */
     private Alarm saveDefaultAlarm() {
         return saveAlarm(8, 0, 0, false); //overwrite corrupted alarm data with default time 8:00 AM
         //return new Alarm(8, 0, 0, false);
     }
 
+    /**
+     * Reads client id/secret from file.
+     * @param request data to be read
+     * @return client id/secret
+     */
     public String getClientInfo(String request) {
         String json = "";
         try {

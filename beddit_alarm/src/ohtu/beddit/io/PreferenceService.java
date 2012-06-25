@@ -7,9 +7,9 @@ import android.util.Log;
 import ohtu.beddit.R;
 
 /**
- * ??? Please, add a description for this class.
+ * Methods for writing and reading data from preferences.
+ * If there is no value for some preference saved, getter return empty string / false.
  */
-
 public class PreferenceService {
     private static final String TAG = "PreferenceService";
     private static final int DEFAULT_SNOOZE_LENGTH = 5;
@@ -48,7 +48,6 @@ public class PreferenceService {
     }
 
     public static int getAlarmLength(Context context) {
-        Log.v(TAG, "dis: " + getSettingString(context, R.string.pref_key_alarm_length));
         return Integer.parseInt(getSettingString(context, R.string.pref_key_alarm_length));
     }
 
