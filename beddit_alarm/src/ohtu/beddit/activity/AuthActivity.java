@@ -34,14 +34,17 @@ public class AuthActivity extends Activity implements UrlListener {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "OnCreate");
         setContentView(R.layout.webview);
+    }
 
+    @Override
+    protected void onResume() {
         fileHandler = new FileHandler(this);
         webview = (WebView) findViewById(R.id.webLayout);
-        if (webview == null) Log.v(TAG, "wat");
         webview.clearHistory();
         removeCookies();
         setSettings();
         openAuthBrowser();
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
