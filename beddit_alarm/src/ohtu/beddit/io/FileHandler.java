@@ -81,14 +81,14 @@ public class FileHandler {
             alarm.setInterval(Integer.parseInt(alarmData[2]));
         } catch (Exception e) { //Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
             Log.v(TAG, e.getMessage());
-            saveDefaultAlarm();
+            return saveDefaultAlarm();
         }
         return alarm;
     }
 
     private Alarm saveDefaultAlarm() {
-        saveAlarm(8, 0, 0, false); //overwrite corrupted alarm data with default time 8:00 AM
-        return new Alarm(8, 0, 0, false);
+        return saveAlarm(8, 0, 0, false); //overwrite corrupted alarm data with default time 8:00 AM
+        //return new Alarm(8, 0, 0, false);
     }
 
     public String getClientInfo(String request) {
