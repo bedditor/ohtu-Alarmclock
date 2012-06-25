@@ -11,11 +11,13 @@ import java.util.Date;
  * Utility class for different time operations, i.e. displaying time in correct form or making
  * a correct String for queries.
  */
-
 public class TimeUtils {
 
     public static final int MILLISECONDS_IN_MINUTE = 60000;
 
+    /**
+     * Converts time in beddit format to {@link Calendar} object
+     */
     public static Calendar bedditTimeStringToCalendar(String timeString) {
         timeString = timeString.replaceAll("T", " ");
         Date date;
@@ -32,6 +34,9 @@ public class TimeUtils {
         return calendar;
     }
 
+    /**
+     * Return a string representing current date which is needed in api query url.
+     */
     public static String getTodayAsQueryDateString() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -40,7 +45,9 @@ public class TimeUtils {
         return year + "/" + (month + 1) + "/" + day; // January is 0 in Calendar, but 1 in query
     }
 
-
+    /**
+     * Return localized string presentation of the given time. Needs some android context to read date format from system.
+     */
     public static String timeAsString(int hour, int minute, Context context) {
         Date date = new Date();
         date.setHours(hour);
@@ -60,6 +67,9 @@ public class TimeUtils {
         return (Math.abs(a.getTimeInMillis() - b.getTimeInMillis())) / MILLISECONDS_IN_MINUTE;
     }
 
+    /**
+     * Creates a Calendar object representing the next time with given hours and minutes and zero seconds.
+     */
     public static Calendar timeToCalendar(int hours, int minutes) {
         Calendar time = Calendar.getInstance();
         time.set(Calendar.HOUR_OF_DAY, hours);
