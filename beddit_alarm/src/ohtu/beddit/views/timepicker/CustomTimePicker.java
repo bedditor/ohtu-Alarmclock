@@ -14,7 +14,7 @@ import ohtu.beddit.alarm.AlarmTimePicker;
 import java.util.LinkedList;
 import java.util.List;
 
-/*
+/**
  * A special view for choosing a time by manipulating the clock
  * hands on an analog clock face. Also includes a display of the currently
  * picked time and a slider for setting the alarm interval.

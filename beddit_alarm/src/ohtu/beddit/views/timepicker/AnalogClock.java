@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-/*
+/**
  * The analog clock face part of CustomTimePicker.
  * Contains two clock hands and listens to the interval
  * picking slider.
@@ -22,7 +22,17 @@ public class AnalogClock implements ValueChangedListener {
     private final Paint backgroundPaint;
     private final Paint linePaint;
 
-
+    /**
+     * Creates a new AnalogClock at specified screen position.
+     * @param x Center x-coordinate.
+     * @param y Center y-coordinate.
+     * @param radius Clock face radius.
+     * @param intervalArcPaint Paint to use for the interval arc.
+     * @param backgroundPaint Paint to use for the clock face background.
+     * @param linePaint Paint to use for clock face lines and text.
+     * @param minuteHand The minute hand component of the clock.
+     * @param hourHand The hour hand component for the clock.
+     */
     public AnalogClock(float x, float y, float radius,
                        Paint intervalArcPaint, Paint backgroundPaint, Paint linePaint,
                        ClockHand minuteHand, ClockHand hourHand) {
@@ -36,6 +46,10 @@ public class AnalogClock implements ValueChangedListener {
         this.linePaint = linePaint;
     }
 
+    /**
+     * Draws the entire AnalogClock to a canvas
+     * @param c The Canvas object to draw to
+     */
     public void draw(Canvas c) {
         c.drawArc(new RectF(x - radius, y - radius, x + radius, y + radius),
                 (float) Math.toDegrees(minuteHand.getAngle() - Math.PI / 2),
@@ -82,6 +96,10 @@ public class AnalogClock implements ValueChangedListener {
         minuteHand.draw(c);
     }
 
+    /**
+     * Used to update the size of the interval arc
+     * @param value the new value
+     */
     @Override
     public void onValueChanged(int value) {
         interval = value;

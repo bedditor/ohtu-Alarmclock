@@ -8,7 +8,7 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
-/*
+/**
  * A slider that can be manipulated by the user
  */
 public class Slider extends Movable {

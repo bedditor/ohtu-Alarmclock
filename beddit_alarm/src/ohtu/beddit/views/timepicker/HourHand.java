@@ -7,7 +7,7 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
-/*
+/**
  * A special clock hand that moves in increments of one hour on the clock face.
  * It listens to the minute hand so that its angle can be accurate at all times.
  */

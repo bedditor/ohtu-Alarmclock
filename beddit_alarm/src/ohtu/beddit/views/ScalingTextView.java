@@ -7,7 +7,7 @@ import android.util.TypedValue;
 import android.widget.TextView;
 import ohtu.beddit.R;
 
-/*
+/**
  * A TextView that scales its text to fill itself horizontally.
  * If given a textScalingReference it will use a text size that
  * would fit the longer of the two strings for its text.

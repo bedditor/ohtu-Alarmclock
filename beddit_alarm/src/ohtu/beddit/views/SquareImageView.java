@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/*
+/**
  * An ImageView for showing icons that keeps its aspect ratio
  * at a constant 1:1.
  */

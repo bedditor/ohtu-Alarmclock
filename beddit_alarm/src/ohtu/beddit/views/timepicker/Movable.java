@@ -2,7 +2,7 @@ package ohtu.beddit.views.timepicker;
 
 import android.view.View;
 
-/*
+/**
  * An abstraction of a view component that can respond to click events on the
  * screen, can be dragged by the user, and can move to some target position
  * using an animator.

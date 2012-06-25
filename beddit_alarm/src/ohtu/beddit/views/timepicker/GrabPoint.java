@@ -3,7 +3,7 @@ package ohtu.beddit.views.timepicker;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-/*
+/**
  * GrabPoints are areas on the screen the user can select and drag with a finger
  */
 public class GrabPoint {

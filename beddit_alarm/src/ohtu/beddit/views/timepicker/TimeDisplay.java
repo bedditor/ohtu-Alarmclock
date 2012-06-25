@@ -3,7 +3,7 @@ package ohtu.beddit.views.timepicker;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-/*
+/**
  * A digital display of the time selected.
  * Time can be shown in 12- or 24-hour format.
  */
