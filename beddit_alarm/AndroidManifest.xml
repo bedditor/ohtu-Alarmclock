@@ -44,7 +44,7 @@
                   android:screenOrientation="portrait"/>
         <activity android:name=".activity.SleepInfoActivity"
                   android:screenOrientation="portrait"
-                  android:launchMode="singleInstance"/>/>
+                  android:launchMode="singleInstance"/>
 
         <receiver android:name=".alarm.AlarmReceiver" android:process=":remote"/>
         <receiver android:name=".alarm.BootReceiver">
