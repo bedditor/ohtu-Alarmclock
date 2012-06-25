@@ -25,7 +25,7 @@ public class BedditWebConnector implements BedditConnector {
 
     private void disableConnectionReuseIfNecessary() {
         // HTTP connection reuse which was buggy pre-gingerbread
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+        if (Build.VERSION.SDK_INT < 9) {
             System.setProperty("http.keepAlive", "false");
         }
     }
