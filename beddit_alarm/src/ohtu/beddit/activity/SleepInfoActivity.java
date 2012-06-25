@@ -14,6 +14,7 @@ import ohtu.beddit.api.ApiController;
 import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
 import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
 import ohtu.beddit.api.jsonclassimpl.SleepData;
+import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;
@@ -161,7 +162,9 @@ public class SleepInfoActivity extends Activity {
     }
 
     private void openDiaryInBrowser(String feeling){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://beddit.com/newbeddit/Arcane/things/" + TimeUtils.getTodayAsQueryDateString() + "/" + feeling));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://beddit.com/newbeddit/"
+                                + PreferenceService.getUsername(this) + "/things/"
+                                + TimeUtils.getTodayAsQueryDateString() + "/" + feeling));
         startActivity(browserIntent);
     }
 
