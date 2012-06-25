@@ -115,6 +115,7 @@ public class AlarmActivity extends Activity {
         wasDismissed = true;
         if (PreferenceService.getShowSleepData(AlarmActivity.this)) {
             Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
+            myIntent.putExtra("showFeelings", true);
             AlarmActivity.this.startActivity(myIntent);
         }
         AlarmActivity.this.finish();

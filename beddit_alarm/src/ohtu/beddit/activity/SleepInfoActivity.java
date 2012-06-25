@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
@@ -35,6 +36,14 @@ public class SleepInfoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
+
+
+        Bundle extras = getIntent().getExtras();
+        if (extras == null || !extras.getBoolean("showFeelings")){
+            Log.v(TAG, "HAISTA VITTU T KIKKI HIIRI " + View.GONE);
+            findViewById(R.id.SleptWellButton).setVisibility(View.GONE);
+            findViewById(R.id.SleptBadlyButton).setVisibility(View.GONE);
+        }
 
         dialog = new LoadingDialog(this);
         dialog.show();

@@ -310,7 +310,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         help.setIntent(new Intent(this.getApplicationContext(), HelpActivity.class));
 
         MenuItem sleepInfo = menu.findItem(R.id.sleep_info_button);
-        sleepInfo.setIntent(new Intent(this.getApplicationContext(), SleepInfoActivity.class));
+        Intent sleepInfoIntent = new Intent(this.getApplicationContext(), SleepInfoActivity.class);
+        sleepInfoIntent.putExtra("showFeelings", false);
+        sleepInfo.setIntent(sleepInfoIntent);
         return true;
     }
 
