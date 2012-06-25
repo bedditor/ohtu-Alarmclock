@@ -24,7 +24,9 @@ import ohtu.beddit.web.NoSleepDataException;
 
 import java.util.Calendar;
 
-
+/**
+ * Class for presenting basic information about the last night to the user.
+ */
 public class SleepInfoActivity extends Activity {
 
     private int timeSleeping;
@@ -111,6 +113,7 @@ public class SleepInfoActivity extends Activity {
             SleepInfoActivity.this.dialog.dismiss();
         }
     }
+
 
     private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();

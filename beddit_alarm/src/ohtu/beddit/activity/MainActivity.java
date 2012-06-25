@@ -35,6 +35,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private View addAlarmButton;
     private View deleteAlarmButton;
     private Calendar lastTokenCheck;
+    private boolean openingDialog;
 
     private static final int DARK_THEME_BACKGROUND = Color.BLACK;
     private static final int DARK_THEME_FOREGROUND = Color.WHITE;
@@ -119,7 +120,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     protected void onResume() {
         Log.v(TAG, "onResume");
-        checkToken();
+        if (!openingDialog)
+            checkToken();
         updateButtonStates();
         super.onStart();
     }
@@ -349,9 +351,11 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private void handleActivityResult(int resultCode) {
         switch (resultCode) {
             case (AuthActivity.RESULT_FAILED):
+                openingDialog = true;
                 DialogUtils.createActivityClosingDialog(this, getString(R.string.login_or_authorisation_failed), getString(R.string.button_text_close));
                 break;
             case (AuthActivity.RESULT_CANCELLED):
+                openingDialog = true;
                 DialogUtils.createActivityClosingDialog(this, getString(R.string.must_connect_to_beddit_account), getString(R.string.button_text_close));
                 break;
         }

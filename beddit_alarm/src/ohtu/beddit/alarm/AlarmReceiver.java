@@ -7,16 +7,21 @@ import android.util.Log;
 import ohtu.beddit.activity.AlarmActivity;
 import java.util.Calendar;
 
-/*
- * ??? Add a description for this class.
- *
+
+/**This class is used for receiving alarm broadcasts during the wake up interval and deciding what to do with them.
+ * @see <a href="http://lmgtfy.com/?q=Broadcastreceiver+javadoc">BroadcastReceiver</a>
  */
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver{
     private final String TAG = "Alarm Receiver";
     private int wakeUpAttemptInterval; //how often (seconds) we try to wake up
     private AlarmService alarmService;
 
+    /**
+     * This method receives Intents during the wake up interval, and either schedules a new broadcast or starts up the alarm.
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         alarmService = new AlarmServiceImpl(context);
