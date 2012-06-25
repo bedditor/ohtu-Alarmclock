@@ -3,12 +3,9 @@ package ohtu.beddit.views.timepicker;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 28.5.2012
- * Time: 15:05
- * To change this template use File | Settings | File Templates.
+/*
+ * A digital display of the time selected.
+ * Time can be shown in 12- or 24-hour format.
  */
 public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     private final float x;

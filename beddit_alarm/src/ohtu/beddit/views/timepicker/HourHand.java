@@ -7,12 +7,9 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 30.5.2012
- * Time: 13:17
- * To change this template use File | Settings | File Templates.
+/*
+ * A special clock hand that moves in increments of one hour on the clock face.
+ * It listens to the minute hand so that its angle can be accurate at all times.
  */
 public class HourHand extends ClockHand implements MinuteChangedListener {
 

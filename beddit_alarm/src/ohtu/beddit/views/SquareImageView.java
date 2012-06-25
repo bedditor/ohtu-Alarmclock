@@ -4,12 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 21.6.2012
- * Time: 10:11
- * To change this template use File | Settings | File Templates.
+/*
+ * An ImageView for showing icons that keeps its aspect ratio
+ * at a constant 1:1.
  */
 public class SquareImageView extends ImageView {
     public SquareImageView(Context context) {

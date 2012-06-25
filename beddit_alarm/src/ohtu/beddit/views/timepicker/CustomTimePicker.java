@@ -14,12 +14,10 @@ import ohtu.beddit.alarm.AlarmTimePicker;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 21.5.2012
- * Time: 13:49
- * To change this template use File | Settings | File Templates.
+/*
+ * A special view for choosing a time by manipulating the clock
+ * hands on an analog clock face. Also includes a display of the currently
+ * picked time and a slider for setting the alarm interval.
  */
 public class CustomTimePicker extends View implements AlarmTimePicker, AnimationFinishedListener {
     // sizes as a fraction of the clock's radius

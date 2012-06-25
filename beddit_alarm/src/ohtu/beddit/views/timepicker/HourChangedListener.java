@@ -1,11 +1,7 @@
 package ohtu.beddit.views.timepicker;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 30.5.2012
- * Time: 11:44
- * To change this template use File | Settings | File Templates.
+/*
+ * A simple interface to allow the hour hand to report changes in its value
  */
 public interface HourChangedListener {
     public void onHourChanged(int value);

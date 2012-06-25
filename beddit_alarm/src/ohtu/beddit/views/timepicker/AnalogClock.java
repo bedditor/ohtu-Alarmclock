@@ -5,12 +5,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 28.5.2012
- * Time: 14:45
- * To change this template use File | Settings | File Templates.
+/*
+ * The analog clock face part of CustomTimePicker.
+ * Contains two clock hands and listens to the interval
+ * picking slider.
  */
 public class AnalogClock implements ValueChangedListener {
 

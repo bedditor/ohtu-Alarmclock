@@ -2,12 +2,10 @@ package ohtu.beddit.views.timepicker;
 
 import android.view.View;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 30.5.2012
- * Time: 9:42
- * To change this template use File | Settings | File Templates.
+/*
+ * An abstraction of a view component that can respond to click events on the
+ * screen, can be dragged by the user, and can move to some target position
+ * using an animator.
  */
 abstract class Movable {
 
@@ -32,7 +30,6 @@ abstract class Movable {
     public abstract boolean wasClicked();
 
     public abstract void releaseClick();
-
 
     public abstract int createTargetFromClick(float x, float y);
 

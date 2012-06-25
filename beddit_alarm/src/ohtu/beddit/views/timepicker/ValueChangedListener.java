@@ -1,11 +1,7 @@
 package ohtu.beddit.views.timepicker;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 30.5.2012
- * Time: 11:45
- * To change this template use File | Settings | File Templates.
+/*
+ * A simple interface for reporting a changed value.
  */
 public interface ValueChangedListener {
     public void onValueChanged(int value);

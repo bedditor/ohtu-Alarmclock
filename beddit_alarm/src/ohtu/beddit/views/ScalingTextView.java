@@ -7,12 +7,10 @@ import android.util.TypedValue;
 import android.widget.TextView;
 import ohtu.beddit.R;
 
-/**
- * Created with IntelliJ IDEA.
- * User: juho
- * Date: 6/20/12
- * Time: 2:51 PM
- * To change this template use File | Settings | File Templates.
+/*
+ * A TextView that scales its text to fill itself horizontally.
+ * If given a textScalingReference it will use a text size that
+ * would fit the longer of the two strings for its text.
  */
 public class ScalingTextView extends TextView {
     private String textScalingReference;

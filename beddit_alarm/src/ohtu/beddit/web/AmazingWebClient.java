@@ -68,7 +68,6 @@ public class AmazingWebClient extends WebViewClient {
 
     @Override
     public void onLoadResource(WebView view, String url) {
-
         Log.v(TAG, "onLoadResource " + url);
         super.onLoadResource(view, url);
     }

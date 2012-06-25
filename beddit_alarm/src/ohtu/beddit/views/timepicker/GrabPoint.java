@@ -3,12 +3,8 @@ package ohtu.beddit.views.timepicker;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 29.5.2012
- * Time: 11:26
- * To change this template use File | Settings | File Templates.
+/*
+ * GrabPoints are areas on the screen the user can select and drag with a finger
  */
 public class GrabPoint {
     private float x;

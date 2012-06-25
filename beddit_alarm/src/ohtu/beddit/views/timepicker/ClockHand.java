@@ -4,12 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 28.5.2012
- * Time: 15:15
- * To change this template use File | Settings | File Templates.
+/*
+ * ClockHand defines how to draw and general functionality for clock hands
  */
 public abstract class ClockHand extends Movable {
     private final float x;

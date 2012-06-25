@@ -8,12 +8,8 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 28.5.2012
- * Time: 14:46
- * To change this template use File | Settings | File Templates.
+/*
+ * A slider that can be manipulated by the user
  */
 public class Slider extends Movable {
 

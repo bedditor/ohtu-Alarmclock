@@ -6,12 +6,10 @@ import android.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 30.5.2012
- * Time: 13:17
- * To change this template use File | Settings | File Templates.
+/*
+ * A special clock hand that moves in one minute increments on the clock face.
+ * It is given the hour hand so it can be updated when the minute hand makes a
+ * full rotation around the clock face.
  */
 public class MinuteHand extends ClockHand {
 

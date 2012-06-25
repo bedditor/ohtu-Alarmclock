@@ -1,17 +1,12 @@
 package ohtu.beddit.views.timepicker;
 
-import android.util.Log;
 import android.view.View;
-
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: psaikko
- * Date: 29.5.2012
- * Time: 14:47
- * To change this template use File | Settings | File Templates.
+/*
+ * Used for animating the clock hands and interval slider when they are clicked.
+ *
  */
 public abstract class Animator implements Runnable {
     private final View parent;
@@ -49,8 +44,7 @@ public abstract class Animator implements Runnable {
 
             try {
                 Thread.sleep(sleepTime);
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
         }
 
         for (AnimationFinishedListener l : animationFinishedListeners)
