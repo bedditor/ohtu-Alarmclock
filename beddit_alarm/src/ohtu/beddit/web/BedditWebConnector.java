@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class BedditWebConnector implements BedditConnector {
 
     private static final String TAG = "BedditWebConnector";
-    private static int GINGERBREAD = 9;
+    private static final int GINGERBREAD = 9;
 
     public BedditWebConnector() {
         disableConnectionReuseIfNecessary();

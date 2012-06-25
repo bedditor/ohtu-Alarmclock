@@ -39,12 +39,12 @@ public interface ApiController {
      * Retrieves access token json from given url with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)},
      * parses it to {@link ohtu.beddit.api.jsonclassimpl.TokenData} with {@link ohtu.beddit.api.jsonclassimpl.BedditJsonParser} and
      * returns access token as String
-     * @param context android context
+     *
      * @param url
      * @return access token as String
      * @throws BedditException
      */
-    String getAccessToken(Context context, String url) throws BedditException;
+    String getAccessToken(String url) throws BedditException;
 
     /**
      * Parses saved queue data json and returns it as {@link QueueData} object.

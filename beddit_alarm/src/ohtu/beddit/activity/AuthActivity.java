@@ -70,7 +70,7 @@ public class AuthActivity extends Activity implements UrlListener {
             // If we get error, well you shouldn't. We close the program because we won't get correct access_token. Breaks other code?
             try {
                 ApiController apiController = new ApiControllerClassImpl();
-                String token = apiController.getAccessToken(this, url);
+                String token = apiController.getAccessToken(url);
                 Log.v(TAG, "result: " + token);
                 // We put the correct access token to safe and be happy. User is allowed to use the program now.
                 PreferenceService.setToken(this, token);

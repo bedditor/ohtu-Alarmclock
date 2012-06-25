@@ -3,7 +3,7 @@ package ohtu.beddit.web;
 import android.content.Context;
 
 /**
- * ??? Please, add a description for this class.
+ * This class is used for connecting to beddit api, getting json data from it and posting requests.
  */
 public interface BedditConnector {
     String getUserJson(Context context) throws BedditConnectionException;

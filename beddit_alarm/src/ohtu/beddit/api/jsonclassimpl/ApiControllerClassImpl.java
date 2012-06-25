@@ -87,7 +87,7 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
-    public String getAccessToken(Context context, String url) throws BedditException {
+    public String getAccessToken(String url) throws BedditException {
         Log.v(TAG, "Trying to get access token from " + url);
         String json = bedditConnector.getJsonFromServer(url, false);
         String token = jsonParser.parseJsonToObject(json, TokenData.class).getToken();
