@@ -7,10 +7,23 @@ import android.content.Context;
  * The real implementation uses data from Beddit, but interface allows a random implementation for testing purposes.
  */
 public interface AlarmChecker {
+
+    /**
+     * wakeUpNow() tells if the customer is in right sleep stage to be woken up.
+     *
+     * @param context AlarmChecker needs application context for possible PreferenceService or API calls
+     * @return true if user is in right sleep stage and should be woken up, false otherwise
+     */
     public boolean wakeUpNow(Context context);
 
-    public int getWakeUpAttemptInterval(); //how often (seconds) we should try to wake up
+    /**
+     *  How often the sleep date will be checked.
+     */
+    public int getWakeUpAttemptInterval();
 
-    public int getCheckTime(); //how long (seconds) it may take to do the checking
+    /**
+     *  How long does it take to check data from the internet
+     */
+    public int getCheckTime();
 
 }

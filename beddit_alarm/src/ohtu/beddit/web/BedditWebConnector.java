@@ -24,8 +24,8 @@ public class BedditWebConnector implements BedditConnector {
     }
 
     private void disableConnectionReuseIfNecessary() {
-        // HTTP connection reuse which was buggy pre-froyo
-        if (Integer.parseInt(Build.VERSION.SDK) < Build.VERSION_CODES.FROYO) {
+        // HTTP connection reuse which was buggy pre-gingerbread
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
             System.setProperty("http.keepAlive", "false");
         }
     }

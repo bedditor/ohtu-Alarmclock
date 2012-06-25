@@ -1,10 +1,13 @@
 package ohtu.beddit.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
@@ -35,6 +38,14 @@ public class SleepInfoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
+
+
+        Bundle extras = getIntent().getExtras();
+        if (extras == null || !extras.getBoolean("showFeelings")){
+            findViewById(R.id.SleptWellButton).setVisibility(View.GONE);
+            findViewById(R.id.SleptBadlyButton).setVisibility(View.GONE);
+            findViewById(R.id.sleep_diary_link).setVisibility(View.GONE);
+        }
 
         dialog = new LoadingDialog(this);
         dialog.show();
@@ -128,15 +139,30 @@ public class SleepInfoActivity extends Activity {
         findViewById(R.id.SleptWellButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                openDiaryInBrowser("?feeling=%2B");
                 SleepInfoActivity.this.finish();
             }
         });
         findViewById(R.id.SleptBadlyButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                 openDiaryInBrowser("?feeling=-");
+                 SleepInfoActivity.this.finish();
+            }
+        });
+
+        findViewById(R.id.sleep_diary_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDiaryInBrowser("");
                 SleepInfoActivity.this.finish();
             }
         });
+    }
+
+    private void openDiaryInBrowser(String feeling){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://beddit.com/newbeddit/Arcane/things/" + TimeUtils.getTodayAsQueryDateString() + "/" + feeling));
+        startActivity(browserIntent);
     }
 
     private String getHoursAndMinutesFromSeconds(int seconds) {
