@@ -112,6 +112,7 @@ public class SleepInfoActivity extends Activity {
         }
     }
 
+
     private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();
         if (apiController.isSleepInfoOutdated() || apiController.hasUserChanged(this)) {

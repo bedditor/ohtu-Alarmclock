@@ -14,7 +14,9 @@ import ohtu.beddit.alarm.AlarmService;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.io.PreferenceService;
 
-
+/**
+ * This class displays and handles the menu screen for application settings.
+ */
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
     private ListPreference snoozeTimePref;
     private ListPreference sleepStagePref;
@@ -64,6 +66,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * When preferences are changed this method will update the summary for the preference in question.
+     * @param sharedPreferences
+     * @param key
+     */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_snooze))) {
             updateSnoozeSummary();

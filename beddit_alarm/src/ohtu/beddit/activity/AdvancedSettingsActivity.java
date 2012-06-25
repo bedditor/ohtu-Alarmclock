@@ -6,7 +6,9 @@ import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import ohtu.beddit.R;
 
-
+/**
+ * This class displays and handles the menu screen for advanced application settings.
+ */
 public class AdvancedSettingsActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -41,11 +43,15 @@ public class AdvancedSettingsActivity extends PreferenceActivity
     @Override
     protected void onPause() {
         super.onPause();
-
         // Unregister the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * When preferences are changed this method will update the summary for the preference in question.
+     * @param sharedPreferences
+     * @param key
+     */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_colour_theme))) {
             setColourThemeSummary();
@@ -54,10 +60,12 @@ public class AdvancedSettingsActivity extends PreferenceActivity
         }
     }
 
+    //sets the summary text of colour theme displayed in advanced setting screen
     private void setColourThemeSummary() {
         colourThemePref.setSummary(getString(R.string.pref_summary_colour_theme) + " " + colourThemePref.getEntry());
     }
 
+    //sets the summary text of alarm length displayed in advanced setting screen
     private void setAlarmSoundLengthSummary() {
         alarmSoundLengthPref.setSummary(getString(R.string.pref_summary_alarm_length) + " " + alarmSoundLengthPref.getEntry());
     }
