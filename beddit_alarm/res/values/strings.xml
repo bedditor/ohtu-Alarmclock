@@ -43,8 +43,8 @@
     <string name="help_text_2">This app will try to wake you up on that timespan while you are at
         a light sleep stage.
     </string>
-    <string name="help_text_3">Finally press \'add alarm\' to set the alarm.</string>
-    <string name="help_text_4">You can unset the alarm by pressing \'delete alarm\'.</string>
+    <string name="help_text_3">Finally press \'set\' to set the alarm.</string>
+    <string name="help_text_4">You can unset the alarm by pressing \'unset alarm\'.</string>
 
     <string name="main_act_interval_title">Wake up interval</string>
     <string name="help_title">Instructions</string>
@@ -87,7 +87,6 @@
     <string name="no_beddit_data">No sleep data available for last night</string>
     <string name="dialog_text_no_sleep_data">There is no sleep data available</string>
     <string name="dialog_text_unknown_error">Unknown error</string>
-    <string name="sleep_diary_link">Open sleep diary in browser</string>
 
     <style name="ButtonText">
         <item name="android:textColor">#ffffff</item>

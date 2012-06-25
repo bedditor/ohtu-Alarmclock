@@ -10,7 +10,7 @@ import ohtu.beddit.web.UnauthorizedException;
 
 import java.io.StringReader;
 
-class BedditJsonParserImpl implements BedditJsonParser {
+public class BedditJsonParserImpl implements BedditJsonParser {
     private static final String TAG = "BedditJsonParser";
 
     /**

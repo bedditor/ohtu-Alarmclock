@@ -11,16 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
-import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
-import ohtu.beddit.api.jsonclassimpl.InvalidJsonException;
-import ohtu.beddit.api.jsonclassimpl.SleepData;
+import ohtu.beddit.api.jsonclassimpl.*;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.utils.TimeUtils;
-import ohtu.beddit.web.BedditConnectionException;
-import ohtu.beddit.web.BedditException;
-import ohtu.beddit.web.LoadingDialog;
-import ohtu.beddit.web.NoSleepDataException;
+import ohtu.beddit.web.*;
 
 import java.util.Calendar;
 
@@ -47,7 +42,6 @@ public class SleepInfoActivity extends Activity {
         if (extras == null || !extras.getBoolean("showFeelings")){
             findViewById(R.id.SleptWellButton).setVisibility(View.GONE);
             findViewById(R.id.SleptBadlyButton).setVisibility(View.GONE);
-            findViewById(R.id.sleep_diary_link).setVisibility(View.GONE);
         }
 
         dialog = new LoadingDialog(this);
@@ -143,31 +137,33 @@ public class SleepInfoActivity extends Activity {
         findViewById(R.id.SleptWellButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDiaryInBrowser("?feeling=%2B");
+                openDiaryInBrowser("&feeling=%2B");
                 SleepInfoActivity.this.finish();
             }
         });
         findViewById(R.id.SleptBadlyButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 openDiaryInBrowser("?feeling=-");
+                 openDiaryInBrowser("&feeling=-");
                  SleepInfoActivity.this.finish();
-            }
-        });
-
-        findViewById(R.id.sleep_diary_link).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDiaryInBrowser("");
-                SleepInfoActivity.this.finish();
             }
         });
     }
 
     private void openDiaryInBrowser(String feeling){
+        String username = PreferenceService.getUsername(this);
+        BedditWebConnector bwc = new BedditWebConnector();
+        String key;
+        try {
+            String keyJson = bwc.getJsonFromServer(this, "https://api.beddit.com/api2/user/" + username + "/temporary_authentication/create?access_token=" + PreferenceService.getToken(this), true);
+            key = new BedditJsonParserImpl().parseJsonToObject(keyJson, Key.class).getKey();
+            Log.v(TAG, key);
+        } catch (Exception e){
+            key = "";
+        }
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://beddit.com/newbeddit/"
-                                + PreferenceService.getUsername(this) + "/things/"
-                                + TimeUtils.getTodayAsQueryDateString() + "/" + feeling));
+                                + username + "/things/"
+                                + TimeUtils.getTodayAsQueryDateString() + "/?k=" + key + feeling));
         startActivity(browserIntent);
     }
 

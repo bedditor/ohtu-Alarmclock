@@ -20,7 +20,7 @@
 
     <string name="pref_title_other_settings">Muut asetukset</string>
 
-    <string name="pref_title_awesome">Tee ohjelmasta SUPER</string>
+    <string name="pref_title_awesome">Tee ohjelmasta MAHTAVA</string>
     <string name="pref_summary_awesome">Tämä asetus on hyödytön.</string>
     <string name="pref_toggle_info_summary">Näytetään kooste unitiedoista herätyksen jälkeen</string>
 
@@ -70,10 +70,16 @@
         Beddit-tiliin.
     </string>
     <string name="button_text_ok">Ok</string>
-    <string name="sleep_data_fail">Ei saatu unitietoja Beddit</string>
+    <string name="sleep_data_fail">Ei saatu unitietoja Bedditiltä</string>
     <string name="could_not_connect">Ei saatu yhteyttä Beddit-tiliin</string>
     <string name="no_beddit_data">Ei unitietoja viime yöltä</string>
-    <string name="dialog_text_no_sleep_data">There is no sleep data available</string>
-    <string name="dialog_text_unknown_error">Unknown error</string>
+    <string name="dialog_text_no_sleep_data">Unitiedot eivät ole saatavilla</string>
+    <string name="dialog_text_unknown_error">Tuntematon virhe</string>
+
+
+
+
+
+
 
 </resources>
