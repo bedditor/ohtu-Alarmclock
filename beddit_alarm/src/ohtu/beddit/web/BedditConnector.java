@@ -14,5 +14,5 @@ public interface BedditConnector {
 
     String requestDataAnalysis(Context context, String date) throws BedditConnectionException;
 
-    String getJsonFromServer(Context context, String url, boolean doPost) throws BedditConnectionException;
+    String getJsonFromServer(String url, boolean doPost) throws BedditConnectionException;
 }

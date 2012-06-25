@@ -19,6 +19,7 @@ import java.util.Scanner;
 public class BedditWebConnector implements BedditConnector {
 
     private static final String TAG = "BedditWebConnector";
+    private static int GINGERBREAD = 9;
 
     public BedditWebConnector() {
         disableConnectionReuseIfNecessary();
@@ -26,8 +27,7 @@ public class BedditWebConnector implements BedditConnector {
 
     private void disableConnectionReuseIfNecessary() {
         // HTTP connection reuse which was buggy pre-gingerbread
-
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO) {
+        if (Build.VERSION.SDK_INT < GINGERBREAD) {
             System.setProperty("http.keepAlive", "false");
         }
     }
@@ -57,10 +57,10 @@ public class BedditWebConnector implements BedditConnector {
 
     private String queryForJson(Context context, String query, boolean doPost) throws BedditConnectionException {
         String url = getQueryURL(context, query);
-        return getJsonFromServer(context, url, doPost);
+        return getJsonFromServer(url, doPost);
     }
 
-    private String getQueryURL(Context context, String query) throws BedditConnectionException {
+    private String getQueryURL(Context context, String query) {
         String token = PreferenceService.getToken(context);
         return "https://api.beddit.com/api2/user/" + query + "?access_token=" + token;
     }
@@ -74,7 +74,7 @@ public class BedditWebConnector implements BedditConnector {
     }
 
     @Override
-    public String getJsonFromServer(Context context, String url, boolean doPost) throws BedditConnectionException {
+    public String getJsonFromServer(String url, boolean doPost) throws BedditConnectionException {
         String response = "";
         HttpsURLConnection connection = null;
         InputStream inputStream = null;

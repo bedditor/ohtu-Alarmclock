@@ -1,6 +1,13 @@
 package ohtu.beddit.api.jsonclassimpl;
 
+/**
+ * Encapsulates beddit user data as object.
+ */
 public class UserData {
+
+    /**
+     * List of users on this beddit account.
+     */
     private User[] users;
 
     public String getUsername() throws InvalidJsonException {

@@ -5,6 +5,7 @@ import android.util.Log;
 import ohtu.beddit.api.ApiController;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
+import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditConnector;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.BedditWebConnector;
@@ -30,7 +31,7 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
-    public void updateUserData(Context context) throws BedditException {
+    public void updateUserData(Context context) throws BedditConnectionException {
         userJson = bedditConnector.getUserJson(context);
         Log.v(TAG, "update: " + userJson);
     }
@@ -42,7 +43,7 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
-    public void updateSleepData(Context context) throws BedditException {
+    public void updateSleepData(Context context) throws BedditConnectionException {
         String date = TimeUtils.getTodayAsQueryDateString();
         sleepJson = bedditConnector.getWakeUpJson(context, date);
         lastSleepUpdateTime = Calendar.getInstance();
@@ -57,7 +58,7 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
-    public void updateQueueData(Context context) throws BedditException {
+    public void updateQueueData(Context context) throws BedditConnectionException {
         String date = TimeUtils.getTodayAsQueryDateString();
         queueJson = bedditConnector.getQueueStateJson(context, date);
         Log.v(TAG, "update: " + queueJson);
@@ -80,14 +81,14 @@ public class ApiControllerClassImpl implements ApiController {
     }
 
     @Override
-    public void requestInfoUpdate(Context context) throws BedditException {
+    public void requestInfoUpdate(Context context) throws BedditConnectionException {
         Log.v(TAG, "posted: " + bedditConnector.requestDataAnalysis(context, TimeUtils.getTodayAsQueryDateString()));
     }
 
     @Override
     public String getAccessToken(Context context, String url) throws BedditException {
         Log.v(TAG, "Trying to get access token from " + url);
-        String json = bedditConnector.getJsonFromServer(context, url, false);
+        String json = bedditConnector.getJsonFromServer(url, false);
         String token = jsonParser.parseJsonToObject(json, TokenData.class).getToken();
         Log.v(TAG, "AccessToken = \"" + token + "\"");
         return token;

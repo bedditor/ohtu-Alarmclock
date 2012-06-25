@@ -1,5 +1,8 @@
 package ohtu.beddit.api.jsonclassimpl;
 
+/**
+ * Encapsulates data of a single user as object,
+ */
 class User {
     private String username;
     private String url;
