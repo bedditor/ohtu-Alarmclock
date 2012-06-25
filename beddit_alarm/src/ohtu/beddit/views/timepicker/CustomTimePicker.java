@@ -20,18 +20,15 @@ import java.util.List;
  * picked time and a slider for setting the alarm interval.
  */
 public class CustomTimePicker extends View implements AlarmTimePicker, AnimationFinishedListener {
-    // sizes as a fraction of the clock's radius
+    // sizes as a fraction of the clock's radius:
     private final static float GRAB_POINT_SIZE = 0.1f;
     private final static float HAND_WIDTH = 0.02f;
     private final static float HOUR_HAND_LENGTH = 0.55f;
     private final static float CLOCK_NUMBER_SIZE = 0.2f;
     private final static float BAR_HEIGHT = 0.25f;
     private final static float BAR_WIDTH = 1.8f;
-    // as a fraction of bar height
+    // as a fraction of bar height:
     private final static float SPACER_SIZE = 0.2f;
-
-    private final static double MINUTE_INCREMENT = Math.PI / 30.0;
-    private final static double HOUR_INCREMENT = Math.PI / 6.0;
 
     private final static int MAX_INTERVAL = 45;
     private final static int MINIMUM_SIZE = 100;
@@ -39,6 +36,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     private int initialMinutes = 0;
     private int initialHours = 0;
     private int initialInterval = 0;
+
     private boolean componentsCreated = false;
     private boolean enabled = true;
     private boolean is24Hour = true;
@@ -53,11 +51,20 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
 
     private final List<Movable> movables = new LinkedList<Movable>();
 
+    /**
+     * Creates a new CustomTimePicker from xml.
+     * @param context Android Context object.
+     * @param attrs Set of attributes from the xml.
+     */
     public CustomTimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         initializePaints();
     }
 
+    /**
+     * Draws every component of the CustomTimePicker to the given Canvas.
+     * @param c The Canvas object to draw to.
+     */
     protected void onDraw(Canvas c) {
         analogClock.draw(c);
         minuteHand.draw(c);
@@ -66,6 +73,13 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         intervalSlider.draw(c);
     }
 
+    /**
+     * Responds to a touchscreen event.
+     * Animates Movables in response to clicks and handles the dragging of Movables.
+     * Reports the new time and interval to listeners when a drag ends.
+     * @param me An object that describes a touchscreen event.
+     * @return True if the touch event was handled.
+     */
     public boolean onTouchEvent(MotionEvent me) {
         if (enabled) {
             boolean eventHandled = false;
@@ -110,6 +124,9 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
     private final Paint backgroundPaint = new Paint();
     private final Paint intervalArcPaint = new Paint();
 
+    /**
+     * Initializes all the paints used by the CustomTimePicker to their default values.
+     */
     private void initializePaints() {
 
         linePaint.setAntiAlias(true);
@@ -129,6 +146,9 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         backgroundPaint.setAntiAlias(true);
     }
 
+    /**
+     * Initializes all the components of the CustomTimePicker
+     */
     private void createComponents() {
         float radius = (getHeight() / 2) * (1 - BAR_HEIGHT);
         if (radius * 2 > getWidth())
@@ -148,8 +168,8 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         // create individual view components
         intervalSlider = new Slider(midX - radius * BAR_WIDTH / 2, midY + radius + barSpacer,
                 radius * BAR_WIDTH, barHeight, MAX_INTERVAL, initialInterval, linePaint, grabPointSize, this);
-        hourHand = new HourHand(midX, midY, initialHours, HOUR_INCREMENT, radius * HOUR_HAND_LENGTH, linePaint, grabPointSize, this);
-        minuteHand = new MinuteHand(midX, midY, initialMinutes, MINUTE_INCREMENT, radius, linePaint, grabPointSize, this, hourHand);
+        hourHand = new HourHand(midX, midY, initialHours, radius * HOUR_HAND_LENGTH, linePaint, grabPointSize, this);
+        minuteHand = new MinuteHand(midX, midY, initialMinutes, radius, linePaint, grabPointSize, this, hourHand);
         analogClock = new AnalogClock(midX, midY, radius,
                 intervalArcPaint, backgroundPaint, clockFaceLinePaint,
                 minuteHand, hourHand);
@@ -175,37 +195,22 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         componentsCreated = true;
     }
 
+    /**
+     *  Listens for component animations finishing and notifies listeners of changed alarm time and interval.
+     */
     @Override
     public void onAnimationFinished() {
         for (AlarmTimeChangedListener l : alarmTimeChangedListeners)
             l.onAlarmTimeChanged(hourHand.getValue(), minuteHand.getValue(), intervalSlider.getValue());
     }
 
-    //<editor-fold overrides>
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureDimension(widthMeasureSpec),
-                             measureDimension(heightMeasureSpec));
-    }
-
-    private int measureDimension(int measureSpec) {
-        int result;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = MINIMUM_SIZE;
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-
-        return result;
-    }
-
+    /**
+     * Overrides the base onSizeChanged method to create the view's components after the size of the view has been set.
+     * @param w New width.
+     * @param h New height.
+     * @param oldw Old width.
+     * @param oldh Old height.
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -270,11 +275,19 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         return enabled;
     }
 
+    /**
+     * Sets the background color of the component.
+     * @param c The new color.
+     */
     @Override
     public void setBackgroundColor(int c) {
         backgroundPaint.setColor(c);
     }
 
+    /**
+     * Sets the foreground color of the component.
+     * @param c The new Color.
+     */
     @Override
     public void setForegroundColor(int c) {
         linePaint.setColor(c);
@@ -282,11 +295,19 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         clockFaceLinePaint.setColor(c - (64 << 24));
     }
 
+    /**
+     * Sets the color of the interval arc.
+     * @param c The new color.
+     */
     @Override
     public void setSpecialColor(int c) {
         intervalArcPaint.setColor(c);
     }
 
+    /**
+     * Changes the time display format.
+     * @param b True for 24-hour format, false for 12-hour format.
+     */
     @Override
     public void set24HourMode(boolean b) {
         if (componentsCreated)
@@ -295,10 +316,12 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
             is24Hour = b;
     }
 
+    /**
+     * Adds an AlarmTimeChangedListener to the CustomTimePicker.
+     * @param l The listener to add.
+     */
     @Override
     public void addAlarmTimeChangedListener(AlarmTimeChangedListener l) {
         alarmTimeChangedListeners.add(l);
     }
-
-    //</editor-fold>
 }

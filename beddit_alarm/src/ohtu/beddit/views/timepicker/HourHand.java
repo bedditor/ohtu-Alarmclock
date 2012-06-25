@@ -12,14 +12,24 @@ import java.util.List;
  * It listens to the minute hand so that its angle can be accurate at all times.
  */
 public class HourHand extends ClockHand implements MinuteChangedListener {
-
     private static final int DEFAULT_MOVE_SPEED = 20;
     private int minuteValue = 0;
     private final List<HourChangedListener> listeners = new LinkedList<HourChangedListener>();
+    public final static double INCREMENT = Math.PI / 6.0;
 
-    public HourHand(float x, float y, int value, double incrementSize, float length, Paint p,
+    /**
+     * Creates a new hour hand object.
+     * @param x
+     * @param y
+     * @param value
+     * @param length
+     * @param p
+     * @param grabPointSize
+     * @param parent
+     */
+    public HourHand(float x, float y, int value, float length, Paint p,
                     float grabPointSize, View parent) {
-        super(x, y, value, incrementSize, length, p, grabPointSize, parent);
+        super(x, y, value, INCREMENT, length, p, grabPointSize, parent);
     }
 
 

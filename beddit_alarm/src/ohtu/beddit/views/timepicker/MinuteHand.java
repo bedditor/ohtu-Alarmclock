@@ -15,10 +15,11 @@ public class MinuteHand extends ClockHand {
 
     private static final int DEFAULT_MOVE_SPEED = 20;
     private final ClockHand hourHand;
+    public final static double INCREMENT = Math.PI / 30.0;
 
-    public MinuteHand(float x, float y, int value, double incrementSize, float length, Paint p,
+    public MinuteHand(float x, float y, int value, float length, Paint p,
                       float grabPointSize, View parent, ClockHand hourHand) {
-        super(x, y, value, incrementSize, length, p, grabPointSize, parent);
+        super(x, y, value, INCREMENT, length, p, grabPointSize, parent);
         this.hourHand = hourHand;
     }
 
