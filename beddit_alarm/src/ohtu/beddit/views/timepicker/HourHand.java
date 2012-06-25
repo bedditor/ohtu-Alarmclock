@@ -19,29 +19,40 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
 
     /**
      * Creates a new hour hand object.
-     * @param x
-     * @param y
-     * @param value
-     * @param length
-     * @param p
-     * @param grabPointSize
-     * @param parent
+     * @param x Pivot point x-coordinate.
+     * @param y Pivot point y-coordinate.
+     * @param value Initial hour value.
+     * @param length Hour hand length.
+     * @param p Paint to draw the hour hand with.
+     * @param grabPointSize Radius of the hour hand grab point in pixels.
+     * @param parent Tha parent View of the hour hand.
      */
     public HourHand(float x, float y, int value, float length, Paint p,
                     float grabPointSize, View parent) {
         super(x, y, value, INCREMENT, length, p, grabPointSize, parent);
     }
 
-
+    /**
+     * Adds a HourChangedListener.
+     * @param listener The listener to add.
+     */
     public void addListener(HourChangedListener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Listens to changes in the minute value.
+     * @param value New minute value.
+     */
     @Override
     public void onMinuteChanged(int value) {
         this.minuteValue = value;
     }
 
+    /**
+     * Sets the new hour value and informs listeners of change.
+     * @param newValue New value for the clock hand.
+     */
     @Override
     public void setValue(int newValue) {
         this.value = newValue;
@@ -49,12 +60,20 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
             hcl.onHourChanged(newValue);
     }
 
+    /**
+     * Gets the current angle of the hour hand.
+     * @return Current hand angle in radians.
+     */
     @Override
     public double getAngle() {
         return ((this.value % 12) * this.incrementSize) +
                 (minuteValue / 60.0 * this.incrementSize);
     }
 
+    /**
+     * Increments the hour value.
+     * @param inc Amount to increment the hour value by.
+     */
     @Override
     public void incrementValue(int inc) {
         int val = getValue();
@@ -63,6 +82,10 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
         setValue(val);
     }
 
+    /**
+     * Sets the clock hand angle.
+     * @param newAngle The new hour hand angle.
+     */
     @Override
     public void setAngle(double newAngle) {
 
@@ -74,6 +97,11 @@ public class HourHand extends ClockHand implements MinuteChangedListener {
         }
     }
 
+    /**
+     * Creates an Animator object to move the hand to a target hour value.
+     * @param target The target hour value to move to.
+     * @return The created Animator object.
+     */
     @Override
     protected Animator createAnimator(int target) {
         return new Animator(parent, DEFAULT_MOVE_SPEED, target, this) {

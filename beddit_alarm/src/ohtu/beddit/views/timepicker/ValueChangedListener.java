@@ -5,7 +5,7 @@ package ohtu.beddit.views.timepicker;
  */
 public interface ValueChangedListener {
     /**
-     * Called when some important value for an object is changed
+     * Responds to a change in some value.
      * @param value the new value
      */
     public void onValueChanged(int value);
