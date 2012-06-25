@@ -4,23 +4,39 @@ import ohtu.beddit.utils.TimeUtils;
 import java.util.Calendar;
 
 
-// This class represents a single alarm. A single alarm has the wake up time and a length of the interval.
-
+/**
+ *  Alarm  represents a single alarm. A single alarm has the wake up time and a length of the interval.
+ */
 public class Alarm {
 
+    /**
+     * Interval for wake up
+     */
     private int interval;
-    private Calendar calendar = Calendar.getInstance();
 
-    // Is alarm set or not?  Info about the last alarm will be in memory even if the alarm is not set.
+    /**
+     * Wake up time as a Calendar object
+     */
+    private Calendar wakeUpTime = Calendar.getInstance();
+
+    /**
+     * Boolean telling is alarm enabled or not.  We want info about the last alarm in memory if an alarm is not set.
+     */
     private boolean enabled;
 
     public Alarm() {
     }
 
+    /**
+     * @param hours  Wake up hour in 24h format
+     * @param minutes Wake up minutes
+     * @param interval Interval length
+     * @param enabled Is alarm enabled or info about the last alarm
+     */
     public Alarm(int hours, int minutes, int interval, boolean enabled) {
         this.interval = interval;
         this.enabled = enabled;
-        this.calendar = TimeUtils.timeToCalendar(hours, minutes);
+        this.wakeUpTime = TimeUtils.timeToCalendar(hours, minutes);
     }
 
     public boolean isEnabled() {
@@ -40,23 +56,23 @@ public class Alarm {
     }
 
     public long getTimeInMillis() {
-        return calendar.getTimeInMillis();
+        return wakeUpTime.getTimeInMillis();
     }
 
     public void setTimeInMillis(long timeInMillis) {
-        calendar.setTimeInMillis(timeInMillis);
+        wakeUpTime.setTimeInMillis(timeInMillis);
     }
 
     public Calendar getTimeInCalendar() {
-        return calendar;
+        return wakeUpTime;
     }
 
     public int getHours() {
-        return calendar.get(Calendar.HOUR_OF_DAY);
+        return wakeUpTime.get(Calendar.HOUR_OF_DAY);
     }
 
     public int getMinutes() {
-        return calendar.get(Calendar.MINUTE);
+        return wakeUpTime.get(Calendar.MINUTE);
     }
 
 }
