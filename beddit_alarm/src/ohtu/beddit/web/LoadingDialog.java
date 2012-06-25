@@ -16,6 +16,7 @@ public class LoadingDialog extends Dialog {
     public LoadingDialog(Context context) {
         super(context, R.style.CustomDialogTheme);
         setContentView(R.layout.loading_dialog);
+        setCancelable(false);
     }
 
     @Override

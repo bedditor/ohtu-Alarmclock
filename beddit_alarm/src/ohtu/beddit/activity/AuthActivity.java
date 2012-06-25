@@ -37,7 +37,7 @@ public class AuthActivity extends Activity implements UrlListener {
 
         fileHandler = new FileHandler(this);
         webview = (WebView) findViewById(R.id.webLayout);
-        if (webview==null) Log.v(TAG, "wat");
+        if (webview == null) Log.v(TAG, "wat");
         webview.clearHistory();
         removeCookies();
         setSettings();
