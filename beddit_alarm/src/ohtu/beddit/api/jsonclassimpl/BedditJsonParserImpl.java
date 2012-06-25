@@ -13,14 +13,6 @@ import java.io.StringReader;
 public class BedditJsonParserImpl implements BedditJsonParser {
     private static final String TAG = "BedditJsonParser";
 
-    /**
-     * This uses {@link Gson#fromJson(com.google.gson.JsonElement, Class)}
-     * @param json
-     * @param type
-     * @param <T>
-     * @return
-     * @throws BedditException
-     */
     @Override
     public  <T> T parseJsonToObject(String json, Class<T> type) throws BedditException {
         checkForError(json);

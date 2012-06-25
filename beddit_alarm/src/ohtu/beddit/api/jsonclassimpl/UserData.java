@@ -1,7 +1,7 @@
 package ohtu.beddit.api.jsonclassimpl;
 
 /**
- * Encapsulates beddit user data as object.
+ * Encapsulates json-formatted beddit user data as an object.
  */
 public class UserData {
 

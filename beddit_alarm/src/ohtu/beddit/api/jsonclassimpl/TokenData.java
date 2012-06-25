@@ -1,5 +1,8 @@
 package ohtu.beddit.api.jsonclassimpl;
 
+/**
+ * Encapsulates access token json data as an object.
+ */
 public class TokenData {
     private String access_token;
 

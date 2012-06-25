@@ -3,6 +3,9 @@ package ohtu.beddit.api.jsonclassimpl;
 import ohtu.beddit.utils.TimeUtils;
 import java.util.Calendar;
 
+/**
+ * Encapsulates json data of api queue status as an object.
+ */
 public class QueueData {
     private String results_available_up_to;
     private String sleep_analysis_status;

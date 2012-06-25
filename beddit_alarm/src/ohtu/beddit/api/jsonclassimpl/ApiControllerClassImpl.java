@@ -21,6 +21,7 @@ public class ApiControllerClassImpl implements ApiController {
     private static String queueJson = null;
     private static Calendar lastSleepUpdateTime = null;
     private static String lastUser = null;
+    public static final int OUTDATED_THRESHOLD_MINUTES = 1;
 
     public ApiControllerClassImpl() {
         bedditConnector = new BedditWebConnector();
@@ -72,7 +73,7 @@ public class ApiControllerClassImpl implements ApiController {
 
     @Override
     public boolean isSleepInfoOutdated() {
-        return lastSleepUpdateTime == null || TimeUtils.differenceInMinutes(Calendar.getInstance(), lastSleepUpdateTime) > 1;
+        return lastSleepUpdateTime == null || TimeUtils.differenceInMinutes(Calendar.getInstance(), lastSleepUpdateTime) > OUTDATED_THRESHOLD_MINUTES;
     }
 
     @Override

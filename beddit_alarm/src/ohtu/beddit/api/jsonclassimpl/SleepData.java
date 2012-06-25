@@ -4,6 +4,9 @@ import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditException;
 import java.util.Calendar;
 
+/**
+ * Encapsulates json data about last night sleep as an object.
+ */
 public class SleepData {
     private String date;
     private int time_sleeping;

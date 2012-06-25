@@ -10,7 +10,7 @@ import ohtu.beddit.web.BedditException;
 public interface ApiController {
 
     /**
-     * Retrieves user data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector}
+     * Retrieves user data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)}
      * and saves it to a static variable.
      * @param context android context
      * @throws BedditConnectionException
@@ -18,7 +18,7 @@ public interface ApiController {
     void updateUserData(Context context) throws BedditConnectionException;
 
     /**
-     * Retrieves sleep data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector}
+     * Retrieves sleep data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)}
      * and saves it to a static variable.
      * @param context android context
      * @throws BedditConnectionException
@@ -26,7 +26,7 @@ public interface ApiController {
     void updateSleepData(Context context) throws BedditConnectionException;
 
     /**
-     * Retrieves queue data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector}
+     * Retrieves queue data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)}
      * and saves it to a static variable.
      * @param context android context
      * @throws BedditConnectionException
@@ -35,23 +35,55 @@ public interface ApiController {
 
     void requestInfoUpdate(Context context) throws BedditConnectionException;
 
+    /**
+     * Retrieves access token json from given url with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)},
+     * parses it to {@link ohtu.beddit.api.jsonclassimpl.TokenData} with {@link ohtu.beddit.api.jsonclassimpl.BedditJsonParser} and
+     * returns access token as String
+     * @param context android context
+     * @param url
+     * @return access token as String
+     * @throws BedditException
+     */
     String getAccessToken(Context context, String url) throws BedditException;
 
     /**
-     * Parses saved queue data json and returns it as {@link QueueData} object,
+     * Parses saved queue data json and returns it as {@link QueueData} object.
      * Remember to call {@link #updateQueueData(android.content.Context)} first if needed.
-     * @param context an
+     * @param context android context
      * @return data about api queue status
      * @throws BedditException
      */
     QueueData getQueueData(Context context) throws BedditException;
 
+    /**
+     * Parses saved user data json and returns it as {@link UserData} object.
+     * Remember to call {@link #updateUserData(android.content.Context)} first if needed.
+     * @param context android context
+     * @return data about users
+     * @throws BedditException
+     */
     UserData getUserData(Context context) throws BedditException;
 
+    /**
+     * Parses saved sleep data json and returns it as {@link SleepData} object.
+     * Remember to call {@link #updateSleepData(android.content.Context)} first if needed.
+     * @param context android context
+     * @return data about last nights sleep
+     * @throws BedditException
+     */
     SleepData getSleepData(Context context) throws BedditException;
 
+    /**
+     * returns true if user has changed after the last call to {@link #updateSleepData(android.content.Context)}
+     * @param context android context
+     * @return true if user has changed after the last call to {@link #updateSleepData(android.content.Context)}
+     */
     boolean hasUserChanged(Context context);
 
+    /**
+     *
+     * @return true if sleep data has been updated more than 1 minutes ago
+     */
     boolean isSleepInfoOutdated();
 
 }
