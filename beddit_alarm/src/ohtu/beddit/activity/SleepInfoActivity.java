@@ -40,7 +40,6 @@ public class SleepInfoActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras == null || !extras.getBoolean("showFeelings")){
-            Log.v(TAG, "HAISTA VITTU T KIKKI HIIRI " + View.GONE);
             findViewById(R.id.SleptWellButton).setVisibility(View.GONE);
             findViewById(R.id.SleptBadlyButton).setVisibility(View.GONE);
         }
