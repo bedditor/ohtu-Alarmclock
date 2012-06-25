@@ -18,7 +18,9 @@ import ohtu.beddit.music.MusicHandler;
 import ohtu.beddit.music.ShowStopper;
 import java.util.Calendar;
 
-
+/**
+ * AlarmActivity is the actual presentation of an alarm, it plays alarm sound and vibrates.
+ */
 public class AlarmActivity extends Activity {
 
     private final String TAG = "AlarmActivity";
