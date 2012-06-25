@@ -71,7 +71,7 @@ public abstract class ClockHand extends Movable {
      * Grabs the clock hand if click coordinates are on the grab point.
      * @param x Screen x-coordinate.
      * @param y Screen y-coordinate.
-     * @return True if coordinated are on the grab point.
+     * @return True if coordinates are on the grab point.
      */
     @Override
     public boolean grab(float x, float y) {

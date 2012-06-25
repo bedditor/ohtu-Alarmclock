@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
      * Called when the alarm is first created.
      */
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Log.v(TAG, "OnCreate");

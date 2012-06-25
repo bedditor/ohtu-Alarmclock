@@ -94,7 +94,7 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     }
 
     /**
-     *
+     * Responds to a change in minute value
      * @param value New minute value.
      */
     @Override
