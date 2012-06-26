@@ -66,7 +66,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         PreferenceManager.setDefaultValues(this, R.xml.prefs, true);
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         initializeUI();
-
         /*testDialog();
         testDialog();
         testDialog();
@@ -76,7 +75,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     public void onWindowFocusChanged(final boolean hasFocus) {
         Log.v(TAG, "onWindowFocusChanged to " + hasFocus);
-        super.onWindowFocusChanged(hasFocus);    //To change body of overridden methods use File | Settings | File Templates.
+        super.onWindowFocusChanged(hasFocus);
     }
 
     @Override
@@ -94,21 +93,22 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     protected void onPause() {
         Log.v(TAG, "onPause");
-        if (tokenChecker != null)
+        if (tokenChecker != null) {
             tokenChecker.cancel(true);
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        }
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         Log.v(TAG, "onDestroy");
-        super.onDestroy();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onDestroy();
     }
 
     @Override
     protected void onStop() {
         Log.v(TAG, "onStop");
-        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onStop();
     }
 
     @Override
@@ -120,8 +120,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     protected void onResume() {
         Log.v(TAG, "onResume");
-        if (!openingDialog)
+        if (!openingDialog) {
             checkToken();
+        }
         updateButtonStates();
         super.onStart();
     }
@@ -259,8 +260,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     @Override
     public void onAlarmTimeChanged(int hours, int minutes, int interval) {
         alarmService.changeAlarm(hours, minutes, interval);
-        if (alarmService.isAlarmSet())
+        if (alarmService.isAlarmSet()) {
             showMeTheToast(getString(R.string.toast_alarmupdated));
+        }
     }
 
     private void showMeTheToast(final String message) {
@@ -278,7 +280,8 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private class AlarmSetButtonClickListener implements OnClickListener {
         @Override
         public void onClick(View view) {
-            alarmService.addAlarm(alarmTimePicker.getHours(), alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
+            alarmService.addAlarm(alarmTimePicker.getHours(),
+                    alarmTimePicker.getMinutes(), alarmTimePicker.getInterval());
             MainActivity.this.updateButtonStates();
             // Tell the user about what we did.
             showMeTheToast(getString(R.string.toast_alarmset));
@@ -354,12 +357,16 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
             case (AuthActivity.RESULT_FAILED):
                 openingDialog = true;
                 Log.v(TAG, "RESULT_FAILED");
-                DialogUtils.createActivityClosingDialog(this, getString(R.string.login_or_authorisation_failed), getString(R.string.button_text_close));
+                DialogUtils.createActivityClosingDialog(this,
+                        getString(R.string.login_or_authorisation_failed),
+                        getString(R.string.button_text_close));
                 break;
             case (AuthActivity.RESULT_CANCELLED):
                 openingDialog = true;
                 Log.v(TAG, "RESULT_CANCELLED");
-                DialogUtils.createActivityClosingDialog(this, getString(R.string.must_connect_to_beddit_account), getString(R.string.button_text_close));
+                DialogUtils.createActivityClosingDialog(this,
+                        getString(R.string.must_connect_to_beddit_account),
+                        getString(R.string.button_text_close));
                 break;
         }
     }
@@ -402,7 +409,5 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
-
 }
