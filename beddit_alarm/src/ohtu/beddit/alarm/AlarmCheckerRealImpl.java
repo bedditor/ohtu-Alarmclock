@@ -10,8 +10,9 @@ import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditException;
 
 import java.util.Calendar;
-/*
-This class is used to check whether or not the alarm should go off at any given moment based on the sleep stages selected.
+/**
+ * This class is used to check whether or not the alarm should go off
+ * at any given moment based on the sleep stages selected.
  */
 public class AlarmCheckerRealImpl implements AlarmChecker {
 

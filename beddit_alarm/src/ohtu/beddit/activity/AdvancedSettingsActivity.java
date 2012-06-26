@@ -23,8 +23,10 @@ public class AdvancedSettingsActivity extends PreferenceActivity
     }
 
     private void initPrefVars() {
-        colourThemePref = (ListPreference) getPreferenceScreen().findPreference(this.getString(R.string.pref_key_colour_theme));
-        alarmSoundLengthPref = (ListPreference) getPreferenceScreen().findPreference(this.getString(R.string.pref_key_alarm_length));
+        colourThemePref = (ListPreference) getPreferenceScreen()
+                .findPreference(this.getString(R.string.pref_key_colour_theme));
+        alarmSoundLengthPref = (ListPreference) getPreferenceScreen()
+                .findPreference(this.getString(R.string.pref_key_alarm_length));
     }
 
     @Override
@@ -61,11 +63,13 @@ public class AdvancedSettingsActivity extends PreferenceActivity
 
     //sets the summary text of colour theme displayed in advanced setting screen
     private void setColourThemeSummary() {
-        colourThemePref.setSummary(getString(R.string.pref_summary_colour_theme) + " " + colourThemePref.getEntry());
+        colourThemePref.setSummary(
+                getString(R.string.pref_summary_colour_theme) + " " + colourThemePref.getEntry());
     }
 
     //sets the summary text of alarm length displayed in advanced setting screen
     private void setAlarmSoundLengthSummary() {
-        alarmSoundLengthPref.setSummary(getString(R.string.pref_summary_alarm_length) + " " + alarmSoundLengthPref.getEntry());
+        alarmSoundLengthPref.setSummary(
+                getString(R.string.pref_summary_alarm_length) + " " + alarmSoundLengthPref.getEntry());
     }
 }

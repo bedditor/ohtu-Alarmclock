@@ -63,17 +63,22 @@ public class AmazingWebClient extends WebViewClient {
         Log.v(TAG, "shouldOverrideUrlLoading: " + url);
         for (String filter : blacklist) {
             if (url.equalsIgnoreCase(filter)) {
-                for (UrlListener l : listeners)
+                for (UrlListener l : listeners) {
                     l.onUrlReceived("Not Supported");
+                }
                 return true;
             }
         }
-        Pattern p = Pattern.compile("\\Qhttps://api.beddit.com/api/oauth/access_token?client_id=\\E.*\\Q&redirect_uri=" + AuthActivity.REDIRECT_URI + "/oauth&client_secret=\\E.*\\Q&grant_type=code&code=\\E.*");
+        Pattern p = Pattern.compile(
+                "\\Qhttps://api.beddit.com/api/oauth/access_token?client_id=\\E.*\\Q&redirect_uri=" +
+                        AuthActivity.REDIRECT_URI + "/oauth&client_secret=\\E.*\\Q&grant_type=code&code=\\E.*");
         Matcher match = p.matcher(url);
-        if (match.matches())
+        if (match.matches()) {
             return true;
-        for (UrlListener l : listeners)
+        }
+        for (UrlListener l : listeners) {
             l.onUrlReceived(url);
+        }
 
         Pattern isRedirect = Pattern.compile("^\\Q" + AuthActivity.REDIRECT_URI + "\\E.+");
         return isRedirect.matcher(url).matches();

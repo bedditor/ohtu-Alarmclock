@@ -63,7 +63,8 @@ public class AuthActivity extends Activity implements UrlListener {
     }
 
     /**
-     * Handles the url's we get from UrlListener. If correct url we will also try to get the token and finish afterwards.
+     * Handles the url's we get from UrlListener.
+     * If correct url we will also try to get the token and finish afterwards.
      * @param url Recieved from UrlListener. Is Regexped to check for correct url in case for "oauth?code=".
      */
     @Override
@@ -75,7 +76,8 @@ public class AuthActivity extends Activity implements UrlListener {
         Log.v(TAG, "Trying to match url: " + url);
         if (code.matches()) {
             Log.v(TAG, "Code: " + code.group(1));
-            // We got the right url so we construct our https get url and give it to BedditConnector which will get the access token by https connection
+            // We got the right url so we construct our https get url and give it to
+            // BedditConnector which will get the access token by https connection
             url = "https://api.beddit.com/api/oauth/access_token?client_id=" +
                     fileHandler.getClientInfo(FileHandler.CLIENT_ID) +
                     "&redirect_uri=" + REDIRECT_URI + "/oauth&client_secret=" +
@@ -91,7 +93,8 @@ public class AuthActivity extends Activity implements UrlListener {
                 PreferenceService.setToken(this, token);
                 saveUserData();
                 finish();
-            } catch (BedditException e) {
+            }
+            catch (BedditException e) {
                 Log.v(TAG, "BedditException in onUrlReceived");
                 fail(false);
             }
@@ -174,7 +177,8 @@ public class AuthActivity extends Activity implements UrlListener {
         AmazingWebClient client = new AmazingWebClient(this);
         client.addUrlListener(this);
         webview.setWebViewClient(client);
-        Log.v(TAG, fileHandler.getClientInfo(FileHandler.CLIENT_ID) + " secret: " + fileHandler.getClientInfo(FileHandler.CLIENT_SECRET));
+        Log.v(TAG, fileHandler.getClientInfo(FileHandler.CLIENT_ID) + " secret: " +
+                fileHandler.getClientInfo(FileHandler.CLIENT_SECRET));
         webview.loadUrl("https://api.beddit.com/api/oauth/authorize?client_id=" +
                 fileHandler.getClientInfo(FileHandler.CLIENT_ID) +
                 "&redirect_uri=" + REDIRECT_URI + "/oauth&response_type=code");

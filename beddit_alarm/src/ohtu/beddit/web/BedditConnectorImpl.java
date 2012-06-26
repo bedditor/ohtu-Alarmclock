@@ -115,8 +115,9 @@ public class BedditConnectorImpl implements BedditConnector {
     private String readFromStream(InputStream inputStream) {
         String response = "";
         Scanner scanner = new Scanner(inputStream);
-        while (scanner.hasNextLine() )
+        while (scanner.hasNextLine() ) {
             response += scanner.nextLine();
+        }
         return response;
     }
 

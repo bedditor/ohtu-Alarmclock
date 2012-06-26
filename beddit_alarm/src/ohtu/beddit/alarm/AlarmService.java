@@ -47,7 +47,8 @@ public interface AlarmService {
     public int getAlarmInterval();
 
     /**
-     * Checks if alarm is enabled. If true, changes the alarm time by calling {@link #addAlarm(int, int, int)}, else does nothing.
+     * Checks if alarm is enabled.
+     * If true, changes the alarm time by calling {@link #addAlarm(int, int, int)}, else does nothing.
      */
     void changeAlarm(int hours, int minutes, int interval);
 }
