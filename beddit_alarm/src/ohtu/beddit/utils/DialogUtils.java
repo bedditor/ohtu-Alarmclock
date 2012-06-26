@@ -8,7 +8,7 @@ import android.content.DialogInterface;
 public class DialogUtils {
 
     /**
-     * Creates a dialog with given message and one button, which when pressed finishes the activity.
+     * Creates an {@link AlertDialog} with given message and one button with given text, which when pressed finishes the {@link Activity}.
      */
     public static void createActivityClosingDialog(final Activity activity, String message, String buttonText) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);

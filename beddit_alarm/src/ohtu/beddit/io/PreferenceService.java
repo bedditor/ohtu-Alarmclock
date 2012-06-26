@@ -6,11 +6,11 @@ import android.preference.PreferenceManager;
 import ohtu.beddit.R;
 
 /**
- * Methods for writing and reading data from preferences.
+ * Methods for writing and reading data from preferences. Used keys are under values folder in the settingkeys.xml file.
+ * These keys are used as the id for the given preference.
  * If there is no value for some preference saved, getter return empty string / false.
  */
 public class PreferenceService {
-    private static final String TAG = "PreferenceService";
     private static final int DEFAULT_SNOOZE_LENGTH = 5;
 
     private static boolean getSettingBoolean(Context context, int settingId) {
@@ -30,6 +30,11 @@ public class PreferenceService {
         editor.commit();
     }
 
+    /**
+     * @see <a href="http://en.wikipedia.org/wiki/OAuth#OAuth_2.0">OAuth2</a>
+     * @param context
+     * @return The access token (OAuth2 protocol) as a String
+     */
     public static String getToken(Context context) {
         return getSettingString(context, R.string.pref_key_userToken);
     }
@@ -46,6 +51,11 @@ public class PreferenceService {
         return getSettingString(context, R.string.pref_key_last_name);
     }
 
+    /**
+     *
+     * @param context
+     * @return Alarm length in minutes.
+     */
     public static int getAlarmLength(Context context) {
         return Integer.parseInt(getSettingString(context, R.string.pref_key_alarm_length));
     }
