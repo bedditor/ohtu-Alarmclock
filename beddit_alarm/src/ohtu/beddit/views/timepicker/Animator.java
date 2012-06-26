@@ -67,6 +67,7 @@ public abstract class Animator implements Runnable {
             } catch (InterruptedException ignored) {}
         }
 
+
         for (AnimationFinishedListener l : animationFinishedListeners)
             l.onAnimationFinished();
     }

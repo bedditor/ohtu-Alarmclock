@@ -172,12 +172,13 @@ public class Slider extends Movable {
     @Override
     public void updatePositionFromClick(float newX, float newY) {
         int newValue;
-        if (newX < x)
+        if (newX < x) {
             newValue = 0;
-        else if (newX > x + w)
+        } else if (newX > x + w) {
             newValue = maxValue;
-        else
+        } else {
             newValue = (int) (((newX - x) / w) * (float) maxValue);
+        }
         setValue(newValue);
     }
 
@@ -187,7 +188,9 @@ public class Slider extends Movable {
      */
     public void setValue(int newValue) {
         this.currentValue = Math.min(newValue, maxValue);
-        for (ValueChangedListener sl : listeners) sl.onValueChanged(currentValue);
+        for (ValueChangedListener sl : listeners) {
+            sl.onValueChanged(currentValue);
+        }
     }
 
     /**
@@ -214,10 +217,11 @@ public class Slider extends Movable {
             @Override
             public void animate() {
                 int interval = movable.getValue();
-                if (interval < target)
+                if (interval < target) {
                     movable.incrementValue(1);
-                else
+                } else {
                     movable.incrementValue(-1);
+                }
             }
         };
     }

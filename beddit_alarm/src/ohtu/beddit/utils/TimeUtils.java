@@ -46,7 +46,8 @@ public class TimeUtils {
     }
 
     /**
-     * Return localized string presentation of the given time. Needs some android context to read date format from system.
+     * Return localized string presentation of the given time.
+     * Needs some android context to read date format from system.
      */
     public static String timeAsString(int hour, int minute, Context context) {
         Date date = new Date();
@@ -77,7 +78,9 @@ public class TimeUtils {
         time.set(Calendar.SECOND, 0);
         time.set(Calendar.MILLISECOND, 0);
         Calendar currentTime = Calendar.getInstance();
-        if (time.before(currentTime)) time.add(Calendar.DAY_OF_YEAR, 1);
+        if (time.before(currentTime)) {
+            time.add(Calendar.DAY_OF_YEAR, 1);
+        }
         return time;
     }
 

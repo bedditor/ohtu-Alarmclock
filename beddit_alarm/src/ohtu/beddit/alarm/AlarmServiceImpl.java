@@ -30,7 +30,8 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     // Dependency injection for Unit testing.
-    public AlarmServiceImpl(Context context, AlarmManager alarmManager, FileHandler filehandler, NotificationFactory notificationFactory) {
+    public AlarmServiceImpl(Context context, AlarmManager alarmManager,
+                            FileHandler filehandler, NotificationFactory notificationFactory) {
         this.context = context.getApplicationContext();
         this.alarmManager = alarmManager;
         this.fileHandler = filehandler;
@@ -43,7 +44,8 @@ public class AlarmServiceImpl implements AlarmService {
         alarm = fileHandler.saveAlarm(hours, minutes, interval, true);
         if (alarm.isEnabled()) { //write succeeded
             Calendar calendar = calculateFirstWakeUpAttempt(hours, minutes, interval);
-            notificationFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), hours, minutes);
+            notificationFactory.setNotification(calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE), hours, minutes);
             addWakeUpAttempt(calendar);
             Log.v(TAG, "Adding alarm was successful");
         }
@@ -61,7 +63,8 @@ public class AlarmServiceImpl implements AlarmService {
     public void addWakeUpAttempt(Calendar time) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
-        String timeString = time.get(Calendar.HOUR_OF_DAY) + ":" + time.get(Calendar.MINUTE) + ":" + time.get(Calendar.SECOND);
+        String timeString = time.get(Calendar.HOUR_OF_DAY) + ":" +
+                time.get(Calendar.MINUTE) + ":" + time.get(Calendar.SECOND);
         Log.v(TAG, "next wake up try set to " + timeString);
         alarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), sender);
     }
@@ -74,7 +77,9 @@ public class AlarmServiceImpl implements AlarmService {
         Calendar currentTime = Calendar.getInstance();
         if (alarmTime.after(currentTime)) {
             return alarmTime;
-        } else return currentTime;
+        } else {
+            return currentTime;
+        }
     }
 
     @Override

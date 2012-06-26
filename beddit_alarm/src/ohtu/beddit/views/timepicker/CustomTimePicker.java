@@ -86,27 +86,37 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
             switch (me.getAction()) {
                 case (MotionEvent.ACTION_UP):
                     for (Movable mv : movables) {
-                        if (mv.wasClicked())
+                        if (mv.wasClicked()) {
                             mv.startAnimation(mv.createTargetFromClick(x, y), this);
+                        }
                         mv.releaseClick();
                         if (mv.isGrabbed()) {
                             mv.releaseGrab();
-                            for (AlarmTimeChangedListener l : alarmTimeChangedListeners)
+                            for (AlarmTimeChangedListener l : alarmTimeChangedListeners) {
                                 l.onAlarmTimeChanged(hourHand.getValue(), minuteHand.getValue(), intervalSlider.getValue());
+                            }
                         }
                     }
                     eventHandled = true;
                     break;
                 case (MotionEvent.ACTION_DOWN):
-                    for (Movable mv : movables)
-                        if (mv.grab(x, y)) return true;
-                    for (Movable mv : movables)
-                        if (mv.click(x, y)) return true;
+                    for (Movable mv : movables) {
+                        if (mv.grab(x, y)) {
+                            return true;
+                        }
+                    }
+                    for (Movable mv : movables) {
+                        if (mv.click(x, y)) {
+                            return true;
+                        }
+                    }
                     break;
                 case (MotionEvent.ACTION_MOVE):
-                    for (Movable mv : movables)
-                        if (mv.isGrabbed())
+                    for (Movable mv : movables) {
+                        if (mv.isGrabbed()) {
                             mv.updatePositionFromClick(x, y);
+                        }
+                    }
                     eventHandled = true;
                     break;
             }

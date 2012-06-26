@@ -19,11 +19,10 @@ public class BedditJsonParserImpl implements BedditJsonParser {
             json = nameTable(json);
         }
         JsonReader jsonReader = getNewJsonReader(json);
-        try{
+        try {
             Gson gson = new Gson();
             return (T) gson.fromJson(jsonReader, type);
-        }
-        catch (JsonParseException e){
+        } catch (JsonParseException e){
             throw new InvalidJsonException("InvalidJsonException");
         }
     }
@@ -39,15 +38,12 @@ public class BedditJsonParserImpl implements BedditJsonParser {
             Log.v(TAG, error.getError()+": "+error.getErrorMessage());
             if(error.getError().equals("unauthorized")){
                 throw new UnauthorizedException(error.getErrorMessage());
-            }
-            else if(error.getError().equals("no_data")){
+            } else if(error.getError().equals("no_data")){
                 throw new NoSleepDataException(error.getErrorMessage());
-            }
-            else{
+            } else{
                 throw new BedditException(error.getErrorMessage());
             }
-        }
-        catch (JsonParseException e){
+        } catch (JsonParseException e){
             throw new InvalidJsonException(e.getMessage());
         }
     }

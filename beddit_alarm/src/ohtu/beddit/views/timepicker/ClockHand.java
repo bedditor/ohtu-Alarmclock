@@ -186,7 +186,9 @@ public abstract class ClockHand extends Movable {
      */
     double getAngleToMidpoint(float x_, float y_) {
         double angle = Math.atan((y_ - y) / (x_ - x)) + Math.PI / 2;
-        if (x_ - x < 0) angle += Math.PI;
+        if (x_ - x < 0) {
+            angle += Math.PI;
+        }
         return angle;
     }
 
@@ -198,8 +200,11 @@ public abstract class ClockHand extends Movable {
      */
     static double angleDiff(double a1, double a2) {
         double diff = a2 - a1;
-        if (diff < -Math.PI) diff += Math.PI * 2;
-        else if (diff > Math.PI) diff -= Math.PI * 2;
+        if (diff < -Math.PI) {
+            diff += Math.PI * 2;
+        } else if (diff > Math.PI) {
+            diff -= Math.PI * 2;
+        }
         return diff;
     }
 

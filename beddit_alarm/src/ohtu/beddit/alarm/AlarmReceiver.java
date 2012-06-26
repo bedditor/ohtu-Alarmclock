@@ -70,10 +70,12 @@ public class AlarmReceiver extends BroadcastReceiver{
         Calendar lastWakeUpTime = getLastWakeUpTime();
 
         if (timeForNextTry.before(lastWakeUpTime)) { //still time for another check
-            Log.v(TAG, "next try scheduled to " + timeForNextTry.get(Calendar.HOUR_OF_DAY) + ":" + timeForNextTry.get(Calendar.MINUTE) + ":" + timeForNextTry.get(Calendar.SECOND));
+            Log.v(TAG, "next try scheduled to " + timeForNextTry.get(Calendar.HOUR_OF_DAY) + ":" +
+                    timeForNextTry.get(Calendar.MINUTE) + ":" + timeForNextTry.get(Calendar.SECOND));
             alarmService.addWakeUpAttempt(timeForNextTry);
         } else { //no more time, schedule final wake up
-            Log.v(TAG, "next try scheduled to last wake up time " + lastWakeUpTime.get(Calendar.HOUR_OF_DAY) + ":" + lastWakeUpTime.get(Calendar.MINUTE) + ":" + lastWakeUpTime.get(Calendar.SECOND));
+            Log.v(TAG, "next try scheduled to last wake up time " + lastWakeUpTime.get(Calendar.HOUR_OF_DAY) + ":" +
+                    lastWakeUpTime.get(Calendar.MINUTE) + ":" + lastWakeUpTime.get(Calendar.SECOND));
             alarmService.addWakeUpAttempt(lastWakeUpTime);
         }
     }

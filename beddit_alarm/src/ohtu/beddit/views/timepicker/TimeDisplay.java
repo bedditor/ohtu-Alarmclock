@@ -48,7 +48,14 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     private String timeToString(int h, int m) {
         String minutes = minutesToString(m);
         String hours = hoursToString(h);
-        String suffix = (is24Hour ? "" : (h > 11 ? " pm" : " am"));
+        String suffix = "";
+        if (is24Hour) {
+            if (h > 11) {
+                suffix = " pm";
+            } else {
+                suffix = " am";
+            }
+        }
         return hours + ":" + minutes + suffix;
     }
 

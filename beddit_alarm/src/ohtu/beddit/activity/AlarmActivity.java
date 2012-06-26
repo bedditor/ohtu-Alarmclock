@@ -68,7 +68,7 @@ public class AlarmActivity extends Activity {
     }
 
     @Override
-    public void onPause() { //We really don't want to go onPause. Rather forcibly keep the activity on top of everything.
+    public void onPause() {
         Log.v(TAG, "onPause");
         super.onPause();
     }
@@ -76,8 +76,9 @@ public class AlarmActivity extends Activity {
     @Override
     public void onStop() { //We call this when we stop the activity.
         Log.v(TAG, "onStop");
-        if (!wasDismissed)
+        if (!wasDismissed) {
             snooze();
+        }
         super.onStop();
     }
 
@@ -105,7 +106,8 @@ public class AlarmActivity extends Activity {
         Log.v(TAG, "I want to Vibrate 8==D");
 
         // Check that the phone wont vibrate if the user is on the phone
-        if (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState() == TelephonyManager.CALL_STATE_IDLE){
+        if (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState() ==
+                TelephonyManager.CALL_STATE_IDLE){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(vibratePattern, 0);
             Log.v(TAG, "Vibrator says:" + vibrator.toString());
