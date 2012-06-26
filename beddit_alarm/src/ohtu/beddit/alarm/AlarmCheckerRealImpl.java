@@ -81,8 +81,4 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
         return 3*60;
     }
 
-    @Override
-    public int getCheckTime() {
-        return 5;
-    }
 }

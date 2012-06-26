@@ -21,9 +21,4 @@ public interface AlarmChecker {
      */
     public int getWakeUpAttemptInterval();
 
-    /**
-     *  How long does it take to check data from the internet
-     */
-    public int getCheckTime();
-
 }

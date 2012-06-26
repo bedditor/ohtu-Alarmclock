@@ -26,19 +26,16 @@ public class AlarmReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         alarmService = new AlarmServiceImpl(context);
 
+        Log.v(TAG, "time left"+getSecondsUntilLastWakeUpTime());
         // Switch the commented lines around if testing wake up without real sleep data from Beddit servers
-        //AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0.3);
-        AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
-
-
-        int checkTime = alarmChecker.getCheckTime();
+        AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0);
+        //AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
 
-        if (getSecondsUntilLastWakeUpTime() < 3) { //last time reached, wake up
+        if (getSecondsUntilLastWakeUpTime() <= 3) { //close enough to last wake up time, start alarm
             startAlarm(context);
-        } else if (getSecondsUntilLastWakeUpTime() <= checkTime) { //no time to do any more checking, set final wake up
-            alarmService.addWakeUpAttempt(getLastWakeUpTime());
         } else if (alarmChecker.wakeUpNow(context)) { //check if we should wake up now
+            Log.v(TAG, "ok to wake up");
             startAlarm(context);
         } else {
             scheduleNextTry();

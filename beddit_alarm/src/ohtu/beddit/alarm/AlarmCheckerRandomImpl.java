@@ -56,8 +56,4 @@ public class AlarmCheckerRandomImpl implements AlarmChecker {
         return wakeAttemptInterval;
     }
 
-    @Override
-    public int getCheckTime() {
-        return checkTime;
-    }
 }
