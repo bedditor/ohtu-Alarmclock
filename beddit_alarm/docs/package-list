@@ -1,0 +1,12 @@
+ohtu.beddit
+ohtu.beddit.activity
+ohtu.beddit.alarm
+ohtu.beddit.api
+ohtu.beddit.api.jsonparser
+ohtu.beddit.api.jsonparser.classimpl
+ohtu.beddit.io
+ohtu.beddit.music
+ohtu.beddit.utils
+ohtu.beddit.views
+ohtu.beddit.views.timepicker
+ohtu.beddit.web
