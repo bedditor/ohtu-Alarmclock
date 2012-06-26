@@ -12,6 +12,12 @@ public class ShowStopper implements Runnable {
     private final MusicHandler musicHandler;
     private final Vibrator vibrator;
 
+    /**
+     *
+     * @param min How many minutes the alarm should play and the phone vibrate.
+     * @param music The {@link MusicHandler} to stop the music from.
+     * @param vibrator The Vibrator to stop the vibration from.
+     */
     public ShowStopper(int min, MusicHandler music, Vibrator vibrator) {
         this.minutes = min;
         this.musicHandler = music;

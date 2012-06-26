@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Scanner;
 
-/*
+/**
  * This class handles the file I/O. Files are used for saving the client info (Application id and secret) and
  * alarm. If the application is ever updated to support multiple alarms, it is recommended to save alarms
  * into a database instead of a file.
@@ -70,7 +70,7 @@ public class FileHandler {
     }
 
     /**
-     * Disables alarm, but keeps the wake up time saved in file
+     * Disables the previous alarm but keeps it saved in a file.
      */
     public void disableAlarm() {
         Alarm alarm = getAlarm();
@@ -78,7 +78,8 @@ public class FileHandler {
     }
 
     /**
-     * Reads alarm from file and returns it as an object
+     * Reads alarm from file and returns it as an object.
+     * If there's an Exception reading the alarm, return a default alarm of 8 am.
      * @return saved alarm data
      */
     public Alarm getAlarm() {

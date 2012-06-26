@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/*
+/**
  * Utility class for different time operations, i.e. displaying time in correct form or making
  * a correct String for queries.
  */

@@ -3,7 +3,6 @@ package ohtu.beddit.io;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import ohtu.beddit.R;
 
 /**

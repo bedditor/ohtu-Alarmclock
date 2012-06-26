@@ -12,7 +12,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * ??? Please, add a description for this class.
+ * This class handles Beddit oauth2 and mainly the website side of it. It is specifically designed to disable
+ * all unnecessary links specific at Beddit login page and control so that the user can only login or cancel the login
+ * process. This class is to be given to WebView.
  */
 public class AmazingWebClient extends WebViewClient {
     private final List<UrlListener> listeners = new LinkedList<UrlListener>();
@@ -38,12 +40,20 @@ public class AmazingWebClient extends WebViewClient {
         dialog = new LoadingDialog(context);
     }
 
+    /*
+     * This allows for data passage back to WebView and is required to be given as shouldOverrideUrlLoading method
+     * expects that this is set correctly.
+     */
     public void addUrlListener(UrlListener l) {
         listeners.add(l);
     }
 
 
-    // This method will deny the access to any other pages than the login pages.
+    /*
+     * This method will deny the access to any other pages than the login pages. If it does pass all the check's then
+     * we will also give the url through UrlListener. And to prevent double oauth for the correct address,
+     * there is regexp that will prevent the oauth url to be loaded to this browser.
+     */
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Log.v(TAG, "shouldOverrideUrlLoading: " + url);
@@ -72,6 +82,9 @@ public class AmazingWebClient extends WebViewClient {
         super.onLoadResource(view, url);
     }
 
+    /*
+     * We have overrided this method to show our own loading screen on top.
+     */
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         dialog.show();
@@ -79,6 +92,9 @@ public class AmazingWebClient extends WebViewClient {
         super.onPageStarted(view, url, favicon);
     }
 
+    /*
+     * We have overrided this method to dismiss our own loading screen to show the loaded webpage.
+     */
     @Override
     public void onPageFinished(WebView view, String url) {
         dialog.dismiss();
