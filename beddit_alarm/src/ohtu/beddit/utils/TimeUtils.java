@@ -82,4 +82,27 @@ public class TimeUtils {
     }
 
 
+    /**
+     * Compares device time to beddit time and returns the time difference as human readable String.
+     *
+     * @param data Expects date format YYYY-MM-DDThh:mm:ss
+     * @return Returns the time difference. Uses getHoursAndMinutesFromSeconds return output for format.
+     */
+    public static String getTimeDifference(String data) {
+        if (data == null) return "--";
+        Calendar time = bedditTimeStringToCalendar(data);
+        int differenceInSeconds = (int) ((Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis()) / 1000);
+        return getHoursAndMinutesFromSeconds(differenceInSeconds);
+    }
+
+
+    /**
+     * Method will return viewable String that describes seconds as hours and minutes.
+     *
+     * @param seconds Expects seconds to be given which will then be split to hours and minutes.
+     * @return Will return String in the format of h + "h " + mm + "min". Ex. "6h 30min" or "10h 2min".
+     */
+    public static String getHoursAndMinutesFromSeconds(int seconds) {
+        return seconds / 3600 + "h " + (seconds / 60) % 60 + "min";
+    }
 }
