@@ -19,6 +19,10 @@ import ohtu.beddit.web.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Activity that is called to handle Oauth2 process and to set the Token to make calls to beddit.
+ * If cancelled, also designed to return Intent with resultcode which should be handled.
+ */
 public class AuthActivity extends Activity implements UrlListener {
     private WebView webview;
     private final String TAG = "AuthActivity";
@@ -27,8 +31,13 @@ public class AuthActivity extends Activity implements UrlListener {
     public static final int RESULT_CANCELLED = 101;
     public static final int RESULT_FAILED = 102;
 
+    //Replace this url with the url setted for this application. Doesnt need to be url.
     public static final String REDIRECT_URI = "https://peach-app.appspot.com";
 
+    /**
+     * Creates the view and initializes FileHandler.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +45,11 @@ public class AuthActivity extends Activity implements UrlListener {
         setContentView(R.layout.webview);
 
         fileHandler = new FileHandler(this);
-
     }
 
+    /**
+     * Creates webview if it was null. Initializes afterwards.
+     */
     @Override
     protected void onResume() {
         if (webview == null) {
@@ -48,9 +59,13 @@ public class AuthActivity extends Activity implements UrlListener {
             setSettings();
             openAuthBrowser();
         }
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        super.onResume();
     }
 
+    /**
+     * Handles the url's we get from UrlListener. If correct url we will also try to get the token and finish afterwards.
+     * @param url Recieved from UrlListener. Is Regexped to check for correct url in case for "oauth?code=".
+     */
     @Override
     public void onUrlReceived(String url) {
         // Seeing if we got the right url
@@ -88,6 +103,12 @@ public class AuthActivity extends Activity implements UrlListener {
         }
     }
 
+    /**
+     * This method sets the resultIntent that is returned to Activity from where this Activity was created.
+     * Uses the classes own RESULT_CANCELLED and RESULT_FAILED codes.Finishes the activity afterwards.
+     *
+     * @param cancelledByUser if User cancelled then True.
+     */
     private void fail(boolean cancelledByUser) {
         Log.v(TAG, "fail called");
         Intent resultIntent = new Intent((String) null);
@@ -99,6 +120,10 @@ public class AuthActivity extends Activity implements UrlListener {
         finish();
     }
 
+    /**
+     * Saves the user data to PreferenceService so that we can use them in other activities. Will call fail in case of
+     * exception.
+     */
     private void saveUserData() {
         Log.v(TAG, "saving user data");
         try {
@@ -114,6 +139,9 @@ public class AuthActivity extends Activity implements UrlListener {
         }
     }
 
+    /**
+     * Clears browsers of all data. Super finishes.
+     */
     @Override
     public void finish() {
         Log.v(TAG, "finishing");
@@ -123,6 +151,9 @@ public class AuthActivity extends Activity implements UrlListener {
         super.finish();
     }
 
+    /**
+     * Sets the browser settings so that we don't save anything unnecessary and the beddit login page is shown nicely.
+     */
     private void setSettings() {
         // Here we set various settings regarding browser experience.
         WebSettings settings = webview.getSettings();
@@ -135,6 +166,9 @@ public class AuthActivity extends Activity implements UrlListener {
         settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
     }
 
+    /**
+     * Initializes the AmazingWebClient and opens the oAuth2 url to begin the login process.
+     */
     private void openAuthBrowser() {
         // Initialize the webClient
         AmazingWebClient client = new AmazingWebClient(this);
@@ -146,6 +180,9 @@ public class AuthActivity extends Activity implements UrlListener {
                 "&redirect_uri=" + REDIRECT_URI + "/oauth&response_type=code");
     }
 
+    /**
+     * Removes the cookies from browser.
+     */
     private void removeCookies() {
         CookieSyncManager cookieMonster = CookieSyncManager.createInstance(webview.getContext());
         CookieManager.getInstance().removeSessionCookie();
@@ -153,6 +190,9 @@ public class AuthActivity extends Activity implements UrlListener {
         cookieMonster.sync();
     }
 
+    /**
+     * Back button is considered as "login process cancelled by user". We call "fail(true)". See "fail" for more info.
+     */
     @Override
     public void onBackPressed() {
         Log.v(TAG, "BACK PRESSED");

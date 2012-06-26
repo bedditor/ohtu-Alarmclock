@@ -7,6 +7,9 @@ import ohtu.beddit.api.jsonclassimpl.UserData;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
+/**
+ * Interface for requesting data updates and getting the data from beddit API.
+ */
 public interface ApiController {
 
     /**

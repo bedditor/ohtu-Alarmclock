@@ -22,14 +22,16 @@ public class MusicHandler {
     private static final float VOLUME_OFF = 0.0f;
     private static final float RINGING_VOLUME = 0.125f;
 
-
+    /**
+     * Initializes the MusicHandler.
+     */
     public MusicHandler() {
         player = new MediaPlayer();
         released = true;
     }
 
-    /*
-    Needs the Context of the Activity to create mediaPlayer for the specific Activity.
+    /**
+     * Needs the Context of the Activity to create mediaPlayer for the specific Activity.
      */
     public void setMusic(Context context) {
         AssetFileDescriptor alarmTone;
@@ -53,15 +55,17 @@ public class MusicHandler {
         }
     }
 
-    /*
-   Returns true if everything is ok.
+    /**
+     * Returns true if the player isn't released.
     */
-    //TODO: Make this more sane (do actual check if the music we are playing can be found (memory card) and basic null check)
     boolean insanityCheck() {
         return !released;
     }
 
-    //Can be called regardless we have valid music, It just won't do anything.
+    /**
+     * Will try to play the music if the music isn't playing. Log's information if isn't success.
+     * @param force True will force play the music if we have initialized the player.
+     */
     public void play(boolean force) {
         boolean success = false;
         if (insanityCheck())
@@ -83,6 +87,9 @@ public class MusicHandler {
 
     }
 
+    /**
+     * Releases the player to the best of it's capabilities. Look in LogCat for more information on success.
+     */
     public void release() {
         if (released) {
             Log.v(TAG, "Tried to release player when it was already released");
@@ -102,7 +109,10 @@ public class MusicHandler {
         released = true;
     }
 
-    //Check if customer is on the phone or the phone is ringing
+    /**
+     * Sets the Volume level in sensible range. Handles special case of someone is calling or if on call.
+     * @param context
+     */
     private void setReasonableVolume(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         int callState = tm.getCallState();

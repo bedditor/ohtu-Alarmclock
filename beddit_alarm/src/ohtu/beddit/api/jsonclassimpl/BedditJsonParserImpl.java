@@ -12,7 +12,6 @@ import java.io.StringReader;
 
 public class BedditJsonParserImpl implements BedditJsonParser {
     private static final String TAG = "BedditJsonParser";
-
     @Override
     public  <T> T parseJsonToObject(String json, Class<T> type) throws BedditException {
         checkForError(json);
