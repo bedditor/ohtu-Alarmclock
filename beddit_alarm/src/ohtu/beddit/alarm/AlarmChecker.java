@@ -9,7 +9,7 @@ import android.content.Context;
 public interface AlarmChecker {
 
     /**
-     * wakeUpNow() tells if the customer is in right sleep stage to be woken up.
+     * This method checks if the customer is in right sleep stage to be woken up.
      *
      * @param context AlarmChecker needs application context for possible PreferenceService or API calls
      * @return true if user is in right sleep stage and should be woken up, false otherwise

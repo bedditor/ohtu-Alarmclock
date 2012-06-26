@@ -107,7 +107,7 @@ public class AuthActivity extends Activity implements UrlListener {
      * This method sets the resultIntent that is returned to Activity from where this Activity was created.
      * Uses the classes own RESULT_CANCELLED and RESULT_FAILED codes.Finishes the activity afterwards.
      *
-     * @param cancelledByUser if User cancelled then True.
+     * @param cancelledByUser if user cancelled then True.
      */
     private void fail(boolean cancelledByUser) {
         Log.v(TAG, "fail called");

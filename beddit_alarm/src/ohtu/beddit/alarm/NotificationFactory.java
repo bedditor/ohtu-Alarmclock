@@ -40,7 +40,6 @@ public class NotificationFactory {
 
         // The notification will have time displayed either "8:15 AM" or "8:00 AM - 8:15 AM",
         // depending on if there's interval or not.
-
         String print = TimeUtils.timeAsString(startHours, startMinutes, context);
         if (startHours != endHours || startMinutes != endMinutes) {
             print += " - " + TimeUtils.timeAsString(endHours, endMinutes, context);
@@ -52,6 +51,9 @@ public class NotificationFactory {
         notificationManager.notify(ID, notification);
     }
 
+    /**
+     * Deletes the current notification from the application.
+     */
     public void resetNotification() {
         notificationManager.cancel(ID);
     }

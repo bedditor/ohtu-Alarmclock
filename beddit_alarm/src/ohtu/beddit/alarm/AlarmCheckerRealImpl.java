@@ -59,6 +59,11 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
         }
     }
 
+    /**
+     *
+     * @param context
+     * @return an array of characters which represent the possible sleep stages the user should be woken up from.
+     */
     private char[] getWakeUpSleepStages(Context context) {
         char sleepStage = PreferenceService.getWakeUpSleepStage(context);
         char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE, AWAKE, AWAY};

@@ -33,7 +33,7 @@ public interface BedditConnector {
     /**
      * Sends a post-request to api asking for the calculation of the latest sleep data
      * @param context android context
-     * @param date Which date to compute. Should normally be current date.
+     * @param date Which date to compute d/m/yyyy format. Should normally be current date.
      * @return server response
      * @throws BedditConnectionException
      */
