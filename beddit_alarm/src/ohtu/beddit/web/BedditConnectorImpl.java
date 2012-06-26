@@ -12,21 +12,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-/**
- * ??? Please, add a description for this class.
- */
+public class BedditConnectorImpl implements BedditConnector {
 
-public class BedditWebConnector implements BedditConnector {
-
-    private static final String TAG = "BedditWebConnector";
+    private static final String TAG = "BedditConnectorImpl";
     private static final int GINGERBREAD = 9;
 
-    public BedditWebConnector() {
+    public BedditConnectorImpl() {
         disableConnectionReuseIfNecessary();
     }
 
+    // HTTP connection reuse which was buggy pre-gingerbread
     private void disableConnectionReuseIfNecessary() {
-        // HTTP connection reuse which was buggy pre-gingerbread
         if (Build.VERSION.SDK_INT < GINGERBREAD) {
             System.setProperty("http.keepAlive", "false");
         }
@@ -60,6 +56,7 @@ public class BedditWebConnector implements BedditConnector {
         return getJsonFromServer(url, doPost);
     }
 
+    //forms query url using user name from preferences
     private String getQueryURL(Context context, String query) {
         String token = PreferenceService.getToken(context);
         return "https://api.beddit.com/api2/user/" + query + "?access_token=" + token;

@@ -10,7 +10,7 @@ import ohtu.beddit.web.BedditException;
 public interface ApiController {
 
     /**
-     * Retrieves user data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)}
+     * Retrieves user data json from Beddit with {@link ohtu.beddit.web.BedditConnectorImpl#getJsonFromServer(String, boolean)}
      * and saves it to a static variable.
      * @param context android context
      * @throws BedditConnectionException
@@ -18,7 +18,7 @@ public interface ApiController {
     void updateUserData(Context context) throws BedditConnectionException;
 
     /**
-     * Retrieves sleep data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)}
+     * Retrieves sleep data json from Beddit with {@link ohtu.beddit.web.BedditConnectorImpl#getJsonFromServer(String, boolean)}
      * and saves it to a static variable.
      * @param context android context
      * @throws BedditConnectionException
@@ -26,7 +26,7 @@ public interface ApiController {
     void updateSleepData(Context context) throws BedditConnectionException;
 
     /**
-     * Retrieves queue data json from Beddit with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)}
+     * Retrieves queue data json from Beddit with {@link ohtu.beddit.web.BedditConnectorImpl#getJsonFromServer(String, boolean)}
      * and saves it to a static variable.
      * @param context android context
      * @throws BedditConnectionException
@@ -36,7 +36,7 @@ public interface ApiController {
     void requestInfoUpdate(Context context) throws BedditConnectionException;
 
     /**
-     * Retrieves access token json from given url with {@link ohtu.beddit.web.BedditWebConnector#getJsonFromServer(String, boolean)},
+     * Retrieves access token json from given url with {@link ohtu.beddit.web.BedditConnectorImpl#getJsonFromServer(String, boolean)},
      * parses it to {@link ohtu.beddit.api.jsonclassimpl.TokenData} with {@link ohtu.beddit.api.jsonclassimpl.BedditJsonParser} and
      * returns access token as String
      *

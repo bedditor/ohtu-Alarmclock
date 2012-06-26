@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
@@ -152,7 +151,7 @@ public class SleepInfoActivity extends Activity {
 
     private void openDiaryInBrowser(String feeling){
         String username = PreferenceService.getUsername(this);
-        BedditWebConnector bwc = new BedditWebConnector();
+        BedditConnectorImpl bwc = new BedditConnectorImpl();
         String key;
         try {
             String keyJson = bwc.getJsonFromServer("https://api.beddit.com/api2/user/" + username + "/temporary_authentication/create?access_token=" + PreferenceService.getToken(this), true);

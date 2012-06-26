@@ -391,7 +391,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         builder.setCancelable(false);
         builder.setPositiveButton("Yes I will", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //BedditWebConnector blob = new BedditWebConnector();
+                //BedditConnectorImpl blob = new BedditConnectorImpl();
                 //try{
                 AlarmChecker check = new AlarmCheckerRealImpl();
                 check.wakeUpNow(MainActivity.this);

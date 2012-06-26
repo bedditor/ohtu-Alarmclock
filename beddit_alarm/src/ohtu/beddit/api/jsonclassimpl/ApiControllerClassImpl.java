@@ -8,7 +8,7 @@ import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditConnector;
 import ohtu.beddit.web.BedditException;
-import ohtu.beddit.web.BedditWebConnector;
+import ohtu.beddit.web.BedditConnectorImpl;
 import java.util.Calendar;
 
 public class ApiControllerClassImpl implements ApiController {
@@ -24,7 +24,7 @@ public class ApiControllerClassImpl implements ApiController {
     public static final int OUTDATED_THRESHOLD_MINUTES = 1;
 
     public ApiControllerClassImpl() {
-        bedditConnector = new BedditWebConnector();
+        bedditConnector = new BedditConnectorImpl();
     }
 
     public ApiControllerClassImpl(BedditConnector bedditConnector) {
