@@ -19,7 +19,6 @@ public class AdvancedSettingsActivity extends PreferenceActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advancedprefs);
-
         initPrefVars();
     }
 
@@ -52,7 +51,7 @@ public class AdvancedSettingsActivity extends PreferenceActivity
     /**
      * When preferences are changed this method will update the summary for the preference in question.
      * @param sharedPreferences
-     * @param key
+     * @param key id for a preference in settingkeys.xml under res/values folder, used to fish out a certain setting.
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(this.getString(R.string.pref_key_colour_theme))) {

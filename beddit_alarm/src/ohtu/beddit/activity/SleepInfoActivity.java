@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
-import ohtu.beddit.api.jsonclassimpl.*;
+import ohtu.beddit.api.jsonparser.classimpl.*;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.utils.TimeUtils;
@@ -54,7 +54,7 @@ public class SleepInfoActivity extends Activity {
     }
 
     /**
-     * Finishes the activity and also cancel's sleepInfoLoader if possible.
+     * Finishes the activity and also cancels sleepInfoLoader if possible.
      */
     @Override
     public void finish() {
@@ -142,14 +142,14 @@ public class SleepInfoActivity extends Activity {
      * Updates the textView objects in the Activity.
      */
     private void updateText() {
-        ((TextView) findViewById(R.id.sleep_info_overall_text)).setText(getHoursAndMinutesFromSeconds(timeSleeping));
-        ((TextView) findViewById(R.id.sleep_info_deep_text)).setText(getHoursAndMinutesFromSeconds(timeDeepSleep));
+        ((TextView) findViewById(R.id.sleep_info_overall_text)).setText(TimeUtils.getHoursAndMinutesFromSeconds(timeSleeping));
+        ((TextView) findViewById(R.id.sleep_info_deep_text)).setText(TimeUtils.getHoursAndMinutesFromSeconds(timeDeepSleep));
 
         Log.v(TAG, "Local analyzed up to time: " + localAnalyzedUpToTime + ", Device time is (LocaleString (+3gmt)) " + Calendar.getInstance().getTime().toLocaleString());
         if (isAnalysisUpToDate)
             ((TextView) findViewById(R.id.sleep_info_delay)).setText(this.getString(R.string.sleep_info_up_to_date));
         else
-            ((TextView) findViewById(R.id.sleep_info_delay)).setText(this.getString(R.string.sleep_info_overall_age_pref) + " " + getTimeDifference(localAnalyzedUpToTime) + " " + this.getString(R.string.sleep_info_overall_age_post));
+            ((TextView) findViewById(R.id.sleep_info_delay)).setText(this.getString(R.string.sleep_info_overall_age_pref) + " " + TimeUtils.getTimeDifference(localAnalyzedUpToTime) + " " + this.getString(R.string.sleep_info_overall_age_post));
     }
 
     /**
@@ -174,7 +174,7 @@ public class SleepInfoActivity extends Activity {
     }
 
     /**
-     * Opens the diary entry for last nights info. Get's temporary key from beddit to go directly to diary without
+     * Opens the diary entry for last nights info. Gets temporary key from Beddit to go directly to diary without
      * having to log in.
      *
      * @param feeling Expects url encoded - or + ( = %2B this is what you should give to this method to work correctly)
@@ -197,26 +197,4 @@ public class SleepInfoActivity extends Activity {
         startActivity(browserIntent);
     }
 
-    /**
-     * Method will return viewable String that describes seconds as hours and minutes.
-     *
-     * @param seconds Expects seconds to be given which will then be split to hours and minutes.
-     * @return Will return String in the format of h + "h " + mm + "min". Ex. "6h 30min" or "10h 2min".
-     */
-    private String getHoursAndMinutesFromSeconds(int seconds) {
-        return seconds / 3600 + "h " + (seconds / 60) % 60 + "min";
-    }
-
-    /**
-     * Compares device time to beddit time and returns the time difference as human readable String.
-     *
-     * @param data Expects date format YYYY-MM-DDThh:mm:ss
-     * @return Returns the time difference. Uses getHoursAndMinutesFromSeconds return output for format.
-     */
-    private String getTimeDifference(String data) {
-        if (data == null) return "--";
-        Calendar time = TimeUtils.bedditTimeStringToCalendar(data);
-        int differenceInSeconds = (int) ((Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis()) / 1000);
-        return getHoursAndMinutesFromSeconds(differenceInSeconds);
-    }
 }

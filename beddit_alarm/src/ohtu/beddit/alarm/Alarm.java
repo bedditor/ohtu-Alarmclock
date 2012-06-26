@@ -1,13 +1,15 @@
 package ohtu.beddit.alarm;
 
 import ohtu.beddit.utils.TimeUtils;
+
+import java.io.Serializable;
 import java.util.Calendar;
 
 
 /**
  *  Alarm  represents a single alarm. A single alarm has the wake up time and a length of the interval.
  */
-public class Alarm {
+public class Alarm implements Serializable {
 
     /**
      * Interval for wake up

@@ -1,8 +1,9 @@
-package ohtu.beddit.api.jsonclassimpl;
+package ohtu.beddit.api.jsonparser.classimpl;
 
 import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
+import ohtu.beddit.api.jsonparser.BedditJsonParser;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditConnectionException;

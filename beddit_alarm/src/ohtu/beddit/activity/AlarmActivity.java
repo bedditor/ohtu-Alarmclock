@@ -35,9 +35,6 @@ public class AlarmActivity extends Activity {
     private static final float DIALOG_WIDTH = 0.9f;
     private static final long[] vibratePattern = {0, 200, 500};
 
-    /**
-     * Called when the alarm is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

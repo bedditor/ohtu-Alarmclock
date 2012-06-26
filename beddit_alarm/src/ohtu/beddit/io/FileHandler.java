@@ -1,13 +1,19 @@
 package ohtu.beddit.io;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.gson.JsonParser;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.Alarm;
+import ohtu.beddit.alarm.AlarmReceiver;
+import ohtu.beddit.alarm.NotificationFactory;
 import ohtu.beddit.utils.TimeUtils;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -26,29 +32,22 @@ public class FileHandler {
 
     public FileHandler(Context context) {
         this.context = context.getApplicationContext();
-    }
 
-    private boolean writeToFile(String filename, String writable) {
         try {
-            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            fos.write(writable.getBytes());
-            fos.close();
-        } catch (Exception e) {
-            Log.v(TAG, "Writing crashed");
-            return false;
-        }
-        return true;
-    }
-
-    private String readStringFromFile(String filename) {
-        try {
-            Scanner scanner = new Scanner(context.openFileInput(filename));
-            return scanner.nextLine();
-        } catch (Exception e) {
-            Log.v(TAG, "File not found");
-            return "";
+            FileInputStream inputStream = context.openFileInput(ALARMS_FILENAME);
+        } catch (FileNotFoundException e) {
+            saveDefaultAlarm();
         }
     }
+
+    /**
+     * initializes file with an default disabled alarm and return its {@link Alarm} object representation
+     */
+    private void saveDefaultAlarm() {
+        saveAlarm(8, 0, 15, false);
+    }
+
+
 
     /**
      * Saves the given alarm to file.
@@ -59,15 +58,35 @@ public class FileHandler {
      * @return {@link Alarm} that was saved as an object
      */
     public Alarm saveAlarm(int hours, int minutes, int interval, boolean enabled) {
-        int alarmSet = enabled ? 1 : -1;
-        long millis = TimeUtils.timeToCalendar(hours, minutes).getTimeInMillis();
-        String toWrite = "" + alarmSet + '#' + millis + '#' + interval;
-        if (writeToFile(ALARMS_FILENAME, toWrite)) {
-            return new Alarm(hours, minutes, interval, enabled);
-        } else {
-            return saveDefaultAlarm();
+        boolean success = true;
+        Alarm alarm = new Alarm(hours, minutes, interval, enabled);
+
+        ObjectOutput output = null;
+        try {
+            output = new ObjectOutputStream(context.openFileOutput(ALARMS_FILENAME, Context.MODE_PRIVATE));
+            output.writeObject(alarm);
+        } catch (IOException e) {
+            e.printStackTrace();
+            success = false;
+        } finally {
+            if(output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    success = false;
+                }
+            }
         }
+
+        if(!success){
+            explode();
+        }
+
+        return alarm;
     }
+
+
 
     /**
      * Disables the current alarm but keeps it saved in a file.
@@ -77,34 +96,41 @@ public class FileHandler {
         saveAlarm(alarm.getHours(), alarm.getMinutes(), alarm.getInterval(), false);
     }
 
+
     /**
      * Reads the current alarm from file and returns it as an {@link Alarm} object.
      * If there's an Exception reading the alarm, return a default alarm of 8 am.
      * @return saved alarm data
      */
-    public Alarm getAlarm() {
-        String[] alarmData = readStringFromFile(ALARMS_FILENAME).split("#");
-        Alarm alarm = new Alarm();
+    public Alarm getAlarm()  {
+        Alarm alarm = null;
+        ObjectInput input = null;
+        boolean success = true;
 
         try {
-            if (Integer.parseInt(alarmData[0]) > 0) {
-                alarm.setEnabled(true);
-            } else alarm.setEnabled(false);
-            alarm.setTimeInMillis(Long.parseLong(alarmData[1]));
-            alarm.setInterval(Integer.parseInt(alarmData[2]));
-        } catch (Exception e) { //Possible exceptions: parseInt fails, or if there was no alarm data, ArrayOutOfBoundsException
-            Log.v(TAG, e.getMessage());
-            return saveDefaultAlarm();
+            input = new ObjectInputStream(context.openFileInput(ALARMS_FILENAME));
+            alarm = (Alarm) input.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        } finally {
+            if(input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    success = false;
+                }
+            }
         }
+
+        if(!success){
+            explode();
+        }
+
         return alarm;
     }
 
-    /**
-     * initializes file with an default disabled alarm and return its {@link Alarm} object representation
-     */
-    private Alarm saveDefaultAlarm() {
-        return saveAlarm(8, 0, 0, false); //to overwrite corrupted/non-existent alarm data with default time 8:00 AM
-    }
 
     /**
      * Reads client id/secret from file.
@@ -124,6 +150,16 @@ public class FileHandler {
             return "";
         }
         return new JsonParser().parse(json).getAsJsonObject().get(request).getAsString();
+    }
+
+    private void explode(){
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(sender);
+        context.deleteFile(ALARMS_FILENAME);
+        new NotificationFactory(context).resetNotification();
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
 }

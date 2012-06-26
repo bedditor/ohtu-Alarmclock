@@ -1,9 +1,10 @@
-package ohtu.beddit.api.jsonclassimpl;
+package ohtu.beddit.api.jsonparser.classimpl;
 
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
+import ohtu.beddit.api.jsonparser.BedditJsonParser;
 import ohtu.beddit.web.BedditException;
 import ohtu.beddit.web.NoSleepDataException;
 import ohtu.beddit.web.UnauthorizedException;

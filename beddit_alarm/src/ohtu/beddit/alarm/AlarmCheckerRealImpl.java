@@ -3,8 +3,8 @@ package ohtu.beddit.alarm;
 import android.content.Context;
 import android.util.Log;
 import ohtu.beddit.api.ApiController;
-import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
-import ohtu.beddit.api.jsonclassimpl.QueueData;
+import ohtu.beddit.api.jsonparser.classimpl.ApiControllerClassImpl;
+import ohtu.beddit.api.jsonparser.classimpl.QueueData;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.TimeUtils;
 import ohtu.beddit.web.BedditException;
@@ -60,6 +60,11 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
         }
     }
 
+    /**
+     *
+     * @param context
+     * @return an array of characters which represent the possible sleep stages the user should be woken up from.
+     */
     private char[] getWakeUpSleepStages(Context context) {
         char sleepStage = PreferenceService.getWakeUpSleepStage(context);
         char[] sleepStages = {REM_SLEEP_STAGE, LIGHT_SLEEP_STAGE, AWAKE, AWAY};

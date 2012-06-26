@@ -1,4 +1,4 @@
-package ohtu.beddit.api.jsonclassimpl;
+package ohtu.beddit.api.jsonparser.classimpl;
 
 import ohtu.beddit.utils.TimeUtils;
 import java.util.Calendar;

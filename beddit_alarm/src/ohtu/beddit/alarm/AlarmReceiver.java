@@ -51,7 +51,6 @@ public class AlarmReceiver extends BroadcastReceiver{
         context.startActivity(newIntent);
     }
 
-    // Move to TimeUtils?
     private int getSecondsUntilLastWakeUpTime() {
         Calendar currentTime = Calendar.getInstance();
         Calendar wakeUpTime = getLastWakeUpTime();
