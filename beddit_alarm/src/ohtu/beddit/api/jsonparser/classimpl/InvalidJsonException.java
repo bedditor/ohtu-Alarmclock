@@ -1,4 +1,4 @@
-package ohtu.beddit.api.jsonclassimpl;
+package ohtu.beddit.api.jsonparser.classimpl;
 
 import ohtu.beddit.web.BedditException;
 

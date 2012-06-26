@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import ohtu.beddit.R;
 import ohtu.beddit.api.ApiController;
-import ohtu.beddit.api.jsonclassimpl.*;
+import ohtu.beddit.api.jsonparser.classimpl.*;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.utils.TimeUtils;

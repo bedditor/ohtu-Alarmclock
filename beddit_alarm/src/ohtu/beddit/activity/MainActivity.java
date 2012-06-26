@@ -18,7 +18,7 @@ import android.widget.Toast;
 import ohtu.beddit.R;
 import ohtu.beddit.alarm.*;
 import ohtu.beddit.api.ApiController;
-import ohtu.beddit.api.jsonclassimpl.ApiControllerClassImpl;
+import ohtu.beddit.api.jsonparser.classimpl.ApiControllerClassImpl;
 import ohtu.beddit.io.PreferenceService;
 import ohtu.beddit.utils.DialogUtils;
 import ohtu.beddit.views.timepicker.CustomTimePicker;

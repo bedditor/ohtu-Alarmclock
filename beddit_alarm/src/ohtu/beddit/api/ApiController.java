@@ -1,9 +1,9 @@
 package ohtu.beddit.api;
 
 import android.content.Context;
-import ohtu.beddit.api.jsonclassimpl.QueueData;
-import ohtu.beddit.api.jsonclassimpl.SleepData;
-import ohtu.beddit.api.jsonclassimpl.UserData;
+import ohtu.beddit.api.jsonparser.classimpl.QueueData;
+import ohtu.beddit.api.jsonparser.classimpl.SleepData;
+import ohtu.beddit.api.jsonparser.classimpl.UserData;
 import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
@@ -40,7 +40,7 @@ public interface ApiController {
 
     /**
      * Retrieves access token json from given url with {@link ohtu.beddit.web.BedditConnectorImpl#getJsonFromServer(String, boolean)},
-     * parses it to {@link ohtu.beddit.api.jsonclassimpl.TokenData} with {@link ohtu.beddit.api.jsonclassimpl.BedditJsonParser} and
+     * parses it to {@link ohtu.beddit.api.jsonparser.classimpl.TokenData} with {@link ohtu.beddit.api.jsonparser.BedditJsonParser} and
      * returns access token as String
      *
      * @param url

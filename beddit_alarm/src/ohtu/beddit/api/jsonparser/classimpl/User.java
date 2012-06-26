@@ -1,4 +1,4 @@
-package ohtu.beddit.api.jsonclassimpl;
+package ohtu.beddit.api.jsonparser.classimpl;
 
 /**
  * Encapsulates json data of a single user as an object.

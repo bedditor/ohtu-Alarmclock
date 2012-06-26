@@ -1,11 +1,11 @@
-package ohtu.beddit.api.jsonclassimpl;
+package ohtu.beddit.api.jsonparser;
 
 import ohtu.beddit.web.BedditException;
 
 /**
  * Interface for parsing Json of Beddit API.
  */
-interface BedditJsonParser {
+public interface BedditJsonParser {
 
     /**
      * This method uses {@link com.google.gson.Gson} to parse given json to an object
