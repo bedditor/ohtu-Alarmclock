@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.test.AndroidTestCase;
 import junit.framework.Assert;
+import ohtu.beddit.alarm.Alarm;
 import ohtu.beddit.alarm.AlarmServiceImpl;
 import ohtu.beddit.alarm.NotificationFactory;
 import ohtu.beddit.io.FileHandler;
@@ -31,7 +32,8 @@ public class AlarmServiceTest extends AndroidTestCase {
         mockNotifications = mock(NotificationFactory.class);
         mockFileHandler = mock(FileHandler.class);
         mockAlarmManager = mock(AlarmManager.class);
-        when(mockFileHandler.getAlarm()).thenReturn(new int[4]);
+        when(mockFileHandler.getAlarm()).thenReturn(new Alarm(4,45,15,false));
+        when(mockFileHandler.saveAlarm(anyInt(), anyInt(), anyInt(), anyBoolean())).thenReturn(new Alarm(4,45,15,true)).thenReturn(new Alarm(2,30,15,true));
         alarmservice = new AlarmServiceImpl(getContext(), mockAlarmManager, mockFileHandler, mockNotifications);
     }
 
@@ -97,24 +99,22 @@ public class AlarmServiceTest extends AndroidTestCase {
 
 
     public void testDoesNotChangeAlarmIfAlarmNotSet() {
-        alarmservice.changeAlarm(4, 5, 15);
+        alarmservice.changeAlarm(3,0, 15);
         Assert.assertFalse(alarmservice.isAlarmSet());
         verify(mockAlarmManager, times(0)).set(anyInt(), anyLong(), any(PendingIntent.class));
+        Assert.assertEquals(4, alarmservice.getAlarm().getHours());
+        Assert.assertEquals(45, alarmservice.getAlarm().getMinutes());
+        Assert.assertEquals(15, alarmservice.getAlarm().getInterval());
     }
 
     public void testAlarmChangedIfAlarmIsSet() {
-        alarmservice.addAlarm(4, 5, 15);
-        alarmservice.changeAlarm(4, 30, 15);
+        alarmservice.addAlarm(4, 45, 15);
+        alarmservice.changeAlarm(2, 30, 15);
         Assert.assertTrue(alarmservice.isAlarmSet());
         verify(mockAlarmManager, times(2)).set(anyInt(), anyLong(), any(PendingIntent.class));
-    }
-
-    public void testAlarmServiceReturnsCorrectAlarmInfoFromFile() {
-        when(mockFileHandler.getAlarm()).thenReturn(new int[]{1, 2, 30, 15});
-
-        assertEquals(alarmservice.getAlarmHours(), 2);
-        assertEquals(alarmservice.getAlarmMinutes(), 30);
-        assertEquals(alarmservice.getAlarmInterval(), 15);
+        Assert.assertEquals(2, alarmservice.getAlarm().getHours());
+        Assert.assertEquals(30, alarmservice.getAlarm().getMinutes());
+        Assert.assertEquals(15, alarmservice.getAlarm().getInterval());
     }
 
 
