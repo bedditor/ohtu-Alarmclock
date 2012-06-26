@@ -16,10 +16,11 @@ public class ScalingTextView extends TextView {
     private String textScalingReference;
     private float parentWidthPercent = 1.0f;
 
-    public ScalingTextView(Context context) {
-        super(context);
-    }
-
+    /**
+     * Creates a new ScalingTextView with attributes from the xml.
+     * @param context Automatically provided by Android.
+     * @param attrs Set of attributes from xml.
+     */
     public ScalingTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -30,6 +31,13 @@ public class ScalingTextView extends TextView {
         a.recycle();
     }
 
+    /**
+     * Scale text based on the View's width and a reference string if one exists.
+     * @param w New view width.
+     * @param h New view height.
+     * @param oldw Old width. Not used.
+     * @param oldh Old height. Not used.
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         float textLen = getPaint().measureText(getText().toString());

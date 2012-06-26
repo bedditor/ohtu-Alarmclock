@@ -63,7 +63,7 @@ public class AlarmActivity extends Activity {
         showStopperThread.interrupt();
         music.release();          // Alarm has rung and we have closed the dialog. Music is released.
         vibrator.cancel();        // Also no need to vibrate anymore.
-        WakeUpLock.release();     // And no need to keep device open.
+        WakeUpLock.release();
         super.finish();
     }
 
@@ -79,7 +79,6 @@ public class AlarmActivity extends Activity {
         if (!wasDismissed)
             snooze();
         super.onStop();
-        //finish();
     }
 
     @Override
@@ -113,14 +112,15 @@ public class AlarmActivity extends Activity {
         }
     }
 
+
     private void dismiss() {
         wasDismissed = true;
-        if (PreferenceService.getShowSleepData(AlarmActivity.this)) {
-            Intent myIntent = new Intent(AlarmActivity.this, SleepInfoActivity.class);
+        if (PreferenceService.getShowSleepData(this)) {
+            Intent myIntent = new Intent(this, SleepInfoActivity.class);
             myIntent.putExtra("showFeelings", true);
-            AlarmActivity.this.startActivity(myIntent);
+            startActivity(myIntent);
         }
-        AlarmActivity.this.finish();
+        finish();
     }
 
     private void snooze() {

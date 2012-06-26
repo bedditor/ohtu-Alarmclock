@@ -29,10 +29,12 @@ public class WakeUpLock {
 
     public static void release() {
         Log.v(TAG, "Releasing wake lock");
+
         if (sWakeLock != null) {
             sWakeLock.release();
             sWakeLock = null;
         }
+
         keyguardLock.reenableKeyguard();
     }
 }

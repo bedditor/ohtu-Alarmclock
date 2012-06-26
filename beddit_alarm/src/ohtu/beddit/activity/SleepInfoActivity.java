@@ -36,7 +36,6 @@ public class SleepInfoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
 
-
         Bundle extras = getIntent().getExtras();
         if (extras == null || !extras.getBoolean("showFeelings")){
             findViewById(R.id.SleptWellButton).setVisibility(View.GONE);
