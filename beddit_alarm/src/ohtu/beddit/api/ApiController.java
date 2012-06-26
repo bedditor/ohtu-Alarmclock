@@ -8,7 +8,7 @@ import ohtu.beddit.web.BedditConnectionException;
 import ohtu.beddit.web.BedditException;
 
 /**
- * Interface for requesting data updates and getting the data from beddit API.
+ * Interface for requesting data updates and getting the data from Beddit API.
  */
 public interface ApiController {
 

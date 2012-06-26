@@ -54,7 +54,7 @@ public class SleepInfoActivity extends Activity {
     }
 
     /**
-     * Finishes the activity and also cancel's sleepInfoLoader if possible.
+     * Finishes the activity and also cancels sleepInfoLoader if possible.
      */
     @Override
     public void finish() {
@@ -174,7 +174,7 @@ public class SleepInfoActivity extends Activity {
     }
 
     /**
-     * Opens the diary entry for last nights info. Get's temporary key from beddit to go directly to diary without
+     * Opens the diary entry for last nights info. Gets temporary key from Beddit to go directly to diary without
      * having to log in.
      *
      * @param feeling Expects url encoded - or + ( = %2B this is what you should give to this method to work correctly)

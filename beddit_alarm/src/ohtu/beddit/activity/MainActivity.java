@@ -43,6 +43,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     private static final int LIGHT_THEME_FOREGROUND = Color.BLACK;
     private static final int BEDDIT_ORANGE = Color.argb(255, 255, 89, 0);
 
+    //below are different exit codes from other activities:
     private static final int FROM_AUTHENTICATION = 2;
     private static final int FROM_SETTINGS = 3;
     private static final int FROM_SLEEP_INFO = 4;
@@ -133,6 +134,7 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         super.finish();
     }
 
+    //check if the oauth2 access token is still valid, if not, start AuthActivity
     private void checkToken() {
         String token = PreferenceService.getToken(this);
         if (token == null || token.equals("")) {
@@ -297,6 +299,9 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         }
     }
 
+    /**
+     * Toggles set and unset alarm buttons based on whether the alarm is set or not.
+     */
     void updateButtonStates() {
         Log.v(TAG, "Buttons updates");
         addAlarmButton.setEnabled(!alarmService.isAlarmSet());
@@ -337,6 +342,12 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         return true;
     }
 
+    /**
+     * Called when returned from startActivityForResult(Intent, int)
+     * @param requestCode
+     * @param resultCode Which activity did the execution return from.
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -410,4 +421,5 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
 }
