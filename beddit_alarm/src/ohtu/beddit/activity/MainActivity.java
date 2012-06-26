@@ -67,10 +67,10 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         initializeUI();
 
-        /*testDialog();
         testDialog();
         testDialog();
-        testDialog();*/
+        testDialog();
+        testDialog();
     }
 
     @Override
