@@ -349,13 +349,16 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
     }
 
     private void handleActivityResult(int resultCode) {
+        Log.v(TAG, ""+resultCode);
         switch (resultCode) {
             case (AuthActivity.RESULT_FAILED):
                 openingDialog = true;
+                Log.v(TAG, "RESULT_FAILED");
                 DialogUtils.createActivityClosingDialog(this, getString(R.string.login_or_authorisation_failed), getString(R.string.button_text_close));
                 break;
             case (AuthActivity.RESULT_CANCELLED):
                 openingDialog = true;
+                Log.v(TAG, "RESULT_CANCELLED");
                 DialogUtils.createActivityClosingDialog(this, getString(R.string.must_connect_to_beddit_account), getString(R.string.button_text_close));
                 break;
         }

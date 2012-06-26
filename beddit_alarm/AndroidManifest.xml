@@ -26,6 +26,7 @@
                   android:theme="@style/AlarmActivityTheme"
                   android:launchMode="singleInstance"/>
         <activity android:name=".activity.MainActivity"
+                  android:launchMode="singleTask"
                   android:label="@string/app_name"
                   android:icon="@drawable/launcher_icon"
                   android:screenOrientation="portrait">
