@@ -159,6 +159,7 @@ public class SleepInfoActivity extends Activity {
         } catch (Exception e){
             key = "";
         }
+
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://beddit.com/newbeddit/"
                                 + username + "/things/"
                                 + TimeUtils.getTodayAsQueryDateString() + "/?k=" + key + feeling));
