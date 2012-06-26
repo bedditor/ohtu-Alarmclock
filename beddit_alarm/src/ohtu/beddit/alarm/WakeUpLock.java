@@ -6,11 +6,20 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.util.Log;
 
+/**
+ * Static class which will ensure that we will be on top and out of lock to display current information.
+ * Mainly used to display the Alarm dialog with the dismiss and snooze buttons.
+ */
 public class WakeUpLock {
     private static PowerManager.WakeLock sWakeLock;
     private static final String TAG = "WakeUpLock";
     private static KeyguardLock keyguardLock;
 
+    /**
+     * Here we acquire the wakeUpLock. Unlock the keyguard for our object, Wake up the device and light up the screen.
+     * Designed as it was in android 1.5 alarm clock.
+     * @param context
+     */
     public static void acquire(Context context) {
         Log.v(TAG, "Acquiring wake lock");
         if (sWakeLock != null) {
@@ -27,6 +36,10 @@ public class WakeUpLock {
         sWakeLock.acquire();
     }
 
+    /**
+     * Release this after you have done the work needed. Enables device lock and releases WakeLock. So if screen was
+     * locked and black before acquiring then after releasing we will return to that state.
+     */
     public static void release() {
         Log.v(TAG, "Releasing wake lock");
         if (sWakeLock != null) {

@@ -48,7 +48,7 @@ public class Slider extends Movable {
         this.w = width;
         this.h = height;
         this.maxValue = maxValue;
-        this.currentValue = initValue;
+        setValue(initValue);
         this.p = p;
         this.gp = new GrabPoint(getRectF().left + ((float) currentValue) / ((float) maxValue) * w,
                 getRectF().centerY(), grabPointSize, p);

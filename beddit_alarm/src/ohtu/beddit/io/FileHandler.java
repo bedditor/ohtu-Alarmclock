@@ -16,9 +16,9 @@ import ohtu.beddit.utils.TimeUtils;
 import java.io.*;
 import java.util.Scanner;
 
-/*
- * This class handles the file I/O. Files are used for saving the client info (Application id and secret) and
- * alarm. If the application is ever updated to support multiple alarms, it is recommended to save alarms
+/**
+ * This class handles the file I/O. Files are used for saving the client info (application id and secret) and
+ * the current alarm. If the application is ever updated to support multiple alarms, it is recommended to save alarms
  * into a database instead of a file.
  */
 public class FileHandler {
@@ -40,6 +40,9 @@ public class FileHandler {
         }
     }
 
+    /**
+     * initializes file with an default disabled alarm and return its {@link Alarm} object representation
+     */
     private void saveDefaultAlarm() {
         saveAlarm(8, 0, 15, false);
     }
@@ -52,7 +55,7 @@ public class FileHandler {
      * @param minutes alarm time minutes (0-59)
      * @param interval alarm interval as minutes
      * @param enabled is alarm enabled
-     * @return alarm as an object
+     * @return {@link Alarm} that was saved as an object
      */
     public Alarm saveAlarm(int hours, int minutes, int interval, boolean enabled) {
         boolean success = true;
@@ -86,7 +89,7 @@ public class FileHandler {
 
 
     /**
-     * Disables alarm, but keeps the wake up time saved in file
+     * Disables the current alarm but keeps it saved in a file.
      */
     public void disableAlarm() {
         Alarm alarm = getAlarm();
@@ -95,7 +98,8 @@ public class FileHandler {
 
 
     /**
-     * Reads alarm from file and returns it as an object
+     * Reads the current alarm from file and returns it as an {@link Alarm} object.
+     * If there's an Exception reading the alarm, return a default alarm of 8 am.
      * @return saved alarm data
      */
     public Alarm getAlarm()  {
@@ -130,8 +134,8 @@ public class FileHandler {
 
     /**
      * Reads client id/secret from file.
-     * @param request data to be read
-     * @return client id/secret
+     * @param request specifies the data to be read, that is client id or client secret.
+     * @return client id/secret as a String.
      */
     public String getClientInfo(String request) {
         String json = "";

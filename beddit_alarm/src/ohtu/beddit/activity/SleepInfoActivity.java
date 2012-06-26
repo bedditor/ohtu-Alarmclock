@@ -31,11 +31,13 @@ public class SleepInfoActivity extends Activity {
     private LoadingDialog dialog;
     private SleepInfoLoader sleepInfoLoader;
 
+    /**
+     * Initializes SleepInfoActivity.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep_info);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras == null || !extras.getBoolean("showFeelings")){
@@ -51,12 +53,18 @@ public class SleepInfoActivity extends Activity {
         sleepInfoLoader.execute();
     }
 
+    /**
+     * Finishes the activity and also cancel's sleepInfoLoader if possible.
+     */
     @Override
     public void finish() {
         if (sleepInfoLoader != null) sleepInfoLoader.cancel(true);
         super.finish();
     }
 
+    /**
+     * Asynchronous class to load the SleepInfo.
+     */
     private class SleepInfoLoader extends AsyncTask<Void, Void, Integer> {
         private static final int RESULT_SUCCESS = 1;
         private static final int RESULT_CONNECTION_FAIL = 2;
@@ -64,6 +72,9 @@ public class SleepInfoActivity extends Activity {
         private static final int RESULT_FAILURE = 4;
         private static final int RESULT_NO_DATA = 5;
 
+        /**
+         * Tries to update the NightInfo and returns Integer describing what went wrong.
+         */
         @Override
         protected Integer doInBackground(Void... voids) {
             try {
@@ -82,6 +93,10 @@ public class SleepInfoActivity extends Activity {
             return RESULT_SUCCESS;
         }
 
+        /**
+         * Handles resultCode gotten from doInBackground. Updates nightInfo if the post was success, otherwise displays correct error.
+         * @param resultCode Is given one of the classes static final Integers.
+         */
         @Override
         protected void onPostExecute(Integer resultCode) {
             switch (resultCode) {
@@ -107,7 +122,9 @@ public class SleepInfoActivity extends Activity {
         }
     }
 
-
+    /**
+     * Method to update the NightInfo that we display on the page.
+     */
     private void updateNightInfo() throws BedditException {
         ApiController apiController = new ApiControllerClassImpl();
         if (apiController.isSleepInfoOutdated() || apiController.hasUserChanged(this)) {
@@ -121,6 +138,9 @@ public class SleepInfoActivity extends Activity {
         isAnalysisUpToDate = sleepData.getIsAnalysisUpToDate();
     }
 
+    /**
+     * Updates the textView objects in the Activity.
+     */
     private void updateText() {
         ((TextView) findViewById(R.id.sleep_info_overall_text)).setText(getHoursAndMinutesFromSeconds(timeSleeping));
         ((TextView) findViewById(R.id.sleep_info_deep_text)).setText(getHoursAndMinutesFromSeconds(timeDeepSleep));
@@ -132,6 +152,10 @@ public class SleepInfoActivity extends Activity {
             ((TextView) findViewById(R.id.sleep_info_delay)).setText(this.getString(R.string.sleep_info_overall_age_pref) + " " + getTimeDifference(localAnalyzedUpToTime) + " " + this.getString(R.string.sleep_info_overall_age_post));
     }
 
+    /**
+     * Adds onClickListeners which use openDiaryInBrowser method to SleepInfoActivity's buttons. Also both buttons
+     * will close the whole Activity onClick event.
+     */
     private void setEventHandlers() {
         findViewById(R.id.SleptWellButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +173,12 @@ public class SleepInfoActivity extends Activity {
         });
     }
 
+    /**
+     * Opens the diary entry for last nights info. Get's temporary key from beddit to go directly to diary without
+     * having to log in.
+     *
+     * @param feeling Expects url encoded - or + ( = %2B this is what you should give to this method to work correctly)
+     */
     private void openDiaryInBrowser(String feeling){
         String username = PreferenceService.getUsername(this);
         BedditConnectorImpl bwc = new BedditConnectorImpl();
@@ -160,17 +190,29 @@ public class SleepInfoActivity extends Activity {
         } catch (Exception e){
             key = "";
         }
+
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://beddit.com/newbeddit/"
                                 + username + "/things/"
                                 + TimeUtils.getTodayAsQueryDateString() + "/?k=" + key + feeling));
         startActivity(browserIntent);
     }
 
+    /**
+     * Method will return viewable String that describes seconds as hours and minutes.
+     *
+     * @param seconds Expects seconds to be given which will then be split to hours and minutes.
+     * @return Will return String in the format of h + "h " + mm + "min". Ex. "6h 30min" or "10h 2min".
+     */
     private String getHoursAndMinutesFromSeconds(int seconds) {
         return seconds / 3600 + "h " + (seconds / 60) % 60 + "min";
     }
 
-    //expects format like this 2012-06-13T08:38:11 Please don't break it :)
+    /**
+     * Compares device time to beddit time and returns the time difference as human readable String.
+     *
+     * @param data Expects date format YYYY-MM-DDThh:mm:ss
+     * @return Returns the time difference. Uses getHoursAndMinutesFromSeconds return output for format.
+     */
     private String getTimeDifference(String data) {
         if (data == null) return "--";
         Calendar time = TimeUtils.bedditTimeStringToCalendar(data);

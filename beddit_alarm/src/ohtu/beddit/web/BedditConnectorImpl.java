@@ -100,6 +100,7 @@ public class BedditConnectorImpl implements BedditConnector {
 
     private HttpsURLConnection connect(URL url, HttpsURLConnection connection, boolean do_post) throws IOException {
         connection = (HttpsURLConnection) url.openConnection();
+        System.setProperty("http.keepAlive", "false");
         if (do_post) {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
@@ -114,7 +115,7 @@ public class BedditConnectorImpl implements BedditConnector {
     private String readFromStream(InputStream inputStream) {
         String response = "";
         Scanner scanner = new Scanner(inputStream);
-        while (scanner.hasNext())
+        while (scanner.hasNextLine() )
             response += scanner.nextLine();
         return response;
     }
