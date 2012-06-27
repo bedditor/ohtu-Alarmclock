@@ -9,10 +9,12 @@ import ohtu.beddit.R;
  * Help activity is created when the "Help" button is pressed in the application menu.
  * Help text is defined in the help.xml file.
  */
-
-
 public class HelpActivity extends Activity {
 
+    /**
+     * Is called automatically when creating this activity.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

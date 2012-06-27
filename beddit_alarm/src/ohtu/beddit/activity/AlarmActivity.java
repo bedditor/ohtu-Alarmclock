@@ -35,6 +35,10 @@ public class AlarmActivity extends Activity {
     private static final float DIALOG_WIDTH = 0.9f;
     private static final long[] vibratePattern = {0, 200, 500};
 
+    /**
+     * Initializes the alarm, plays the music, vibrates the phone, acquires the WakeUpLock.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,9 @@ public class AlarmActivity extends Activity {
         playMusic();
     }
 
-
+    /**
+     * Finishes the activity, also closes the various things started by onCreate.
+     */
     @Override
     public void finish() {
         Log.v(TAG, "finish");
@@ -70,6 +76,9 @@ public class AlarmActivity extends Activity {
         super.onPause();
     }
 
+    /**
+     * Puts the alarm on snooze in case this is called, unless the activity was dismissed.
+     */
     @Override
     public void onStop() { //We call this when we stop the activity.
         Log.v(TAG, "onStop");
@@ -87,9 +96,13 @@ public class AlarmActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        // do not respond to back button in AlarmActivity
+        // Why no onStop here?
+        // onStop();
     }
 
+    /**
+     * Creates new MusicHandler and starts playing, Also creates ShowStopper.
+     */
     private void playMusic() {
         music = new MusicHandler();
         music.setMusic(this);
@@ -99,6 +112,9 @@ public class AlarmActivity extends Activity {
         showStopperThread.start();
     }
 
+    /**
+     * Vibrates the phone unless user is on call.
+     */
     private void vibratePhone() {
         Log.v(TAG, "I want to Vibrate 8==D");
 
@@ -111,7 +127,9 @@ public class AlarmActivity extends Activity {
         }
     }
 
-
+    /**
+     * User pressed the dismiss button. We call finish and set the result intent.
+     */
     private void dismiss() {
         wasDismissed = true;
         if (PreferenceService.getShowSleepData(this)) {
@@ -122,6 +140,9 @@ public class AlarmActivity extends Activity {
         finish();
     }
 
+    /**
+     * Called when we press snooze button or do something else. Sets new alarm few minutes later based on the settings.
+     */
     private void snooze() {
         //get snooze length from preferences
         int snoozeLength = PreferenceService.getSnoozeLength(AlarmActivity.this);
@@ -137,6 +158,9 @@ public class AlarmActivity extends Activity {
         finish();
     }
 
+    /**
+     * Adds onClick listeners to buttons.
+     */
     private void makeButtons() {
         findViewById(R.id.alarmActivity_button_dismiss)
                 .setOnClickListener(new View.OnClickListener() {
@@ -155,6 +179,9 @@ public class AlarmActivity extends Activity {
 
     }
 
+    /**
+     * removes Alarm from alarm service.
+     */
     private void removeAlarm() {
         new AlarmServiceImpl(this).deleteAlarm();
     }
