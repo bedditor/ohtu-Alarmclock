@@ -24,6 +24,9 @@ public class ShowStopper implements Runnable {
         this.vibrator = vibrator;
     }
 
+    /**
+     * Puts this thread to sleep for the time that is given to this class when created. After that the music is released.
+     */
     @Override
     public void run() {
         try {

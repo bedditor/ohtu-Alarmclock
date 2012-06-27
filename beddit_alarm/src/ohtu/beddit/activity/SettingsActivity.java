@@ -34,6 +34,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         Log.v(TAG, "onCreate");
     }
 
+    /**
+     * Initializes the activitys variables and calls updateSleepStageSummary().
+     */
     private void initPrefVars() {
         snoozeTimePref = (ListPreference) getPreferenceScreen().findPreference(this.getString(R.string.pref_key_snooze));
         sleepStagePref = (ListPreference) getPreferenceScreen().findPreference(this.getString(R.string.pref_key_wake_up_sleep_stage));
@@ -42,6 +45,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         updateSleepStageSummary();
     }
 
+    /**
+     * Updates data when returning to this activity and continues.
+     */
     @Override
     protected void onResume() {
         super.onResume();

@@ -9,6 +9,9 @@ import ohtu.beddit.io.FileHandler;
 import ohtu.beddit.utils.TimeUtils;
 import java.util.Calendar;
 
+/**
+ *  Class that handles Putting alarm to file and to device. So that we can wake our code on correct time.
+ */
 public class AlarmServiceImpl implements AlarmService {
 
     private final String TAG = "Alarm Service";
@@ -30,6 +33,13 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     // Dependency injection for Unit testing.
+    /**
+     * Do not use this. Only for testing purposes.
+     * @param context
+     * @param alarmManager
+     * @param filehandler
+     * @param notificationFactory
+     */
     public AlarmServiceImpl(Context context, AlarmManager alarmManager,
                             FileHandler filehandler, NotificationFactory notificationFactory) {
         this.context = context.getApplicationContext();
@@ -39,6 +49,13 @@ public class AlarmServiceImpl implements AlarmService {
         alarm = getAlarmFromFile();
     }
 
+    /**
+     * Adds new alarm to android for our program.
+     * @param hours wake up hours
+     * @param minutes wake up minutes
+     * @param interval wake up interval
+     * @return
+     */
     @Override
     public Alarm addAlarm(int hours, int minutes, int interval) {
         alarm = fileHandler.saveAlarm(hours, minutes, interval, true);
@@ -52,6 +69,12 @@ public class AlarmServiceImpl implements AlarmService {
         return alarm;
     }
 
+    /**
+     * Changes alarm wake up time.
+     * @param hours
+     * @param minutes
+     * @param interval in minutes
+     */
     @Override
     public void changeAlarm(int hours, int minutes, int interval) {
         if (alarm.isEnabled()) {
@@ -59,7 +82,10 @@ public class AlarmServiceImpl implements AlarmService {
         }
     }
 
-    //this method sets alarm manager to try wake up on given time
+    /**
+     * this method sets alarm manager to try wake up on given time
+     * @param time when to try wake up next time
+     */
     public void addWakeUpAttempt(Calendar time) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
@@ -69,7 +95,9 @@ public class AlarmServiceImpl implements AlarmService {
         alarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), sender);
     }
 
-    //this method calculates time for the first try to wake up
+    /**
+     * this method calculates time for the first try to wake up
+     */
     private Calendar calculateFirstWakeUpAttempt(int hour, int minute, int interval) {
         Calendar alarmTime = TimeUtils.timeToCalendar(hour, minute);
         alarmTime.add(Calendar.MINUTE, -interval);
@@ -82,6 +110,9 @@ public class AlarmServiceImpl implements AlarmService {
         }
     }
 
+    /**
+     * Deletes alarm. From device and from file.
+     */
     @Override
     public void deleteAlarm() {
         Intent intent = new Intent(context, AlarmReceiver.class);

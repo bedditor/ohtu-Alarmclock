@@ -24,6 +24,11 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
     private static final char LIGHT_SLEEP_STAGE = 'L';
     private static final int AT_MOST_MINUTES_OLD = 5;
 
+    /**
+     * Tries to update data. After that it will check wether it's time to wake up.
+     * @param context AlarmChecker needs application context for possible PreferenceService or API calls
+     * @return Returns a boolean depending is it time to wake up or not.
+     */
     @Override
     public boolean wakeUpNow(Context context) {
 
@@ -61,7 +66,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
     }
 
     /**
-     *
+     * Handles which sleep stage to wake up from. Gets the data from PreferenceService.
      * @param context
      * @return an array of characters which represent the possible sleep stages the user should be woken up from.
      */
@@ -77,6 +82,10 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
         return sleepStages;
     }
 
+    /**
+     * Return time interval.
+     * @return returns 3 minutes.
+     */
     @Override
     public int getWakeUpAttemptInterval() {
         return 3*60;
