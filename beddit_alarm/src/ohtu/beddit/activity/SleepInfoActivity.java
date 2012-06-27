@@ -185,7 +185,7 @@ public class SleepInfoActivity extends Activity {
         String key;
         try {
             String keyJson = bwc.getJsonFromServer("https://api.beddit.com/api2/user/" + username + "/temporary_authentication/create?access_token=" + PreferenceService.getToken(this), true);
-            key = new BedditJsonParserImpl().parseJsonToObject(keyJson, Key.class).getKey();
+            key = new BedditJsonParserImpl().parseJsonToObject(keyJson, BedditTempKey.class).getKey();
             Log.v(TAG, key);
         } catch (Exception e){
             key = "";

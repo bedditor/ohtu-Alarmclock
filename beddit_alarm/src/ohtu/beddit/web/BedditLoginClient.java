@@ -16,12 +16,14 @@ import java.util.regex.Pattern;
  * all unnecessary links specific at Beddit login page and control so that the user can only login or cancel the login
  * process. This class is to be given to WebView.
  */
-public class AmazingWebClient extends WebViewClient {
+public class BedditLoginClient extends WebViewClient {
     private final List<UrlListener> listeners = new LinkedList<UrlListener>();
     private final LoadingDialog dialog;
 
-    // Forbidden pages. Should be checked and update until
-    // the login page is stripped-down of forbidden links
+    /**
+     *   Forbidden pages. Should be checked and update until
+     *   the login page is stripped-down of forbidden links
+     */
     private final String[] blacklist = {"http://www.beddit.com/",
             "https://www.beddit.com/login",
             "http://www.beddit.com/sleep",
@@ -34,9 +36,9 @@ public class AmazingWebClient extends WebViewClient {
             "https://api.beddit.com/login",
             "https://api.beddit.com/logout_login"};
 
-    private static final String TAG = "AmazingWebClient";
+    private static final String TAG = "BedditLoginClient";
 
-    public AmazingWebClient(Context context) {
+    public BedditLoginClient(Context context) {
         dialog = new LoadingDialog(context);
     }
 

@@ -14,13 +14,7 @@ import java.util.Calendar;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: tahuomo
- * Date: 13.6.2012
- * Time: 12:14
- * To change this template use File | Settings | File Templates.
- */
+
 public class AlarmServiceTest extends AndroidTestCase {
     FileHandler mockFileHandler;
     AlarmManager mockAlarmManager;

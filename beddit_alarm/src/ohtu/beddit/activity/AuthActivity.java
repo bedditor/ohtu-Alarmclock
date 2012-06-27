@@ -170,11 +170,11 @@ public class AuthActivity extends Activity implements UrlListener {
     }
 
     /**
-     * Initializes the AmazingWebClient and opens the oAuth2 url to begin the login process.
+     * Initializes the BedditLoginClient and opens the oAuth2 url to begin the login process.
      */
     private void openAuthBrowser() {
         // Initialize the webClient
-        AmazingWebClient client = new AmazingWebClient(this);
+        BedditLoginClient client = new BedditLoginClient(this);
         client.addUrlListener(this);
         webview.setWebViewClient(client);
         Log.v(TAG, fileHandler.getClientInfo(FileHandler.CLIENT_ID) + " secret: " +
