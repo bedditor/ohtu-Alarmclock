@@ -42,7 +42,7 @@ public class AlarmCheckerRealImpl implements AlarmChecker {
 
             long analysisDifference = now.getTimeInMillis() - updateUpToWhenAnalyzed.getTimeInMillis();
 
-            if (analysisDifference < atMostMillisOld) {//should only use analysisDifference in final version
+            if (analysisDifference < atMostMillisOld) {
                 api.updateSleepData(context);
                 char lastSleepStage = api.getSleepData(context).getLastSleepStage();
                 Log.v(TAG, "sleep stage: " + lastSleepStage);

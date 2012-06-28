@@ -67,10 +67,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         PreferenceManager.setDefaultValues(this, R.xml.prefs, true);
         PreferenceManager.setDefaultValues(this, R.xml.advancedprefs, true);
         initializeUI();
-        /*testDialog();
-        testDialog();
-        testDialog();
-        testDialog();*/
     }
 
     @Override
@@ -402,24 +398,6 @@ public class MainActivity extends Activity implements AlarmTimeChangedListener {
         outState.putInt("interval", alarmTimePicker.getInterval());
         outState.putSerializable("tokenCheck", Calendar.getInstance());
         super.onSaveInstanceState(outState);
-    }
-
-
-    //älä poista vielä
-    public void testDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Spam api requests:");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes I will", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //BedditConnectorImpl blob = new BedditConnectorImpl();
-                //try{
-                AlarmChecker check = new AlarmCheckerRealImpl();
-                check.wakeUpNow(MainActivity.this);
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
 }
