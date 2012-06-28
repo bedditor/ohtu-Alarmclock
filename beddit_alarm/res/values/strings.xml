@@ -94,6 +94,10 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
     </style>
+
+    <string name="timepicker_am">am</string>
+    <string name="timepicker_pm">pm</string>
+
 </resources>
 
 

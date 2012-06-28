@@ -1,7 +1,10 @@
 package ohtu.beddit.views.timepicker;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import ohtu.beddit.R;
+import ohtu.beddit.activity.MainActivity;
 
 /**
  * A digital display of the time selected.
@@ -14,7 +17,7 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
     private int minutes;
     private final Paint p;
     private boolean is24Hour;
-
+    private Context applicationContext;
     /**
      * Creates a new TimeDisplay object.
      * @param x Center x-coordinate.
@@ -22,7 +25,9 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
      * @param p Paint to use for drawing text.
      * @param is24Hour Indicates whether to use 24- or 12-hour format.
      */
-    public TimeDisplay(float x, float y, Paint p, boolean is24Hour) {
+    public TimeDisplay(float x, float y, Paint p, boolean is24Hour,
+                       Context context) {
+        this.applicationContext = context.getApplicationContext();
         this.x = x;
         this.y = y;
         this.p = p;
@@ -49,11 +54,11 @@ public class TimeDisplay implements HourChangedListener, MinuteChangedListener {
         String minutes = minutesToString(m);
         String hours = hoursToString(h);
         String suffix = "";
-        if (is24Hour) {
+        if (!is24Hour) {
             if (h > 11) {
-                suffix = " pm";
+                suffix = " "+ applicationContext.getString(R.string.timepicker_pm);
             } else {
-                suffix = " am";
+                suffix = " "+ applicationContext.getString(R.string.timepicker_am);
             }
         }
         return hours + ":" + minutes + suffix;

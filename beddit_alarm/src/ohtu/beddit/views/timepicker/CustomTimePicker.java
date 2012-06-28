@@ -182,7 +182,7 @@ public class CustomTimePicker extends View implements AlarmTimePicker, Animation
         analogClock = new AnalogClock(midX, midY, radius,
                 intervalArcPaint, backgroundPaint, clockFaceLinePaint,
                 minuteHand, hourHand);
-        timeDisplay = new TimeDisplay(midX, midY - radius - barSpacer, timePaint, is24Hour);
+        timeDisplay = new TimeDisplay(midX, midY - radius - barSpacer, timePaint, is24Hour, getContext());
 
         // link components together
         intervalSlider.addListener(analogClock);

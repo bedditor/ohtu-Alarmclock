@@ -2,6 +2,7 @@ package ohtu.beddit.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -201,5 +202,16 @@ public class AuthActivity extends Activity implements UrlListener {
     public void onBackPressed() {
         Log.v(TAG, "BACK PRESSED");
         fail(true);
+    }
+
+    /**
+     * Do nothing special on configuration change.
+     * Prevents the activity from restarting on hardware keyboard
+     * slide out and orientation change.
+     * @param newConfig
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }

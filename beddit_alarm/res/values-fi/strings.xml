@@ -74,8 +74,8 @@
     <string name="dialog_text_no_sleep_data">Unitiedot eivät ole saatavilla</string>
     <string name="dialog_text_unknown_error">Tuntematon virhe</string>
 
-
-
+    <string name="timepicker_am">am</string>
+    <string name="timepicker_pm">pm</string>
 
 
 
