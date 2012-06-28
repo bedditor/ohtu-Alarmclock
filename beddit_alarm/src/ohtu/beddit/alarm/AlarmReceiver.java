@@ -28,8 +28,8 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         Log.v(TAG, "time left"+getSecondsUntilLastWakeUpTime());
         // Switch the commented lines around if testing wake up without real sleep data from Beddit servers
-        AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0);
-        //AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
+        //AlarmChecker alarmChecker = new AlarmCheckerRandomImpl(0);
+        AlarmChecker alarmChecker = new AlarmCheckerRealImpl();
         wakeUpAttemptInterval = alarmChecker.getWakeUpAttemptInterval();
 
         if (getSecondsUntilLastWakeUpTime() <= 3) { //close enough to last wake up time, start alarm

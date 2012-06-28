@@ -35,11 +35,7 @@ public class MusicHandler {
      */
     public void setMusic(Context context) {
         AssetFileDescriptor alarmTone;
-        if (PreferenceService.getAwesome(context)) {
-            alarmTone = context.getResources().openRawResourceFd(R.raw.awesome);
-        } else {
-            alarmTone = context.getResources().openRawResourceFd(R.raw.alarm);
-        }
+        alarmTone = context.getResources().openRawResourceFd(R.raw.alarm);
 
         try {
             player.reset();
