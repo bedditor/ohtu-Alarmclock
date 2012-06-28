@@ -12,11 +12,6 @@
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/pref_title_other_settings">
-        <CheckBoxPreference
-                android:summary="@string/pref_summary_awesome"
-                android:title="@string/pref_title_awesome"
-                android:key="@string/pref_key_awesome"/>
-
         <ListPreference
                 android:title="@string/pref_alarm_length"
                 android:key="@string/pref_key_alarm_length"

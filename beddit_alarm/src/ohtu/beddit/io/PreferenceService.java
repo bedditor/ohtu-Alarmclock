@@ -99,8 +99,4 @@ public class PreferenceService {
     public static boolean getShowSleepData(Context context) {
         return getSettingBoolean(context, R.string.pref_key_show_sleep_data_checkbox);
     }
-
-    public static boolean getAwesome(Context context) {
-        return getSettingBoolean(context, R.string.pref_key_awesome);
-    }
 }

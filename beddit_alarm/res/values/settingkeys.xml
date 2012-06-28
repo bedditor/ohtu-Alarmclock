@@ -3,7 +3,6 @@
     <string name="pref_key_username">beddit_username</string>
     <string name="pref_key_first_name">beddit_first_name</string>
     <string name="pref_key_last_name">beddit_last_name</string>
-    <string name="pref_key_awesome">beddit_awesome</string>
     <string name="pref_key_snooze">beddit_snooze_length</string>
     <string name="pref_key_userToken">beddit_user_token</string>
     <string name="pref_key_forget">beddit_forget</string>

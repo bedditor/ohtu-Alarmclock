@@ -24,9 +24,7 @@
 
     <string name="pref_title_other_settings">Other settings</string>
 
-    <string name="pref_title_awesome">Make this app awesome</string>
     <string name="pref_toggle_info_summary">Show summary of sleep data on wake up</string>
-    <string name="pref_summary_awesome">This setting is completely useless.</string>
 
     <string name="pref_title_alarm_settings">Alarm settings</string>
     <string name="pref_title_snooze_length">Snooze time length</string>
